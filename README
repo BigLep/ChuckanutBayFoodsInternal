@@ -11,3 +11,6 @@ Next steps:
   git branch steve
   git checkout steve
   git push github steve
+
+Reference:
+  http://gitref.org/
