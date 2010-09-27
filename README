@@ -1,0 +1,13 @@
+Global setup:
+ Download and install Git
+  git config --global user.name "Steve Loeppky"
+  git config --global user.email stvn@loeppky.com
+        
+Next steps:
+  mkdir ChuckanutBayFoodsInternal
+  cd ChuckanutBayFoodsInternal
+  git init
+  git remote add github git@github.com:BigLep/ChuckanutBayFoodsInternal.git
+  git branch steve
+  git checkout steve
+  git push github steve
