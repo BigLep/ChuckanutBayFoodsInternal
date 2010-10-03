@@ -2,8 +2,24 @@
 <ivy-module version="2.0" 
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-	<info organisation="org.apache" module="hello-ivy"/>
+	<info organisation="com.chuckanutbay" module="internal">
+		<description url="http://chuckanutbay.com/">
+			Internal applications used to run Chuckanut Bay Foods' business.
+		</description> 
+	</info>
+	<configurations> 
+		<conf name="compile" transitive="false" description="Dependencies necesessary to compile all the source code."/> 
+		<conf name="runtime" extends="compile" description="Runtime dependencies."/>
+		<conf name="test" extends="runtime" description="Dependencies necessary to run unit tests."/>
+	</configurations>
 	<dependencies>
-		<dependency org="mysql" name="mysql-connector-java" rev="5.1.13"/>
+		<dependency org="com.google.guava" name="guava" rev="r07" conf="compile->*"/>
+		<dependency org="joda-time" name="joda-time" rev="1.6" conf="compile->*"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="compile->*"/>
+		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" conf="runtime->*"/>
+		<dependency org="log4j" name="log4j" rev="1.2.15" conf="runtime->*"/>
+		<dependency org="org.hibernate" name="hibernate-core" rev="3.5.6-Final" conf="compile->*"/>
+		<dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="runtime->*"/>
+		<dependency org="junit" name="junit" rev="4.8.1" conf="test->*"/>
 	</dependencies>
 </ivy-module>
