@@ -1,12 +1,132 @@
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="hello-ivy" default="release">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="ChuckanutBayInternal" default="release">
 
     
-	<target name="release" depends="resolve"/>
+	<property name="version" value="1.0"/>
 	
-    <!-- ================================= 
-          target: resolve              
-         ================================= -->
-    <target name="resolve" description="--> retrieve dependencies with ivy">
-        <ivy:retrieve />
+	<property name="ant.build.javac.source" value="1.6" />
+	<property name="ant.build.javac.target" value="1.6" />
+	
+	<property name="javac.compiler.flags" value="-Xlint:all,-serial,-fallthrough"/>
+	<property name="build.output.dir" value="${basedir}/build-output"/>
+	<property name="build.output.private.dir" value="${build.output.dir}/private"/>
+	<property name="build.output.src.dir" value="${build.output.private.dir}/src"/>
+	<property name="build.output.tst.dir" value="${build.output.private.dir}/tst"/>
+	<property name="build.output.lib.dir" value="${build.output.dir}/lib"/>
+	<property name="build.output.reports.dir" value="${build.output.dir}/reports"/>
+	<property name="build.output.junit.dir" value="${build.output.reports.dir}/junit"/>
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="tst.dir" value="${basedir}/tst"/>
+	
+	<target name="release" depends="jar,unit-test,javadoc"/>
+	
+	<target name="clean">
+		<delete dir="${build.output.dir}" />
+	</target>
+	
+	<target name="ivy-compile-classpath">
+        <ivypath pathid="ivy.compile.classpath.ref" conf="compile"/>
     </target>
+	
+	<target name="ivy-test-classpath">
+        <ivypath pathid="ivy.test.classpath.ref" conf="test"/>
+    </target>
+	
+	<target name="src-compile" depends="ivy-compile-classpath">
+		<mkdir dir="${build.output.src.dir}" />
+		<javac srcdir="${src.dir}"
+		       destdir="${build.output.src.dir}"
+			   classpathref="ivy.compile.classpath.ref"
+		       debug="on"
+		/>
+	</target>
+	
+	<target name="jar" depends="src-compile">
+		<jar destfile="${build.output.lib.dir}/${ant.project.name}"
+		     basedir="${build.output.src.dir}"
+		/>
+	</target>
+	
+	<target name="tst-compile-classpath" depends="ivy-test-classpath">
+		<path id="tst.compile.classpath.ref">
+            <path refid="ivy.test.classpath.ref"/>
+			<pathelement location="${build.output.src.dir}"/>
+        </path>
+	</target>
+	
+	<target name="tst-compile" depends="src-compile,tst-compile-classpath">
+		<mkdir dir="${build.output.tst.dir}" />
+		<javac srcdir="${tst.dir}"
+		       destdir="${build.output.tst.dir}"
+			   classpathref="tst.compile.classpath.ref"
+		       debug="on"
+		/>
+		<!-- Copy over any non Java file assets -->
+		<copy todir="${build.output.tst.dir}">
+			<fileset dir="${tst.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="unit-test-classpath" depends="tst-compile-classpath">
+		<path id="test.unit.classpath.ref">
+            <path refid="tst.compile.classpath.ref"/>
+			<pathelement location="${build.output.tst.dir}"/>
+        </path>
+	</target>
+	
+	<target name="unit-test" depends="tst-compile,unit-test-classpath">
+		<mkdir dir="${build.output.junit.dir}" />
+		<echo-classpath refid="test.unit.classpath.ref"/>
+		<junit 
+			errorproperty="test.unit.error"
+			failureproperty="test.unit.failure"
+			showoutput="true">
+			
+			<formatter type="plain"/>
+			<formatter type="xml"/>
+			
+			<classpath>
+				<path refid="test.unit.classpath.ref"/>
+			</classpath>
+
+			<batchtest todir="${build.output.junit.dir}">
+				<fileset dir="${tst.dir}">
+					<include name="**/*Test.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="javadoc">
+	</target>
+	
+	
+	<macrodef name="echo-classpath">
+        <attribute name="refid" description="Classpath reference id to define"/>
+        <sequential>
+            <pathconvert property="@{refid}.echo" refid="@{refid}" />
+        	<echo message="${@{refid}.echo}"/>
+        </sequential>
+    </macrodef>
+	
+	<!-- Configure Ivy -->
+	<ivy:settings id="ivy.settings.ref" file="${basedir}/ivy-settings.xml"/>
+	
+	<!-- http://code.google.com/p/sidekar/source/browse/trunk/src/build/macros.xml -->
+	<macrodef name="ivypath">
+        <attribute name="pathid" description="Classpath reference id to define"/>
+        <attribute name="file" default="${basedir}/ivy.xml" description="ivy.xml defining the named configuration"/>
+        <attribute name="conf" description="Name of the ivy configuration to resolve"/>
+        <attribute name="type" default="jar" description="Type of artifact to resolve"/>
+        <attribute name="settingsRef" default="ivy.settings.ref" description="Reference to ivy settings"/>
+        <attribute name="transitive" default="true" description="Whether to resolve dependencies transitively"/>
+        <attribute name="log" default="download-only" description="When to log activity"/>
+        <sequential>
+            <ivy:resolve file="@{file}" settingsRef="@{settingsRef}" type="@{type}"
+              transitive="@{transitive}" conf="@{conf}" log="@{log}"/>
+            <ivy:cachepath file="@{file}" settingsRef="@{settingsRef}" type="@{type}"
+              transitive="@{transitive}" conf="@{conf}" log="@{log}" pathid="@{pathid}"/>
+        </sequential>
+    </macrodef>
 </project>
