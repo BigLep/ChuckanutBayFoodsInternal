@@ -2,6 +2,8 @@ package com.chuckanutbay.LotCodeManager.client;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import static com.chuckanutbay.LotCodeManager.client.LotCodeUtil.*;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,9 +21,10 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 	DateBox dateBox = new DateBox();
 	DialogBox dialogBox;
 	FlexTable usedUpIngredientFlexTable = new FlexTable();
-	ArrayList<ItemInInventory> usedUpIngredientList = new ArrayList<ItemInInventory>();
+	List<ItemInInventory> usedUpIngredientList = new ArrayList<ItemInInventory>();
 	
 	public UsedUpPanel() {
+		setUpPanel();
 		dbGetInUseIngredients(usedUpIngredientList, this);
 	}
 	
@@ -43,7 +46,6 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 			usedUpIngredientFlexTable.setText(0,5,"Mark");
 			usedUpIngredientFlexTable.getRowFormatter().addStyleName(0, "usedUpIngredientFlexTableHeader");
 			usedUpIngredientFlexTable.addStyleName("usedUpIngredientFlexTable");
-			populateInUseFlexTable();
 		//Add components to usedUpDatePanel
 		usedUpDatePanel.add(dateBoxLabel);
 		usedUpDatePanel.add(dateBox);
@@ -55,7 +57,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 		dialogBox = new LotCodeManagerDialogBox(this, "Mark Inventory As Used-Up", true, true);
 	}
 	
-	private void populateInUseFlexTable() {
+	public void populateFlexTable() {
 		if(usedUpIngredientList.isEmpty()) {
 			Window.alert("There are no Ingredients to mark");
 		}

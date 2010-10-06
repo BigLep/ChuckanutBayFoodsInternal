@@ -1,9 +1,9 @@
 package com.chuckanutbay.LotCodeManager.server;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.chuckanutbay.LotCodeManager.client.DatabaseQueryService;
 import com.chuckanutbay.LotCodeManager.client.ItemInInventory;
@@ -15,15 +15,15 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 	
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<ItemInInventory> dbItemsInInventory = new ArrayList<ItemInInventory>();
-	private ArrayList<QBItem> dbQBItems = new ArrayList<QBItem>();
+	private List<ItemInInventory> dbItemsInInventory = new ArrayList<ItemInInventory>();
+	private List<QBItem> dbQBItems = new ArrayList<QBItem>();
 	
-	public void setCheckedInIngredients(final ArrayList<ItemInInventory> checkedInIngredients) {
+	public void setCheckedInIngredients(final List<ItemInInventory> checkedInIngredients) {
 		dbItemsInInventory.addAll(checkedInIngredients);
 	}
 
-	public ArrayList<ItemInInventory> getCheckedInIngredients() {
-		ArrayList<ItemInInventory> checkedInIngredients = new ArrayList<ItemInInventory>();
+	public List<ItemInInventory> getCheckedInIngredients() {
+		List<ItemInInventory> checkedInIngredients = new ArrayList<ItemInInventory>();
 		for(ItemInInventory itemInInventory : dbItemsInInventory) {
 			if (itemInInventory.getInUseDate() == null && itemInInventory.getUsedUpDate() == null) {
 				checkedInIngredients.add(itemInInventory);
@@ -32,8 +32,8 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 		return checkedInIngredients;
 	}
 
-	public ArrayList<ItemInInventory> getInUseIngredients() {
-		ArrayList<ItemInInventory> inUseIngredients = new ArrayList<ItemInInventory>();
+	public List<ItemInInventory> getInUseIngredients() {
+		List<ItemInInventory> inUseIngredients = new ArrayList<ItemInInventory>();
 		for(ItemInInventory itemInInventory : dbItemsInInventory) {
 			if (itemInInventory.getInUseDate() != null && itemInInventory.getUsedUpDate() == null) {
 				inUseIngredients.add(itemInInventory);
@@ -43,7 +43,7 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 	}
 
 	@Override
-	public void setInUseIngredients(ArrayList<ItemInInventory> inUseIngredients) {
+	public void setInUseIngredients(List<ItemInInventory> inUseIngredients) {
 		Iterator<ItemInInventory> iterator = dbItemsInInventory.iterator();
 		while (iterator.hasNext()) {
 			ItemInInventory itemInInventory = iterator.next();
@@ -55,7 +55,7 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 	}
 
 	@Override
-	public void setUsedUpIngredients(ArrayList<ItemInInventory> usedUpIngredients) {
+	public void setUsedUpIngredients(List<ItemInInventory> usedUpIngredients) {
 		Iterator<ItemInInventory> iterator = dbItemsInInventory.iterator();
 		while (iterator.hasNext()) {
 			ItemInInventory itemInInventory = iterator.next();
@@ -68,19 +68,19 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 	}
 
 	@Override
-	public ArrayList<QBItem> getQBItems() {
+	public List<QBItem> getQBItems() {
 		dbQBItems.clear();
 		QBItem qbItem = new QBItem();
 		qbItem.setIngredientName("Flour");
 		qbItem.setIngredientCode("10023");
 		dbQBItems.add(qbItem);
 		
-		return (ArrayList<QBItem>) dbQBItems;
+		return (List<QBItem>) dbQBItems;
 	}
 
 	@Override
-	public ArrayList<ItemInInventory> getDateMatchInUseIngredients(Date date) {
-		ArrayList<ItemInInventory> dateMatchList = new ArrayList<ItemInInventory>();
+	public List<ItemInInventory> getDateMatchInUseIngredients(Date date) {
+		List<ItemInInventory> dateMatchList = new ArrayList<ItemInInventory>();
 		for (ItemInInventory possibleDateMatch : dbItemsInInventory) {
 			if (possibleDateMatch.getInUseDate() != null && possibleDateMatch.getUsedUpDate() != null) {
 				long searchDate = date.getTime();
@@ -98,15 +98,12 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 				}
 			}
 		}
-		if (dateMatchList.isEmpty()) {
-			Window.alert("No items were in use that date");
-		}
 		return dateMatchList;
 	}
 
 	@Override
-	public ArrayList<ItemInInventory> getLotCodeMatchIngredients(String lotCode) {
-		ArrayList<ItemInInventory> lotCodeMatchList = new ArrayList<ItemInInventory>();
+	public List<ItemInInventory> getLotCodeMatchIngredients(String lotCode) {
+		List<ItemInInventory> lotCodeMatchList = new ArrayList<ItemInInventory>();
 		lotCode.toUpperCase().trim();
 		if (lotCode.matches("")) {
 		}
@@ -120,16 +117,13 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 					lotCodeMatchList.add(possibleLotCodeMatch);
 				}
 			}
-			if (lotCodeMatchList.isEmpty()) {
-				Window.alert("There are no items with Lot Code " + lotCode);
-			}
 		}
 		return lotCodeMatchList;
 	}
 
 	@Override
-	public ArrayList<ItemInInventory> getFullIngredientHistory() {
-		return (ArrayList<ItemInInventory>) dbItemsInInventory;
+	public List<ItemInInventory> getFullIngredientHistory() {
+		return (List<ItemInInventory>) dbItemsInInventory;
 	}
 
 }

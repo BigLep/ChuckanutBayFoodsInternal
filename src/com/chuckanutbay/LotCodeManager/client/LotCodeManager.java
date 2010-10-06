@@ -120,14 +120,12 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 	public void onClick(ClickEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == checkedInButton) {
-			//Assemble checkedInPanel
 			checkedInPanel = new CheckedInPanel();
 		}
 		else if (sender == inUseButton) {
-			//Assemble inUsePanel
 			inUsePanel = new InUsePanel();
 		}
-		else if (sender == usedUpButton) {//Assemble inUsePanel
+		else if (sender == usedUpButton) {
 			usedUpPanel = new UsedUpPanel();
 		}
 		else if (sender == lotCodeSearch) {

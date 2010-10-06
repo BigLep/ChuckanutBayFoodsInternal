@@ -1,12 +1,11 @@
 package com.chuckanutbay.LotCodeManager.client;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -17,18 +16,17 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 public class LotCodeUtil {
-	static ArrayList<ItemInInventory> dbItemInInventoryReturn = null;
-	static ArrayList<QBItem> qbItemList = null;
-	static ArrayList<ItemInInventory> itemInInventoryList = null;
+	static List<QBItem> qbItemList = null;
+	static List<ItemInInventory> itemInInventoryList = null;
 	static LotCodeManagerPanel senderObject = null;
     static DatabaseQueryServiceAsync dbQueryService = GWT.create(DatabaseQueryService.class);
-    static AsyncCallback<ArrayList<QBItem>> qbItemListCallback = new AsyncCallback<ArrayList<QBItem>>() {
+    static AsyncCallback<List<QBItem>> qbItemListCallback = new AsyncCallback<List<QBItem>>() {
     	public void onFailure(Throwable caught) {
     		Window.alert("system failed");
     		log("failure on server");
     	}
 
-		public void onSuccess(ArrayList<QBItem> dbQBItemList) {
+		public void onSuccess(List<QBItem> dbQBItemList) {
 			log("success on server");
 			if (qbItemList != null) {
 				qbItemList.clear();
@@ -37,15 +35,15 @@ public class LotCodeUtil {
 	        if(qbItemList != null && qbItemList.size() > 0) {
 	        	log("A good return is coming");
 	        }
-	        senderObject.setUpPanel();
+	        senderObject.populateFlexTable();
 		}
     };
-    static AsyncCallback<ArrayList<ItemInInventory>> itemInInventoryCallback = new AsyncCallback<ArrayList<ItemInInventory>>() {
+    static AsyncCallback<List<ItemInInventory>> itemInInventoryCallback = new AsyncCallback<List<ItemInInventory>>() {
     	public void onFailure(Throwable caught) {
     		Window.alert("system failed");
     	}
 
-      	public void onSuccess(ArrayList<ItemInInventory> dbItemInInventoryList) {
+      	public void onSuccess(List<ItemInInventory> dbItemInInventoryList) {
       		log("success on server");
 			if (itemInInventoryList != null) {
 				itemInInventoryList.clear();
@@ -54,7 +52,7 @@ public class LotCodeUtil {
 	        if(itemInInventoryList != null && itemInInventoryList.size() > 0) {
 	        	log("A good return is coming");
 	        }
-	        senderObject.setUpPanel();
+	        senderObject.populateFlexTable();
 		}
     };
     static AsyncCallback<Void> voidCallback = new AsyncCallback<Void>() {
@@ -93,51 +91,51 @@ public class LotCodeUtil {
 
     public static DateTimeFormat dateFormat = DateTimeFormat.getShortDateFormat();
 
-    public static void dbGetQBItems(ArrayList<QBItem> argQBItemList, LotCodeManagerPanel sender) {
+    public static void dbGetQBItems(List<QBItem> argQBItemList, LotCodeManagerPanel sender) {
     	qbItemList = argQBItemList;
     	senderObject = sender;
         dbQueryService.getQBItems(qbItemListCallback);
       }
     
-    public static void dbGetCheckedInIngredients(ArrayList<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetCheckedInIngredients(List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getCheckedInIngredients(itemInInventoryCallback);
       }
     
-    public static void dbGetInUseIngredients(ArrayList<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetInUseIngredients(List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getInUseIngredients(itemInInventoryCallback);
       } 
     
-    public static void dbGetFullIngredientHistory(ArrayList<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetFullIngredientHistory(List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getFullIngredientHistory(itemInInventoryCallback);
       }
     
-    public static void dbGetLotCodeMatchIngredients(String lotCode, ArrayList<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetLotCodeMatchIngredients(String lotCode, List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getLotCodeMatchIngredients(lotCode, itemInInventoryCallback);
       }
     
-    public static void dbGetDateMatchInUseIngredients(Date date, ArrayList<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetDateMatchInUseIngredients(Date date, List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getDateMatchInUseIngredients(date, itemInInventoryCallback);
       }
     
-    public static void dbSetCheckedInIngredients(ArrayList<ItemInInventory> checkedInIngredients) {
+    public static void dbSetCheckedInIngredients(List<ItemInInventory> checkedInIngredients) {
         dbQueryService.setCheckedInIngredients(checkedInIngredients, voidCallback);
       }
 
-    public static void dbSetInUseIngredients(ArrayList<ItemInInventory> inUseIngredients) {
+    public static void dbSetInUseIngredients(List<ItemInInventory> inUseIngredients) {
         dbQueryService.setInUseIngredients(inUseIngredients, voidCallback);
       }
     
-    public static void dbSetUsedUpIngredients(ArrayList<ItemInInventory> usedUpIngredients) {
+    public static void dbSetUsedUpIngredients(List<ItemInInventory> usedUpIngredients) {
         dbQueryService.setUsedUpIngredients(usedUpIngredients, voidCallback);
       }
 }

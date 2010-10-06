@@ -1,6 +1,6 @@
 package com.chuckanutbay.LotCodeManager.client;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -9,21 +9,21 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("databaseQuery")
 public interface DatabaseQueryService extends RemoteService{
 
-	ArrayList<ItemInInventory> getCheckedInIngredients();
+	List<ItemInInventory> getCheckedInIngredients();
 	
-	void setCheckedInIngredients(ArrayList<ItemInInventory> checkedInIngredients);
+	void setCheckedInIngredients(List<ItemInInventory> checkedInIngredients);
 	
-	ArrayList<ItemInInventory> getInUseIngredients();
+	List<ItemInInventory> getInUseIngredients();
 	
-	ArrayList<QBItem> getQBItems();
+	List<QBItem> getQBItems();
 
-	ArrayList<ItemInInventory> getDateMatchInUseIngredients(Date date);
+	List<ItemInInventory> getDateMatchInUseIngredients(Date date);
 
-	ArrayList<ItemInInventory> getLotCodeMatchIngredients(String lotCode);
+	List<ItemInInventory> getLotCodeMatchIngredients(String lotCode);
 
-	ArrayList<ItemInInventory> getFullIngredientHistory();
+	List<ItemInInventory> getFullIngredientHistory();
 	
-	void setInUseIngredients(ArrayList<ItemInInventory> checkedInIngredients);
+	void setInUseIngredients(List<ItemInInventory> checkedInIngredients);
 	
-	void setUsedUpIngredients(ArrayList<ItemInInventory> checkedInIngredients);
+	void setUsedUpIngredients(List<ItemInInventory> checkedInIngredients);
 }

@@ -23,6 +23,7 @@ public class InUsePanel extends LotCodeManagerPanel {
 	private ArrayList<ItemInInventory> inUseIngredientList = new ArrayList<ItemInInventory>();
 	
 	public InUsePanel() {
+		setUpPanel();
 		dbGetCheckedInIngredients(inUseIngredientList, this);
 	}
 	
@@ -43,7 +44,6 @@ public class InUsePanel extends LotCodeManagerPanel {
 			inUseIngredientFlexTable.setText(0,4,"Mark");
 			inUseIngredientFlexTable.getRowFormatter().addStyleName(0, "inUseIngredientFlexTableHeader");
 			inUseIngredientFlexTable.addStyleName("inUseIngredientFlexTable");
-			populateInUseFlexTable();
 		//Add components to inUseDatePanel
 		inUseDatePanel.add(dateBoxLabel);
 		inUseDatePanel.add(dateBox);
@@ -55,7 +55,7 @@ public class InUsePanel extends LotCodeManagerPanel {
 		dialogBox = new LotCodeManagerDialogBox(this, "Mark Inventory As In-Use", true, true);
 	}
 	
-	private void populateInUseFlexTable() {
+	public void populateFlexTable() {
 		if(inUseIngredientList.isEmpty()){
 			Window.alert("There are no Ingredients to mark");
 		}

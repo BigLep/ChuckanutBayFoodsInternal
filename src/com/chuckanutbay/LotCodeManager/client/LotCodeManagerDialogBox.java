@@ -7,19 +7,28 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 
 public class LotCodeManagerDialogBox extends DialogBox {
+	ScrollPanel scrollPanel;
+	LotCodeManagerPanel panel;
+	String title;
 	HorizontalPanel buttonPanel = new HorizontalPanel(); 
 	VerticalPanel dialogBoxContents = new VerticalPanel();
+	DialogBox printBox = null;
 	
 	LotCodeManagerDialogBox() {
+		//Default LotCodeManagerDialogBox
 		this.setGlassEnabled(true);
 		this.setAnimationEnabled(true);
 		this.center();
 	}
-	LotCodeManagerDialogBox(final LotCodeManagerPanel panel, String caption, Boolean isVisible, Boolean isPrintable) {
+	LotCodeManagerDialogBox(final LotCodeManagerPanel argPanel, final String argTitle, Boolean isSaveable, Boolean isPrintable) {
+		//Set panel and title
+		setPanel(argPanel);
+		setTitle(argTitle);
+		//Set Up DialogBox
 		this.setGlassEnabled(true);
 		this.setAnimationEnabled(true);
 			//Set up scrollPanel
-			ScrollPanel scrollPanel = new ScrollPanel(panel.getPanel());
+			scrollPanel = new ScrollPanel(panel.getPanel());
 			scrollPanel.setSize("625px", "400px");
 			scrollPanel.setAlwaysShowScrollBars(true);
 			//Set up buttonPanel
@@ -29,8 +38,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 				makeButtonWithIcon(printButton, icons.printIcon(), "Print");
 				printButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-			            Window.print();
-
+						printDialogBox();
 					}
 				});
 				//Set up saveButton
@@ -53,7 +61,9 @@ public class LotCodeManagerDialogBox extends DialogBox {
 					}
 				});
 			//Add Buttons to buttonPanel
-			buttonPanel.add(saveButton);
+			if (isSaveable) {
+				buttonPanel.add(saveButton);
+			}
 			if (isPrintable) {
 				buttonPanel.add(printButton);
 			}
@@ -63,10 +73,40 @@ public class LotCodeManagerDialogBox extends DialogBox {
 			dialogBoxContents.add(buttonPanel);
 			dialogBoxContents.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_RIGHT);
 		this.setWidget(dialogBoxContents);
-		this.setText(caption);
+		this.setText(title);
 		this.center();
-		if (isVisible) {
-			this.show();
-		}
+		this.show();
+	}
+	
+	private void printDialogBox() {
+		this.clear();
+		this.setWidget(panel.getPanel());
+		Window.print();
+		this.clear();
+			//Reassemble dialogBoxContents
+			scrollPanel = new ScrollPanel(panel.getPanel());
+			scrollPanel.setSize("625px", "400px");
+			scrollPanel.setAlwaysShowScrollBars(true);
+			dialogBoxContents.clear();
+			dialogBoxContents.add(scrollPanel);
+			dialogBoxContents.add(buttonPanel);
+			dialogBoxContents.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_RIGHT);
+		this.setWidget(dialogBoxContents);
+	}
+	
+	public void setPanel(LotCodeManagerPanel argPanel) {
+		panel = argPanel;
+	}
+	
+	public LotCodeManagerPanel getPanel() {
+		return panel;
+	}
+	
+	public void setTitle(String argTitle) {
+		title = argTitle;
+	}
+	
+	public String getTitle() {
+		return title;
 	}
 }

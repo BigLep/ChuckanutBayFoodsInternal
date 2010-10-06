@@ -17,9 +17,10 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	TextBox dateBox = new TextBox();
 	FlexTable activeIngredientsFlexTable = new FlexTable();
 	DialogBox dialogBox;
-	ArrayList<ItemInInventory> activeIngredientList = new ArrayList<ItemInInventory>();
+	List<ItemInInventory> activeIngredientList = new ArrayList<ItemInInventory>();
 	
 	public ActiveIngredientsPanel() { 
+		setUpPanel();
 		dbGetInUseIngredients(activeIngredientList, this);
 	}
 	
@@ -42,9 +43,8 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 		activeIngredientsPanel.setSpacing(5);
 		activeIngredientsPanel.add(dateToSearchPanel);
 		activeIngredientsPanel.add(activeIngredientsFlexTable);
-		populateActiveIngredientsFlexTable();
 		//Create Dialog Box
-		dialogBox = new LotCodeManagerDialogBox(this, "View Active Ingredients", true, true);
+		dialogBox = new LotCodeManagerDialogBox(this, "View Active Ingredients", false, true);
 	}
 
 	private void setupactiveIngredientsFlexTableHeader() {
@@ -61,7 +61,7 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 		return activeIngredientsPanel;
 	}
 	
-	private void populateActiveIngredientsFlexTable() {
+	public void populateFlexTable() {
 		if(activeIngredientList.isEmpty()){
 			Window.alert("There are no Active Ingredients");
 		}

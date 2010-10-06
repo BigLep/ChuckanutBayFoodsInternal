@@ -30,4 +30,10 @@ public interface MyIconBundle extends ClientBundle {
 		   public ImageResource refreshIcon();
 		   @Source("./icons/printer.png")
 		   public ImageResource printIcon();
+		   @Source("./icons/progress_indicator.gif")
+		   public ImageResource progressIcon();
+		   @Source("./icons/arrow_right.png")
+		   public ImageResource nextIcon();
+		   @Source("./icons/arrow_undo.png")
+		   public ImageResource backIcon();
 }

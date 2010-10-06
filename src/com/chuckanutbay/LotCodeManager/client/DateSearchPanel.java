@@ -3,6 +3,7 @@ import static com.chuckanutbay.LotCodeManager.client.LotCodeUtil.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,9 +21,10 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 	FlexTable dateSearchFlexTable = new FlexTable();
 	Button searchButton = new Button();
 	DialogBox dialogBox;
-	ArrayList<ItemInInventory> dateMatchList = new ArrayList<ItemInInventory>();
+	List<ItemInInventory> dateMatchList = new ArrayList<ItemInInventory>();
 	
 	public DateSearchPanel() {
+		setUpPanel();
 		dbGetDateMatchInUseIngredients(new Date(), dateMatchList, this);
 	}
 	
@@ -51,7 +53,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 		dateSearchPanel.add(dateToSearchPanel);
 		dateSearchPanel.add(dateSearchFlexTable);
 		//Create Dialog Box
-		dialogBox = new LotCodeManagerDialogBox(this, "Search for Lot-Codes in-use by date", true, true);
+		dialogBox = new LotCodeManagerDialogBox(this, "Search for Lot-Codes in-use by date", false, true);
 	}
 
 	private void setupdateSearchFlexTableHeader() {
@@ -76,7 +78,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 		else  dbGetDateMatchInUseIngredients(dateBox.getValue(), dateMatchList, this);
 	}
 	
-	private void populatedateSearchFlexTable() {
+	public void populateFlexTable() {
 	    int row = 1;
 		for (ItemInInventory dateMatch : dateMatchList) {
 		    // add new row to dateSearchFlexTable
@@ -102,7 +104,6 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 		if (sender == searchButton) {
 			resetdateSearchFlexTable();
 			searchDates();
-			populatedateSearchFlexTable();
 		}
 	}
 
