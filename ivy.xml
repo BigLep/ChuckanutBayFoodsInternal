@@ -19,7 +19,7 @@
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="compile->default"/>
 		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" conf="runtime->default;test->default"/>
 		<dependency org="log4j" name="log4j" rev="1.2.16" conf="runtime->master;test->master;trial->master"/>
-		<dependency org="org.hibernate" name="hibernate-core" rev="3.5.6-Final" conf="compile->default"/>
+		<dependency org="org.hibernate" name="hibernate-core" rev="3.6.0.Final" conf="compile->default"/>
 		<dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="runtime->default"/>
 		<dependency org="junit" name="junit" rev="4.8.1" conf="test->default"/>
 	</dependencies>
