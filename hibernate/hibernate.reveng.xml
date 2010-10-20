@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<schema-selection match-schema="loeppky_chuckanutbayextra"/>
+	<table-filter match-name="inventory_items" />
+	<table-filter match-name="inventory_lots" />
+	<table name="inventory_items" class="InventoryItem">
+	</table>
+	<table name="inventory_lots" class="InventoryLot">
+	</table>
+</hibernate-reverse-engineering>

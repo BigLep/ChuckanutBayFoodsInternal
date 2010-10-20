@@ -1,13 +1,11 @@
 package com.chuckanutbay.businessobjects.util;
 
-import java.util.Date;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.chuckanutbay.businessobjects.Images;
+import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.util.testing.DatabaseResource;
 
 /**
@@ -25,7 +23,7 @@ public class HibernateUtilTest {
 	public void testGetSession() {
 		Session s = HibernateUtil.getSession();
 		Transaction t = s.beginTransaction();
-		s.save(new Images("name", new byte[0], 0, 0, "mimeType", new Date()));
+		s.save(new InventoryItem("id", "description"));
 		t.commit();
 	}
 

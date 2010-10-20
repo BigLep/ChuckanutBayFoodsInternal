@@ -7,7 +7,8 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.chuckanutbay.businessobjects.Images;
+import com.chuckanutbay.businessobjects.InventoryItem;
+import com.chuckanutbay.businessobjects.InventoryLot;
 
 /**
  * Simple class for interfacing with Hibernate.
@@ -19,7 +20,8 @@ public class HibernateUtil {
 	private static final Configuration configuration;
 	static {
 		configuration = new Configuration()
-			.addAnnotatedClass(Images.class)
+			.addAnnotatedClass(InventoryItem.class)
+			.addAnnotatedClass(InventoryLot.class)
 			.configure("hibernate/hibernate-unit-test.cfg.xml");
 	}
 

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType">
 <stringAttribute key="org.eclipse.debug.core.ATTR_REFRESH_SCOPE" value="${project}"/>
+<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
+<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.eclipse.ant.internal.launching.remote.InternalAntRunner"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="/Volumes/Unix/tmp/build_1942618394433778801xml"/>
 <stringAttribute key="org.hibernate.tools.configurationname" value="hibernate-localhost"/>
 <booleanAttribute key="org.hibernate.tools.ejb3" value="true"/>
 <listAttribute key="org.hibernate.tools.exporters">
@@ -42,9 +46,12 @@
 <stringAttribute key="org.hibernate.tools.outputdir" value="/ChuckanutBayInternal/src"/>
 <stringAttribute key="org.hibernate.tools.package" value="com.chuckanutbay.businessobjects"/>
 <booleanAttribute key="org.hibernate.tools.prefercompositeids" value="true"/>
+<stringAttribute key="org.hibernate.tools.revEngFile" value="/ChuckanutBayInternal/hibernate/hibernate.reveng.xml"/>
 <booleanAttribute key="org.hibernate.tools.reveng.detect_many_to_many" value="true"/>
 <booleanAttribute key="org.hibernate.tools.reveng.detect_one_to_one" value="true"/>
 <booleanAttribute key="org.hibernate.tools.reveng.detect_optimistc_lock" value="true"/>
 <booleanAttribute key="org.hibernate.tools.schema2hbm" value="true"/>
+<booleanAttribute key="org.hibernate.tools.useExternalProcess" value="true"/>
 <booleanAttribute key="org.hibernate.tools.useOwnTemplates" value="false"/>
+<stringAttribute key="process_factory_id" value="org.eclipse.ant.ui.remoteAntProcessFactory"/>
 </launchConfiguration>
