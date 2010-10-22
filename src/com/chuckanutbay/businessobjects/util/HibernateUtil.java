@@ -45,4 +45,23 @@ public class HibernateUtil {
 	public static Session getSession() {
 		return sessionFactory.getCurrentSession();
 	}
+
+	public static void beginTransaction() {
+
+	}
+
+	public static void commitTransaction() {
+
+	}
+
+	public static void rollbackTransaction() {
+
+	}
+
+	public static void closeSession() {
+
+	}
+
+
+
 }

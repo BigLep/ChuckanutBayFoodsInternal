@@ -24,6 +24,7 @@
 		<dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="runtime->default"/>
 		<dependency org="junit" name="junit" rev="4.8.1" conf="test->default"/>
 		<dependency org="org.hsqldb" name="hsqldb" rev="2.0.0" conf="test->default"/>
+		 <dependency org="javax.servlet" name="servlet-api" rev="2.5" conf="runtime->default"/>
 		
 		<!-- Hibernate tools isn't compatibile with Hibernate 3.5 http://opensource.atlassian.com/projects/hibernate/browse/HBX-1160 -->
 		<dependency org="org.hibernate" name="hibernate-tools" rev="3.2.4.GA" conf="hibernate-tools->master,runtime,optional"/>
