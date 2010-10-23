@@ -3,6 +3,7 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
 
 import java.util.ArrayList;
 
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -25,7 +26,7 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 	int visibleRows = 10;
 	int itemIndex = 0;
 	int rowsAdded = 0;
-	ArrayList<ItemInInventory> itemInInventoryList = new ArrayList<ItemInInventory>();
+	ArrayList<InventoryLotDto> itemInInventoryList = new ArrayList<InventoryLotDto>();
 	
 	public FullInventoryHistoryPanel() { 
 		setUpPanel();
@@ -89,16 +90,16 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 			for (int row = 1; row <= visibleRows; row++) {
 				if (itemInInventoryList.size() >=  (row + itemIndex)) {
 				    // add new row to inUseIngredientFlexTable
-					viewFullIngredientHistoryFlexTable.setText(row,0,itemInInventoryList.get((row - 1) + itemIndex).getLotCode());
-					viewFullIngredientHistoryFlexTable.setText(row,1,itemInInventoryList.get((row - 1) + itemIndex).getItemType());
-					if (itemInInventoryList.get((row - 1) + itemIndex).getCheckedInDate() != null) {
-						viewFullIngredientHistoryFlexTable.setText(row,2,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getCheckedInDate()));
+					viewFullIngredientHistoryFlexTable.setText(row,0,itemInInventoryList.get((row - 1) + itemIndex).getCode());
+					viewFullIngredientHistoryFlexTable.setText(row,1,itemInInventoryList.get((row - 1) + itemIndex).getInventoryItem().getDescription());
+					if (itemInInventoryList.get((row - 1) + itemIndex).getReceivedDatetime() != null) {
+						viewFullIngredientHistoryFlexTable.setText(row,2,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getReceivedDatetime()));
 					}
-					if (itemInInventoryList.get((row - 1) + itemIndex).getInUseDate() != null) {
-						viewFullIngredientHistoryFlexTable.setText(row,3,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getInUseDate()));
+					if (itemInInventoryList.get((row - 1) + itemIndex).getStartUseDatetime() != null) {
+						viewFullIngredientHistoryFlexTable.setText(row,3,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getStartUseDatetime()));
 					}
-					if (itemInInventoryList.get((row - 1) + itemIndex).getUsedUpDate() != null) {
-						viewFullIngredientHistoryFlexTable.setText(row,4,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getUsedUpDate()));
+					if (itemInInventoryList.get((row - 1) + itemIndex).getEndUseDatetime() != null) {
+						viewFullIngredientHistoryFlexTable.setText(row,4,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getEndUseDatetime()));
 					}
 					rowsAdded++;
 				}
