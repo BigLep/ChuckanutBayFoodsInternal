@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -21,7 +22,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 	FlexTable dateSearchFlexTable = new FlexTable();
 	Button searchButton = new Button();
 	DialogBox dialogBox;
-	List<ItemInInventory> dateMatchList = new ArrayList<ItemInInventory>();
+	List<InventoryLotDto> dateMatchList = new ArrayList<InventoryLotDto>();
 	
 	public DateSearchPanel() {
 		setUpPanel();
@@ -80,14 +81,14 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 	
 	public void populateFlexTable() {
 	    int row = 1;
-		for (ItemInInventory dateMatch : dateMatchList) {
+		for (InventoryLotDto dateMatch : dateMatchList) {
 		    // add new row to dateSearchFlexTable
-		    dateSearchFlexTable.setText(row,0,dateMatch.getLotCode());
-			dateSearchFlexTable.setText(row,1,dateMatch.getItemType());
-			dateSearchFlexTable.setText(row,2,dateFormat.format(dateMatch.getCheckedInDate()));
-			dateSearchFlexTable.setText(row,3,dateFormat.format(dateMatch.getInUseDate()));
-			if (dateMatch.getUsedUpDate() != null) {
-				dateSearchFlexTable.setText(row,4,dateFormat.format(dateMatch.getUsedUpDate()));
+		    dateSearchFlexTable.setText(row,0,dateMatch.getCode());
+			dateSearchFlexTable.setText(row,1,dateMatch.getInventoryItem().getDescription());
+			dateSearchFlexTable.setText(row,2,dateFormat.format(dateMatch.getReceivedDatetime()));
+			dateSearchFlexTable.setText(row,3,dateFormat.format(dateMatch.getStartUseDatetime()));
+			if (dateMatch.getEndUseDatetime() != null) {
+				dateSearchFlexTable.setText(row,4,dateFormat.format(dateMatch.getEndUseDatetime()));
 			}
 			else dateSearchFlexTable.setText(row,4,"In-Use");
 			row++;

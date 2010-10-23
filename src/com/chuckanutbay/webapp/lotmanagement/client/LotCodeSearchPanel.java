@@ -3,6 +3,7 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
 
 import java.util.ArrayList;
 
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -18,7 +19,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 	FlexTable lotCodeSearchFlexTable = new FlexTable();
 	Button searchButton = new Button();
 	DialogBox dialogBox;
-	ArrayList<ItemInInventory> lotCodeMatchList = new ArrayList<ItemInInventory>();
+	ArrayList<InventoryLotDto> lotCodeMatchList = new ArrayList<InventoryLotDto>();
 	
 	public LotCodeSearchPanel() {
 		setUpPanel();
@@ -91,18 +92,18 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 	    }
 	    else {
 		    int row = 1;
-			for (ItemInInventory lotCodeMatch : lotCodeMatchList) {
+			for (InventoryLotDto lotCodeMatch : lotCodeMatchList) {
 			    // add new row to lotCodeSearchFlexTable
-			    lotCodeSearchFlexTable.setText(row,0,lotCodeMatch.getLotCode());
-				lotCodeSearchFlexTable.setText(row,1,lotCodeMatch.getItemType());
-				if (lotCodeMatch.getCheckedInDate() != null) {
-					lotCodeSearchFlexTable.setText(row,2,dateFormat.format(lotCodeMatch.getCheckedInDate()));
+			    lotCodeSearchFlexTable.setText(row,0,lotCodeMatch.getCode());
+				lotCodeSearchFlexTable.setText(row,1,lotCodeMatch.getInventoryItem().getDescription());
+				if (lotCodeMatch.getReceivedDatetime() != null) {
+					lotCodeSearchFlexTable.setText(row,2,dateFormat.format(lotCodeMatch.getReceivedDatetime()));
 				}
-				if (lotCodeMatch.getInUseDate() != null) {
-					lotCodeSearchFlexTable.setText(row,3,dateFormat.format(lotCodeMatch.getInUseDate()));
+				if (lotCodeMatch.getStartUseDatetime() != null) {
+					lotCodeSearchFlexTable.setText(row,3,dateFormat.format(lotCodeMatch.getStartUseDatetime()));
 				}
-				if (lotCodeMatch.getUsedUpDate() != null) {
-					lotCodeSearchFlexTable.setText(row,4,dateFormat.format(lotCodeMatch.getUsedUpDate()));
+				if (lotCodeMatch.getEndUseDatetime() != null) {
+					lotCodeSearchFlexTable.setText(row,4,dateFormat.format(lotCodeMatch.getEndUseDatetime()));
 				}
 				row++;
 			}

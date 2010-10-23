@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryItemDto;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -26,14 +28,14 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	Button addIngredientButton = new Button();
 	FlexTable checkedInIngredientFlexTable = new FlexTable();
 	DialogBox dialogBox;
-	List<QBItem> qbItemList = new ArrayList<QBItem>();
-	List<ItemInInventory> checkedInIngredientList = new ArrayList<ItemInInventory>();
+	List<InventoryItemDto> inventoryItemList = new ArrayList<InventoryItemDto>();
+	List<InventoryLotDto> checkedInIngredientList = new ArrayList<InventoryLotDto>();
 	List<String> lotCodesList = new ArrayList<String>();
 	
 	public CheckedInPanel() {
 		setUpPanel();
 		//Get QBItems List from Database
-		dbGetQBItems(qbItemList, this);
+		dbGetQBItems(inventoryItemList, this);
 		log("set qbItemList = to get items");
 	}
 	
@@ -85,10 +87,10 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	}
 	
 	private void matchIngredientCodeAndType() {
-		if (qbItemList.size() > 0) {
-			for (QBItem item : qbItemList) {
-				if (item.getIngredientName().equals(ingredientListBox.getItemText(ingredientListBox.getSelectedIndex()))) {
-					ingredientCodeTextBox.setText(item.getIngredientCode());
+		if (inventoryItemList.size() > 0) {
+			for (InventoryItemDto item : inventoryItemList) {
+				if (item.getDescription().equals(ingredientListBox.getItemText(ingredientListBox.getSelectedIndex()))) {
+					ingredientCodeTextBox.setText(item.getId());
 					break;
 				}
 			}
@@ -105,10 +107,9 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	
 	public void populateFlexTable() {
 		//Set Up ingredientListBox (if there is anything to add)
-		if(qbItemList.size() > 0) {
-			log("There was an item in the List");
-			for (QBItem item : qbItemList) {
-				ingredientListBox.addItem(item.getIngredientName());
+		if(inventoryItemList.size() > 0) {
+			for (InventoryItemDto item : inventoryItemList) {
+				ingredientListBox.addItem(item.getDescription());
 			}
 			matchIngredientCodeAndType();
 		}
@@ -131,10 +132,10 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	        });
 	    // add new row to checkedInIngredientFlexTable
 	    int size = checkedInIngredientList.size();
-	    checkedInIngredientFlexTable.setText(size,0,checkedInIngredientList.get(size - 1).getLotCode());
-		checkedInIngredientFlexTable.setText(size,1,checkedInIngredientList.get(size - 1).getItemType());
-		checkedInIngredientFlexTable.setText(size,2,checkedInIngredientList.get(size - 1).getItemCode());
-		checkedInIngredientFlexTable.setText(size,3,dateFormat.format(checkedInIngredientList.get(size - 1).getCheckedInDate()));
+	    checkedInIngredientFlexTable.setText(size,0,checkedInIngredientList.get(size - 1).getCode());
+		checkedInIngredientFlexTable.setText(size,1,checkedInIngredientList.get(size - 1).getInventoryItem().getDescription());
+		checkedInIngredientFlexTable.setText(size,2,checkedInIngredientList.get(size - 1).getInventoryItem().getId());
+		checkedInIngredientFlexTable.setText(size,3,dateFormat.format(checkedInIngredientList.get(size - 1).getReceivedDatetime()));
 		checkedInIngredientFlexTable.setWidget(size,4,removeCheckedInIngredientButton);
 		checkedInIngredientFlexTable.getCellFormatter().addStyleName(size,4,"checkedInIngredientFlexTableRemoveButton");
 	    lotCodeTextBox.setText("Lot Code ...");
@@ -146,8 +147,8 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 		if (sender == addIngredientButton) {
 			// check if lot code is unique
 			String lotCode = lotCodeTextBox.getText().toUpperCase().trim();
-			for (ItemInInventory checkedInIngredient : checkedInIngredientList) {
-				if (checkedInIngredient.getLotCode().equals(lotCode)) {
+			for (InventoryLotDto checkedInIngredient : checkedInIngredientList) {
+				if (checkedInIngredient.getCode().equals(lotCode)) {
 					Window.alert("'" + lotCode + "' is already in the table");
 				    lotCodeTextBox.selectAll();
 				    return;
@@ -161,10 +162,10 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 		    }
 			else { 
 				if(ingredientListBox.getItemCount() > 0) {
-					checkedInIngredientList.add(new ItemInInventory(lotCodeTextBox.getText().toUpperCase().trim(), ingredientListBox.getItemText(ingredientListBox.getSelectedIndex()), ingredientCodeTextBox.getText(), dateBox.getValue()));
+					checkedInIngredientList.add(new InventoryLotDto(lotCodeTextBox.getText().toUpperCase().trim(), new InventoryItemDto(ingredientCodeTextBox.getText(), ingredientListBox.getItemText(ingredientListBox.getSelectedIndex())), dateBox.getValue()));
 				}
 				else {
-					checkedInIngredientList.add(new ItemInInventory(lotCodeTextBox.getText().toUpperCase().trim(), "-", ingredientCodeTextBox.getText(), dateBox.getValue()));
+					checkedInIngredientList.add(new InventoryLotDto(lotCodeTextBox.getText().toUpperCase().trim(), new InventoryItemDto(ingredientCodeTextBox.getText(), "-"), dateBox.getValue()));
 				}
 				populateCheckedInIngredientsFlexTable();
 			}

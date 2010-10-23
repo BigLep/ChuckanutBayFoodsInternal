@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 
@@ -17,7 +18,7 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	TextBox dateBox = new TextBox();
 	FlexTable activeIngredientsFlexTable = new FlexTable();
 	DialogBox dialogBox;
-	List<ItemInInventory> activeIngredientList = new ArrayList<ItemInInventory>();
+	List<InventoryLotDto> activeIngredientList = new ArrayList<InventoryLotDto>();
 	
 	public ActiveIngredientsPanel() { 
 		setUpPanel();
@@ -67,12 +68,12 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 		}
 		else {
 		    int row = 1;
-			for (ItemInInventory activeIngredient : activeIngredientList) {
+			for (InventoryLotDto activeIngredient : activeIngredientList) {
 			    // add new row to activeIngredientsFlexTable
-			    activeIngredientsFlexTable.setText(row,0,activeIngredient.getLotCode());
-				activeIngredientsFlexTable.setText(row,1,activeIngredient.getItemType());
-				activeIngredientsFlexTable.setText(row,2,dateFormat.format(activeIngredient.getCheckedInDate()));
-				activeIngredientsFlexTable.setText(row,3,dateFormat.format(activeIngredient.getInUseDate()));
+			    activeIngredientsFlexTable.setText(row,0,activeIngredient.getCode());
+				activeIngredientsFlexTable.setText(row,1,activeIngredient.getInventoryItem().getDescription());
+				activeIngredientsFlexTable.setText(row,2,dateFormat.format(activeIngredient.getReceivedDatetime()));
+				activeIngredientsFlexTable.setText(row,3,dateFormat.format(activeIngredient.getStartUseDatetime()));
 				row++;
 			}
 		}

@@ -6,6 +6,7 @@ import java.util.List;
 
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
 
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -21,7 +22,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 	DateBox dateBox = new DateBox();
 	DialogBox dialogBox;
 	FlexTable usedUpIngredientFlexTable = new FlexTable();
-	List<ItemInInventory> usedUpIngredientList = new ArrayList<ItemInInventory>();
+	List<InventoryLotDto> usedUpIngredientList = new ArrayList<InventoryLotDto>();
 	
 	public UsedUpPanel() {
 		setUpPanel();
@@ -63,7 +64,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 		}
 		else {
 			final ArrayList<Integer> hashCodeList = new ArrayList<Integer>();
-			for (ItemInInventory inUseIngredient : usedUpIngredientList) {
+			for (InventoryLotDto inUseIngredient : usedUpIngredientList) {
 				hashCodeList.add(inUseIngredient.hashCode());
 			    final int rowToMark = hashCodeList.indexOf(inUseIngredient.hashCode());
 			    // create markIngredientButton with handler
@@ -71,16 +72,16 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 			    makeButtonWithIcon(markIngredientButton, icons.cancelIcon(), "Used Up"); 
 			    markIngredientButton.addClickHandler(new ClickHandler() {
 			        public void onClick(ClickEvent event) {
-			        	usedUpIngredientList.get(rowToMark).setUsedUpDate(dateBox.getValue());
+			        	usedUpIngredientList.get(rowToMark).setEndUseDatetime(dateBox.getValue());
 			        	usedUpIngredientFlexTable.clearCell((rowToMark + 1), 5);
-						usedUpIngredientFlexTable.setText((rowToMark + 1),4,dateFormat.format(usedUpIngredientList.get(rowToMark).getUsedUpDate()));
+						usedUpIngredientFlexTable.setText((rowToMark + 1),4,dateFormat.format(usedUpIngredientList.get(rowToMark).getEndUseDatetime()));
 			        }
 			        });
 			    // add new row to usedUpIngredientFlexTable
-			    usedUpIngredientFlexTable.setText((rowToMark + 1),0,inUseIngredient.getLotCode());
-				usedUpIngredientFlexTable.setText((rowToMark + 1),1,inUseIngredient.getItemType());
-				usedUpIngredientFlexTable.setText((rowToMark + 1),2,dateFormat.format(inUseIngredient.getCheckedInDate()));
-				usedUpIngredientFlexTable.setText((rowToMark + 1),3,dateFormat.format(inUseIngredient.getInUseDate()));
+			    usedUpIngredientFlexTable.setText((rowToMark + 1),0,inUseIngredient.getCode());
+				usedUpIngredientFlexTable.setText((rowToMark + 1),1,inUseIngredient.getInventoryItem().getDescription());
+				usedUpIngredientFlexTable.setText((rowToMark + 1),2,dateFormat.format(inUseIngredient.getReceivedDatetime()));
+				usedUpIngredientFlexTable.setText((rowToMark + 1),3,dateFormat.format(inUseIngredient.getStartUseDatetime()));
 				usedUpIngredientFlexTable.setText((rowToMark + 1),4,"");
 				usedUpIngredientFlexTable.setWidget((rowToMark + 1),5,markIngredientButton);
 				usedUpIngredientFlexTable.getCellFormatter().addStyleName((rowToMark + 1),5,"usedUpIngredientFlexTableRemoveButton");

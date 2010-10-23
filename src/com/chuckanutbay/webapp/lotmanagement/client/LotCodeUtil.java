@@ -3,6 +3,8 @@ package com.chuckanutbay.webapp.lotmanagement.client;
 import java.util.List;
 import java.util.Date;
 
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryItemDto;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ImageResource;
@@ -16,17 +18,17 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 public class LotCodeUtil {
-	static List<QBItem> qbItemList = null;
-	static List<ItemInInventory> itemInInventoryList = null;
+	static List<InventoryItemDto> qbItemList = null;
+	static List<InventoryLotDto> itemInInventoryList = null;
 	static LotCodeManagerPanel senderObject = null;
     static DatabaseQueryServiceAsync dbQueryService = GWT.create(DatabaseQueryService.class);
-    static AsyncCallback<List<QBItem>> qbItemListCallback = new AsyncCallback<List<QBItem>>() {
+    static AsyncCallback<List<InventoryItemDto>> qbItemListCallback = new AsyncCallback<List<InventoryItemDto>>() {
     	public void onFailure(Throwable caught) {
     		Window.alert("system failed");
     		log("failure on server");
     	}
 
-		public void onSuccess(List<QBItem> dbQBItemList) {
+		public void onSuccess(List<InventoryItemDto> dbQBItemList) {
 			log("success on server");
 			if (qbItemList != null) {
 				qbItemList.clear();
@@ -38,12 +40,12 @@ public class LotCodeUtil {
 	        senderObject.populateFlexTable();
 		}
     };
-    static AsyncCallback<List<ItemInInventory>> itemInInventoryCallback = new AsyncCallback<List<ItemInInventory>>() {
+    static AsyncCallback<List<InventoryLotDto>> itemInInventoryCallback = new AsyncCallback<List<InventoryLotDto>>() {
     	public void onFailure(Throwable caught) {
     		Window.alert("system failed");
     	}
 
-      	public void onSuccess(List<ItemInInventory> dbItemInInventoryList) {
+      	public void onSuccess(List<InventoryLotDto> dbItemInInventoryList) {
       		log("success on server");
 			if (itemInInventoryList != null) {
 				itemInInventoryList.clear();
@@ -91,51 +93,51 @@ public class LotCodeUtil {
 
     public static DateTimeFormat dateFormat = DateTimeFormat.getShortDateFormat();
 
-    public static void dbGetQBItems(List<QBItem> argQBItemList, LotCodeManagerPanel sender) {
+    public static void dbGetQBItems(List<InventoryItemDto> argQBItemList, LotCodeManagerPanel sender) {
     	qbItemList = argQBItemList;
     	senderObject = sender;
         dbQueryService.getQBItems(qbItemListCallback);
       }
     
-    public static void dbGetCheckedInIngredients(List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetCheckedInIngredients(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getCheckedInIngredients(itemInInventoryCallback);
       }
     
-    public static void dbGetInUseIngredients(List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetInUseIngredients(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getInUseIngredients(itemInInventoryCallback);
       } 
     
-    public static void dbGetFullIngredientHistory(List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetFullIngredientHistory(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getFullIngredientHistory(itemInInventoryCallback);
       }
     
-    public static void dbGetLotCodeMatchIngredients(String lotCode, List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetLotCodeMatchIngredients(String lotCode, List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getLotCodeMatchIngredients(lotCode, itemInInventoryCallback);
       }
     
-    public static void dbGetDateMatchInUseIngredients(Date date, List<ItemInInventory> argItemInInventoryList, LotCodeManagerPanel sender) {
+    public static void dbGetDateMatchInUseIngredients(Date date, List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
         dbQueryService.getDateMatchInUseIngredients(date, itemInInventoryCallback);
       }
     
-    public static void dbSetCheckedInIngredients(List<ItemInInventory> checkedInIngredients) {
+    public static void dbSetCheckedInIngredients(List<InventoryLotDto> checkedInIngredients) {
         dbQueryService.setCheckedInIngredients(checkedInIngredients, voidCallback);
       }
 
-    public static void dbSetInUseIngredients(List<ItemInInventory> inUseIngredients) {
+    public static void dbSetInUseIngredients(List<InventoryLotDto> inUseIngredients) {
         dbQueryService.setInUseIngredients(inUseIngredients, voidCallback);
       }
     
-    public static void dbSetUsedUpIngredients(List<ItemInInventory> usedUpIngredients) {
+    public static void dbSetUsedUpIngredients(List<InventoryLotDto> usedUpIngredients) {
         dbQueryService.setUsedUpIngredients(usedUpIngredients, voidCallback);
       }
 }
