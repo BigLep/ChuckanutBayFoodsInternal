@@ -57,7 +57,7 @@ public class InventoryItem implements java.io.Serializable {
 		this.description = description;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "inventoryItems")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "inventoryItem")
 	public Set<InventoryLot> getInventoryLots() {
 		return this.inventoryLots;
 	}
