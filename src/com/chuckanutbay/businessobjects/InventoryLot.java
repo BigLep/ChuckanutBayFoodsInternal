@@ -26,6 +26,7 @@ public class InventoryLot implements java.io.Serializable {
 
 	private Integer id;
 	private InventoryItem inventoryItems;
+	private String code;
 	private int quantity;
 	private Date receivedDatetime;
 	private Date startUseDatetime;
@@ -35,18 +36,20 @@ public class InventoryLot implements java.io.Serializable {
 	public InventoryLot() {
 	}
 
-	public InventoryLot(InventoryItem inventoryItems, int quantity,
+	public InventoryLot(InventoryItem inventoryItems, String code, int quantity,
 			Date receivedDatetime, Date lastModifiedDatetime) {
 		this.inventoryItems = inventoryItems;
+		this.code = code;
 		this.quantity = quantity;
 		this.receivedDatetime = receivedDatetime;
 		this.lastModifiedDatetime = lastModifiedDatetime;
 	}
 
-	public InventoryLot(InventoryItem inventoryItems, int quantity,
+	public InventoryLot(InventoryItem inventoryItems, String code, int quantity,
 			Date receivedDatetime, Date startUseDatetime, Date endUseDatetime,
 			Date lastModifiedDatetime) {
 		this.inventoryItems = inventoryItems;
+		this.code = code;
 		this.quantity = quantity;
 		this.receivedDatetime = receivedDatetime;
 		this.startUseDatetime = startUseDatetime;
@@ -73,6 +76,15 @@ public class InventoryLot implements java.io.Serializable {
 
 	public void setInventoryItems(InventoryItem inventoryItems) {
 		this.inventoryItems = inventoryItems;
+	}
+
+	@Column(name = "code", nullable = false, length = 30)
+	public String getCode() {
+		return this.code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	@Column(name = "quantity", nullable = false)
