@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 public class InventoryLot implements java.io.Serializable {
 
 	private Integer id;
-	private InventoryItem inventoryItems;
+	private InventoryItem inventoryItem;
 	private String code;
 	private int quantity;
 	private Date receivedDatetime;
@@ -36,19 +36,19 @@ public class InventoryLot implements java.io.Serializable {
 	public InventoryLot() {
 	}
 
-	public InventoryLot(InventoryItem inventoryItems, String code, int quantity,
+	public InventoryLot(InventoryItem inventoryItem, String code, int quantity,
 			Date receivedDatetime, Date lastModifiedDatetime) {
-		this.inventoryItems = inventoryItems;
+		this.inventoryItem = inventoryItem;
 		this.code = code;
 		this.quantity = quantity;
 		this.receivedDatetime = receivedDatetime;
 		this.lastModifiedDatetime = lastModifiedDatetime;
 	}
 
-	public InventoryLot(InventoryItem inventoryItems, String code, int quantity,
+	public InventoryLot(InventoryItem inventoryItem, String code, int quantity,
 			Date receivedDatetime, Date startUseDatetime, Date endUseDatetime,
 			Date lastModifiedDatetime) {
-		this.inventoryItems = inventoryItems;
+		this.inventoryItem = inventoryItem;
 		this.code = code;
 		this.quantity = quantity;
 		this.receivedDatetime = receivedDatetime;
@@ -70,12 +70,12 @@ public class InventoryLot implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "inventory_item_id", nullable = false)
-	public InventoryItem getInventoryItems() {
-		return this.inventoryItems;
+	public InventoryItem getInventoryItem() {
+		return this.inventoryItem;
 	}
 
-	public void setInventoryItems(InventoryItem inventoryItems) {
-		this.inventoryItems = inventoryItems;
+	public void setInventoryItem(InventoryItem inventoryItem) {
+		this.inventoryItem = inventoryItem;
 	}
 
 	@Column(name = "code", nullable = false, length = 30)
