@@ -16,7 +16,11 @@
   <entry-point class='com.chuckanutbay.webapp.lotmanagement.client.LotCodeManager'/>
 
   <!-- Specify the paths for translatable code                    -->
-  <source path='client'/>
-  <source path='shared'/>
+  <!--  
+  	These paths are relative to the package that contains this XML file.
+  	See: http://code.google.com/webtoolkit/doc/latest/DevGuideOrganizingProjects.html#DevGuideModuleXml
+   -->
+  <source path="client"/>
+  <source path="shared"/>
 
 </module>

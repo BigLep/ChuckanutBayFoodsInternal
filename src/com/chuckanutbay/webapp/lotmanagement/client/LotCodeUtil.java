@@ -96,7 +96,7 @@ public class LotCodeUtil {
     public static void dbGetQBItems(List<InventoryItemDto> argQBItemList, LotCodeManagerPanel sender) {
     	qbItemList = argQBItemList;
     	senderObject = sender;
-        dbQueryService.getQBItems(qbItemListCallback);
+        dbQueryService.getInventoryItems(qbItemListCallback);
       }
     
     public static void dbGetCheckedInIngredients(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {

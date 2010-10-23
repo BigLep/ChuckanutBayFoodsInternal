@@ -5,14 +5,11 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import com.chuckanutbay.businessobjects.InventoryItem;
-import com.chuckanutbay.businessobjects.util.HibernateUtil;
+import com.chuckanutbay.businessobjects.dao.InventoryItemDao;
+import com.chuckanutbay.businessobjects.dao.InventoryItemHibernateDao;
 import com.chuckanutbay.webapp.lotmanagement.client.DatabaseQueryService;
-import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryItemDto;
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -76,12 +73,9 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 	}
 
 	@Override
-	public List<InventoryItemDto> getQBItems() {
-		dbQBItems.clear();
-		InventoryItemDto qbItem = new InventoryItemDto("Flour", "10023");
-		dbQBItems.add(qbItem);
-
-		return dbQBItems;
+	public List<InventoryItemDto> getInventoryItems() {
+		InventoryItemDao dao = new InventoryItemHibernateDao();
+		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryItemDto);
 	}
 
 	@Override

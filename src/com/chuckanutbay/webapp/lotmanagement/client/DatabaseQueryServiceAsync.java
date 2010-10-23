@@ -27,7 +27,7 @@ public interface DatabaseQueryServiceAsync {
 			List<InventoryLotDto> checkedInIngredients,
 			AsyncCallback<Void> callback);
 
-	void getQBItems(
+	void getInventoryItems(
 			AsyncCallback<List<InventoryItemDto>> callback);
 
 	void getDateMatchInUseIngredients(

@@ -17,7 +17,7 @@ public interface DatabaseQueryService extends RemoteService{
 	
 	List<InventoryLotDto> getInUseIngredients();
 	
-	List<InventoryItemDto> getQBItems();
+	List<InventoryItemDto> getInventoryItems();
 
 	List<InventoryLotDto> getDateMatchInUseIngredients(Date date);
 

@@ -47,19 +47,19 @@ public class HibernateUtil {
 	}
 
 	public static void beginTransaction() {
-
+		getSession().beginTransaction();
 	}
 
 	public static void commitTransaction() {
-
+		getSession().getTransaction().commit();
 	}
 
 	public static void rollbackTransaction() {
-
+		getSession().getTransaction().rollback();
 	}
 
 	public static void closeSession() {
-
+		getSession().close();
 	}
 
 

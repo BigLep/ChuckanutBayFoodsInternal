@@ -1,6 +1,7 @@
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="ChuckanutBayInternal" default="release">
 
-    
+    <!-- Reference http://www.mostlyblather.com/2009/10/gwt-20-ms1-with-ivy-dependency.html in the future -->
+	
 	<property name="version" value="1.0"/>
 	
 	<property name="ant.build.javac.source" value="1.6" />

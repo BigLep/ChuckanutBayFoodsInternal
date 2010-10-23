@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE web-app
-    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-    "http://java.sun.com/dtd/web-app_2_3.dtd">
+		PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+		"http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>LotCodeManager.html</welcome-file>
-  </welcome-file-list>
-  
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>DatabaseQueryServiceImpl</servlet-name>
-    <servlet-class>com.chuckanutbay.webapp.lotmanagement.server.DatabaseQueryServiceImpl</servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>DatabaseQueryServiceImpl</servlet-name>
-    <url-pattern>/lotcodemanager/databaseQuery</url-pattern>
-  </servlet-mapping>
-  
+	
+	<!--
+		Hibernate filter for the requests that need a database transaction.
+		This filter should be invoked before any calls to the database are made.
+	-->
+	<filter>
+		<filter-name>HibernateFilter</filter-name>
+		<description>Opens/closes hibernate session for each request</description>
+		<filter-class>com.chuckanutbay.webapp.util.HibernateFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HibernateFilter</filter-name>
+		<url-pattern>/lotcodemanager/databaseQuery</url-pattern>
+	</filter-mapping>
+	
+	<!-- Servlets -->
+	<servlet>
+	<servlet-name>DatabaseQueryServiceImpl</servlet-name>
+		<servlet-class>com.chuckanutbay.webapp.lotmanagement.server.DatabaseQueryServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>DatabaseQueryServiceImpl</servlet-name>
+		<url-pattern>/lotcodemanager/databaseQuery</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>LotCodeManager.html</welcome-file>
+	</welcome-file-list>
 </web-app>

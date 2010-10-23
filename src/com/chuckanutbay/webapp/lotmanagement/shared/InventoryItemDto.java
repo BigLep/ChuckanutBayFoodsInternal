@@ -1,11 +1,23 @@
 package com.chuckanutbay.webapp.lotmanagement.shared;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import java.io.Serializable;
 
-public class InventoryItemDto implements IsSerializable {
+import com.chuckanutbay.businessobjects.InventoryItem;
+import com.chuckanutbay.documentation.Terminology;
+
+/**
+ * {@link Terminology#DTO} for {@link InventoryItem}.
+ * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
+ */
+public class InventoryItemDto implements Serializable {
 	private String id;
 	private String description;
-	
+
+	/**
+	 * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
+	 */
+	public InventoryItemDto(){}
+
 	public InventoryItemDto(String id, String description) {
 		this.id = id;
 		this.description = description;
