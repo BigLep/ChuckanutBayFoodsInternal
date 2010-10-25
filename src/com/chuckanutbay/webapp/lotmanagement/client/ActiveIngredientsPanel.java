@@ -19,10 +19,11 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	FlexTable activeIngredientsFlexTable = new FlexTable();
 	DialogBox dialogBox;
 	List<InventoryLotDto> activeIngredientList = new ArrayList<InventoryLotDto>();
+	RpcHelper rpcHelper = new RpcHelper();
 	
 	public ActiveIngredientsPanel() { 
 		setUpPanel();
-		dbGetInUseIngredients(activeIngredientList, this);
+		rpcHelper.dbGetInUseIngredients(activeIngredientList, this);
 	}
 	
 	public void setUpPanel() {

@@ -23,10 +23,11 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 	DialogBox dialogBox;
 	FlexTable usedUpIngredientFlexTable = new FlexTable();
 	List<InventoryLotDto> usedUpIngredientList = new ArrayList<InventoryLotDto>();
+	RpcHelper rpcHelper = new RpcHelper();
 	
 	public UsedUpPanel() {
 		setUpPanel();
-		dbGetInUseIngredients(usedUpIngredientList, this);
+		rpcHelper.dbGetInUseIngredients(usedUpIngredientList, this);
 	}
 	
 	public void setUpPanel() {
@@ -94,6 +95,6 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 	}
 
 	void updateDB() {
-		dbSetUsedUpIngredients(usedUpIngredientList);
+		rpcHelper.dbSetUsedUpIngredients(usedUpIngredientList);
 	}
 }

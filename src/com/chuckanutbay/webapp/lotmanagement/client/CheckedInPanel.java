@@ -31,11 +31,13 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	List<InventoryItemDto> inventoryItemList = new ArrayList<InventoryItemDto>();
 	List<InventoryLotDto> checkedInIngredientList = new ArrayList<InventoryLotDto>();
 	List<String> lotCodesList = new ArrayList<String>();
+	RpcHelper rpcHelper = new RpcHelper();
+	
 	
 	public CheckedInPanel() {
 		setUpPanel();
 		//Get QBItems List from Database
-		dbGetQBItems(inventoryItemList, this);
+		rpcHelper.dbGetQBItems(inventoryItemList, this);
 		log("set qbItemList = to get items");
 	}
 	
@@ -180,7 +182,7 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	}
 
 	void updateDB() {
-		dbSetCheckedInIngredients(checkedInIngredientList);
+		rpcHelper.dbSetCheckedInIngredients(checkedInIngredientList);
 		log("updateDB (checked in)");
 	}
 	

@@ -27,10 +27,11 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 	int itemIndex = 0;
 	int rowsAdded = 0;
 	ArrayList<InventoryLotDto> itemInInventoryList = new ArrayList<InventoryLotDto>();
+	RpcHelper rpcHelper = new RpcHelper();
 	
 	public FullInventoryHistoryPanel() { 
 		setUpPanel();
-		dbGetFullIngredientHistory(itemInInventoryList, this);
+		rpcHelper.dbGetFullIngredientHistory(itemInInventoryList, this);
 	}
 	
 	public void setUpPanel() {

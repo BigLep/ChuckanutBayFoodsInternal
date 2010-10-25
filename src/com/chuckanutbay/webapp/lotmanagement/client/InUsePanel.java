@@ -22,10 +22,11 @@ public class InUsePanel extends LotCodeManagerPanel {
 	private FlexTable inUseIngredientFlexTable = new FlexTable();
 	private DialogBox dialogBox;
 	private ArrayList<InventoryLotDto> inUseIngredientList = new ArrayList<InventoryLotDto>();
+	private RpcHelper rpcHelper = new RpcHelper();
 
 	public InUsePanel() {
 		setUpPanel();
-		dbGetCheckedInIngredients(inUseIngredientList, this);
+		rpcHelper.dbGetCheckedInIngredients(inUseIngredientList, this);
 	}
 
 	public void setUpPanel() {
@@ -92,6 +93,6 @@ public class InUsePanel extends LotCodeManagerPanel {
 	}
 
 	void updateDB() {
-		dbSetInUseIngredients(inUseIngredientList);
+		rpcHelper.dbSetInUseIngredients(inUseIngredientList);
 	}
 }

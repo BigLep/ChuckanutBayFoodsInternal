@@ -23,10 +23,11 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 	Button searchButton = new Button();
 	DialogBox dialogBox;
 	List<InventoryLotDto> dateMatchList = new ArrayList<InventoryLotDto>();
+	RpcHelper rpcHelper = new RpcHelper();
 	
 	public DateSearchPanel() {
 		setUpPanel();
-		dbGetDateMatchInUseIngredients(new Date(), dateMatchList, this);
+		rpcHelper.dbGetDateMatchInUseIngredients(new Date(), dateMatchList, this);
 	}
 	
 	public void setUpPanel() {
@@ -76,7 +77,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 		if (dateBox.getValue() == null) {
 			Window.alert("Please enter a date");
 		}
-		else  dbGetDateMatchInUseIngredients(dateBox.getValue(), dateMatchList, this);
+		else  rpcHelper.dbGetDateMatchInUseIngredients(dateBox.getValue(), dateMatchList, this);
 	}
 	
 	public void populateFlexTable() {

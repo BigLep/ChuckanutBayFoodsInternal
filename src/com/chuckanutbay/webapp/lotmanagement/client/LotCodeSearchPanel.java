@@ -20,6 +20,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 	Button searchButton = new Button();
 	DialogBox dialogBox;
 	ArrayList<InventoryLotDto> lotCodeMatchList = new ArrayList<InventoryLotDto>();
+	RpcHelper rpcHelper = new RpcHelper();
 	
 	public LotCodeSearchPanel() {
 		setUpPanel();
@@ -80,7 +81,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 	    	codeTextBox.selectAll();
 	    }
 		else { 
-			dbGetLotCodeMatchIngredients(lotCode, lotCodeMatchList, this);
+			rpcHelper.dbGetLotCodeMatchIngredients(lotCode, lotCodeMatchList, this);
 		}
 	}
 	
