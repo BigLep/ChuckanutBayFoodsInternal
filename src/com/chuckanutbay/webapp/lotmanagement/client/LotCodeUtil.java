@@ -102,13 +102,13 @@ public class LotCodeUtil {
     public static void dbGetCheckedInIngredients(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
-        dbQueryService.getCheckedInIngredients(itemInInventoryCallback);
+        dbQueryService.getCheckedInIngredientLots(itemInInventoryCallback);
       }
     
     public static void dbGetInUseIngredients(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
-        dbQueryService.getInUseIngredients(itemInInventoryCallback);
+        dbQueryService.getInUseIngredientLots(itemInInventoryCallback);
       } 
     
     public static void dbGetFullIngredientHistory(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
@@ -130,14 +130,14 @@ public class LotCodeUtil {
       }
     
     public static void dbSetCheckedInIngredients(List<InventoryLotDto> checkedInIngredients) {
-        dbQueryService.setCheckedInIngredients(checkedInIngredients, voidCallback);
+        dbQueryService.setCheckedInIngredientLots(checkedInIngredients, voidCallback);
       }
 
     public static void dbSetInUseIngredients(List<InventoryLotDto> inUseIngredients) {
-        dbQueryService.setInUseIngredients(inUseIngredients, voidCallback);
+        dbQueryService.setInUseIngredientLots(inUseIngredients, voidCallback);
       }
     
     public static void dbSetUsedUpIngredients(List<InventoryLotDto> usedUpIngredients) {
-        dbQueryService.setUsedUpIngredients(usedUpIngredients, voidCallback);
+        dbQueryService.setUsedUpInventoryLots(usedUpIngredients, voidCallback);
       }
 }

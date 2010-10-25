@@ -9,21 +9,21 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DatabaseQueryServiceAsync {
 	
-	void setCheckedInIngredients(
+	void setCheckedInIngredientLots(
 			List<InventoryLotDto> checkedInIngredients, 
 			AsyncCallback<Void> callback);
 
-	void getCheckedInIngredients(
+	void getCheckedInIngredientLots(
 			AsyncCallback<List<InventoryLotDto>> callback);
 
-	void getInUseIngredients(
+	void getInUseIngredientLots(
 			AsyncCallback<List<InventoryLotDto>> callback);
 
-	void setInUseIngredients(
+	void setInUseIngredientLots(
 			List<InventoryLotDto> checkedInIngredients,
 			AsyncCallback<Void> callback);
 
-	void setUsedUpIngredients(
+	void setUsedUpInventoryLots(
 			List<InventoryLotDto> checkedInIngredients,
 			AsyncCallback<Void> callback);
 

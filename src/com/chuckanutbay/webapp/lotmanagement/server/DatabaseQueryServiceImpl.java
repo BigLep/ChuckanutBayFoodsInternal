@@ -30,14 +30,14 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 	}
 
 	@Override
-	public void setCheckedInIngredients(final List<InventoryLotDto> ingreditentLotDtos) {
+	public void setCheckedInIngredientLots(final List<InventoryLotDto> ingreditentLotDtos) {
 		List<InventoryLot> inventoryLots = Lists.transform(ingreditentLotDtos, DtoUtils.fromInventoryLotDto);
 		InventoryLotDao dao = new InventoryLotHibernateDao();
 		dao.makePersistent(inventoryLots);
 	}
 
 	@Override
-	public List<InventoryLotDto> getCheckedInIngredients() {
+	public List<InventoryLotDto> getCheckedInIngredientLots() {
 		List<InventoryLotDto> checkedInIngredients = new ArrayList<InventoryLotDto>();
 		for(InventoryLotDto itemInInventory : dbItemsInInventory) {
 			if (itemInInventory.getStartUseDatetime() == null && itemInInventory.getEndUseDatetime() == null) {
@@ -48,18 +48,18 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 	}
 
 	@Override
-	public List<InventoryLotDto> getInUseIngredients() {
-		List<InventoryLotDto> inUseIngredients = new ArrayList<InventoryLotDto>();
+	public List<InventoryLotDto> getInUseIngredientLots() {
+		List<InventoryLotDto> ingredientLotDtos = new ArrayList<InventoryLotDto>();
 		for(InventoryLotDto itemInInventory : dbItemsInInventory) {
 			if (itemInInventory.getStartUseDatetime() != null && itemInInventory.getEndUseDatetime() == null) {
-				inUseIngredients.add(itemInInventory);
+				ingredientLotDtos.add(itemInInventory);
 			}
 		}
-		return inUseIngredients;
+		return ingredientLotDtos;
 	}
 
 	@Override
-	public void setInUseIngredients(List<InventoryLotDto> inUseIngredients) {
+	public void setInUseIngredientLots(List<InventoryLotDto> ingredientLotDtos) {
 		Iterator<InventoryLotDto> iterator = dbItemsInInventory.iterator();
 		while (iterator.hasNext()) {
 			InventoryLotDto itemInInventory = iterator.next();
@@ -67,11 +67,11 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 				iterator.remove();
 			}
 		}
-		dbItemsInInventory.addAll(inUseIngredients);
+		dbItemsInInventory.addAll(ingredientLotDtos);
 	}
 
 	@Override
-	public void setUsedUpIngredients(List<InventoryLotDto> usedUpIngredients) {
+	public void setUsedUpInventoryLots(List<InventoryLotDto> usedUpIngredients) {
 		Iterator<InventoryLotDto> iterator = dbItemsInInventory.iterator();
 		while (iterator.hasNext()) {
 			InventoryLotDto itemInInventory = iterator.next();
