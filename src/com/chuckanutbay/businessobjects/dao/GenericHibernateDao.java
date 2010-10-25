@@ -1,11 +1,12 @@
 package com.chuckanutbay.businessobjects.dao;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
@@ -37,15 +38,8 @@ public abstract class GenericHibernateDao<T, ID extends Serializable> implements
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public T findById(ID id, boolean lock) {
-		T entity;
-		if (lock) {
-			entity = (T) getSession().load(getPersistentClass(), id, LockMode.UPGRADE);
-		} else {
-			entity = (T) getSession().load(getPersistentClass(), id);
-		}
-
-		return entity;
+	public T findById(ID id) {
+		return (T)getSession().load(getPersistentClass(), id);
 	}
 
 	@Override
@@ -53,6 +47,7 @@ public abstract class GenericHibernateDao<T, ID extends Serializable> implements
 		return findByCriteria();
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<T> findByExample(T exampleInstance, String[] excludeProperty) {
 		Criteria crit = getSession().createCriteria(getPersistentClass());
@@ -68,6 +63,15 @@ public abstract class GenericHibernateDao<T, ID extends Serializable> implements
 	public T makePersistent(T entity) {
 		getSession().saveOrUpdate(entity);
 		return entity;
+	}
+
+	@Override
+	public List<T> makePersistent(List<T> entities) {
+		List<T> perisistedEntities = newArrayList();
+		for (T entity : entities) {
+			perisistedEntities.add(makePersistent(entity));
+		}
+		return perisistedEntities;
 	}
 
 	@Override

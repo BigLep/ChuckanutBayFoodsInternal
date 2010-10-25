@@ -127,7 +127,7 @@ public class InventoryLot implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_modified_datetime", nullable = false, length = 19)
+	@Column(name = "last_modified_datetime", length = 19)
 	public Date getLastModifiedDatetime() {
 		return this.lastModifiedDatetime;
 	}

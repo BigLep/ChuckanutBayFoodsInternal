@@ -33,7 +33,7 @@ public class DtoUtils {
 			InventoryLotDto output = new InventoryLotDto();
 			output.setId(input.getId());
 			output.setCode(input.getCode());
-			output.setInventoryItem(new InventoryItemDto(input.getInventoryItem().getId(), input.getInventoryItem().getDescription()));
+			output.setInventoryItem(DtoUtils.toInventoryItemDto.apply(input.getInventoryItem()));
 			output.setReceivedDatetime(input.getReceivedDatetime());
 			output.setStartUseDatetime(input.getStartUseDatetime());
 			output.setEndUseDatetime(input.getEndUseDatetime());
@@ -47,7 +47,8 @@ public class DtoUtils {
 			InventoryLot output = new InventoryLot();
 			output.setId(input.getId());
 			output.setCode(input.getCode());
-			output.setInventoryItem(new InventoryItem(input.getInventoryItem().getId(), input.getInventoryItem().getDescription()));
+			output.setInventoryItem(DtoUtils.fromInventoryItemDto.apply(input.getInventoryItem()));
+			output.setQuantity(1);
 			output.setReceivedDatetime(input.getReceivedDatetime());
 			output.setStartUseDatetime(input.getStartUseDatetime());
 			output.setEndUseDatetime(input.getEndUseDatetime());
@@ -58,16 +59,14 @@ public class DtoUtils {
 	public static final Function<InventoryItem, InventoryItemDto> toInventoryItemDto = new Function<InventoryItem, InventoryItemDto>() {
 		@Override
 		public InventoryItemDto apply(InventoryItem input) {
-			InventoryItemDto output = new InventoryItemDto(input.getId(), input.getDescription());
-			return output;
+			return new InventoryItemDto(input.getId(), input.getDescription());
 		}
 	};
 
 	public static final Function<InventoryItemDto, InventoryItem> fromInventoryItemDto = new Function<InventoryItemDto, InventoryItem>() {
 		@Override
 		public InventoryItem apply(InventoryItemDto input) {
-			InventoryItem output = new InventoryItem(input.getId(), input.getDescription());
-			return output;
+			return new InventoryItem(input.getId(), input.getDescription());
 		}
 	};
 }

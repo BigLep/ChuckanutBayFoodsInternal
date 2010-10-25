@@ -5,11 +5,15 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.businessobjects.dao.InventoryItemDao;
 import com.chuckanutbay.businessobjects.dao.InventoryItemHibernateDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotHibernateDao;
 import com.chuckanutbay.webapp.lotmanagement.client.DatabaseQueryService;
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -18,11 +22,18 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 	private static final long serialVersionUID = 1L;
 
 	private final List<InventoryLotDto> dbItemsInInventory = new ArrayList<InventoryLotDto>();
-	private final List<InventoryItemDto> dbQBItems = new ArrayList<InventoryItemDto>();
 
 	@Override
-	public void setCheckedInIngredients(final List<InventoryLotDto> checkedInIngredients) {
-		dbItemsInInventory.addAll(checkedInIngredients);
+	public List<InventoryItemDto> getInventoryItems() {
+		InventoryItemDao dao = new InventoryItemHibernateDao();
+		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryItemDto);
+	}
+
+	@Override
+	public void setCheckedInIngredients(final List<InventoryLotDto> ingreditentLotDtos) {
+		List<InventoryLot> inventoryLots = Lists.transform(ingreditentLotDtos, DtoUtils.fromInventoryLotDto);
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		dao.makePersistent(inventoryLots);
 	}
 
 	@Override
@@ -70,12 +81,6 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 		}
 		dbItemsInInventory.addAll(usedUpIngredients);
 
-	}
-
-	@Override
-	public List<InventoryItemDto> getInventoryItems() {
-		InventoryItemDao dao = new InventoryItemHibernateDao();
-		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryItemDto);
 	}
 
 	@Override

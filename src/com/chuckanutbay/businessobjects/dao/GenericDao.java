@@ -16,13 +16,15 @@ import com.chuckanutbay.documentation.Terminology;
  */
 public interface GenericDao<T, ID extends Serializable> {
 
-    T findById(ID id, boolean lock);
+    T findById(ID id);
 
     List<T> findAll();
 
     List<T> findByExample(T exampleInstance, String[] excludeProperty);
 
     T makePersistent(T entity);
+
+    List<T> makePersistent(List<T> entities);
 
     void makeTransient(T entity);
 }
