@@ -38,10 +38,13 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 
 	@Override
 	public List<InventoryLotDto> getCheckedInIngredientLots() {
-		List<InventoryLotDto> checkedInIngredients = new ArrayList<InventoryLotDto>();
-		for(InventoryLotDto itemInInventory : dbItemsInInventory) {
-			if (itemInInventory.getStartUseDatetime() == null && itemInInventory.getEndUseDatetime() == null) {
-				checkedInIngredients.add(itemInInventory);
+		//Gets all of the Inventory Lots and puts them in the checkedInIngredients List.
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		List<InventoryLotDto> checkedInIngredients = DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryLotDto);
+		//Then for ever InventoryLotDto in the List makes sure it doesn't have a start or end time
+		for(InventoryLotDto inventoryLot : checkedInIngredients) {
+			if (inventoryLot.getStartUseDatetime() != null || inventoryLot.getEndUseDatetime() != null) {
+				checkedInIngredients.remove(inventoryLot);
 			}
 		}
 		return checkedInIngredients;

@@ -83,7 +83,6 @@ public class InUsePanel extends LotCodeManagerPanel {
 				inUseIngredientFlexTable.setText((rowToMark + 1),3,"");
 				inUseIngredientFlexTable.setWidget((rowToMark + 1),4,markIngredientButton);
 				inUseIngredientFlexTable.getCellFormatter().addStyleName((rowToMark + 1),4,"center");
-
 			}
 		}
 	}
