@@ -92,11 +92,15 @@ public abstract class GenericHibernateDao<T, ID extends Serializable> implements
 	 */
 	@SuppressWarnings("unchecked")
 	protected List<T> findByCriteria(Criterion... criterion) {
-		Criteria crit = getSession().createCriteria(getPersistentClass());
+		Criteria crit = getCriteria();
 		for (Criterion c : criterion) {
 			crit.add(c);
 		}
 		return crit.list();
 	}
-
+	
+	protected Criteria getCriteria() {
+		Criteria crit = getSession().createCriteria(getPersistentClass());
+		return crit;
+	}
 }

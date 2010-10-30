@@ -86,7 +86,6 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 	}
 	
 	public void populateFlexTable() {
-	    final DateTimeFormat dateFormat = DateTimeFormat.getShortDateFormat();
 	    if (lotCodeMatchList.isEmpty()) {
 	    	Window.alert("There are no matching Lot Codes");
 	    	codeTextBox.selectAll();
