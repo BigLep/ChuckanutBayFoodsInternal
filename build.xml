@@ -21,7 +21,7 @@
 	<property name="tst.dir" value="${basedir}/tst"/>
 	<property name="war.dir" value="${basedir}/war"/>
 	
-	<target name="release" depends="jar,unit-test,javadoc"/>
+	<target name="release" depends="war,javadoc"/>
 	
 	<target name="clean">
 		<delete dir="${build.output.dir}" />
