@@ -21,12 +21,12 @@ public interface DatabaseQueryService extends RemoteService {
 	 * @return {@link InventoryLotDto}s that have been entered in but not started to be used query.
 	 * TODO: what order should these items be sorted in?
 	 */
-	List<InventoryLotDto> getCheckedInIngredientLots();
+	List<InventoryLotDto> getUnusedIngredientLots();
 
 	/**
 	 * @param inventoryLotDtos {@link InventoryLotDto}s that should be checked in.
 	 */
-	void setCheckedInIngredientLots(List<InventoryLotDto> inventoryLotDtos);
+	void setUnusedIngredientLots(List<InventoryLotDto> inventoryLotDtos);
 
 	/**
 	 * @return {@link InventoryLotDto}s that are currently active.

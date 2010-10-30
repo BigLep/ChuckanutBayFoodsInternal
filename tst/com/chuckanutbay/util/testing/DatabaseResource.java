@@ -15,10 +15,12 @@ public class DatabaseResource extends ExternalResource {
 	protected void before() throws Throwable {
 		SchemaExport schemaExport = new SchemaExport(HibernateUtil.getConfiguration());
 		schemaExport.create(true, true);
+		HibernateUtil.beginTransaction();
 	}
 
 	@Override
 	protected void after() {
+		HibernateUtil.closeSession();
 		SchemaExport schemaExport = new SchemaExport(HibernateUtil.getConfiguration());
 		schemaExport.drop(false, true);
 	}

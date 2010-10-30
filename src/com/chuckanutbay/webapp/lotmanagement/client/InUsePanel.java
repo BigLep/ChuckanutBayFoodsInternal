@@ -32,9 +32,9 @@ public class InUsePanel extends LotCodeManagerPanel {
 	public void setUpPanel() {
 		//Set Up Components
 		//Set Up dateBox
-		dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getShortDateFormat()));
+		dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 		dateBox.setValue(new Date(), true);
-		dateBox.setWidth("70px");
+		dateBox.setWidth("80px");
 		//Set Up inUseDatePanel
 		inUseDatePanel.setSpacing(5);
 		//Set Up inUseIngredientFlexTable

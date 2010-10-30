@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DateBox;
 
 public class LotCodeUtil {
 	
@@ -44,6 +45,7 @@ public class LotCodeUtil {
 	}
 	
 	public static MyIconBundle icons = (MyIconBundle) GWT.create(MyIconBundle.class);
-
-    public static DateTimeFormat dateFormat = DateTimeFormat.getShortDateFormat();
+	
+	public static final String LOT_MANAGEMENT_SHORT_DATE_FORMAT = "MMM d, yyyy";
+    public static DateTimeFormat dateFormat = DateTimeFormat.getFormat(LOT_MANAGEMENT_SHORT_DATE_FORMAT);
 }

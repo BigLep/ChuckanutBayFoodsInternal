@@ -69,7 +69,7 @@ public class RpcHelper {
     public void dbGetCheckedInIngredients(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
     	itemInInventoryList = argItemInInventoryList;
     	senderObject = sender;
-        dbQueryService.getCheckedInIngredientLots(itemInInventoryCallback);
+        dbQueryService.getUnusedIngredientLots(itemInInventoryCallback);
       }
     
     public void dbGetInUseIngredients(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
@@ -97,7 +97,7 @@ public class RpcHelper {
       }
     
     public void dbSetCheckedInIngredients(List<InventoryLotDto> checkedInIngredients) {
-        dbQueryService.setCheckedInIngredientLots(checkedInIngredients, voidCallback);
+        dbQueryService.setUnusedIngredientLots(checkedInIngredients, voidCallback);
       }
 
     public void dbSetInUseIngredients(List<InventoryLotDto> inUseIngredients) {

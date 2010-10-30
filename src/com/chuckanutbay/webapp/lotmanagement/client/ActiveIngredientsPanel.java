@@ -9,6 +9,7 @@ import java.util.List;
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.datepicker.client.DateBox;
 
 public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	//Checked-In Components
@@ -31,7 +32,7 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 			//Set Up dateBox
 			dateBox.setText(dateFormat.format(new Date()));
 			dateBox.setReadOnly(true);
-			dateBox.setWidth("70px");
+			dateBox.setWidth("80px");
 			//Set Up dateToSearchPanel
 			dateToSearchPanel.setSpacing(5);
 			dateToSearchPanel.setStyleName("headerPanel");

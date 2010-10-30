@@ -51,9 +51,9 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			ingredientCodeTextBox.setWidth("50px");
 			matchIngredientCodeAndType();
 			//Set Up dateBox
-			dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getShortDateFormat()));
+			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 			dateBox.setValue(new Date(), true);
-			dateBox.setWidth("70px");
+			dateBox.setWidth("80px");
 			//Set Up addIngredientButton
 			makeButtonWithIcon(addIngredientButton, icons.addIcon(), "Add");
 			addIngredientButton.setWidth("150px");

@@ -21,8 +21,6 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 
 	private static final long serialVersionUID = 1L;
 
-	private final List<InventoryLotDto> dbItemsInInventory = new ArrayList<InventoryLotDto>();
-
 	@Override
 	public List<InventoryItemDto> getInventoryItems() {
 		InventoryItemDao dao = new InventoryItemHibernateDao();
@@ -30,108 +28,54 @@ public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements Da
 	}
 
 	@Override
-	public void setCheckedInIngredientLots(final List<InventoryLotDto> ingreditentLotDtos) {
+	public void setUnusedIngredientLots(final List<InventoryLotDto> ingreditentLotDtos) {
 		List<InventoryLot> inventoryLots = Lists.transform(ingreditentLotDtos, DtoUtils.fromInventoryLotDto);
 		InventoryLotDao dao = new InventoryLotHibernateDao();
 		dao.makePersistent(inventoryLots);
 	}
 
 	@Override
-	public List<InventoryLotDto> getCheckedInIngredientLots() {
-		//Gets all of the Inventory Lots and puts them in the checkedInIngredients List.
-		InventoryLotDao dao = new InventoryLotHibernateDao();
-		List<InventoryLotDto> checkedInIngredients = DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryLotDto);
-		//Then for ever InventoryLotDto in the List makes sure it doesn't have a start or end time
-		for(InventoryLotDto inventoryLot : checkedInIngredients) {
-			if (inventoryLot.getStartUseDatetime() != null || inventoryLot.getEndUseDatetime() != null) {
-				checkedInIngredients.remove(inventoryLot);
-			}
-		}
-		return checkedInIngredients;
-	}
-
-	@Override
-	public List<InventoryLotDto> getInUseIngredientLots() {
-		List<InventoryLotDto> ingredientLotDtos = new ArrayList<InventoryLotDto>();
-		for(InventoryLotDto itemInInventory : dbItemsInInventory) {
-			if (itemInInventory.getStartUseDatetime() != null && itemInInventory.getEndUseDatetime() == null) {
-				ingredientLotDtos.add(itemInInventory);
-			}
-		}
-		return ingredientLotDtos;
-	}
-
-	@Override
 	public void setInUseIngredientLots(List<InventoryLotDto> ingredientLotDtos) {
-		Iterator<InventoryLotDto> iterator = dbItemsInInventory.iterator();
-		while (iterator.hasNext()) {
-			InventoryLotDto itemInInventory = iterator.next();
-			if (itemInInventory.getStartUseDatetime() == null && itemInInventory.getEndUseDatetime() == null) {
-				iterator.remove();
-			}
-		}
-		dbItemsInInventory.addAll(ingredientLotDtos);
+		List<InventoryLot> inventoryLots = Lists.transform(ingredientLotDtos, DtoUtils.fromInventoryLotDto);
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		dao.makePersistent(inventoryLots);
 	}
 
 	@Override
 	public void setUsedUpInventoryLots(List<InventoryLotDto> usedUpIngredients) {
-		Iterator<InventoryLotDto> iterator = dbItemsInInventory.iterator();
-		while (iterator.hasNext()) {
-			InventoryLotDto itemInInventory = iterator.next();
-			if (itemInInventory.getStartUseDatetime() != null && itemInInventory.getEndUseDatetime() == null) {
-				iterator.remove();
-			}
-		}
-		dbItemsInInventory.addAll(usedUpIngredients);
+		List<InventoryLot> inventoryLots = Lists.transform(usedUpIngredients, DtoUtils.fromInventoryLotDto);
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		dao.makePersistent(inventoryLots);
+	}
 
+	@Override
+	public List<InventoryLotDto> getUnusedIngredientLots() {
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		return DtoUtils.transform(dao.findUnused(), DtoUtils.toInventoryLotDto);
+	}
+
+	@Override
+	public List<InventoryLotDto> getInUseIngredientLots() {
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		return DtoUtils.transform(dao.findInUse(), DtoUtils.toInventoryLotDto);
 	}
 
 	@Override
 	public List<InventoryLotDto> getDateMatchInUseIngredients(Date date) {
-		List<InventoryLotDto> dateMatchList = new ArrayList<InventoryLotDto>();
-		for (InventoryLotDto possibleDateMatch : dbItemsInInventory) {
-			if (possibleDateMatch.getStartUseDatetime() != null && possibleDateMatch.getEndUseDatetime() != null) {
-				long searchDate = date.getTime();
-				long inUseDate = possibleDateMatch.getStartUseDatetime().getTime();
-				long usedUpDate = possibleDateMatch.getEndUseDatetime().getTime();
-				if (searchDate >= inUseDate && searchDate <= usedUpDate) {
-					dateMatchList.add(possibleDateMatch);
-				}
-			}
-			else if (possibleDateMatch.getStartUseDatetime() != null) {
-				long searchDate = date.getTime();
-				long inUseDate = possibleDateMatch.getStartUseDatetime().getTime();
-				if (searchDate >= inUseDate) {
-					dateMatchList.add(possibleDateMatch);
-				}
-			}
-		}
-		return dateMatchList;
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		return DtoUtils.transform(dao.findInUseOnDate(date), DtoUtils.toInventoryLotDto);
 	}
 
 	@Override
 	public List<InventoryLotDto> getLotCodeMatchIngredients(String lotCode) {
-		List<InventoryLotDto> lotCodeMatchList = new ArrayList<InventoryLotDto>();
-		lotCode.toUpperCase().trim();
-		if (lotCode.matches("")) {
-		}
-		// lot code must be between 1 and 20 chars that are numbers, or letters.
-		else if (!lotCode.matches("[0-9A-Z\\s]{1,20}")) {
-	    	Window.alert("'" + lotCode + "' is not a valid Lot Code.");
-	    }
-		else {
-			for (InventoryLotDto possibleLotCodeMatch : dbItemsInInventory) {
-				if (lotCode.equals(possibleLotCodeMatch.getCode())) {
-					lotCodeMatchList.add(possibleLotCodeMatch);
-				}
-			}
-		}
-		return lotCodeMatchList;
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		return DtoUtils.transform(dao.findLotCodeMatch(lotCode), DtoUtils.toInventoryLotDto);
 	}
 
 	@Override
 	public List<InventoryLotDto> getFullIngredientHistory() {
-		return dbItemsInInventory;
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryLotDto);
 	}
 
 }

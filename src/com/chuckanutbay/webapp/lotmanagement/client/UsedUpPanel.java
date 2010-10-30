@@ -31,11 +31,12 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 	}
 	
 	public void setUpPanel() {
+		log("starting set up");
 		//Set Up Components
 			//Set Up dateBox
-			dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getShortDateFormat()));
+			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 			dateBox.setValue(new Date(), true);
-			dateBox.setWidth("70px");
+			dateBox.setWidth("80px");
 			//Set Up usedUpDatePanel
 			usedUpDatePanel.setSpacing(5);
 			//Set Up usedUpIngredientFlexTable
@@ -60,6 +61,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 	}
 	
 	public void populateFlexTable() {
+		log("populating");
 		if(usedUpIngredientList.isEmpty()) {
 			Window.alert("There are no Ingredients to mark");
 		}
