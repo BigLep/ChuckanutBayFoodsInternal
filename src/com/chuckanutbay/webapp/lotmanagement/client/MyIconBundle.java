@@ -36,4 +36,6 @@ public interface MyIconBundle extends ClientBundle {
 		   public ImageResource nextIcon();
 		   @Source("./icons/arrow_undo.png")
 		   public ImageResource backIcon();
+		   @Source("./icons/arrow_up.png")
+		   public ImageResource arrowUpIcon();
 }
