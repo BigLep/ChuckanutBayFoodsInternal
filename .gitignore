@@ -1,1 +1,2 @@
 hibernate/hibernate-prod.cfg.xml
+war/WEB-INF/lib/gwt-servlet.jar
