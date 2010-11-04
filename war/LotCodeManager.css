@@ -43,9 +43,9 @@
 }
 
 .inUseIngredientFlexTableHeader {
-  background-color: lavender;
+  background-color: maroon;
   text-align: center;
-  color: black;
+  color: white;
   font-weight: bold;
 }
 
@@ -55,7 +55,7 @@
 }
 
 .usedUpIngredientFlexTableHeader {
-  background-color: DarkGreen;
+  background-color: maroon;
   text-align: center;
   color: white;
   font-weight: bold;

@@ -22,7 +22,7 @@ public class HibernateUtil {
 		configuration = new Configuration()
 			.addAnnotatedClass(InventoryItem.class)
 			.addAnnotatedClass(InventoryLot.class)
-			.configure("hibernate/hibernate-localhost.cfg.xml");
+			.configure("hibernate/hibernate-prod.cfg.xml");
 	}
 
 	public static Configuration getConfiguration() {

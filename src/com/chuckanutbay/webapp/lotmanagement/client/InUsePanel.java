@@ -38,7 +38,7 @@ public class InUsePanel extends LotCodeManagerPanel {
 		//Set Up inUseDatePanel
 		inUseDatePanel.setSpacing(5);
 		//Set Up inUseIngredientFlexTable
-		inUseIngredientFlexTable.setWidth("600px");
+		inUseIngredientFlexTable.setWidth("675px");
 		inUseIngredientFlexTable.setText(0,0,"Lot Code");
 		inUseIngredientFlexTable.setText(0,1,"Ingredient Type");
 		inUseIngredientFlexTable.setText(0,2,"Checked-In Date");

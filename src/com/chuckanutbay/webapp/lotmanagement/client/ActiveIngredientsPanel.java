@@ -38,7 +38,7 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 			dateToSearchPanel.setStyleName("headerPanel");
 			//Set Up activeIngredientsFlexTable
 			setupactiveIngredientsFlexTableHeader();
-			activeIngredientsFlexTable.setWidth("600px");
+			activeIngredientsFlexTable.setWidth("675px");
 		//Add components to dateToSearchPanel
 		dateToSearchPanel.add(dateToSearchLabel);
 		dateToSearchPanel.add(dateBox);
