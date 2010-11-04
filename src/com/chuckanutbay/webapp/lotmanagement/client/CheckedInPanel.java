@@ -62,7 +62,7 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			newCheckedInIngredientPanel.setSpacing(5);
 			newCheckedInIngredientPanel.setStyleName("headerPanel");
 			//Set Up checkedInIngredientFlexTable
-			checkedInIngredientFlexTable.setWidth("675px");
+			checkedInIngredientFlexTable.setWidth("750px");
 			checkedInIngredientFlexTable.setText(0,0,"Lot Code");
 			checkedInIngredientFlexTable.setText(0,1,"Ingredient Type");
 			checkedInIngredientFlexTable.setText(0,2,"Ingredient Code");

@@ -48,7 +48,7 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		headerPanel.setStyleName("headerPanel");
 		//Set Up inUseIngredientFlexTable
 		setupInUseIngredientFlexTable();
-		viewFullIngredientHistoryFlexTable.setWidth("675px");
+		viewFullIngredientHistoryFlexTable.setWidth("750px");
 		//Set Up buttonsPanel
 		buttonsPanel.setSpacing(5);
 		//Set Up backButton

@@ -45,7 +45,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 			dateToSearchPanel.setStyleName("headerPanel");
 			//Set Up dateSearchFlexTable
 			setupdateSearchFlexTableHeader();
-			dateSearchFlexTable.setWidth("675px");
+			dateSearchFlexTable.setWidth("750px");
 		//Add components to dateToSearchPanel
 		dateToSearchPanel.add(dateToSearchLabel);
 		dateToSearchPanel.add(dateBox);
