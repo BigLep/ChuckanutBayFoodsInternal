@@ -46,6 +46,7 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			//Set Up lotCodeTextBox
 			lotCodeTextBox.setText("Lot Code...");
 			lotCodeTextBox.setWidth("150px");
+			ingredientListBox.setWidth("150px");
 			//Set Up ingredientCodeTextBox
 			ingredientCodeTextBox.setReadOnly(true);
 			ingredientCodeTextBox.setWidth("50px");
@@ -56,12 +57,12 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			dateBox.setWidth("80px");
 			//Set Up addIngredientButton
 			makeButtonWithIcon(addIngredientButton, icons.addIcon(), "Add");
-			addIngredientButton.setWidth("150px");
+			addIngredientButton.setWidth("75px");
 			//Set Up newCheckedInIngredientPanel
 			newCheckedInIngredientPanel.setSpacing(5);
 			newCheckedInIngredientPanel.setStyleName("headerPanel");
 			//Set Up checkedInIngredientFlexTable
-			checkedInIngredientFlexTable.setWidth("600px");
+			checkedInIngredientFlexTable.setWidth("750px");
 			checkedInIngredientFlexTable.setText(0,0,"Lot Code");
 			checkedInIngredientFlexTable.setText(0,1,"Ingredient Type");
 			checkedInIngredientFlexTable.setText(0,2,"Ingredient Code");

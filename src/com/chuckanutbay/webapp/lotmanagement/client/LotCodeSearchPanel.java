@@ -39,7 +39,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 			codeToSearchPanel.setStyleName("headerPanel");
 			//Set Up lotCodeSearchFlexTable
 			setupLotCodeSearchFlexTableHeader();
-			lotCodeSearchFlexTable.setWidth("600px");
+			lotCodeSearchFlexTable.setWidth("750px");
 		//Add components to codeToSearchPanel
 		codeToSearchPanel.add(codeToSearchLabel);
 		codeToSearchPanel.add(codeTextBox);

@@ -36,7 +36,7 @@ public class HibernateUtil {
 		configuration = new Configuration()
 			.addAnnotatedClass(InventoryItem.class)
 			.addAnnotatedClass(InventoryLot.class)
-			.configure(configFilePath);
+			.configure("hibernate/hibernate-prod.cfg.xml");
 	}
 
 	public static Configuration getConfiguration() {

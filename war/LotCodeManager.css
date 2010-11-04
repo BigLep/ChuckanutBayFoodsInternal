@@ -20,7 +20,7 @@
 .headerPanel {
   border: 1px solid silver;
   padding: 4px;
-  width: 600px;
+  width: 750px;
 }
 
 .checkedInIngredientFlexTableHeader {
@@ -43,9 +43,9 @@
 }
 
 .inUseIngredientFlexTableHeader {
-  background-color: lavender;
+  background-color: maroon;
   text-align: center;
-  color: black;
+  color: white;
   font-weight: bold;
 }
 
@@ -55,7 +55,7 @@
 }
 
 .usedUpIngredientFlexTableHeader {
-  background-color: DarkGreen;
+  background-color: maroon;
   text-align: center;
   color: white;
   font-weight: bold;

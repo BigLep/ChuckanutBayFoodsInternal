@@ -29,7 +29,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 		this.setAnimationEnabled(true);
 			//Set up scrollPanel
 			scrollPanel = new ScrollPanel(panel.getPanel());
-			scrollPanel.setSize("625px", "400px");
+			scrollPanel.setSize("700px", "400px");
 			scrollPanel.setAlwaysShowScrollBars(true);
 			//Set up buttonPanel
 				buttonPanel.setSpacing(5);
@@ -85,7 +85,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 		this.clear();
 			//Reassemble dialogBoxContents
 			scrollPanel = new ScrollPanel(panel.getPanel());
-			scrollPanel.setSize("625px", "400px");
+			scrollPanel.setSize("700px", "400px");
 			scrollPanel.setAlwaysShowScrollBars(true);
 			dialogBoxContents.clear();
 			dialogBoxContents.add(scrollPanel);

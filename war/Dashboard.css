@@ -1,0 +1,26 @@
+/** Add css rules here for your application. *//** Add css rules here for your application. */
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.dashboardTitle{
+  font-size:24px; 
+  font-weight: bold;
+}
+
+.mainPanel {
+  border: 1px solid silver;
+  padding: 5px;
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgrey)); 
+  font-weight: bold;
+}
+
+.buttons {
+	width:200px;
+	height:40px;
+	font-size:16px;
+	font-weight:bold;
+	color:white;
+	background: -webkit-gradient(linear, left top, left bottom, from(red), to(maroon));
