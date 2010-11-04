@@ -18,6 +18,7 @@
 	<property name="build.output.reports.dir" value="${build.output.dir}/reports"/>
 	<property name="build.output.junit.dir" value="${build.output.reports.dir}/junit"/>
 	<property name="src.dir" value="${basedir}/src"/>
+	<property name="config.dir" value="${basedir}/configuration"/>
 	<property name="tst.dir" value="${basedir}/tst"/>
 	<property name="war.dir" value="${basedir}/war"/>
 	
@@ -53,7 +54,8 @@
 			<fileset dir=".">
 				<include name="hibernate/**"/>
 			</fileset>
-			<fileset dir="configuration/log4j" />
+			<fileset dir="${config.dir}/c3p0" />
+			<fileset dir="${config.dir}/log4j" />
 		</copy>
 	</target>
 	
@@ -155,6 +157,13 @@
 				<exclude name="WEB-INF/**"/>
 			</fileset>
 		</war>
+	</target>
+	
+	<target name="eclipse-gwt-debug-setup">
+		<copy todir="${war.dir}/WEB-INF/classes">
+			<fileset dir="${config.dir}/c3p0" />
+			<fileset dir="${config.dir}/log4j" />
+		</copy>
 	</target>
 
 	

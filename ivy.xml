@@ -16,6 +16,11 @@
 		<conf name="hibernate-tools" transitive="false" description="Dependencies for running Hibernate tools."/>
 	</configurations>
 	<dependencies>
+		<!--
+			Dependency searching:
+			http://www.mvnbrowser.com/
+			https://repository.jboss.org/nexus/index.html
+		-->
 		<dependency org="com.google.guava" name="guava" rev="r07" conf="compile->default"/>
 		<dependency org="joda-time" name="joda-time" rev="1.6" conf="compile->default"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="compile->default"/>
@@ -24,7 +29,9 @@
 		
 		<!-- http://stackoverflow.com/questions/520902/trouble-getting-hibernate-core-and-hibernate-annotations-using-apache-ivy-but-it -->
 		<dependency org="org.hibernate" name="hibernate-core" rev="3.6.0.Final" conf="compile->master,runtime,optional"/>
+		<dependency org="org.hibernate" name="hibernate-c3p0" rev="3.6.0.Final" conf="runtime->default"/>
 		<dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="runtime->default"/>
+		<dependency org="c3p0" name="c3p0" rev="0.9.1.2" conf="runtime->default"/>
 		<dependency org="junit" name="junit" rev="4.8.1" conf="test->default"/>
 		<dependency org="org.hsqldb" name="hsqldb" rev="2.0.0" conf="test->default"/>
 		<dependency org="javax.servlet" name="servlet-api" rev="2.5" conf="runtime->default"/>
