@@ -13,6 +13,7 @@ public class DatabaseResource extends ExternalResource {
 
 	@Override
 	protected void before() throws Throwable {
+		System.setProperty(HibernateUtil.CONFIG_KEY_HIBERNATE_CONFIG_TYPE, HibernateUtil.CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_UNIT_TEST);
 		SchemaExport schemaExport = new SchemaExport(HibernateUtil.getConfiguration());
 		schemaExport.create(true, true);
 		HibernateUtil.beginTransaction();
