@@ -1,3 +1,5 @@
-hibernate/hibernate-prod.cfg.xml
-war/WEB-INF/lib/gwt-servlet.jar
 /build-output
+/hibernate/hibernate-prod.cfg.xml
+/war/dashboard
+/war/lotcodemanager
+/war/WEB-INF/lib/gwt-servlet.jar
