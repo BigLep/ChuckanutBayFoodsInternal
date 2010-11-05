@@ -1,18 +1,27 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
 
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class LotCodeManagerDialogBox extends DialogBox {
-	ScrollPanel scrollPanel;
-	LotCodeManagerPanel panel;
-	String title;
-	HorizontalPanel buttonPanel = new HorizontalPanel(); 
-	VerticalPanel dialogBoxContents = new VerticalPanel();
-	DialogBox printBox = null;
+	private ScrollPanel scrollPanel;
+	private LotCodeManagerPanel panel;
+	private String title;
+	private HorizontalPanel buttonPanel = new HorizontalPanel(); 
+	private VerticalPanel dialogBoxContents = new VerticalPanel();
+	private DialogBox printBox = null;
+	private static String SCROLL_PANEL_WIDTH = "850px";
+	private static String SCROLL_PANEL_HEIGHT = "400px";
 	
 	LotCodeManagerDialogBox() {
 		//Default LotCodeManagerDialogBox
@@ -29,7 +38,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 		this.setAnimationEnabled(true);
 			//Set up scrollPanel
 			scrollPanel = new ScrollPanel(panel.getPanel());
-			scrollPanel.setSize("850px", "400px");
+			scrollPanel.setSize(SCROLL_PANEL_WIDTH, SCROLL_PANEL_HEIGHT);
 			scrollPanel.setAlwaysShowScrollBars(true);
 			//Set up buttonPanel
 				buttonPanel.setSpacing(5);
@@ -85,7 +94,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 		this.clear();
 			//Reassemble dialogBoxContents
 			scrollPanel = new ScrollPanel(panel.getPanel());
-			scrollPanel.setSize("850px", "400px");
+			scrollPanel.setSize(SCROLL_PANEL_WIDTH, SCROLL_PANEL_HEIGHT);
 			scrollPanel.setAlwaysShowScrollBars(true);
 			dialogBoxContents.clear();
 			dialogBoxContents.add(scrollPanel);

@@ -1,28 +1,40 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_BOX_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
 
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class UsedUpPanel extends LotCodeManagerPanel {
 	//Checked-In Components
-	VerticalPanel usedUpIngredientPanel = new VerticalPanel();
-	HorizontalPanel usedUpDatePanel = new HorizontalPanel();
-	Label dateBoxLabel = new Label("In Use Date:");
-	DateBox dateBox = new DateBox();
-	DialogBox dialogBox;
-	FlexTable usedUpIngredientFlexTable = new FlexTable();
-	List<InventoryLotDto> usedUpIngredientList = newArrayList();
-	RpcHelper rpcHelper = new RpcHelper();
+	private VerticalPanel usedUpIngredientPanel = new VerticalPanel();
+	private HorizontalPanel usedUpDatePanel = new HorizontalPanel();
+	private Label dateBoxLabel = new Label("In Use Date:");
+	private DateBox dateBox = new DateBox();
+	private DialogBox dialogBox;
+	private FlexTable usedUpIngredientFlexTable = new FlexTable();
+	private List<InventoryLotDto> usedUpIngredientList = newArrayList();
+	private RpcHelper rpcHelper = new RpcHelper();
 	
 	public UsedUpPanel() {
 		setUpPanel();
@@ -35,7 +47,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 			//Set Up dateBox
 			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 			dateBox.setValue(new Date(), true);
-			dateBox.setWidth("80px");
+			dateBox.setWidth(DATE_BOX_WIDTH);
 			//Set Up usedUpDatePanel
 			usedUpDatePanel.setSpacing(5);
 			//Set Up usedUpIngredientFlexTable

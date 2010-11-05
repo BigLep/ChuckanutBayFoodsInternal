@@ -1,6 +1,10 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +13,13 @@ import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class InUsePanel extends LotCodeManagerPanel {

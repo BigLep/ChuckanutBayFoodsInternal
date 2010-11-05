@@ -1,7 +1,11 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -9,25 +13,38 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements ClickHandler, ChangeHandler {
 	//Checked-In Components
-	VerticalPanel viewFullIngredientHistoryPanel = new VerticalPanel();
-	HorizontalPanel	headerPanel = new HorizontalPanel();
-	Label currentlyViewingLabel = new Label();
-	Label visibleRowsLabel = new Label("Visible Rows");
-	ListBox visibleRowsListBox = new ListBox();
-	FlexTable viewFullIngredientHistoryFlexTable = new FlexTable();
-	Button backButton = new Button();
-	Button nextButton = new Button();
-	HorizontalPanel	buttonsPanel = new HorizontalPanel();
-	DialogBox dialogBox;
-	int visibleRows = 10;
-	int itemIndex = 0;
-	int rowsAdded = 0;
-	ArrayList<InventoryLotDto> itemInInventoryList = new ArrayList<InventoryLotDto>();
-	RpcHelper rpcHelper = new RpcHelper();
+	private VerticalPanel viewFullIngredientHistoryPanel = new VerticalPanel();
+	private HorizontalPanel	headerPanel = new HorizontalPanel();
+	private Label currentlyViewingLabel = new Label();
+	private Label visibleRowsLabel = new Label("Visible Rows");
+	private ListBox visibleRowsListBox = new ListBox();
+	private FlexTable viewFullIngredientHistoryFlexTable = new FlexTable();
+	private Button backButton = new Button();
+	private Button nextButton = new Button();
+	private HorizontalPanel	buttonsPanel = new HorizontalPanel();
+	private DialogBox dialogBox;
+	private int visibleRows = 10;
+	private int itemIndex = 0;
+	private int rowsAdded = 0;
+	private List<InventoryLotDto> itemInInventoryList = newArrayList();
+	private RpcHelper rpcHelper = new RpcHelper();
+	
+	private static final String NUMBER_OF_VISIBLE_ROWS[] = {"10", "25", "50", "100"};
+	private static final String NAVIGATION_BUTTON_WIDTH = "400px";
+	
 	
 	public FullInventoryHistoryPanel() { 
 		setUpPanel();
@@ -35,11 +52,9 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 	}
 	
 	public void setUpPanel() {
-		//Set Up Components
-		visibleRowsListBox.addItem("10");
-		visibleRowsListBox.addItem("25");
-		visibleRowsListBox.addItem("50");
-		visibleRowsListBox.addItem("100");
+		for(String visibleRowsOption : NUMBER_OF_VISIBLE_ROWS) {
+			visibleRowsListBox.addItem(visibleRowsOption);
+		}
 		visibleRowsListBox.addChangeHandler(this);
 		//Set Up headerPanel
 		headerPanel.add(currentlyViewingLabel);
@@ -53,12 +68,12 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		buttonsPanel.setSpacing(5);
 		//Set Up backButton
 		makeButtonWithIcon(backButton, icons.backIcon(), "Back");
-		backButton.setWidth("400px");
+		backButton.setWidth(NAVIGATION_BUTTON_WIDTH);
 		backButton.addClickHandler(this);
 		buttonsPanel.add(backButton);
 		//Set Up nextButton
 		makeButtonWithIcon(nextButton, icons.nextIcon(), "Next");
-		nextButton.setWidth("400px");
+		nextButton.setWidth(NAVIGATION_BUTTON_WIDTH);
 		nextButton.addClickHandler(this);
 		buttonsPanel.add(nextButton);
 		//Assemble inUseIngredientPanel

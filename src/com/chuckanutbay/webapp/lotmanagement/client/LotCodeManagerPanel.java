@@ -1,6 +1,7 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 
 public abstract class LotCodeManagerPanel extends Widget {
 	

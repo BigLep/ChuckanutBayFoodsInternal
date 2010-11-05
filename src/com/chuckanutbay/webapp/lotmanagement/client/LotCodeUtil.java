@@ -1,27 +1,21 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
 
-import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
-import com.chuckanutbay.webapp.lotmanagement.shared.InventoryItemDto;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DateBox;
 
 public class LotCodeUtil {
 	
 	static public final String FLEX_TABLE_WIDTH = "825px";
+	static public final String DATE_BOX_WIDTH = "80px";
 	
     static public void log(String message) {
     	GWT.log(message);

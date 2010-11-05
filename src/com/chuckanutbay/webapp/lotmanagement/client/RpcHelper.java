@@ -1,8 +1,9 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
+
 import java.util.Date;
 import java.util.List;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
 
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;

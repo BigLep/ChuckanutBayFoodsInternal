@@ -1,10 +1,10 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
-import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryItemDto;
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DatabaseQueryServiceAsync {

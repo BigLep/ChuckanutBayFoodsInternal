@@ -1,37 +1,50 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_BOX_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryItemDto;
+import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, ChangeHandler {
 	//Checked-In Components
-	VerticalPanel checkedInIngredientPanel = new VerticalPanel();
-	HorizontalPanel newCheckedInIngredientPanel = new HorizontalPanel();
-	TextBox lotCodeTextBox = new TextBox();
-	ListBox ingredientListBox = new ListBox();
-	TextBox ingredientCodeTextBox = new TextBox();
-	DateBox dateBox = new DateBox();
-	Button addIngredientButton = new Button();
-	FlexTable checkedInIngredientFlexTable = new FlexTable();
-	DialogBox dialogBox;
-	List<InventoryItemDto> inventoryItemList = newArrayList();
-	List<InventoryLotDto> checkedInIngredientList = newArrayList();
-	List<String> lotCodesList = newArrayList();
-	RpcHelper rpcHelper = new RpcHelper();
+	private VerticalPanel checkedInIngredientPanel = new VerticalPanel();
+	private HorizontalPanel newCheckedInIngredientPanel = new HorizontalPanel();
+	private TextBox lotCodeTextBox = new TextBox();
+	private ListBox ingredientListBox = new ListBox();
+	private TextBox ingredientCodeTextBox = new TextBox();
+	private DateBox dateBox = new DateBox();
+	private Button addIngredientButton = new Button();
+	private FlexTable checkedInIngredientFlexTable = new FlexTable();
+	private DialogBox dialogBox;
+	private List<InventoryItemDto> inventoryItemList = newArrayList();
+	private List<InventoryLotDto> checkedInIngredientList = newArrayList();
+	private List<String> lotCodesList = newArrayList();
+	private RpcHelper rpcHelper = new RpcHelper();
 	
 	
 	public CheckedInPanel() {
@@ -54,7 +67,7 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			//Set Up dateBox
 			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 			dateBox.setValue(new Date(), true);
-			dateBox.setWidth("80px");
+			dateBox.setWidth(DATE_BOX_WIDTH);
 			//Set Up addIngredientButton
 			makeButtonWithIcon(addIngredientButton, icons.addIcon(), "Add");
 			addIngredientButton.setWidth("75px");

@@ -1,26 +1,33 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_BOX_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	//Checked-In Components
-	VerticalPanel activeIngredientsPanel = new VerticalPanel();
-	HorizontalPanel dateToSearchPanel = new HorizontalPanel();
-	Label dateToSearchLabel = new Label("Today's Date:");
-	TextBox dateBox = new TextBox();
-	FlexTable activeIngredientsFlexTable = new FlexTable();
-	DialogBox dialogBox;
-	List<InventoryLotDto> activeIngredientList = newArrayList();
-	RpcHelper rpcHelper = new RpcHelper();
+	private VerticalPanel activeIngredientsPanel = new VerticalPanel();
+	private HorizontalPanel dateToSearchPanel = new HorizontalPanel();
+	private Label dateToSearchLabel = new Label("Today's Date:");
+	private TextBox dateBox = new TextBox();
+	private FlexTable activeIngredientsFlexTable = new FlexTable();
+	private DialogBox dialogBox;
+	private List<InventoryLotDto> activeIngredientList = newArrayList();
+	private RpcHelper rpcHelper = new RpcHelper();
 	
 	public ActiveIngredientsPanel() { 
 		setUpPanel();
@@ -32,7 +39,7 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 			//Set Up dateBox
 			dateBox.setText(dateFormat.format(new Date()));
 			dateBox.setReadOnly(true);
-			dateBox.setWidth("80px");
+			dateBox.setWidth(DATE_BOX_WIDTH);
 			//Set Up dateToSearchPanel
 			dateToSearchPanel.setSpacing(5);
 			dateToSearchPanel.setStyleName("headerPanel");

@@ -1,36 +1,53 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makePopupVisible;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.event.dom.client.*;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandler, MouseOutHandler {
 	
 	//Main UI Components
-	VerticalPanel mainPanel = new VerticalPanel();
-	Label lotCodeManagerLabel = new Label("Lot Code Manager");
-	Label markInventoryLabel = new Label("Mark Inventory As:");
-	Label queryLabel = new Label("Query Lot Code Data:");
-	Label viewFullInventoryHistoryLabel = new Label("Inventory History:");
-	HorizontalPanel buttonsPanel = new HorizontalPanel();
-	HorizontalPanel markInventoryButtonsHPanel = new HorizontalPanel();
-	HorizontalPanel viewFullInventoryHistoryHPanel = new HorizontalPanel();
-	HorizontalPanel queryButtonsHPanel = new HorizontalPanel();
-	VerticalPanel markInventoryVPanel = new VerticalPanel();
-	VerticalPanel viewFullInventoryHistoryVPanel = new VerticalPanel();
-	VerticalPanel queryVPanel = new VerticalPanel();
-	Button checkedInButton = new Button();
-	Button inUseButton = new Button();
-	Button usedUpButton = new Button();
-	Button lotCodeSearch = new Button();
-	Button dateSearch = new Button ();
-	Button activeIngredientsButton = new Button ();
-	Button viewFullInventoryHistoryButton = new Button();
-	DecoratedPopupPanel lotCodeSearchPopup = new DecoratedPopupPanel(true);
-	DecoratedPopupPanel dateSearchPopup = new DecoratedPopupPanel(true);
-	DecoratedPopupPanel activeIngredientsPopup = new DecoratedPopupPanel(true);
-	DialogBox dialogBox;
+	private VerticalPanel mainPanel = new VerticalPanel();
+	private Label lotCodeManagerLabel = new Label("Lot Code Manager");
+	private Label markInventoryLabel = new Label("Mark Inventory As:");
+	private Label queryLabel = new Label("Query Lot Code Data:");
+	private Label viewFullInventoryHistoryLabel = new Label("Inventory History:");
+	private HorizontalPanel buttonsPanel = new HorizontalPanel();
+	private HorizontalPanel markInventoryButtonsHPanel = new HorizontalPanel();
+	private HorizontalPanel viewFullInventoryHistoryHPanel = new HorizontalPanel();
+	private HorizontalPanel queryButtonsHPanel = new HorizontalPanel();
+	private VerticalPanel markInventoryVPanel = new VerticalPanel();
+	private VerticalPanel viewFullInventoryHistoryVPanel = new VerticalPanel();
+	private VerticalPanel queryVPanel = new VerticalPanel();
+	private Button checkedInButton = new Button();
+	private Button inUseButton = new Button();
+	private Button usedUpButton = new Button();
+	private Button lotCodeSearch = new Button();
+	private Button dateSearch = new Button ();
+	private Button activeIngredientsButton = new Button ();
+	private Button viewFullInventoryHistoryButton = new Button();
+	private DecoratedPopupPanel lotCodeSearchPopup = new DecoratedPopupPanel(true);
+	private DecoratedPopupPanel dateSearchPopup = new DecoratedPopupPanel(true);
+	private DecoratedPopupPanel activeIngredientsPopup = new DecoratedPopupPanel(true);
+	private DialogBox dialogBox;
+	private static int POPUP_POSITION_FROM_TOP = 25;
+	private static int POPUP_POSITION_FROM_LEFT = 5;
 	
 	//LotCodeMangaerPanels to be made
 	CheckedInPanel checkedInPanel;
@@ -145,13 +162,13 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 	public void onMouseOver(MouseOverEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == lotCodeSearch) {
-			makePopupVisible(lotCodeSearchPopup, sender, 25, 5);
+			makePopupVisible(lotCodeSearchPopup, sender, POPUP_POSITION_FROM_TOP, POPUP_POSITION_FROM_LEFT);
 		}
 		else if (sender == dateSearch) {
-			makePopupVisible(dateSearchPopup, sender, 25, 5);
+			makePopupVisible(dateSearchPopup, sender, POPUP_POSITION_FROM_TOP, POPUP_POSITION_FROM_LEFT);
 		}
 		else if (sender == activeIngredientsButton) {
-			makePopupVisible(activeIngredientsPopup, sender, 25, 5);
+			makePopupVisible(activeIngredientsPopup, sender, POPUP_POSITION_FROM_TOP, POPUP_POSITION_FROM_LEFT);
 		}
 	}
 

@@ -13,13 +13,11 @@ public interface DatabaseQueryService extends RemoteService {
 
 	/**
 	 * @return {@link InventoryItemDto}s for every item in inventory.
-	 * TODO: what order should these items be sorted in?
 	 */
 	List<InventoryItemDto> getInventoryItems();
 
 	/**
 	 * @return {@link InventoryLotDto}s that have been entered in but not started to be used query.
-	 * TODO: what order should these items be sorted in?
 	 */
 	List<InventoryLotDto> getUnusedIngredientLots();
 
@@ -30,7 +28,6 @@ public interface DatabaseQueryService extends RemoteService {
 
 	/**
 	 * @return {@link InventoryLotDto}s that are currently active.
-	 * TODO: what are order should these be sorted in?
 	 */
 	List<InventoryLotDto> getInUseIngredientLots();
 

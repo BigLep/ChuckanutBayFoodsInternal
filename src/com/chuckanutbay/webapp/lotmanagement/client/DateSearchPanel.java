@@ -1,5 +1,11 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_BOX_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,20 +13,27 @@ import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler {
 	//Checked-In Components
-	VerticalPanel dateSearchPanel = new VerticalPanel();
-	HorizontalPanel dateToSearchPanel = new HorizontalPanel();
-	Label dateToSearchLabel = new Label("Date to Search:");
-	DateBox dateBox = new DateBox();
-	FlexTable dateSearchFlexTable = new FlexTable();
-	Button searchButton = new Button();
-	DialogBox dialogBox;
-	List<InventoryLotDto> dateMatchList = newArrayList();
-	RpcHelper rpcHelper = new RpcHelper();
+	private VerticalPanel dateSearchPanel = new VerticalPanel();
+	private HorizontalPanel dateToSearchPanel = new HorizontalPanel();
+	private Label dateToSearchLabel = new Label("Date to Search:");
+	private DateBox dateBox = new DateBox();
+	private FlexTable dateSearchFlexTable = new FlexTable();
+	private Button searchButton = new Button();
+	private DialogBox dialogBox;
+	private List<InventoryLotDto> dateMatchList = newArrayList();
+	private RpcHelper rpcHelper = new RpcHelper();
 	
 	public DateSearchPanel() {
 		setUpPanel();
@@ -32,7 +45,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 			//Set Up dateBox
 			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 			dateBox.setValue(new Date(), true);
-			dateBox.setWidth("80px");
+			dateBox.setWidth(DATE_BOX_WIDTH);
 			//Set Up searchButton
 			makeButtonWithIcon(searchButton, icons.searchIcon(), "Search");
 			searchButton.setWidth("250px");
