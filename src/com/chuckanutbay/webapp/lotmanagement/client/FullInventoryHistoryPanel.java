@@ -48,17 +48,17 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		headerPanel.setStyleName("headerPanel");
 		//Set Up inUseIngredientFlexTable
 		setupInUseIngredientFlexTable();
-		viewFullIngredientHistoryFlexTable.setWidth("750px");
+		viewFullIngredientHistoryFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		//Set Up buttonsPanel
 		buttonsPanel.setSpacing(5);
 		//Set Up backButton
 		makeButtonWithIcon(backButton, icons.backIcon(), "Back");
-		backButton.setWidth("340px");
+		backButton.setWidth("400px");
 		backButton.addClickHandler(this);
 		buttonsPanel.add(backButton);
 		//Set Up nextButton
 		makeButtonWithIcon(nextButton, icons.nextIcon(), "Next");
-		nextButton.setWidth("340px");
+		nextButton.setWidth("400px");
 		nextButton.addClickHandler(this);
 		buttonsPanel.add(nextButton);
 		//Assemble inUseIngredientPanel
@@ -78,8 +78,8 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		viewFullIngredientHistoryFlexTable.setText(0,2,"Checked-In Date");
 		viewFullIngredientHistoryFlexTable.setText(0,3,"In-Use Date");
 		viewFullIngredientHistoryFlexTable.setText(0,4,"Used-Up Date");
-		viewFullIngredientHistoryFlexTable.getRowFormatter().addStyleName(0, "viewFullIngredientHistoryFlexTableHeader");
-		viewFullIngredientHistoryFlexTable.addStyleName("viewFullIngredientHistoryFlexTable");
+		viewFullIngredientHistoryFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
+		viewFullIngredientHistoryFlexTable.addStyleName("FlexTable");
 	}
 	
 	public void populateFlexTable() {

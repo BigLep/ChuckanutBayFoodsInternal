@@ -19,7 +19,7 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	TextBox dateBox = new TextBox();
 	FlexTable activeIngredientsFlexTable = new FlexTable();
 	DialogBox dialogBox;
-	List<InventoryLotDto> activeIngredientList = new ArrayList<InventoryLotDto>();
+	List<InventoryLotDto> activeIngredientList = newArrayList();
 	RpcHelper rpcHelper = new RpcHelper();
 	
 	public ActiveIngredientsPanel() { 
@@ -38,7 +38,7 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 			dateToSearchPanel.setStyleName("headerPanel");
 			//Set Up activeIngredientsFlexTable
 			setupactiveIngredientsFlexTableHeader();
-			activeIngredientsFlexTable.setWidth("750px");
+			activeIngredientsFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		//Add components to dateToSearchPanel
 		dateToSearchPanel.add(dateToSearchLabel);
 		dateToSearchPanel.add(dateBox);
@@ -55,8 +55,8 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 		activeIngredientsFlexTable.setText(0,1,"Ingredient Type");
 		activeIngredientsFlexTable.setText(0,2,"Checked-In Date");
 		activeIngredientsFlexTable.setText(0,3,"In-Use Date");
-		activeIngredientsFlexTable.getRowFormatter().addStyleName(0, "activeIngredientsFlexTableHeader");
-		activeIngredientsFlexTable.addStyleName("activeIngredientsFlexTable");
+		activeIngredientsFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
+		activeIngredientsFlexTable.addStyleName("FlexTable");
 		
 	}
 

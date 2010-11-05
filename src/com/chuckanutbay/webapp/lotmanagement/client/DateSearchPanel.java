@@ -1,14 +1,11 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.*;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -22,7 +19,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 	FlexTable dateSearchFlexTable = new FlexTable();
 	Button searchButton = new Button();
 	DialogBox dialogBox;
-	List<InventoryLotDto> dateMatchList = new ArrayList<InventoryLotDto>();
+	List<InventoryLotDto> dateMatchList = newArrayList();
 	RpcHelper rpcHelper = new RpcHelper();
 	
 	public DateSearchPanel() {
@@ -45,7 +42,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 			dateToSearchPanel.setStyleName("headerPanel");
 			//Set Up dateSearchFlexTable
 			setupdateSearchFlexTableHeader();
-			dateSearchFlexTable.setWidth("750px");
+			dateSearchFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		//Add components to dateToSearchPanel
 		dateToSearchPanel.add(dateToSearchLabel);
 		dateToSearchPanel.add(dateBox);
@@ -64,8 +61,8 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 		dateSearchFlexTable.setText(0,2,"Checked-In Date");
 		dateSearchFlexTable.setText(0,3,"In-Use Date");
 		dateSearchFlexTable.setText(0,4,"Used-Up Date");
-		dateSearchFlexTable.getRowFormatter().addStyleName(0, "dateSearchFlexTableHeader");
-		dateSearchFlexTable.addStyleName("dateSearchFlexTable");
+		dateSearchFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
+		dateSearchFlexTable.addStyleName("FlexTable");
 	}
 
 	public Panel getPanel() {

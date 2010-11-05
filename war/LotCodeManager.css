@@ -20,50 +20,29 @@
 .headerPanel {
   border: 1px solid silver;
   padding: 4px;
-  width: 750px;
+  width: 825px;
 }
 
-.checkedInIngredientFlexTableHeader {
+.FlexTableHeader {
   background-color: maroon;
   text-align: center;
   color: white;
   font-weight: bold;
+  width: 825px;
 }
 
-.checkedInIngredientFlexTable {
+.FlexTable {
   border: 1px solid silver;
   padding: 2px;
+  width: 825px;
 }
 
+/*
 .checkedInIngredientFlexTableRemoveButton {
   text-align: center;
   font-weight: bold;
   color: red;
   width: 80px;
-}
-
-.inUseIngredientFlexTableHeader {
-  background-color: maroon;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-}
-
-.inUseIngredientFlexTable {
-  border: 1px solid silver;
-  padding: 2px;
-}
-
-.usedUpIngredientFlexTableHeader {
-  background-color: maroon;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-}
-
-.usedUpIngredientFlexTable {
-  border: 1px solid silver;
-  padding: 2px;
 }
 
 .usedUpIngredientFlexTableButton {
@@ -72,50 +51,4 @@
   width: 80px;
   font-weight: bold;
 }
-.viewFullIngredientHistoryFlexTableHeader {
-  background-color: maroon;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-}
-
-.viewFullIngredientHistoryFlexTable {
-  border: 1px solid silver;
-  padding: 2px;
-}
-
-.lotCodeSearchFlexTableHeader {
-  background-color: maroon;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-}
-
-.lotCodeSearchFlexTable {
-  border: 1px solid silver;
-  padding: 2px;
-}
-
-.dateSearchFlexTableHeader {
-  background-color: maroon;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-}
-
-.dateSearchFlexTable {
-  border: 1px solid silver;
-  padding: 2px;
-}
-
-.activeIngredientsFlexTableHeader {
-  background-color: maroon;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-}
-
-.activeIngredientsFlexTable {
-  border: 1px solid silver;
-  padding: 2px;
-}
+*/

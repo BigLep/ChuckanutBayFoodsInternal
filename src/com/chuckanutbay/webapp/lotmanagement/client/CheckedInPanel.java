@@ -28,9 +28,9 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	Button addIngredientButton = new Button();
 	FlexTable checkedInIngredientFlexTable = new FlexTable();
 	DialogBox dialogBox;
-	List<InventoryItemDto> inventoryItemList = new ArrayList<InventoryItemDto>();
-	List<InventoryLotDto> checkedInIngredientList = new ArrayList<InventoryLotDto>();
-	List<String> lotCodesList = new ArrayList<String>();
+	List<InventoryItemDto> inventoryItemList = newArrayList();
+	List<InventoryLotDto> checkedInIngredientList = newArrayList();
+	List<String> lotCodesList = newArrayList();
 	RpcHelper rpcHelper = new RpcHelper();
 	
 	
@@ -46,7 +46,7 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			//Set Up lotCodeTextBox
 			lotCodeTextBox.setText("Lot Code...");
 			lotCodeTextBox.setWidth("150px");
-			ingredientListBox.setWidth("150px");
+			ingredientListBox.setWidth("350px");
 			//Set Up ingredientCodeTextBox
 			ingredientCodeTextBox.setReadOnly(true);
 			ingredientCodeTextBox.setWidth("50px");
@@ -62,14 +62,14 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			newCheckedInIngredientPanel.setSpacing(5);
 			newCheckedInIngredientPanel.setStyleName("headerPanel");
 			//Set Up checkedInIngredientFlexTable
-			checkedInIngredientFlexTable.setWidth("750px");
+			checkedInIngredientFlexTable.setWidth(FLEX_TABLE_WIDTH);
 			checkedInIngredientFlexTable.setText(0,0,"Lot Code");
 			checkedInIngredientFlexTable.setText(0,1,"Ingredient Type");
 			checkedInIngredientFlexTable.setText(0,2,"Ingredient Code");
 			checkedInIngredientFlexTable.setText(0,3,"Date");
 			checkedInIngredientFlexTable.setText(0,4,"Remove");
-			checkedInIngredientFlexTable.getRowFormatter().addStyleName(0, "checkedInIngredientFlexTableHeader");
-			checkedInIngredientFlexTable.addStyleName("checkedInIngredientFlexTable");
+			checkedInIngredientFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
+			checkedInIngredientFlexTable.addStyleName("FlexTable");
 			
 		//Add Handlers
 		addIngredientButton.addClickHandler(this);

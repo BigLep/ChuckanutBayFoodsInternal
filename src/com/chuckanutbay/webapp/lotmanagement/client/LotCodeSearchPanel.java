@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 
@@ -19,7 +18,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 	FlexTable lotCodeSearchFlexTable = new FlexTable();
 	Button searchButton = new Button();
 	DialogBox dialogBox;
-	ArrayList<InventoryLotDto> lotCodeMatchList = new ArrayList<InventoryLotDto>();
+	ArrayList<InventoryLotDto> lotCodeMatchList = newArrayList();
 	RpcHelper rpcHelper = new RpcHelper();
 	
 	public LotCodeSearchPanel() {
@@ -39,7 +38,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 			codeToSearchPanel.setStyleName("headerPanel");
 			//Set Up lotCodeSearchFlexTable
 			setupLotCodeSearchFlexTableHeader();
-			lotCodeSearchFlexTable.setWidth("750px");
+			lotCodeSearchFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		//Add components to codeToSearchPanel
 		codeToSearchPanel.add(codeToSearchLabel);
 		codeToSearchPanel.add(codeTextBox);
@@ -60,8 +59,8 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 		lotCodeSearchFlexTable.setText(0,2,"Checked-In Date");
 		lotCodeSearchFlexTable.setText(0,3,"In-Use Date");
 		lotCodeSearchFlexTable.setText(0,4,"Used-Up Date");
-		lotCodeSearchFlexTable.getRowFormatter().addStyleName(0, "lotCodeSearchFlexTableHeader");
-		lotCodeSearchFlexTable.addStyleName("lotCodeSearchFlexTable");
+		lotCodeSearchFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
+		lotCodeSearchFlexTable.addStyleName("FlexTable");
 	}
 
 	public Panel getPanel() {

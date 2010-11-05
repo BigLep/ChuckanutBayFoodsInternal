@@ -8,7 +8,6 @@ import java.util.Date;
 import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -21,7 +20,7 @@ public class InUsePanel extends LotCodeManagerPanel {
 	private DateBox dateBox = new DateBox();
 	private FlexTable inUseIngredientFlexTable = new FlexTable();
 	private DialogBox dialogBox;
-	private ArrayList<InventoryLotDto> inUseIngredientList = new ArrayList<InventoryLotDto>();
+	private ArrayList<InventoryLotDto> inUseIngredientList = newArrayList();
 	private RpcHelper rpcHelper = new RpcHelper();
 
 	public InUsePanel() {
@@ -38,14 +37,14 @@ public class InUsePanel extends LotCodeManagerPanel {
 		//Set Up inUseDatePanel
 		inUseDatePanel.setSpacing(5);
 		//Set Up inUseIngredientFlexTable
-		inUseIngredientFlexTable.setWidth("750px");
+		inUseIngredientFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		inUseIngredientFlexTable.setText(0,0,"Lot Code");
 		inUseIngredientFlexTable.setText(0,1,"Ingredient Type");
 		inUseIngredientFlexTable.setText(0,2,"Checked-In Date");
 		inUseIngredientFlexTable.setText(0,3,"In-Use Date");
 		inUseIngredientFlexTable.setText(0,4,"Mark");
-		inUseIngredientFlexTable.getRowFormatter().addStyleName(0, "inUseIngredientFlexTableHeader");
-		inUseIngredientFlexTable.addStyleName("inUseIngredientFlexTable");
+		inUseIngredientFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
+		inUseIngredientFlexTable.addStyleName("FlexTable");
 		//Add components to inUseDatePanel
 		inUseDatePanel.add(dateBoxLabel);
 		inUseDatePanel.add(dateBox);
