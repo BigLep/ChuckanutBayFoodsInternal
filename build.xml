@@ -165,6 +165,11 @@
 			<fileset dir="${config.dir}/c3p0" />
 			<fileset dir="${config.dir}/log4j" />
 		</copy>
+		<ivyfileset setid="ivy.logging.fileset.ref" conf="logging"/>
+		<copy todir="${war.dir}/WEB-INF/lib">
+			<resources refid="ivy.logging.fileset.ref" />
+			<flattenmapper/>
+		</copy>
 	</target>
 
 	
