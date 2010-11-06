@@ -14,6 +14,7 @@
 		<conf name="runtime" extends="compile" description="Runtime dependencies."/>
 		<conf name="test" extends="compile" description="Dependencies necessary to run unit tests."/>
 		<conf name="hibernate-tools" transitive="false" description="Dependencies for running Hibernate tools."/>
+		<conf name="logging" description="Dependencies needed to use slf4j logging."/>
 	</configurations>
 	<dependencies>
 		<!--
@@ -23,9 +24,9 @@
 		-->
 		<dependency org="com.google.guava" name="guava" rev="r07" conf="compile->default"/>
 		<dependency org="joda-time" name="joda-time" rev="1.6" conf="compile->default"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="compile->default"/>
-		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" conf="runtime->default;test->default"/>
-		<dependency org="log4j" name="log4j" rev="1.2.14" conf="runtime->master;test->master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="compile->default;logging->default"/>
+		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" conf="runtime->default;test->default;logging->default"/>
+		<dependency org="log4j" name="log4j" rev="1.2.14" conf="runtime->master;test->master;logging->master"/>
 		
 		<!-- http://stackoverflow.com/questions/520902/trouble-getting-hibernate-core-and-hibernate-annotations-using-apache-ivy-but-it -->
 		<dependency org="org.hibernate" name="hibernate-core" rev="3.6.0.Final" conf="compile->master,runtime,optional"/>

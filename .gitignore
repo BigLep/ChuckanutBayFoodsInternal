@@ -2,4 +2,4 @@
 /hibernate/hibernate-prod.cfg.xml
 /war/dashboard
 /war/lotcodemanager
-/war/WEB-INF/lib/gwt-servlet.jar
+/war/WEB-INF/lib
