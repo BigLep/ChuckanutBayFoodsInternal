@@ -40,14 +40,21 @@
         <ivypath pathid="ivy.test.classpath.ref" conf="test"/>
     </target>
 	
-	<target name="src-compile" depends="ivy-compile-classpath">
+	<target name="src-compile-classpath" depends="ivy-compile-classpath,ivy-build-classpath">
+		<path id="src.compile.classpath.ref">
+            <path refid="ivy.compile.classpath.ref"/>
+			<path refid="ivy.build.classpath.ref"/>
+        </path>
+	</target>
+	
+	<target name="src-compile" depends="src-compile-classpath">
 		<mkdir dir="${build.output.src.dir}" />
 		<javac srcdir="${src.dir}"
 		       destdir="${build.output.src.dir}"
-			   classpathref="ivy.compile.classpath.ref"
+			   classpathref="src.compile.classpath.ref"
 		       debug="on"
 		/>
-		<copy todir="${build.output.src.dir}">
+		<copy todir="${build.output.src.dir}" verbose="true">
 			<fileset dir="${src.dir}">
 				<exclude name="**/*.java"/>
 			</fileset>
