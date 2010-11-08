@@ -131,7 +131,9 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 		mainPanel.setCellHorizontalAlignment(buttonsPanel, HasHorizontalAlignment.ALIGN_CENTER);
 		mainPanel.setCellHorizontalAlignment(lotCodeManagerLabel, HasHorizontalAlignment.ALIGN_CENTER);
 		//Add mainPanel to rootPanel
-		RootPanel.get("LotCodeManager").add(mainPanel);
+		RootPanel rootPanel = RootPanel.get("LotCodeManager");
+		rootPanel.setSize("900", "500\n");
+		rootPanel.add(mainPanel);
 	} 
 	
 	public void onClick(ClickEvent event) {

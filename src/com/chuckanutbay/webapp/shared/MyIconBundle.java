@@ -1,4 +1,4 @@
-package com.chuckanutbay.webapp.lotmanagement.client;
+package com.chuckanutbay.webapp.shared;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;

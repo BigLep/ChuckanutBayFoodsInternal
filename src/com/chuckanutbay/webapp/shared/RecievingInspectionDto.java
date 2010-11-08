@@ -1,6 +1,7 @@
-package com.chuckanutbay.webapp.lotmanagement.shared;
+package com.chuckanutbay.webapp.shared;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.documentation.Terminology;
@@ -9,16 +10,18 @@ import com.chuckanutbay.documentation.Terminology;
  * {@link Terminology#DTO} for {@link InventoryItem}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
-public class InventoryItemDto implements Serializable {
-	private String id;
-	private String description;
+public class RecievingInspectionDto implements Serializable {
+	private Date date;
+	private String	inspector;
+	private String truckingCompany;
+	private 
 
 	/**
 	 * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
 	 */
-	public InventoryItemDto(){}
+	public RecievingInspectionDto(){}
 
-	public InventoryItemDto(String id, String description) {
+	public RecievingInspectionDto(String id, String description) {
 		this.id = id;
 		this.description = description;
 	}

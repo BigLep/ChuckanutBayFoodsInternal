@@ -1,4 +1,4 @@
-package com.chuckanutbay.webapp.lotmanagement.shared;
+package com.chuckanutbay.webapp.shared;
 
 import java.io.Serializable;
 import java.util.Date;

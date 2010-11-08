@@ -11,6 +11,7 @@ public class Dashboard implements EntryPoint, ClickHandler {
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private Label title = new Label("Chuckanut Bay Internal Web Apps");
 	private Button lotCodeManagerButton = new Button("LotCodeManager");
+	private RootPanel rootPanel;
 	
 	
 	public void onModuleLoad() {
@@ -26,7 +27,8 @@ public class Dashboard implements EntryPoint, ClickHandler {
 		mainPanel.setCellHorizontalAlignment(title, HasHorizontalAlignment.ALIGN_CENTER);
 		mainPanel.setCellHorizontalAlignment(lotCodeManagerButton, HasHorizontalAlignment.ALIGN_CENTER);
 		//Add mainPanel to rootPanel
-		RootPanel.get("Dashboard").add(mainPanel);
+		rootPanel = RootPanel.get("Dashboard");
+		rootPanel.add(mainPanel);
 	}
 
 

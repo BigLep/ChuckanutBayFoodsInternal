@@ -3,8 +3,8 @@ package com.chuckanutbay.webapp.lotmanagement.client;
 import java.util.Date;
 import java.util.List;
 
-import com.chuckanutbay.webapp.lotmanagement.shared.InventoryItemDto;
-import com.chuckanutbay.webapp.lotmanagement.shared.InventoryLotDto;
+import com.chuckanutbay.webapp.shared.InventoryItemDto;
+import com.chuckanutbay.webapp.shared.InventoryLotDto;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
