@@ -1,5 +1,5 @@
 /build-output
-/hibernate/hibernate-prod.cfg.xml
+/configuration/hibernate/hibernate-prod.cfg.xml
 /war/dashboard
 /war/lotcodemanager
 /war/WEB-INF/classes
