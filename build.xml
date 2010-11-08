@@ -59,7 +59,7 @@
 				<exclude name="**/*.java"/>
 			</fileset>
 			<fileset dir="${config.dir}/c3p0" />
-			<fileset dir="${config.dir}/hibernate" />
+			<fileset dir="${config.dir}" includes="hibernate/**"/>
 			<fileset dir="${config.dir}/log4j" />
 		</copy>
 	</target>
