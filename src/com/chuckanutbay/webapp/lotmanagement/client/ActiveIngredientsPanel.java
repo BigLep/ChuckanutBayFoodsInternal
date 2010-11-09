@@ -8,7 +8,7 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayL
 import java.util.Date;
 import java.util.List;
 
-import com.chuckanutbay.webapp.shared.InventoryLotDto;
+import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;

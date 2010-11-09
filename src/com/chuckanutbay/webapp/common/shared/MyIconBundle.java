@@ -1,4 +1,4 @@
-package com.chuckanutbay.webapp.shared;
+package com.chuckanutbay.webapp.common.shared;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;

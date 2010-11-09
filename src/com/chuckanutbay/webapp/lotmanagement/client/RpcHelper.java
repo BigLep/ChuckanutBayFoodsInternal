@@ -5,8 +5,8 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
 import java.util.Date;
 import java.util.List;
 
-import com.chuckanutbay.webapp.shared.InventoryItemDto;
-import com.chuckanutbay.webapp.shared.InventoryLotDto;
+import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
+import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;

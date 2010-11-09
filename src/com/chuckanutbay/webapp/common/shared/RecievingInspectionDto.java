@@ -1,4 +1,4 @@
-package com.chuckanutbay.webapp.shared;
+package com.chuckanutbay.webapp.common.shared;
 
 import java.io.Serializable;
 import java.util.Date;

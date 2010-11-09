@@ -9,10 +9,10 @@ import java.util.List;
 
 import com.chuckanutbay.businessobjects.dao.InventoryItemDao;
 import com.chuckanutbay.businessobjects.dao.InventoryItemHibernateDao;
+import com.chuckanutbay.webapp.common.shared.RecievingInspectionDto;
 import com.chuckanutbay.webapp.recievinginspection.client.DatabaseQueryService;
 import com.chuckanutbay.webapp.recievinginspection.client.RecievingInspectionUtil;
 import com.chuckanutbay.webapp.recievinginspection.shared.InventoryItemDto;
-import com.chuckanutbay.webapp.shared.RecievingInspectionDto;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;

@@ -2,7 +2,7 @@ package com.chuckanutbay.webapp.recievinginspection.client;
 
 import java.util.ArrayList;
 
-import com.chuckanutbay.webapp.shared.MyIconBundle;
+import com.chuckanutbay.webapp.common.shared.MyIconBundle;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ImageResource;
