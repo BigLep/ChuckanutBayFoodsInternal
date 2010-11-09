@@ -17,21 +17,18 @@
   font-weight: bold;
 }
 
-.greenButton {
+.smallText {
+  font-size:10px; 
+  font-weight: standard;
+}
+.greenText {
+color: green;
+}
+
+.buttons {
 	width:200px;
 	height:40px;
 	font-size:16px;
 	font-weight:bold;
 	color:white;
-	border: 2px solid silver;
-	background: -webkit-gradient(linear, left top, left bottom, from(lightgreen), to(forestgreen)); 
-}
-.redButton {
-	width:200px;
-	height:40px;
-	font-size:16px;
-	font-weight:bold;
-	color:white;
-	border: 2px solid silver;
-	background: -webkit-gradient(linear, left top, left bottom, from(red), to(darkred)); 
-}
+	background: -webkit-gradient(linear, left top, left bottom, from(red), to(maroon));
