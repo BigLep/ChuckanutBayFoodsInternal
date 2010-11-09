@@ -14,16 +14,18 @@
 		<description>Opens/closes hibernate session for each request</description>
 		<filter-class>com.chuckanutbay.webapp.util.HibernateFilter</filter-class>
 	</filter>
+	
 	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
 		<url-pattern>/recievinginspection/databaseQuery</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
-		<url-pattern>/lotcodemanager/dashboardQuery</url-pattern>
+		<url-pattern>/lotcodemanager/databaseQuery</url-pattern>
 	</filter-mapping>
 	
 	<!-- Servlets -->
+	 
 	<servlet>
 	<servlet-name>DatabaseQueryServiceImpl</servlet-name>
 		<servlet-class>com.chuckanutbay.webapp.recievinginspection.server.DatabaseQueryServiceImpl</servlet-class>
@@ -34,8 +36,8 @@
 		<url-pattern>/recievinginspection/databaseQuery</url-pattern>
 	</servlet-mapping>
 	<servlet>
-	<servlet-name>DatabaseQueryServiceImpl</servlet-name>
-		<servlet-class>com.chuckanutbay.webapp.lotcodemanager.server.DatabaseQueryServiceImpl</servlet-class>
+		<servlet-name>DatabaseQueryServiceImpl</servlet-name>
+		<servlet-class>com.chuckanutbay.webapp.lotmanagement.server.DatabaseQueryServiceImpl</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>

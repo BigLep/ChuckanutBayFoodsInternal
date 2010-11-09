@@ -4,11 +4,18 @@ import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.webapp.recievinginspection.shared.InventoryItemDto;
+import com.chuckanutbay.webapp.shared.RecievingInspectionDto;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DatabaseQueryServiceAsync {
 
 	void getInventoryItems(
 			AsyncCallback<List<InventoryItemDto>> callback);
+
+	void setRecievingInspection(RecievingInspectionDto recievingInspectionDto,
+			AsyncCallback<Void> callback);
+
+	void getRecievingInspection(
+			AsyncCallback<List<RecievingInspectionDto>> callback);
 
 }

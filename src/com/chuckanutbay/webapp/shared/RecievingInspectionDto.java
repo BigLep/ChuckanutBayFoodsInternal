@@ -13,7 +13,8 @@ import com.chuckanutbay.documentation.Terminology;
  */
 public class RecievingInspectionDto implements Serializable {
 	private Date date;
-	private String	inspector;
+	private String inspector;
+	private String quickbooksPO;
 	private String truckingCompany;
 	private String truckCondition;
 	private Boolean trailorLocked;
@@ -110,6 +111,12 @@ public class RecievingInspectionDto implements Serializable {
 	}
 	public void setAdditionalNotes(String additionalNotes) {
 		this.additionalNotes = additionalNotes;
+	}
+	public void setQuickbooksPO(String quickbooksPO) {
+		this.quickbooksPO = quickbooksPO;
+	}
+	public String getQuickbooksPO() {
+		return quickbooksPO;
 	}
 	
 

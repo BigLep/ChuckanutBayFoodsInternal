@@ -6,12 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.webapp.recievinginspection.shared.InventoryItemDto;
+import com.chuckanutbay.webapp.shared.RecievingInspectionDto;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class RpcHelper {
 	private List<InventoryItemDto> qbItemList = null;
+	private List<RecievingInspectionDto> recievingInspectionList = null;
 	private RecievingInspection senderObject = null;
 	private DatabaseQueryServiceAsync dbQueryService = GWT.create(DatabaseQueryService.class);
 	
