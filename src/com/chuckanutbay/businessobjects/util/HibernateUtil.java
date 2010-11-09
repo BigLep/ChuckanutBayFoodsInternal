@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
+import com.chuckanutbay.documentation.ReferenceSource.EffectiveJava;
 import com.chuckanutbay.util.ObjectUtilsExtensions;
 import com.chuckanutbay.util.SystemUtilsExtensions;
 
@@ -76,6 +77,9 @@ public class HibernateUtil {
 		getSession().close();
 	}
 
-
+	/**
+	 * @see EffectiveJava#Enforce_noninstantiability
+	 */
+	private HibernateUtil() {}
 
 }
