@@ -1,13 +1,16 @@
 package com.chuckanutbay.webapp.recievinginspection.client;
 
-import static com.chuckanutbay.webapp.recievinginspection.client.RecievingInspectionUtil.*;
+import static com.chuckanutbay.webapp.recievinginspection.client.RecievingInspectionUtil.icons;
+import static com.chuckanutbay.webapp.recievinginspection.client.RecievingInspectionUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.recievinginspection.client.RecievingInspectionUtil.newArrayList;
 
 import java.util.Date;
 import java.util.List;
 
-import com.chuckanutbay.webapp.recievinginspection.shared.InventoryItemDto;
+import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -17,19 +20,15 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.DecoratedStackPanel;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.DecoratedTabBar;
-import com.google.gwt.user.client.ui.TabPanel;
 
 public class RecievingInspection implements EntryPoint {
 	

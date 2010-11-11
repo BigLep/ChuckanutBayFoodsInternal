@@ -5,6 +5,10 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
 import java.util.Date;
 import java.util.List;
 
+import com.chuckanutbay.webapp.common.client.InventoryItemService;
+import com.chuckanutbay.webapp.common.client.InventoryItemServiceAsync;
+import com.chuckanutbay.webapp.common.client.InventoryLotService;
+import com.chuckanutbay.webapp.common.client.InventoryLotServiceAsync;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.core.client.GWT;
@@ -12,12 +16,13 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class RpcHelper {
-	private List<InventoryItemDto> qbItemList = null;
-	private List<InventoryLotDto> itemInInventoryList = null;
+	private List<InventoryItemDto> inventoryItemList = null;
+	private List<InventoryLotDto> inventoryLotList = null;
 	private LotCodeManagerPanel senderObject = null;
-	private DatabaseQueryServiceAsync dbQueryService = GWT.create(DatabaseQueryService.class);
+	private InventoryLotServiceAsync inventoryLotService = GWT.create(InventoryLotService.class);
+	private InventoryItemServiceAsync inventoryItemService = GWT.create(InventoryItemService.class);
 	
-	public AsyncCallback<List<InventoryItemDto>> qbItemListCallback = new AsyncCallback<List<InventoryItemDto>>() {
+	public AsyncCallback<List<InventoryItemDto>> inventoryItemServiceCallback = new AsyncCallback<List<InventoryItemDto>>() {
     	public void onFailure(Throwable caught) {
     		Window.alert("system failed");
     		log("failure on server");
@@ -25,28 +30,28 @@ public class RpcHelper {
 
 		public void onSuccess(List<InventoryItemDto> dbQBItemList) {
 			log("success on server");
-			if (qbItemList != null) {
-				qbItemList.clear();
+			if (inventoryItemList != null) {
+				inventoryItemList.clear();
 			}
-			qbItemList.addAll(dbQBItemList);
-	        if(qbItemList != null && qbItemList.size() > 0) {
+			inventoryItemList.addAll(dbQBItemList);
+	        if(inventoryItemList != null && inventoryItemList.size() > 0) {
 	        	log("A good return is coming");
 	        }
 	        senderObject.populateFlexTable();
 		}
     };
-    public AsyncCallback<List<InventoryLotDto>> itemInInventoryCallback = new AsyncCallback<List<InventoryLotDto>>() {
+    public AsyncCallback<List<InventoryLotDto>> inventoryLotServiceCallback = new AsyncCallback<List<InventoryLotDto>>() {
     	public void onFailure(Throwable caught) {
     		Window.alert("system failed");
     	}
 
       	public void onSuccess(List<InventoryLotDto> dbItemInInventoryList) {
       		log("success on server");
-			if (itemInInventoryList != null) {
-				itemInInventoryList.clear();
+			if (inventoryLotList != null) {
+				inventoryLotList.clear();
 			}
-			itemInInventoryList.addAll(dbItemInInventoryList);
-	        if(itemInInventoryList != null && itemInInventoryList.size() > 0) {
+			inventoryLotList.addAll(dbItemInInventoryList);
+	        if(inventoryLotList != null && inventoryLotList.size() > 0) {
 	        	log("A good return is coming");
 	        }
 	        senderObject.populateFlexTable();
@@ -62,51 +67,51 @@ public class RpcHelper {
     };
 
     public void dbGetQBItems(List<InventoryItemDto> argQBItemList, LotCodeManagerPanel sender) {
-    	qbItemList = argQBItemList;
+    	inventoryItemList = argQBItemList;
     	senderObject = sender;
-        dbQueryService.getInventoryItems(qbItemListCallback);
+    	inventoryItemService.getInventoryItems(inventoryItemServiceCallback);
       }
     
     public void dbGetCheckedInIngredients(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
-    	itemInInventoryList = argItemInInventoryList;
+    	inventoryLotList = argItemInInventoryList;
     	senderObject = sender;
-        dbQueryService.getUnusedIngredientLots(itemInInventoryCallback);
+        inventoryLotService.getUnusedIngredientLots(inventoryLotServiceCallback);
       }
     
     public void dbGetInUseIngredients(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
-    	itemInInventoryList = argItemInInventoryList;
+    	inventoryLotList = argItemInInventoryList;
     	senderObject = sender;
-        dbQueryService.getInUseIngredientLots(itemInInventoryCallback);
+        inventoryLotService.getInUseIngredientLots(inventoryLotServiceCallback);
       } 
     
     public void dbGetFullIngredientHistory(List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
-    	itemInInventoryList = argItemInInventoryList;
+    	inventoryLotList = argItemInInventoryList;
     	senderObject = sender;
-        dbQueryService.getFullIngredientHistory(itemInInventoryCallback);
+        inventoryLotService.getFullIngredientHistory(inventoryLotServiceCallback);
       }
     
     public void dbGetLotCodeMatchIngredients(String lotCode, List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
-    	itemInInventoryList = argItemInInventoryList;
+    	inventoryLotList = argItemInInventoryList;
     	senderObject = sender;
-        dbQueryService.getLotCodeMatchIngredients(lotCode, itemInInventoryCallback);
+        inventoryLotService.getLotCodeMatchIngredients(lotCode, inventoryLotServiceCallback);
       }
     
     public void dbGetDateMatchInUseIngredients(Date date, List<InventoryLotDto> argItemInInventoryList, LotCodeManagerPanel sender) {
-    	itemInInventoryList = argItemInInventoryList;
+    	inventoryLotList = argItemInInventoryList;
     	senderObject = sender;
-        dbQueryService.getDateMatchInUseIngredients(date, itemInInventoryCallback);
+        inventoryLotService.getDateMatchInUseIngredients(date, inventoryLotServiceCallback);
       }
     
     public void dbSetCheckedInIngredients(List<InventoryLotDto> checkedInIngredients) {
-        dbQueryService.setUnusedIngredientLots(checkedInIngredients, voidCallback);
+        inventoryLotService.setUnusedIngredientLots(checkedInIngredients, voidCallback);
       }
 
     public void dbSetInUseIngredients(List<InventoryLotDto> inUseIngredients) {
-        dbQueryService.setInUseIngredientLots(inUseIngredients, voidCallback);
+        inventoryLotService.setInUseIngredientLots(inUseIngredients, voidCallback);
       }
     
     public void dbSetUsedUpIngredients(List<InventoryLotDto> usedUpIngredients) {
-        dbQueryService.setUsedUpInventoryLots(usedUpIngredients, voidCallback);
+        inventoryLotService.setUsedUpInventoryLots(usedUpIngredients, voidCallback);
       }
     
 }

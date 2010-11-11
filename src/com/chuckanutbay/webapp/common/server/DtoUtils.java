@@ -1,4 +1,4 @@
-package com.chuckanutbay.webapp.lotmanagement.server;
+package com.chuckanutbay.webapp.common.server;
 
 import java.util.ArrayList;
 import java.util.Collection;

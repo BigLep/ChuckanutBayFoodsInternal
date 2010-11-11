@@ -37,7 +37,7 @@
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>DatabaseQueryServiceImpl</servlet-name>
-		<servlet-class>com.chuckanutbay.webapp.lotmanagement.server.DatabaseQueryServiceImpl</servlet-class>
+		<servlet-class>com.chuckanutbay.webapp.common.server.DatabaseQueryServiceImpl</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>

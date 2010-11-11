@@ -2,11 +2,12 @@ package com.chuckanutbay.webapp.recievinginspection.client;
 
 import static com.chuckanutbay.webapp.recievinginspection.client.RecievingInspectionUtil.log;
 
-import java.util.Date;
 import java.util.List;
 
+import com.chuckanutbay.webapp.common.client.InventoryItemService;
+import com.chuckanutbay.webapp.common.client.InventoryItemServiceAsync;
+import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.RecievingInspectionDto;
-import com.chuckanutbay.webapp.recievinginspection.shared.InventoryItemDto;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -15,7 +16,7 @@ public class RpcHelper {
 	private List<InventoryItemDto> qbItemList = null;
 	private List<RecievingInspectionDto> recievingInspectionList = null;
 	private RecievingInspection senderObject = null;
-	private DatabaseQueryServiceAsync dbQueryService = GWT.create(DatabaseQueryService.class);
+	private InventoryItemServiceAsync inventoryItemService = GWT.create(InventoryItemService.class);
 	
 	public AsyncCallback<List<InventoryItemDto>> qbItemListCallback = new AsyncCallback<List<InventoryItemDto>>() {
     	public void onFailure(Throwable caught) {
@@ -41,7 +42,7 @@ public class RpcHelper {
     	log("sendingRequest");
     	qbItemList = argQBItemList;
     	senderObject = sender;
-        dbQueryService.getInventoryItems(qbItemListCallback);
+        inventoryItemService.getInventoryItems(qbItemListCallback);
       }
     
    

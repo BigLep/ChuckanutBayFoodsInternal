@@ -1,21 +1,12 @@
-package com.chuckanutbay.webapp.lotmanagement.client;
+package com.chuckanutbay.webapp.common.client;
 
 import java.util.Date;
 import java.util.List;
 
-import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-@RemoteServiceRelativePath("databaseQuery")
-public interface DatabaseQueryService extends RemoteService {
-
-	/**
-	 * @return {@link InventoryItemDto}s for every item in inventory.
-	 */
-	List<InventoryItemDto> getInventoryItems();
-
+public interface InventoryLotService extends RemoteService {
 	/**
 	 * @return {@link InventoryLotDto}s that have been entered in but not started to be used query.
 	 */

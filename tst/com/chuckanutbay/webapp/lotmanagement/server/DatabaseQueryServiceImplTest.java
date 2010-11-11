@@ -3,7 +3,6 @@ package com.chuckanutbay.webapp.lotmanagement.server;
 import java.util.Date;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -11,9 +10,8 @@ import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.businessobjects.dao.InventoryItemHibernateDao;
 import com.chuckanutbay.businessobjects.dao.InventoryLotHibernateDao;
-import com.chuckanutbay.businessobjects.util.HibernateUtil;
 import com.chuckanutbay.util.testing.DatabaseResource;
-import com.chuckanutbay.webapp.lotmanagement.client.DatabaseQueryService;
+import com.chuckanutbay.webapp.common.server.DatabaseQueryServiceImpl;
 
 
 /**

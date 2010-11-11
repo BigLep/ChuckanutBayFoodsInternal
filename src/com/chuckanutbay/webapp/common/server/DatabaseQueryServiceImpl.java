@@ -1,8 +1,6 @@
-package com.chuckanutbay.webapp.lotmanagement.server;
+package com.chuckanutbay.webapp.common.server;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import com.chuckanutbay.businessobjects.InventoryLot;
@@ -10,14 +8,14 @@ import com.chuckanutbay.businessobjects.dao.InventoryItemDao;
 import com.chuckanutbay.businessobjects.dao.InventoryItemHibernateDao;
 import com.chuckanutbay.businessobjects.dao.InventoryLotDao;
 import com.chuckanutbay.businessobjects.dao.InventoryLotHibernateDao;
+import com.chuckanutbay.webapp.common.client.InventoryItemService;
+import com.chuckanutbay.webapp.common.client.InventoryLotService;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
-import com.chuckanutbay.webapp.lotmanagement.client.DatabaseQueryService;
 import com.google.common.collect.Lists;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements DatabaseQueryService {
+public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements InventoryItemService, InventoryLotService {
 
 	private static final long serialVersionUID = 1L;
 
