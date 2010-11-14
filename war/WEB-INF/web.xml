@@ -14,35 +14,35 @@
 		<description>Opens/closes hibernate session for each request</description>
 		<filter-class>com.chuckanutbay.webapp.util.HibernateFilter</filter-class>
 	</filter>
-	
 	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
-		<url-pattern>/recievinginspection/databaseQuery</url-pattern>
+		<url-pattern>/common/inventoryItemService</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
-		<url-pattern>/lotcodemanager/databaseQuery</url-pattern>
+		<url-pattern>/common/inventoryLotService</url-pattern>
 	</filter-mapping>
 	
 	<!-- Servlets -->
 	 
 	<servlet>
-	<servlet-name>DatabaseQueryServiceImpl</servlet-name>
-		<servlet-class>com.chuckanutbay.webapp.recievinginspection.server.DatabaseQueryServiceImpl</servlet-class>
+	<servlet-name>InventoryItemServiceImplementation</servlet-name>
+		<servlet-class>com.chuckanutbay.webapp.common.server.InventoryItemServiceImpl</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>DatabaseQueryServiceImpl</servlet-name>
-		<url-pattern>/recievinginspection/databaseQuery</url-pattern>
+		<servlet-name>InventoryItemServiceImplementation</servlet-name>
+		<url-pattern>/common/inventoryItemService</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
-		<servlet-name>DatabaseQueryServiceImpl</servlet-name>
-		<servlet-class>com.chuckanutbay.webapp.common.server.DatabaseQueryServiceImpl</servlet-class>
+	<servlet-name>InventoryLotServiceImplementation</servlet-name>
+		<servlet-class>com.chuckanutbay.webapp.common.server.InventoryLotServiceImpl</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>DatabaseQueryServiceImpl</servlet-name>
-		<url-pattern>/lotcodemanager/databaseQuery</url-pattern>
+		<servlet-name>InventoryLotServiceImplementation</servlet-name>
+		<url-pattern>/common/inventoryLotService</url-pattern>
 	</servlet-mapping>
 	
 	<!-- Default page to serve -->

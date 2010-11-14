@@ -15,17 +15,11 @@ import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-public class DatabaseQueryServiceImpl extends RemoteServiceServlet implements InventoryItemService, InventoryLotService {
+public class InventoryLotServiceImpl extends RemoteServiceServlet implements InventoryLotService {
 
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public List<InventoryItemDto> getInventoryItems() {
-		InventoryItemDao dao = new InventoryItemHibernateDao();
-		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryItemDto);
-	}
-
-	@Override
+		@Override
 	public void setUnusedIngredientLots(final List<InventoryLotDto> ingreditentLotDtos) {
 		List<InventoryLot> inventoryLots = Lists.transform(ingreditentLotDtos, DtoUtils.fromInventoryLotDto);
 		InventoryLotDao dao = new InventoryLotHibernateDao();

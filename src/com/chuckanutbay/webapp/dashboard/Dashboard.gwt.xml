@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to="dashboard">
-  <inherits name="com.chuckanutbay.webapp.BaseModule"/>
+  <inherits name="com.chuckanutbay.webapp.common.BaseModule"/>
 
   <!-- Specify the app entry point class. -->
   <entry-point class="com.chuckanutbay.webapp.dashboard.client.Dashboard"/>

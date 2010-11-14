@@ -24,8 +24,8 @@
 		<source path="client"/>
 		<source path="shared"/>
 	-->
-	<source path="common/shared"/>
-	<source path="common/client"/>
+	<source path="shared"/>
+	<source path="client"/>
 	
 
 </module>

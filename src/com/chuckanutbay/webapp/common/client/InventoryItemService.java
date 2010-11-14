@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+@RemoteServiceRelativePath("inventoryItemService")
 public interface InventoryItemService extends RemoteService {
 
 	/**

@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+@RemoteServiceRelativePath("inventoryLotService")
 public interface InventoryLotService extends RemoteService {
 	/**
 	 * @return {@link InventoryLotDto}s that have been entered in but not started to be used query.
