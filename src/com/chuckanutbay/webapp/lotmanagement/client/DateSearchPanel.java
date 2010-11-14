@@ -1,6 +1,4 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_BOX_WIDTH;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
@@ -45,7 +43,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 			//Set Up dateBox
 			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 			dateBox.setValue(new Date(), true);
-			dateBox.setWidth(DATE_BOX_WIDTH);
+			dateBox.setStyleName("dateBox");
 			//Set Up searchButton
 			makeButtonWithIcon(searchButton, icons.searchIcon(), "Search");
 			searchButton.setWidth("250px");
@@ -55,7 +53,6 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 			dateToSearchPanel.setStyleName("headerPanel");
 			//Set Up dateSearchFlexTable
 			setupdateSearchFlexTableHeader();
-			dateSearchFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		//Add components to dateToSearchPanel
 		dateToSearchPanel.add(dateToSearchLabel);
 		dateToSearchPanel.add(dateBox);

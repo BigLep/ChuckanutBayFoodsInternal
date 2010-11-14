@@ -18,9 +18,10 @@
 }
 
 .headerPanel {
-  border: 1px solid silver;
-  padding: 4px;
   width: 825px;
+	padding: 4px;
+	border: 1px solid Silver;
+	spacing: 5px;
 }
 
 .FlexTableHeader {
@@ -35,6 +36,21 @@
   border: 1px solid silver;
   padding: 2px;
   width: 825px;
+}
+.dateBox {
+width: 80px;
+}
+.lotCodeTextBox {
+	width: 150px;
+}
+.ingredientListBox {
+	width: 350px;
+}
+.ingredientCodeTextBox {
+	width: 50px;
+}
+.navigationButton {
+	width: 400px;
 }
 
 /*

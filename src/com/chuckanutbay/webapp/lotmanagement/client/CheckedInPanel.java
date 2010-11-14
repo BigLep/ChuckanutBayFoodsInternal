@@ -1,7 +1,5 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_BOX_WIDTH;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
@@ -40,6 +38,7 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	private DateBox dateBox = new DateBox();
 	private Button addIngredientButton = new Button();
 	private FlexTable checkedInIngredientFlexTable = new FlexTable();
+	//private CellTable<InventoryLotDto> checkedInIngredientCellTable = new CellTable<InventoryLotDto>();
 	private DialogBox dialogBox;
 	private List<InventoryItemDto> inventoryItemList = newArrayList();
 	private List<InventoryLotDto> checkedInIngredientList = newArrayList();
@@ -58,16 +57,16 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 		//Set Up Components
 			//Set Up lotCodeTextBox
 			lotCodeTextBox.setText("Lot Code...");
-			lotCodeTextBox.setWidth("150px");
-			ingredientListBox.setWidth("350px");
+			lotCodeTextBox.setStyleName("lotCodeTextBox");
+			ingredientListBox.setStyleName("ingredientListBox");
 			//Set Up ingredientCodeTextBox
 			ingredientCodeTextBox.setReadOnly(true);
-			ingredientCodeTextBox.setWidth("50px");
+			ingredientCodeTextBox.setStyleName("ingredientCodeTextBox");
 			matchIngredientCodeAndType();
 			//Set Up dateBox
 			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 			dateBox.setValue(new Date(), true);
-			dateBox.setWidth(DATE_BOX_WIDTH);
+			dateBox.setStyleName("dateBox");
 			//Set Up addIngredientButton
 			makeButtonWithIcon(addIngredientButton, icons.addIcon(), "Add");
 			addIngredientButton.setWidth("75px");
@@ -75,7 +74,6 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			newCheckedInIngredientPanel.setSpacing(5);
 			newCheckedInIngredientPanel.setStyleName("headerPanel");
 			//Set Up checkedInIngredientFlexTable
-			checkedInIngredientFlexTable.setWidth(FLEX_TABLE_WIDTH);
 			checkedInIngredientFlexTable.setText(0,0,"Lot Code");
 			checkedInIngredientFlexTable.setText(0,1,"Ingredient Type");
 			checkedInIngredientFlexTable.setText(0,2,"Ingredient Code");
@@ -83,7 +81,53 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			checkedInIngredientFlexTable.setText(0,4,"Remove");
 			checkedInIngredientFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
 			checkedInIngredientFlexTable.addStyleName("FlexTable");
+	/**
+			//Set up checkedInIngredientCellTable
+			TextColumn<InventoryLotDto> lotCodeColumn = new TextColumn<InventoryLotDto>() {
+				public String getValue(InventoryLotDto inventoryLotDto) {
+					return inventoryLotDto.getCode(); 
+				}
+			};
+			checkedInIngredientCellTable.addColumn(lotCodeColumn, "Lot Code");
 			
+			TextColumn<InventoryLotDto> itemDescriptionColumn = new TextColumn<InventoryLotDto>() {
+				public String getValue(InventoryLotDto inventoryLotDto) {
+					return inventoryLotDto.getInventoryItem().getDescription(); 
+				}
+			};
+			checkedInIngredientCellTable.addColumn(itemDescriptionColumn, "Inventory Item");
+			
+			TextColumn<InventoryLotDto> itemCodeColumn = new TextColumn<InventoryLotDto>() {
+				public String getValue(InventoryLotDto inventoryLotDto) {
+					return inventoryLotDto.getInventoryItem().getId(); 
+				}
+			};
+			checkedInIngredientCellTable.addColumn(itemCodeColumn, "Item Code");
+			
+			DateCell dateCell = new DateCell();
+			Column<InventoryLotDto, Date> dateColumn = new Column<InventoryLotDto, Date>(dateCell) {
+				public Date getValue(InventoryLotDto inventoryLotDto) {
+					return inventoryLotDto.getReceivedDatetime(); 
+				}
+			};
+			checkedInIngredientCellTable.addColumn(dateColumn, "Date");
+			
+			ButtonCell buttonCell = new ButtonCell();
+			Column<InventoryLotDto, String> removeButtonColumn = new Column<InventoryLotDto, String>(buttonCell) {
+				public String getValue(InventoryLotDto inventoryLotDto) {
+					 Button removeButton = new Button();
+					    makeButtonWithIcon(removeButton, icons.deleteIcon(), "Remove");
+					    removeButton.addClickHandler(new ClickHandler() {
+					        public void onClick(ClickEvent event) {
+					        	checkedInIngredientCellTable
+					          }
+					        });
+					return removeButton.getHTML(); 
+				}
+			};
+			checkedInIngredientCellTable.addColumn(removeButtonColumn, "Remove");
+			
+	*/
 		//Add Handlers
 		addIngredientButton.addClickHandler(this);
 		ingredientListBox.addChangeHandler(this);

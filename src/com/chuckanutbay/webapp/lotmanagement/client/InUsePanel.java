@@ -1,6 +1,5 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
@@ -43,11 +42,10 @@ public class InUsePanel extends LotCodeManagerPanel {
 		//Set Up dateBox
 		dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 		dateBox.setValue(new Date(), true);
-		dateBox.setWidth("80px");
+		dateBox.setStyleName("dateBox");
 		//Set Up inUseDatePanel
 		inUseDatePanel.setSpacing(5);
 		//Set Up inUseIngredientFlexTable
-		inUseIngredientFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		inUseIngredientFlexTable.setText(0,0,"Lot Code");
 		inUseIngredientFlexTable.setText(0,1,"Ingredient Type");
 		inUseIngredientFlexTable.setText(0,2,"Checked-In Date");

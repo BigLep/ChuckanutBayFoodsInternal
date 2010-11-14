@@ -1,7 +1,5 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_BOX_WIDTH;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
@@ -39,13 +37,11 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 			//Set Up dateBox
 			dateBox.setText(dateFormat.format(new Date()));
 			dateBox.setReadOnly(true);
-			dateBox.setWidth(DATE_BOX_WIDTH);
+			dateBox.setStyleName("dateBox");
 			//Set Up dateToSearchPanel
-			dateToSearchPanel.setSpacing(5);
 			dateToSearchPanel.setStyleName("headerPanel");
 			//Set Up activeIngredientsFlexTable
 			setupactiveIngredientsFlexTableHeader();
-			activeIngredientsFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		//Add components to dateToSearchPanel
 		dateToSearchPanel.add(dateToSearchLabel);
 		dateToSearchPanel.add(dateBox);

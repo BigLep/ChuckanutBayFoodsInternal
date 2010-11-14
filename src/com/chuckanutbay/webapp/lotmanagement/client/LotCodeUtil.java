@@ -15,9 +15,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class LotCodeUtil {
 	
-	static public final String FLEX_TABLE_WIDTH = "825px";
-	static public final String DATE_BOX_WIDTH = "80px";
-	
     static public void log(String message) {
     	GWT.log(message);
     }

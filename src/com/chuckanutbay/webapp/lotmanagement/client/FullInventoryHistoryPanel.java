@@ -1,5 +1,4 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
@@ -43,7 +42,6 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 	private RpcHelper rpcHelper = new RpcHelper();
 	
 	private static final String NUMBER_OF_VISIBLE_ROWS[] = {"10", "25", "50", "100"};
-	private static final String NAVIGATION_BUTTON_WIDTH = "400px";
 	
 	
 	public FullInventoryHistoryPanel() { 
@@ -63,17 +61,16 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		headerPanel.setStyleName("headerPanel");
 		//Set Up inUseIngredientFlexTable
 		setupInUseIngredientFlexTable();
-		viewFullIngredientHistoryFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		//Set Up buttonsPanel
 		buttonsPanel.setSpacing(5);
 		//Set Up backButton
 		makeButtonWithIcon(backButton, icons.backIcon(), "Back");
-		backButton.setWidth(NAVIGATION_BUTTON_WIDTH);
+		backButton.setStyleName("navigationButton");
 		backButton.addClickHandler(this);
 		buttonsPanel.add(backButton);
 		//Set Up nextButton
 		makeButtonWithIcon(nextButton, icons.nextIcon(), "Next");
-		nextButton.setWidth(NAVIGATION_BUTTON_WIDTH);
+		nextButton.setStyleName("navigationButton");
 		nextButton.addClickHandler(this);
 		buttonsPanel.add(nextButton);
 		//Assemble inUseIngredientPanel

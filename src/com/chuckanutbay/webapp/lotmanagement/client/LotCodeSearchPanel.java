@@ -1,5 +1,4 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FLEX_TABLE_WIDTH;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
@@ -50,7 +49,6 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 			codeToSearchPanel.setStyleName("headerPanel");
 			//Set Up lotCodeSearchFlexTable
 			setupLotCodeSearchFlexTableHeader();
-			lotCodeSearchFlexTable.setWidth(FLEX_TABLE_WIDTH);
 		//Add components to codeToSearchPanel
 		codeToSearchPanel.add(codeToSearchLabel);
 		codeToSearchPanel.add(codeTextBox);
