@@ -1,6 +1,7 @@
 /build-output
 /configuration/hibernate/hibernate-prod.cfg.xml
 /war/dashboard
+/war/employeemonitor
 /war/lotcodemanager
 /war/employeemonitor
 /war/recievinginspection
