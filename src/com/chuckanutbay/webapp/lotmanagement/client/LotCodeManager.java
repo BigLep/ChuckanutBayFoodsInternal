@@ -12,7 +12,6 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -23,29 +22,28 @@ import com.google.gwt.user.client.ui.Widget;
 final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandler, MouseOutHandler {
 	
 	//Main UI Components
-	private VerticalPanel mainPanel = new VerticalPanel();
-	private Label lotCodeManagerLabel = new Label("Lot Code Manager");
-	private Label markInventoryLabel = new Label("Mark Inventory As:");
-	private Label queryLabel = new Label("Query Lot Code Data:");
-	private Label viewFullInventoryHistoryLabel = new Label("Inventory History:");
-	private HorizontalPanel buttonsPanel = new HorizontalPanel();
-	private HorizontalPanel markInventoryButtonsHPanel = new HorizontalPanel();
-	private HorizontalPanel viewFullInventoryHistoryHPanel = new HorizontalPanel();
-	private HorizontalPanel queryButtonsHPanel = new HorizontalPanel();
-	private VerticalPanel markInventoryVPanel = new VerticalPanel();
-	private VerticalPanel viewFullInventoryHistoryVPanel = new VerticalPanel();
-	private VerticalPanel queryVPanel = new VerticalPanel();
-	private Button checkedInButton = new Button();
-	private Button inUseButton = new Button();
-	private Button usedUpButton = new Button();
-	private Button lotCodeSearch = new Button();
-	private Button dateSearch = new Button ();
-	private Button activeIngredientsButton = new Button ();
-	private Button viewFullInventoryHistoryButton = new Button();
-	private DecoratedPopupPanel lotCodeSearchPopup = new DecoratedPopupPanel(true);
-	private DecoratedPopupPanel dateSearchPopup = new DecoratedPopupPanel(true);
-	private DecoratedPopupPanel activeIngredientsPopup = new DecoratedPopupPanel(true);
-	private DialogBox dialogBox;
+	private final VerticalPanel mainPanel = new VerticalPanel();
+	private final Label lotCodeManagerLabel = new Label("Lot Code Manager");
+	private final Label markInventoryLabel = new Label("Mark Inventory As:");
+	private final Label queryLabel = new Label("Query Lot Code Data:");
+	private final Label viewFullInventoryHistoryLabel = new Label("Inventory History:");
+	private final HorizontalPanel buttonsPanel = new HorizontalPanel();
+	private final HorizontalPanel markInventoryButtonsHPanel = new HorizontalPanel();
+	private final HorizontalPanel viewFullInventoryHistoryHPanel = new HorizontalPanel();
+	private final HorizontalPanel queryButtonsHPanel = new HorizontalPanel();
+	private final VerticalPanel markInventoryVPanel = new VerticalPanel();
+	private final VerticalPanel viewFullInventoryHistoryVPanel = new VerticalPanel();
+	private final VerticalPanel queryVPanel = new VerticalPanel();
+	private final Button checkedInButton = new Button();
+	private final Button inUseButton = new Button();
+	private final Button usedUpButton = new Button();
+	private final Button lotCodeSearch = new Button();
+	private final Button dateSearch = new Button ();
+	private final Button activeIngredientsButton = new Button ();
+	private final Button viewFullInventoryHistoryButton = new Button();
+	private final DecoratedPopupPanel lotCodeSearchPopup = new DecoratedPopupPanel(true);
+	private final DecoratedPopupPanel dateSearchPopup = new DecoratedPopupPanel(true);
+	private final DecoratedPopupPanel activeIngredientsPopup = new DecoratedPopupPanel(true);
 	private static int POPUP_POSITION_FROM_TOP = 25;
 	private static int POPUP_POSITION_FROM_LEFT = 5;
 	
@@ -58,6 +56,7 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 	ActiveIngredientsPanel activeIngredientsPanel;
 	FullInventoryHistoryPanel fullInventoryHistoryPanel;
 	
+	@Override
 	public void onModuleLoad() {
 		
 		//Set Up iconButtons
@@ -136,6 +135,7 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 		rootPanel.add(mainPanel);
 	} 
 	
+	@Override
 	public void onClick(ClickEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == checkedInButton) {
@@ -161,6 +161,7 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 		}
 	}
 	
+	@Override
 	public void onMouseOver(MouseOverEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == lotCodeSearch) {
@@ -174,6 +175,7 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 		}
 	}
 
+	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == lotCodeSearch) {

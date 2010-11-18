@@ -15,6 +15,7 @@ public class InventoryLotDto implements Serializable {
 	private Integer id;
 	private String code;
 	private InventoryItemDto inventoryItem;
+	private int quantity;
 	private Date receivedDatetime;
 	private Date startUseDatetime;
 	private Date endUseDatetime;
@@ -24,9 +25,10 @@ public class InventoryLotDto implements Serializable {
 	 */
 	public InventoryLotDto(){}
 
-	public InventoryLotDto(String code, InventoryItemDto inventoryItem, Date receivedDatetime) {
+	public InventoryLotDto(String code, InventoryItemDto inventoryItem, int quantity, Date receivedDatetime) {
 		this.code = code;
 		this.inventoryItem = inventoryItem;
+	  	this.quantity = quantity;
 	  	this.receivedDatetime = receivedDatetime;
 	}
 
@@ -34,6 +36,7 @@ public class InventoryLotDto implements Serializable {
 		this.id = e.getId();
 		this.code = e.getCode();
 		this.inventoryItem = e.getInventoryItem();
+		this.quantity = e.getQuantity();
 		this.receivedDatetime = e.getReceivedDatetime();
 		this.startUseDatetime = e.getStartUseDatetime();
 		this.endUseDatetime = e.getEndUseDatetime();
@@ -85,5 +88,13 @@ public class InventoryLotDto implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 }

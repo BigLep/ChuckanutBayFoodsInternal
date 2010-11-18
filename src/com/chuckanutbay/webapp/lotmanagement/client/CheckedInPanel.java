@@ -28,22 +28,22 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, ChangeHandler {
+public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, ChangeHandler {
 	//Checked-In Components
-	private VerticalPanel checkedInIngredientPanel = new VerticalPanel();
-	private HorizontalPanel newCheckedInIngredientPanel = new HorizontalPanel();
-	private TextBox lotCodeTextBox = new TextBox();
-	private ListBox ingredientListBox = new ListBox();
-	private TextBox ingredientCodeTextBox = new TextBox();
-	private DateBox dateBox = new DateBox();
-	private Button addIngredientButton = new Button();
-	private FlexTable checkedInIngredientFlexTable = new FlexTable();
-	//private CellTable<InventoryLotDto> checkedInIngredientCellTable = new CellTable<InventoryLotDto>();
+	private final VerticalPanel checkedInIngredientPanel = new VerticalPanel();
+	private final HorizontalPanel newCheckedInIngredientPanel = new HorizontalPanel();
+	private final TextBox lotCodeTextBox = new TextBox();
+	private final ListBox ingredientListBox = new ListBox();
+	private final TextBox ingredientCodeTextBox = new TextBox();
+	private final TextBox ingredientQuantityTextBox = new TextBox();
+	private final DateBox dateBox = new DateBox();
+	private final Button addIngredientButton = new Button();
+	private final FlexTable checkedInIngredientFlexTable = new FlexTable();
 	private DialogBox dialogBox;
-	private List<InventoryItemDto> inventoryItemList = newArrayList();
-	private List<InventoryLotDto> checkedInIngredientList = newArrayList();
-	private List<String> lotCodesList = newArrayList();
-	private RpcHelper rpcHelper = new RpcHelper();
+	private final List<InventoryItemDto> inventoryItemList = newArrayList();
+	private final List<InventoryLotDto> checkedInIngredientList = newArrayList();
+	private final List<String> lotCodesList = newArrayList();
+	private final RpcHelper rpcHelper = new RpcHelper();
 	
 	
 	public CheckedInPanel() {
@@ -53,6 +53,7 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 		log("set qbItemList = to get items");
 	}
 	
+	@Override
 	public void setUpPanel() {
 		//Set Up Components
 			//Set Up lotCodeTextBox
@@ -60,9 +61,10 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			lotCodeTextBox.setStyleName("lotCodeTextBox");
 			ingredientListBox.setStyleName("ingredientListBox");
 			//Set Up ingredientCodeTextBox
-			ingredientCodeTextBox.setReadOnly(true);
 			ingredientCodeTextBox.setStyleName("ingredientCodeTextBox");
-			matchIngredientCodeAndType();
+			matchIngredientCodeToDescription();
+			//Set Up ingredientQuantityTextBox
+			ingredientQuantityTextBox.setStyleName("ingredientCodeTextBox");
 			//Set Up dateBox
 			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 			dateBox.setValue(new Date(), true);
@@ -76,65 +78,20 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 			//Set Up checkedInIngredientFlexTable
 			checkedInIngredientFlexTable.setText(0,0,"Lot Code");
 			checkedInIngredientFlexTable.setText(0,1,"Ingredient Type");
-			checkedInIngredientFlexTable.setText(0,2,"Ingredient Code");
+			checkedInIngredientFlexTable.setText(0,2,"Quantity");
 			checkedInIngredientFlexTable.setText(0,3,"Date");
 			checkedInIngredientFlexTable.setText(0,4,"Remove");
 			checkedInIngredientFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
 			checkedInIngredientFlexTable.addStyleName("FlexTable");
-	/**
-			//Set up checkedInIngredientCellTable
-			TextColumn<InventoryLotDto> lotCodeColumn = new TextColumn<InventoryLotDto>() {
-				public String getValue(InventoryLotDto inventoryLotDto) {
-					return inventoryLotDto.getCode(); 
-				}
-			};
-			checkedInIngredientCellTable.addColumn(lotCodeColumn, "Lot Code");
-			
-			TextColumn<InventoryLotDto> itemDescriptionColumn = new TextColumn<InventoryLotDto>() {
-				public String getValue(InventoryLotDto inventoryLotDto) {
-					return inventoryLotDto.getInventoryItem().getDescription(); 
-				}
-			};
-			checkedInIngredientCellTable.addColumn(itemDescriptionColumn, "Inventory Item");
-			
-			TextColumn<InventoryLotDto> itemCodeColumn = new TextColumn<InventoryLotDto>() {
-				public String getValue(InventoryLotDto inventoryLotDto) {
-					return inventoryLotDto.getInventoryItem().getId(); 
-				}
-			};
-			checkedInIngredientCellTable.addColumn(itemCodeColumn, "Item Code");
-			
-			DateCell dateCell = new DateCell();
-			Column<InventoryLotDto, Date> dateColumn = new Column<InventoryLotDto, Date>(dateCell) {
-				public Date getValue(InventoryLotDto inventoryLotDto) {
-					return inventoryLotDto.getReceivedDatetime(); 
-				}
-			};
-			checkedInIngredientCellTable.addColumn(dateColumn, "Date");
-			
-			ButtonCell buttonCell = new ButtonCell();
-			Column<InventoryLotDto, String> removeButtonColumn = new Column<InventoryLotDto, String>(buttonCell) {
-				public String getValue(InventoryLotDto inventoryLotDto) {
-					 Button removeButton = new Button();
-					    makeButtonWithIcon(removeButton, icons.deleteIcon(), "Remove");
-					    removeButton.addClickHandler(new ClickHandler() {
-					        public void onClick(ClickEvent event) {
-					        	checkedInIngredientCellTable
-					          }
-					        });
-					return removeButton.getHTML(); 
-				}
-			};
-			checkedInIngredientCellTable.addColumn(removeButtonColumn, "Remove");
-			
-	*/
 		//Add Handlers
 		addIngredientButton.addClickHandler(this);
 		ingredientListBox.addChangeHandler(this);
+		ingredientCodeTextBox.addChangeHandler(this);
 		//Add components to newCheckedInIngredientPanel
 		newCheckedInIngredientPanel.add(lotCodeTextBox);
 		newCheckedInIngredientPanel.add(ingredientListBox);
 		newCheckedInIngredientPanel.add(ingredientCodeTextBox);
+		newCheckedInIngredientPanel.add(ingredientQuantityTextBox);
 		newCheckedInIngredientPanel.add(dateBox);
 		newCheckedInIngredientPanel.add(addIngredientButton);
 		//Assemble checkedInIngredientPanel
@@ -146,17 +103,9 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 		highlightLotCodeBox();
 	}
 	
-	private void matchIngredientCodeAndType() {
-		if (inventoryItemList.size() > 0) {
-			for (InventoryItemDto item : inventoryItemList) {
-				if (item.getDescription().equals(ingredientListBox.getItemText(ingredientListBox.getSelectedIndex()))) {
-					ingredientCodeTextBox.setText(item.getId());
-					break;
-				}
-			}
-		}
-	}
+	
 
+	@Override
 	public Panel getPanel() {
 		return checkedInIngredientPanel;
 	}
@@ -165,13 +114,14 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 		lotCodeTextBox.selectAll();
 	}
 	
+	@Override
 	public void populateFlexTable() {
 		//Set Up ingredientListBox (if there is anything to add)
 		if(inventoryItemList.size() > 0) {
 			for (InventoryItemDto item : inventoryItemList) {
 				ingredientListBox.addItem(item.getDescription());
 			}
-			matchIngredientCodeAndType();
+			matchIngredientCodeToDescription();
 		}
 	}
 	
@@ -182,7 +132,8 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	    Button removeCheckedInIngredientButton = new Button();
 	    makeButtonWithIcon(removeCheckedInIngredientButton, icons.deleteIcon(), "Remove");
 	    removeCheckedInIngredientButton.addClickHandler(new ClickHandler() {
-	        public void onClick(ClickEvent event) {
+	        @Override
+			public void onClick(ClickEvent event) {
 	            int rowToRemove = lotCodesList.indexOf(lotCode);
 	            checkedInIngredientList.remove(rowToRemove);
 	            lotCodesList.remove(rowToRemove);
@@ -194,7 +145,7 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	    int size = checkedInIngredientList.size();
 	    checkedInIngredientFlexTable.setText(size,0,checkedInIngredientList.get(size - 1).getCode());
 		checkedInIngredientFlexTable.setText(size,1,checkedInIngredientList.get(size - 1).getInventoryItem().getDescription());
-		checkedInIngredientFlexTable.setText(size,2,checkedInIngredientList.get(size - 1).getInventoryItem().getId());
+		checkedInIngredientFlexTable.setText(size,2,Integer.toString(checkedInIngredientList.get(size - 1).getQuantity()));
 		checkedInIngredientFlexTable.setText(size,3,dateFormat.format(checkedInIngredientList.get(size - 1).getReceivedDatetime()));
 		checkedInIngredientFlexTable.setWidget(size,4,removeCheckedInIngredientButton);
 		checkedInIngredientFlexTable.getCellFormatter().addStyleName(size,4,"checkedInIngredientFlexTableRemoveButton");
@@ -202,11 +153,13 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 	    lotCodeTextBox.selectAll();
 	}
 	
+	@Override
 	public void onClick(ClickEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == addIngredientButton) {
 			// check if lot code is unique
 			String lotCode = lotCodeTextBox.getText().toUpperCase().trim();
+			String quantity = ingredientQuantityTextBox.getText();
 			for (InventoryLotDto checkedInIngredient : checkedInIngredientList) {
 				if (checkedInIngredient.getCode().equals(lotCode)) {
 					Window.alert("'" + lotCode + "' is already in the table");
@@ -220,25 +173,58 @@ class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, Change
 		    	lotCodeTextBox.selectAll();
 		    	return;
 		    }
+		    // quantity must be between 1 and 10 chars that are numbers.
+			else if (!quantity.matches("[0-9\\s]{1,20}")) {
+		    	Window.alert("'" + quantity + "' is not a number.");
+		    	ingredientQuantityTextBox.selectAll();
+		    	return;
+		    }
 			else { 
 				if(ingredientListBox.getItemCount() > 0) {
-					checkedInIngredientList.add(new InventoryLotDto(lotCodeTextBox.getText().toUpperCase().trim(), new InventoryItemDto(ingredientCodeTextBox.getText(), ingredientListBox.getItemText(ingredientListBox.getSelectedIndex())), dateBox.getValue()));
+					checkedInIngredientList.add(new InventoryLotDto(lotCodeTextBox.getText().toUpperCase().trim(), new InventoryItemDto(ingredientCodeTextBox.getText(), ingredientListBox.getItemText(ingredientListBox.getSelectedIndex())), Integer.parseInt(ingredientQuantityTextBox.getText()), dateBox.getValue()));
 				}
 				else {
-					checkedInIngredientList.add(new InventoryLotDto(lotCodeTextBox.getText().toUpperCase().trim(), new InventoryItemDto(ingredientCodeTextBox.getText(), "-"), dateBox.getValue()));
+					checkedInIngredientList.add(new InventoryLotDto(lotCodeTextBox.getText().toUpperCase().trim(), new InventoryItemDto(ingredientCodeTextBox.getText(), "-"), Integer.parseInt(ingredientQuantityTextBox.getText()), dateBox.getValue()));
 				}
 				populateCheckedInIngredientsFlexTable();
 			}
 		}
 	}
 	
+	@Override
 	public void onChange(ChangeEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == ingredientListBox) {
-			matchIngredientCodeAndType();
+			matchIngredientCodeToDescription();
+		}
+		if (sender == ingredientCodeTextBox) {
+			matchIngredientDescriptionToCode();
 		}
 	}
 
+	private void matchIngredientDescriptionToCode() {
+		if (inventoryItemList.size() > 0) {
+			for (InventoryItemDto item : inventoryItemList) {
+				if (item.getId().equals(ingredientCodeTextBox.getText())) {
+					ingredientListBox.setItemSelected(inventoryItemList.indexOf(item), true);
+					break;
+				}
+			}
+		}
+	}
+	
+	private void matchIngredientCodeToDescription() {
+		if (inventoryItemList.size() > 0) {
+			for (InventoryItemDto item : inventoryItemList) {
+				if (item.getDescription().equals(ingredientListBox.getItemText(ingredientListBox.getSelectedIndex()))) {
+					ingredientCodeTextBox.setText(item.getId());
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
 	void updateDB() {
 		rpcHelper.dbSetCheckedInIngredients(checkedInIngredientList);
 		log("updateDB (checked in)");

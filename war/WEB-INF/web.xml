@@ -16,33 +16,33 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
-		<url-pattern>/common/inventoryItemService</url-pattern>
+		<url-pattern>/common/InventoryItemService</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
-		<url-pattern>/common/inventoryLotService</url-pattern>
+		<url-pattern>/common/InventoryLotService</url-pattern>
 	</filter-mapping>
 	
 	<!-- Servlets -->
 	 
 	<servlet>
-	<servlet-name>InventoryItemServiceImplementation</servlet-name>
+		<servlet-name>InventoryItemService</servlet-name>
 		<servlet-class>com.chuckanutbay.webapp.common.server.InventoryItemServiceImpl</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>InventoryItemServiceImplementation</servlet-name>
-		<url-pattern>/common/inventoryItemService</url-pattern>
+		<servlet-name>InventoryItemService</servlet-name>
+		<url-pattern>/common/InventoryItemService</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
-	<servlet-name>InventoryLotServiceImplementation</servlet-name>
+	<servlet-name>InventoryLotService</servlet-name>
 		<servlet-class>com.chuckanutbay.webapp.common.server.InventoryLotServiceImpl</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>InventoryLotServiceImplementation</servlet-name>
-		<url-pattern>/common/inventoryLotService</url-pattern>
+		<servlet-name>InventoryLotService</servlet-name>
+		<url-pattern>/common/InventoryLotService</url-pattern>
 	</servlet-mapping>
 	
 	<!-- Default page to serve -->

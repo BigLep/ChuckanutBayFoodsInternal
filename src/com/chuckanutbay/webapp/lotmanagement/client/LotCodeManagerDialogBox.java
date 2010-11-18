@@ -17,9 +17,9 @@ public class LotCodeManagerDialogBox extends DialogBox {
 	private ScrollPanel scrollPanel;
 	private LotCodeManagerPanel panel;
 	private String title;
-	private HorizontalPanel buttonPanel = new HorizontalPanel(); 
-	private VerticalPanel dialogBoxContents = new VerticalPanel();
-	private DialogBox printBox = null;
+	private final HorizontalPanel buttonPanel = new HorizontalPanel(); 
+	private final VerticalPanel dialogBoxContents = new VerticalPanel();
+	private final DialogBox printBox = null;
 	private static String SCROLL_PANEL_WIDTH = "850px";
 	private static String SCROLL_PANEL_HEIGHT = "400px";
 	
@@ -29,7 +29,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 		this.setAnimationEnabled(true);
 		this.center();
 	}
-	LotCodeManagerDialogBox(final LotCodeManagerPanel argPanel, final String argTitle, Boolean isSaveable, Boolean isPrintable) {
+	public LotCodeManagerDialogBox(final LotCodeManagerPanel argPanel, final String argTitle, Boolean isSaveable, Boolean isPrintable) {
 		//Set panel and title
 		setPanel(argPanel);
 		setTitle(argTitle);
@@ -46,6 +46,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 				Button printButton = new Button();
 				makeButtonWithIcon(printButton, icons.printIcon(), "Print");
 				printButton.addClickHandler(new ClickHandler() {
+					@Override
 					public void onClick(ClickEvent event) {
 						printDialogBox();
 					}
@@ -54,6 +55,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 				Button saveButton = new Button();
 				makeButtonWithIcon(saveButton, icons.saveIcon(), "Save");
 				saveButton.addClickHandler(new ClickHandler() {
+					@Override
 					public void onClick(ClickEvent event) {
 						panel.updateDB();
 						LotCodeManagerDialogBox.this.clear();
@@ -64,6 +66,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 				Button cancelButton = new Button();
 				makeButtonWithIcon(cancelButton, icons.cancelIcon(), "Cancel");
 				cancelButton.addClickHandler(new ClickHandler() {
+					@Override
 					public void onClick(ClickEvent event) {
 						LotCodeManagerDialogBox.this.clear();
 						LotCodeManagerDialogBox.this.hide();
@@ -111,10 +114,12 @@ public class LotCodeManagerDialogBox extends DialogBox {
 		return panel;
 	}
 	
+	@Override
 	public void setTitle(String argTitle) {
 		title = argTitle;
 	}
 	
+	@Override
 	public String getTitle() {
 		return title;
 	}

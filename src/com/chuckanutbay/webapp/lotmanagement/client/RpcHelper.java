@@ -5,13 +5,11 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
 import java.util.Date;
 import java.util.List;
 
-import com.chuckanutbay.webapp.common.client.InventoryItemService;
 import com.chuckanutbay.webapp.common.client.InventoryItemServiceAsync;
-import com.chuckanutbay.webapp.common.client.InventoryLotService;
 import com.chuckanutbay.webapp.common.client.InventoryLotServiceAsync;
+import com.chuckanutbay.webapp.common.client.ServiceUtils;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -19,8 +17,13 @@ public class RpcHelper {
 	private List<InventoryItemDto> inventoryItemList = null;
 	private List<InventoryLotDto> inventoryLotList = null;
 	private LotCodeManagerPanel senderObject = null;
-	private InventoryLotServiceAsync inventoryLotService = GWT.create(InventoryLotService.class);
-	private InventoryItemServiceAsync inventoryItemService = GWT.create(InventoryItemService.class);
+	private InventoryLotServiceAsync inventoryLotService;
+	private InventoryItemServiceAsync inventoryItemService;
+	
+	public RpcHelper() {
+		inventoryLotService = ServiceUtils.createInventoryLotService();
+		inventoryItemService = ServiceUtils.createInventoryItemService();
+	}
 	
 	public AsyncCallback<List<InventoryItemDto>> inventoryItemServiceCallback = new AsyncCallback<List<InventoryItemDto>>() {
     	public void onFailure(Throwable caught) {
