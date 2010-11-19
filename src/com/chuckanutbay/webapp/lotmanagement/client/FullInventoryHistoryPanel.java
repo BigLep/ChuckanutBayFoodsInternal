@@ -25,21 +25,21 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements ClickHandler, ChangeHandler {
 	//Checked-In Components
-	private VerticalPanel viewFullIngredientHistoryPanel = new VerticalPanel();
-	private HorizontalPanel	headerPanel = new HorizontalPanel();
-	private Label currentlyViewingLabel = new Label();
-	private Label visibleRowsLabel = new Label("Visible Rows");
-	private ListBox visibleRowsListBox = new ListBox();
-	private FlexTable viewFullIngredientHistoryFlexTable = new FlexTable();
-	private Button backButton = new Button();
-	private Button nextButton = new Button();
-	private HorizontalPanel	buttonsPanel = new HorizontalPanel();
+	private final VerticalPanel viewFullIngredientHistoryPanel = new VerticalPanel();
+	private final HorizontalPanel	headerPanel = new HorizontalPanel();
+	private final Label currentlyViewingLabel = new Label();
+	private final Label visibleRowsLabel = new Label("Visible Rows");
+	private final ListBox visibleRowsListBox = new ListBox();
+	private final FlexTable viewFullIngredientHistoryFlexTable = new FlexTable();
+	private final Button backButton = new Button();
+	private final Button nextButton = new Button();
+	private final HorizontalPanel	buttonsPanel = new HorizontalPanel();
 	private DialogBox dialogBox;
 	private int visibleRows = 10;
 	private int itemIndex = 0;
 	private int rowsAdded = 0;
-	private List<InventoryLotDto> itemInInventoryList = newArrayList();
-	private RpcHelper rpcHelper = new RpcHelper();
+	private final List<InventoryLotDto> itemInInventoryList = newArrayList();
+	private final RpcHelper rpcHelper = new RpcHelper();
 	
 	private static final String NUMBER_OF_VISIBLE_ROWS[] = {"10", "25", "50", "100"};
 	
@@ -49,6 +49,7 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		rpcHelper.dbGetFullIngredientHistory(itemInInventoryList, this);
 	}
 	
+	@Override
 	public void setUpPanel() {
 		for(String visibleRowsOption : NUMBER_OF_VISIBLE_ROWS) {
 			visibleRowsListBox.addItem(visibleRowsOption);
@@ -87,13 +88,15 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 	private void setupInUseIngredientFlexTable() {
 		viewFullIngredientHistoryFlexTable.setText(0,0,"Lot Code");
 		viewFullIngredientHistoryFlexTable.setText(0,1,"Ingredient Type");
-		viewFullIngredientHistoryFlexTable.setText(0,2,"Checked-In Date");
+		viewFullIngredientHistoryFlexTable.setText(0,2,"Quantity");
+		viewFullIngredientHistoryFlexTable.setText(0,3,"Checked-In Date");
 		viewFullIngredientHistoryFlexTable.setText(0,3,"In-Use Date");
-		viewFullIngredientHistoryFlexTable.setText(0,4,"Used-Up Date");
+		viewFullIngredientHistoryFlexTable.setText(0,5,"Used-Up Date");
 		viewFullIngredientHistoryFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
 		viewFullIngredientHistoryFlexTable.addStyleName("FlexTable");
 	}
 	
+	@Override
 	public void populateFlexTable() {
 		if (itemInInventoryList.isEmpty()) {
 			Window.alert("There are no records to view");
@@ -105,14 +108,15 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 				    // add new row to inUseIngredientFlexTable
 					viewFullIngredientHistoryFlexTable.setText(row,0,itemInInventoryList.get((row - 1) + itemIndex).getCode());
 					viewFullIngredientHistoryFlexTable.setText(row,1,itemInInventoryList.get((row - 1) + itemIndex).getInventoryItem().getDescription());
+					viewFullIngredientHistoryFlexTable.setText(row,2,Integer.toString(itemInInventoryList.get((row - 1) + itemIndex).getQuantity()));
 					if (itemInInventoryList.get((row - 1) + itemIndex).getReceivedDatetime() != null) {
-						viewFullIngredientHistoryFlexTable.setText(row,2,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getReceivedDatetime()));
+						viewFullIngredientHistoryFlexTable.setText(row,3,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getReceivedDatetime()));
 					}
 					if (itemInInventoryList.get((row - 1) + itemIndex).getStartUseDatetime() != null) {
-						viewFullIngredientHistoryFlexTable.setText(row,3,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getStartUseDatetime()));
+						viewFullIngredientHistoryFlexTable.setText(row,4,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getStartUseDatetime()));
 					}
 					if (itemInInventoryList.get((row - 1) + itemIndex).getEndUseDatetime() != null) {
-						viewFullIngredientHistoryFlexTable.setText(row,4,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getEndUseDatetime()));
+						viewFullIngredientHistoryFlexTable.setText(row,5,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getEndUseDatetime()));
 					}
 					rowsAdded++;
 				}
@@ -124,6 +128,7 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		}
 	}
 	
+	@Override
 	public void onClick(ClickEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == nextButton) {
@@ -152,14 +157,17 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		setupInUseIngredientFlexTable();
 	}
 
+	@Override
 	public Panel getPanel() {
 		return viewFullIngredientHistoryPanel;
 	}
 
+	@Override
 	void updateDB() {
 		// Nothing to Update
 	}
 
+	@Override
 	public void onChange(ChangeEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == visibleRowsListBox) {

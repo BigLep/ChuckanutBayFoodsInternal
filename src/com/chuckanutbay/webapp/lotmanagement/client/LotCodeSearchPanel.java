@@ -36,6 +36,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 		setUpPanel();
 	}
 	
+	@Override
 	public void setUpPanel() {
 		//Set Up Components
 			//Set Up codeTextBox
@@ -66,13 +67,15 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 	private void setupLotCodeSearchFlexTableHeader() {
 		lotCodeSearchFlexTable.setText(0,0,"Lot Code");
 		lotCodeSearchFlexTable.setText(0,1,"Ingredient Type");
-		lotCodeSearchFlexTable.setText(0,2,"Checked-In Date");
-		lotCodeSearchFlexTable.setText(0,3,"In-Use Date");
-		lotCodeSearchFlexTable.setText(0,4,"Used-Up Date");
+		lotCodeSearchFlexTable.setText(0,2,"Quanitity");
+		lotCodeSearchFlexTable.setText(0,3,"Checked-In Date");
+		lotCodeSearchFlexTable.setText(0,4,"In-Use Date");
+		lotCodeSearchFlexTable.setText(0,5,"Used-Up Date");
 		lotCodeSearchFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
 		lotCodeSearchFlexTable.addStyleName("FlexTable");
 	}
 
+	@Override
 	public Panel getPanel() {
 		return lotCodeSearchPanel;
 	}
@@ -94,6 +97,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 		}
 	}
 	
+	@Override
 	public void populateFlexTable() {
 	    if (lotCodeMatchList.isEmpty()) {
 	    	Window.alert("There are no matching Lot Codes");
@@ -105,14 +109,15 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 			    // add new row to lotCodeSearchFlexTable
 			    lotCodeSearchFlexTable.setText(row,0,lotCodeMatch.getCode());
 				lotCodeSearchFlexTable.setText(row,1,lotCodeMatch.getInventoryItem().getDescription());
+				lotCodeSearchFlexTable.setText(row,2,Integer.toString(lotCodeMatch.getQuantity()));
 				if (lotCodeMatch.getReceivedDatetime() != null) {
-					lotCodeSearchFlexTable.setText(row,2,dateFormat.format(lotCodeMatch.getReceivedDatetime()));
+					lotCodeSearchFlexTable.setText(row,3,dateFormat.format(lotCodeMatch.getReceivedDatetime()));
 				}
 				if (lotCodeMatch.getStartUseDatetime() != null) {
-					lotCodeSearchFlexTable.setText(row,3,dateFormat.format(lotCodeMatch.getStartUseDatetime()));
+					lotCodeSearchFlexTable.setText(row,4,dateFormat.format(lotCodeMatch.getStartUseDatetime()));
 				}
 				if (lotCodeMatch.getEndUseDatetime() != null) {
-					lotCodeSearchFlexTable.setText(row,4,dateFormat.format(lotCodeMatch.getEndUseDatetime()));
+					lotCodeSearchFlexTable.setText(row,5,dateFormat.format(lotCodeMatch.getEndUseDatetime()));
 				}
 				row++;
 			}
@@ -124,6 +129,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 		setupLotCodeSearchFlexTableHeader();
 	}
 	
+	@Override
 	public void onClick(ClickEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == searchButton) {
@@ -133,6 +139,7 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 		}
 	}
 
+	@Override
 	void updateDB() {
 		//Nothing to update
 	}

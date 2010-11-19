@@ -23,21 +23,22 @@ import com.google.gwt.user.datepicker.client.DateBox;
 
 public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler {
 	//Checked-In Components
-	private VerticalPanel dateSearchPanel = new VerticalPanel();
-	private HorizontalPanel dateToSearchPanel = new HorizontalPanel();
-	private Label dateToSearchLabel = new Label("Date to Search:");
-	private DateBox dateBox = new DateBox();
-	private FlexTable dateSearchFlexTable = new FlexTable();
-	private Button searchButton = new Button();
+	private final VerticalPanel dateSearchPanel = new VerticalPanel();
+	private final HorizontalPanel dateToSearchPanel = new HorizontalPanel();
+	private final Label dateToSearchLabel = new Label("Date to Search:");
+	private final DateBox dateBox = new DateBox();
+	private final FlexTable dateSearchFlexTable = new FlexTable();
+	private final Button searchButton = new Button();
 	private DialogBox dialogBox;
-	private List<InventoryLotDto> dateMatchList = newArrayList();
-	private RpcHelper rpcHelper = new RpcHelper();
+	private final List<InventoryLotDto> dateMatchList = newArrayList();
+	private final RpcHelper rpcHelper = new RpcHelper();
 	
 	public DateSearchPanel() {
 		setUpPanel();
 		rpcHelper.dbGetDateMatchInUseIngredients(dateBox.getValue(), dateMatchList, this);
 	}
 	
+	@Override
 	public void setUpPanel() {
 		//Set Up Components
 			//Set Up dateBox
@@ -68,13 +69,15 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 	private void setupdateSearchFlexTableHeader() {
 		dateSearchFlexTable.setText(0,0,"Lot Code");
 		dateSearchFlexTable.setText(0,1,"Ingredient Type");
-		dateSearchFlexTable.setText(0,2,"Checked-In Date");
-		dateSearchFlexTable.setText(0,3,"In-Use Date");
-		dateSearchFlexTable.setText(0,4,"Used-Up Date");
+		dateSearchFlexTable.setText(0,2,"Quantity");
+		dateSearchFlexTable.setText(0,3,"Checked-In Date");
+		dateSearchFlexTable.setText(0,4,"In-Use Date");
+		dateSearchFlexTable.setText(0,5,"Used-Up Date");
 		dateSearchFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
 		dateSearchFlexTable.addStyleName("FlexTable");
 	}
 
+	@Override
 	public Panel getPanel() {
 		return dateSearchPanel;
 	}
@@ -87,18 +90,20 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 		else  rpcHelper.dbGetDateMatchInUseIngredients(dateBox.getValue(), dateMatchList, this);
 	}
 	
+	@Override
 	public void populateFlexTable() {
 	    int row = 1;
 		for (InventoryLotDto dateMatch : dateMatchList) {
 		    // add new row to dateSearchFlexTable
 		    dateSearchFlexTable.setText(row,0,dateMatch.getCode());
 			dateSearchFlexTable.setText(row,1,dateMatch.getInventoryItem().getDescription());
-			dateSearchFlexTable.setText(row,2,dateFormat.format(dateMatch.getReceivedDatetime()));
-			dateSearchFlexTable.setText(row,3,dateFormat.format(dateMatch.getStartUseDatetime()));
+			dateSearchFlexTable.setText(row,2,Integer.toString(dateMatch.getQuantity()));
+			dateSearchFlexTable.setText(row,3,dateFormat.format(dateMatch.getReceivedDatetime()));
+			dateSearchFlexTable.setText(row,4,dateFormat.format(dateMatch.getStartUseDatetime()));
 			if (dateMatch.getEndUseDatetime() != null) {
-				dateSearchFlexTable.setText(row,4,dateFormat.format(dateMatch.getEndUseDatetime()));
+				dateSearchFlexTable.setText(row,5,dateFormat.format(dateMatch.getEndUseDatetime()));
 			}
-			else dateSearchFlexTable.setText(row,4,"In-Use");
+			else dateSearchFlexTable.setText(row,5,"In-Use");
 			row++;
 		}
 	}
@@ -108,6 +113,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 		setupdateSearchFlexTableHeader();
 	}
 	
+	@Override
 	public void onClick(ClickEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == searchButton) {
@@ -116,6 +122,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 		}
 	}
 
+	@Override
 	void updateDB() {
 		// No update necessary
 	}

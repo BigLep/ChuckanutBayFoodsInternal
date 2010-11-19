@@ -23,20 +23,21 @@ import com.google.gwt.user.datepicker.client.DateBox;
 
 public class InUsePanel extends LotCodeManagerPanel {
 	//Checked-In Components
-	private VerticalPanel inUseIngredientPanel = new VerticalPanel();
-	private HorizontalPanel inUseDatePanel = new HorizontalPanel();
-	private Label dateBoxLabel = new Label("In Use Date:");
-	private DateBox dateBox = new DateBox();
-	private FlexTable inUseIngredientFlexTable = new FlexTable();
+	private final VerticalPanel inUseIngredientPanel = new VerticalPanel();
+	private final HorizontalPanel inUseDatePanel = new HorizontalPanel();
+	private final Label dateBoxLabel = new Label("In Use Date:");
+	private final DateBox dateBox = new DateBox();
+	private final FlexTable inUseIngredientFlexTable = new FlexTable();
 	private DialogBox dialogBox;
-	private ArrayList<InventoryLotDto> inUseIngredientList = newArrayList();
-	private RpcHelper rpcHelper = new RpcHelper();
+	private final ArrayList<InventoryLotDto> inUseIngredientList = newArrayList();
+	private final RpcHelper rpcHelper = new RpcHelper();
 
 	public InUsePanel() {
 		setUpPanel();
 		rpcHelper.dbGetCheckedInIngredients(inUseIngredientList, this);
 	}
 
+	@Override
 	public void setUpPanel() {
 		//Set Up Components
 		//Set Up dateBox
@@ -48,9 +49,10 @@ public class InUsePanel extends LotCodeManagerPanel {
 		//Set Up inUseIngredientFlexTable
 		inUseIngredientFlexTable.setText(0,0,"Lot Code");
 		inUseIngredientFlexTable.setText(0,1,"Ingredient Type");
-		inUseIngredientFlexTable.setText(0,2,"Checked-In Date");
-		inUseIngredientFlexTable.setText(0,3,"In-Use Date");
-		inUseIngredientFlexTable.setText(0,4,"Mark");
+		inUseIngredientFlexTable.setText(0,2,"Quantity");
+		inUseIngredientFlexTable.setText(0,3,"Checked-In Date");
+		inUseIngredientFlexTable.setText(0,4,"In-Use Date");
+		inUseIngredientFlexTable.setText(0,5,"Mark");
 		inUseIngredientFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
 		inUseIngredientFlexTable.addStyleName("FlexTable");
 		//Add components to inUseDatePanel
@@ -64,6 +66,7 @@ public class InUsePanel extends LotCodeManagerPanel {
 		dialogBox = new LotCodeManagerDialogBox(this, "Mark Inventory As In-Use", true, true);
 	}
 
+	@Override
 	public void populateFlexTable() {
 		if(inUseIngredientList.isEmpty()){
 			Window.alert("There are no Ingredients to mark");
@@ -77,6 +80,7 @@ public class InUsePanel extends LotCodeManagerPanel {
 				Button markIngredientButton = new Button();
 				makeButtonWithIcon(markIngredientButton, icons.warningIcon(), "In Use");
 				markIngredientButton.addClickHandler(new ClickHandler() {
+					@Override
 					public void onClick(ClickEvent event) {
 						inUseIngredientList.get(rowToMark).setStartUseDatetime(dateBox.getValue());
 						inUseIngredientFlexTable.clearCell((rowToMark + 1), 4);
@@ -86,18 +90,21 @@ public class InUsePanel extends LotCodeManagerPanel {
 				// add new row to inUseIngredientFlexTable
 				inUseIngredientFlexTable.setText((rowToMark + 1),0,checkedInIngredient.getCode());
 				inUseIngredientFlexTable.setText((rowToMark + 1),1,checkedInIngredient.getInventoryItem().getDescription());
-				inUseIngredientFlexTable.setText((rowToMark + 1),2,dateFormat.format(checkedInIngredient.getReceivedDatetime()));
-				inUseIngredientFlexTable.setText((rowToMark + 1),3,"");
-				inUseIngredientFlexTable.setWidget((rowToMark + 1),4,markIngredientButton);
-				inUseIngredientFlexTable.getCellFormatter().addStyleName((rowToMark + 1),4,"center");
+				inUseIngredientFlexTable.setText((rowToMark + 1),2,Integer.toString(checkedInIngredient.getQuantity()));
+				inUseIngredientFlexTable.setText((rowToMark + 1),3,dateFormat.format(checkedInIngredient.getReceivedDatetime()));
+				inUseIngredientFlexTable.setText((rowToMark + 1),4,"");
+				inUseIngredientFlexTable.setWidget((rowToMark + 1),5,markIngredientButton);
+				inUseIngredientFlexTable.getCellFormatter().addStyleName((rowToMark + 1),5,"center");
 			}
 		}
 	}
 
+	@Override
 	public Panel getPanel() {
 		return inUseIngredientPanel;
 	}
 
+	@Override
 	void updateDB() {
 		rpcHelper.dbSetInUseIngredients(inUseIngredientList);
 	}

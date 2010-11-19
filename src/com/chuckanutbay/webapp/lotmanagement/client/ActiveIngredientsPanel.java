@@ -18,20 +18,21 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	//Checked-In Components
-	private VerticalPanel activeIngredientsPanel = new VerticalPanel();
-	private HorizontalPanel dateToSearchPanel = new HorizontalPanel();
-	private Label dateToSearchLabel = new Label("Today's Date:");
-	private TextBox dateBox = new TextBox();
-	private FlexTable activeIngredientsFlexTable = new FlexTable();
+	private final VerticalPanel activeIngredientsPanel = new VerticalPanel();
+	private final HorizontalPanel dateToSearchPanel = new HorizontalPanel();
+	private final Label dateToSearchLabel = new Label("Today's Date:");
+	private final TextBox dateBox = new TextBox();
+	private final FlexTable activeIngredientsFlexTable = new FlexTable();
 	private DialogBox dialogBox;
-	private List<InventoryLotDto> activeIngredientList = newArrayList();
-	private RpcHelper rpcHelper = new RpcHelper();
+	private final List<InventoryLotDto> activeIngredientList = newArrayList();
+	private final RpcHelper rpcHelper = new RpcHelper();
 	
 	public ActiveIngredientsPanel() { 
 		setUpPanel();
 		rpcHelper.dbGetInUseIngredients(activeIngredientList, this);
 	}
 	
+	@Override
 	public void setUpPanel() {
 		//Set Up Components
 			//Set Up dateBox
@@ -56,17 +57,20 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	private void setupactiveIngredientsFlexTableHeader() {
 		activeIngredientsFlexTable.setText(0,0,"Lot Code");
 		activeIngredientsFlexTable.setText(0,1,"Ingredient Type");
-		activeIngredientsFlexTable.setText(0,2,"Checked-In Date");
-		activeIngredientsFlexTable.setText(0,3,"In-Use Date");
+		activeIngredientsFlexTable.setText(0,2,"Quantity");
+		activeIngredientsFlexTable.setText(0,3,"Checked-In Date");
+		activeIngredientsFlexTable.setText(0,4,"In-Use Date");
 		activeIngredientsFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
 		activeIngredientsFlexTable.addStyleName("FlexTable");
 		
 	}
 
+	@Override
 	public Panel getPanel() {
 		return activeIngredientsPanel;
 	}
 	
+	@Override
 	public void populateFlexTable() {
 		if(activeIngredientList.isEmpty()){
 			Window.alert("There are no Active Ingredients");
@@ -77,13 +81,15 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 			    // add new row to activeIngredientsFlexTable
 			    activeIngredientsFlexTable.setText(row,0,activeIngredient.getCode());
 				activeIngredientsFlexTable.setText(row,1,activeIngredient.getInventoryItem().getDescription());
-				activeIngredientsFlexTable.setText(row,2,dateFormat.format(activeIngredient.getReceivedDatetime()));
-				activeIngredientsFlexTable.setText(row,3,dateFormat.format(activeIngredient.getStartUseDatetime()));
+				activeIngredientsFlexTable.setText(row,2,Integer.toString(activeIngredient.getQuantity()));
+				activeIngredientsFlexTable.setText(row,3,dateFormat.format(activeIngredient.getReceivedDatetime()));
+				activeIngredientsFlexTable.setText(row,4,dateFormat.format(activeIngredient.getStartUseDatetime()));
 				row++;
 			}
 		}
 	}
 
+	@Override
 	void updateDB() {
 		// Nothing to Update
 	}
