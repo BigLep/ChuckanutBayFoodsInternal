@@ -3,7 +3,6 @@ package com.chuckanutbay.webapp.lotmanagement.client;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
 import java.util.ArrayList;
@@ -14,10 +13,10 @@ import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -82,14 +81,13 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 				hashCodeList.add(inUseIngredient.hashCode());
 			    final int rowToMark = hashCodeList.indexOf(inUseIngredient.hashCode());
 			    // create markIngredientButton with handler
-			    Button markIngredientButton = new Button();
-			    makeButtonWithIcon(markIngredientButton, icons.cancelIcon(), "Used Up"); 
+			    Image markIngredientButton = new Image(icons.cancelIcon());
 			    markIngredientButton.addClickHandler(new ClickHandler() {
 			        @Override
 					public void onClick(ClickEvent event) {
 			        	usedUpIngredientList.get(rowToMark).setEndUseDatetime(dateBox.getValue());
-			        	usedUpIngredientFlexTable.clearCell((rowToMark + 1), 5);
-						usedUpIngredientFlexTable.setText((rowToMark + 1),4,dateFormat.format(usedUpIngredientList.get(rowToMark).getEndUseDatetime()));
+			        	usedUpIngredientFlexTable.clearCell((rowToMark + 1), 6);
+						usedUpIngredientFlexTable.setText((rowToMark + 1),5,dateFormat.format(usedUpIngredientList.get(rowToMark).getEndUseDatetime()));
 			        }
 			        });
 			    // add new row to usedUpIngredientFlexTable
@@ -100,7 +98,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 				usedUpIngredientFlexTable.setText((rowToMark + 1),4,dateFormat.format(inUseIngredient.getStartUseDatetime()));
 				usedUpIngredientFlexTable.setText((rowToMark + 1),5,"");
 				usedUpIngredientFlexTable.setWidget((rowToMark + 1),6,markIngredientButton);
-				usedUpIngredientFlexTable.getCellFormatter().addStyleName((rowToMark + 1),6,"usedUpIngredientFlexTableRemoveButton");
+				usedUpIngredientFlexTable.getCellFormatter().addStyleName((rowToMark + 1),6,"pointer");
 			}
 		}
 	}

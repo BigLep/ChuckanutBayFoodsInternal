@@ -1,27 +1,7 @@
-/** Add css rules here for your application. */
-.center {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
-.lotCodeManagerLabel{
-  font-size:24px; 
-  font-weight: bold;
-}
-
-.buttonsPanel {
+.FlexTable {
   border: 1px solid silver;
-  padding: 5px;
-  background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgrey)); 
-  font-weight: bold;
-}
-
-.headerPanel {
+  padding: 2px;
   width: 825px;
-	padding: 4px;
-	border: 1px solid Silver;
-	spacing: 5px;
 }
 
 .FlexTableHeader {
@@ -32,39 +12,54 @@
   width: 825px;
 }
 
-.FlexTable {
+.buttonsPanel {
   border: 1px solid silver;
-  padding: 2px;
-  width: 825px;
+  padding: 5px;
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgrey)); 
+  font-weight: bold;
 }
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
 .dateBox {
 width: 80px;
 }
-.lotCodeTextBox {
-	width: 150px;
+
+.headerPanel {
+  width: 825px;
+	padding: 4px;
+	border: 1px solid Silver;
+	spacing: 5px;
 }
-.ingredientListBox {
-	width: 350px;
-}
+
 .ingredientCodeTextBox {
 	width: 50px;
 }
+
+.ingredientListBox {
+	width: 350px;
+}
+
+.lotCodeManagerLabel{
+  font-size:24px; 
+  font-weight: bold;
+}
+
+.lotCodeTextBox {
+	width: 150px;
+}
+
 .navigationButton {
 	width: 400px;
 }
 
-/*
-.checkedInIngredientFlexTableRemoveButton {
-  text-align: center;
-  font-weight: bold;
-  color: red;
-  width: 80px;
+.pointer {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+	cursor: pointer;
 }
-
-.usedUpIngredientFlexTableButton {
-  text-align: center;
-  color: green;
-  width: 80px;
-  font-weight: bold;
-}
-*/

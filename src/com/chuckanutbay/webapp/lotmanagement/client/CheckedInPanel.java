@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -129,9 +130,8 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 		final String lotCode = lotCodeTextBox.getText().toUpperCase().trim();
 		lotCodesList.add(lotCode);
 	    // create removeCheckedInIngredientButton with handler
-	    Button removeCheckedInIngredientButton = new Button();
-	    makeButtonWithIcon(removeCheckedInIngredientButton, icons.deleteIcon(), "Remove");
-	    removeCheckedInIngredientButton.addClickHandler(new ClickHandler() {
+	    Image removeButton = new Image(icons.deleteIcon());
+	    removeButton.addClickHandler(new ClickHandler() {
 	        @Override
 			public void onClick(ClickEvent event) {
 	            int rowToRemove = lotCodesList.indexOf(lotCode);
@@ -147,8 +147,8 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 		checkedInIngredientFlexTable.setText(size,1,checkedInIngredientList.get(size - 1).getInventoryItem().getDescription());
 		checkedInIngredientFlexTable.setText(size,2,Integer.toString(checkedInIngredientList.get(size - 1).getQuantity()));
 		checkedInIngredientFlexTable.setText(size,3,dateFormat.format(checkedInIngredientList.get(size - 1).getReceivedDatetime()));
-		checkedInIngredientFlexTable.setWidget(size,4,removeCheckedInIngredientButton);
-		checkedInIngredientFlexTable.getCellFormatter().addStyleName(size,4,"checkedInIngredientFlexTableRemoveButton");
+		checkedInIngredientFlexTable.setWidget(size,4,removeButton);
+		checkedInIngredientFlexTable.getCellFormatter().addStyleName(size,4,"pointer");
 	    lotCodeTextBox.setText("Lot Code ...");
 	    lotCodeTextBox.selectAll();
 	}
