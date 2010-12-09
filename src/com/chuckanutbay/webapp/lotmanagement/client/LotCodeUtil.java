@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import com.chuckanutbay.webapp.common.shared.MyIconBundle;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -46,4 +49,16 @@ public class LotCodeUtil {
     public static <T> ArrayList<T> newArrayList() {
     	return new ArrayList<T>();
     }
+    
+    public static void addMouseOverHandler(MouseOverHandler handler, FocusWidget... widgets) {
+		for (FocusWidget widget : widgets) {
+			widget.addMouseOverHandler(handler);
+		}
+	}
+    
+    public static void addClickHandler(ClickHandler handler, FocusWidget... widgets) {
+		for (FocusWidget widget : widgets) {
+			widget.addClickHandler(handler);
+		}
+	}
 }

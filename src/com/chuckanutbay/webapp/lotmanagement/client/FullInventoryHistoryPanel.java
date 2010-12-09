@@ -64,15 +64,13 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		setupInUseIngredientFlexTable();
 		//Set Up buttonsPanel
 		buttonsPanel.setSpacing(5);
-		//Set Up backButton
+		//Set Up buttons
 		makeButtonWithIcon(backButton, icons.backIcon(), "Back");
-		backButton.setStyleName("navigationButton");
-		backButton.addClickHandler(this);
-		buttonsPanel.add(backButton);
-		//Set Up nextButton
 		makeButtonWithIcon(nextButton, icons.nextIcon(), "Next");
+		LotCodeUtil.addClickHandler(this, backButton, nextButton);
+		backButton.setStyleName("navigationButton");
 		nextButton.setStyleName("navigationButton");
-		nextButton.addClickHandler(this);
+		buttonsPanel.add(backButton);
 		buttonsPanel.add(nextButton);
 		//Assemble inUseIngredientPanel
 		viewFullIngredientHistoryPanel.setSpacing(5);

@@ -20,19 +20,17 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler, ChangeHandler {
 	//Checked-In Components
 	private final VerticalPanel checkedInIngredientPanel = new VerticalPanel();
-	private final HorizontalPanel newCheckedInIngredientPanel = new HorizontalPanel();
+	private final FlexTable newCheckedInFlexTable = new FlexTable();
 	private final TextBox lotCodeTextBox = new TextBox();
 	private final ListBox ingredientListBox = new ListBox();
 	private final TextBox ingredientCodeTextBox = new TextBox();
@@ -72,10 +70,8 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 			dateBox.setStyleName("dateBox");
 			//Set Up addIngredientButton
 			makeButtonWithIcon(addIngredientButton, icons.addIcon(), "Add");
-			addIngredientButton.setWidth("75px");
 			//Set Up newCheckedInIngredientPanel
-			newCheckedInIngredientPanel.setSpacing(5);
-			newCheckedInIngredientPanel.setStyleName("headerPanel");
+			newCheckedInFlexTable.setStyleName("FlexTable");
 			//Set Up checkedInIngredientFlexTable
 			checkedInIngredientFlexTable.setText(0,0,"Lot Code");
 			checkedInIngredientFlexTable.setText(0,1,"Ingredient Type");
@@ -89,23 +85,29 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 		ingredientListBox.addChangeHandler(this);
 		ingredientCodeTextBox.addChangeHandler(this);
 		//Add components to newCheckedInIngredientPanel
-		newCheckedInIngredientPanel.add(lotCodeTextBox);
-		newCheckedInIngredientPanel.add(ingredientListBox);
-		newCheckedInIngredientPanel.add(ingredientCodeTextBox);
-		newCheckedInIngredientPanel.add(ingredientQuantityTextBox);
-		newCheckedInIngredientPanel.add(dateBox);
-		newCheckedInIngredientPanel.add(addIngredientButton);
+		newCheckedInFlexTable.setText(0, 0, "Lot Code");
+		newCheckedInFlexTable.setText(0, 1, "Description");
+		newCheckedInFlexTable.setText(0, 2, "Code");
+		newCheckedInFlexTable.setText(0, 3, "Quantity");
+		newCheckedInFlexTable.setText(0, 4, "Date");
+		newCheckedInFlexTable.setWidget(0,5,addIngredientButton);
+		newCheckedInFlexTable.getFlexCellFormatter().setRowSpan(0, 5, 2);
+		newCheckedInFlexTable.setWidget(1,0,lotCodeTextBox);
+		newCheckedInFlexTable.setWidget(1,1,ingredientListBox);
+		newCheckedInFlexTable.setWidget(1,2,ingredientCodeTextBox);
+		newCheckedInFlexTable.setWidget(1,3,ingredientQuantityTextBox);
+		newCheckedInFlexTable.setWidget(1,4,dateBox);
+		newCheckedInFlexTable.getRowFormatter().addStyleName(0, "boldText");
 		//Assemble checkedInIngredientPanel
 		checkedInIngredientPanel.setSpacing(5);
-		checkedInIngredientPanel.add(newCheckedInIngredientPanel);
+		checkedInIngredientPanel.add(newCheckedInFlexTable);
 		checkedInIngredientPanel.add(checkedInIngredientFlexTable);
-		checkedInIngredientPanel.setCellVerticalAlignment(newCheckedInIngredientPanel, HasVerticalAlignment.ALIGN_MIDDLE);
+		checkedInIngredientPanel.setCellVerticalAlignment(newCheckedInFlexTable, HasVerticalAlignment.ALIGN_MIDDLE);
 		dialogBox = new LotCodeManagerDialogBox(this, "Check-In Inventory", true, true);
 		highlightLotCodeBox();
+		checkedInIngredientPanel.setStyleName("roundedCorners");
 	}
 	
-	
-
 	@Override
 	public Panel getPanel() {
 		return checkedInIngredientPanel;
@@ -155,8 +157,7 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 	
 	@Override
 	public void onClick(ClickEvent event) {
-		Widget sender = (Widget) event.getSource();
-		if (sender == addIngredientButton) {
+		if (event.getSource() == addIngredientButton) {
 			// check if lot code is unique
 			String lotCode = lotCodeTextBox.getText().toUpperCase().trim();
 			String quantity = ingredientQuantityTextBox.getText();
@@ -193,12 +194,11 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 	
 	@Override
 	public void onChange(ChangeEvent event) {
-		Widget sender = (Widget) event.getSource();
-		if (sender == ingredientListBox) {
-			matchIngredientCodeToDescription();
-		}
-		if (sender == ingredientCodeTextBox) {
+		if (event.getSource() instanceof TextBox) {
 			matchIngredientDescriptionToCode();
+		}
+		if (event.getSource() instanceof ListBox) {
+			matchIngredientCodeToDescription();
 		}
 	}
 

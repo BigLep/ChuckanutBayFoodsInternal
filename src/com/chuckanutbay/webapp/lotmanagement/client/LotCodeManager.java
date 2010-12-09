@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -23,6 +24,7 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 	
 	//Main UI Components
 	private final VerticalPanel mainPanel = new VerticalPanel();
+	private final FocusPanel focusPanel = new FocusPanel();
 	private final Label lotCodeManagerLabel = new Label("Lot Code Manager");
 	private final Label markInventoryLabel = new Label("Mark Inventory As:");
 	private final Label queryLabel = new Label("Query Lot Code Data:");
@@ -46,15 +48,7 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 	private final DecoratedPopupPanel activeIngredientsPopup = new DecoratedPopupPanel(true);
 	private static int POPUP_POSITION_FROM_TOP = 25;
 	private static int POPUP_POSITION_FROM_LEFT = 5;
-	
-	//LotCodeMangaerPanels to be made
-	CheckedInPanel checkedInPanel;
-	InUsePanel inUsePanel;
-	UsedUpPanel usedUpPanel;
-	LotCodeSearchPanel lotCodeSearchPanel;
-	DateSearchPanel dateSearchPanel;
-	ActiveIngredientsPanel activeIngredientsPanel;
-	FullInventoryHistoryPanel fullInventoryHistoryPanel;
+	private LotCodeManagerPanel lotCodeManagerPanel;
 	
 	@Override
 	public void onModuleLoad() {
@@ -69,16 +63,8 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 		makeButtonWithIcon(viewFullInventoryHistoryButton, icons.databaseIcon(), "View Full Inventory History");
 		
 		//Add Handlers
-		checkedInButton.addClickHandler(this);
-		inUseButton.addClickHandler(this);
-		usedUpButton.addClickHandler(this);
-		lotCodeSearch.addClickHandler(this);
-		dateSearch.addClickHandler(this);
-		activeIngredientsButton.addClickHandler(this);
-		viewFullInventoryHistoryButton.addClickHandler(this);
-		lotCodeSearch.addMouseOverHandler(this);
-		dateSearch.addMouseOverHandler(this);
-		activeIngredientsButton.addMouseOverHandler(this);
+		LotCodeUtil.addClickHandler(this, checkedInButton, inUseButton, usedUpButton, lotCodeSearch, dateSearch, activeIngredientsButton, viewFullInventoryHistoryButton);
+		LotCodeUtil.addMouseOverHandler(this, lotCodeSearch, dateSearch, activeIngredientsButton);
 		lotCodeSearch.addMouseOutHandler(this);
 		dateSearch.addMouseOutHandler(this);
 		activeIngredientsButton.addMouseOutHandler(this);
@@ -126,38 +112,38 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 		mainPanel.add(lotCodeManagerLabel);
 		mainPanel.add(buttonsPanel);
 		mainPanel.setSpacing(5);
-		mainPanel.setWidth("1000px");
+		mainPanel.setStyleName("roundedCorners");
 		mainPanel.setCellHorizontalAlignment(buttonsPanel, HasHorizontalAlignment.ALIGN_CENTER);
 		mainPanel.setCellHorizontalAlignment(lotCodeManagerLabel, HasHorizontalAlignment.ALIGN_CENTER);
+		focusPanel.add(mainPanel);
 		//Add mainPanel to rootPanel
 		RootPanel rootPanel = RootPanel.get("LotCodeManager");
-		rootPanel.setSize("900", "500\n");
-		rootPanel.add(mainPanel);
+		rootPanel.add(focusPanel);
 	} 
 	
 	@Override
 	public void onClick(ClickEvent event) {
 		Widget sender = (Widget) event.getSource();
 		if (sender == checkedInButton) {
-			checkedInPanel = new CheckedInPanel();
+			lotCodeManagerPanel = new CheckedInPanel();
 		}
 		else if (sender == inUseButton) {
-			inUsePanel = new InUsePanel();
+			lotCodeManagerPanel = new InUsePanel();
 		}
 		else if (sender == usedUpButton) {
-			usedUpPanel = new UsedUpPanel();
+			lotCodeManagerPanel = new UsedUpPanel();
 		}
 		else if (sender == lotCodeSearch) {
-			lotCodeSearchPanel = new LotCodeSearchPanel();
+			lotCodeManagerPanel = new LotCodeSearchPanel();
 		}
 		else if (sender == dateSearch) {
-			dateSearchPanel = new DateSearchPanel();
+			lotCodeManagerPanel = new DateSearchPanel();
 		}
 		else if (sender == activeIngredientsButton) {
-			activeIngredientsPanel = new ActiveIngredientsPanel();
+			lotCodeManagerPanel = new ActiveIngredientsPanel();
 		}
 		else if (sender == viewFullInventoryHistoryButton) {
-			fullInventoryHistoryPanel = new FullInventoryHistoryPanel();
+			lotCodeManagerPanel = new FullInventoryHistoryPanel();
 		}
 	}
 	
