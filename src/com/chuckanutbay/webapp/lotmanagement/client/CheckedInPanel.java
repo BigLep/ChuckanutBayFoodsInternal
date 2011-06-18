@@ -87,7 +87,7 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 		//Add components to newCheckedInIngredientPanel
 		newCheckedInFlexTable.setText(0, 0, "Lot Code");
 		newCheckedInFlexTable.setText(0, 1, "Description");
-		newCheckedInFlexTable.setText(0, 2, "Code");
+		newCheckedInFlexTable.setText(0, 2, "Part #");
 		newCheckedInFlexTable.setText(0, 3, "Quantity");
 		newCheckedInFlexTable.setText(0, 4, "Date");
 		newCheckedInFlexTable.setWidget(0,5,addIngredientButton);
