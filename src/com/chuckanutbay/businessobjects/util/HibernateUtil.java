@@ -7,6 +7,8 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.chuckanutbay.businessobjects.Employee;
+import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
 import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.documentation.ReferenceSource.EffectiveJava;
@@ -35,6 +37,8 @@ public class HibernateUtil {
 			".cfg.xml";
 		logger.info("Configuring Hibernate with configuration: " + configFilePath);
 		configuration = new Configuration()
+			.addAnnotatedClass(Employee.class)
+			.addAnnotatedClass(EmployeeWorkInterval.class)
 			.addAnnotatedClass(InventoryItem.class)
 			.addAnnotatedClass(InventoryLot.class)
 			.configure("hibernate/hibernate-prod.cfg.xml");
