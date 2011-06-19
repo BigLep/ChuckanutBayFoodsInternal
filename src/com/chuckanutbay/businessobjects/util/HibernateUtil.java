@@ -3,6 +3,7 @@ package com.chuckanutbay.businessobjects.util;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class HibernateUtil {
 			.addAnnotatedClass(EmployeeWorkInterval.class)
 			.addAnnotatedClass(InventoryItem.class)
 			.addAnnotatedClass(InventoryLot.class)
-			.configure("hibernate/hibernate-prod.cfg.xml");
+			.configure(configFilePath);
 	}
 
 	public static Configuration getConfiguration() {
@@ -65,18 +66,30 @@ public class HibernateUtil {
 		return sessionFactory.getCurrentSession();
 	}
 
+	/**
+	 * Begins a {@link Transaction} for the current {@link Session}.
+	 */
 	public static void beginTransaction() {
 		getSession().beginTransaction();
 	}
 
+	/**
+	 * Commits the {@link Transaction} of the current {@link Session}.
+	 */
 	public static void commitTransaction() {
 		getSession().getTransaction().commit();
 	}
 
+	/**
+	 * Rolls back the current {@link Transaction} of the current {@link Session}.
+	 */
 	public static void rollbackTransaction() {
 		getSession().getTransaction().rollback();
 	}
 
+	/**
+	 * Closes the current {@link Session}.
+	 */
 	public static void closeSession() {
 		getSession().close();
 	}

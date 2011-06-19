@@ -1,5 +1,5 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
@@ -108,13 +108,13 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 					viewFullIngredientHistoryFlexTable.setText(row,1,itemInInventoryList.get((row - 1) + itemIndex).getInventoryItem().getDescription());
 					viewFullIngredientHistoryFlexTable.setText(row,2,Integer.toString(itemInInventoryList.get((row - 1) + itemIndex).getQuantity()));
 					if (itemInInventoryList.get((row - 1) + itemIndex).getReceivedDatetime() != null) {
-						viewFullIngredientHistoryFlexTable.setText(row,3,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getReceivedDatetime()));
+						viewFullIngredientHistoryFlexTable.setText(row,3,DATE_FORMAT.format(itemInInventoryList.get((row - 1) + itemIndex).getReceivedDatetime()));
 					}
 					if (itemInInventoryList.get((row - 1) + itemIndex).getStartUseDatetime() != null) {
-						viewFullIngredientHistoryFlexTable.setText(row,4,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getStartUseDatetime()));
+						viewFullIngredientHistoryFlexTable.setText(row,4,DATE_FORMAT.format(itemInInventoryList.get((row - 1) + itemIndex).getStartUseDatetime()));
 					}
 					if (itemInInventoryList.get((row - 1) + itemIndex).getEndUseDatetime() != null) {
-						viewFullIngredientHistoryFlexTable.setText(row,5,dateFormat.format(itemInInventoryList.get((row - 1) + itemIndex).getEndUseDatetime()));
+						viewFullIngredientHistoryFlexTable.setText(row,5,DATE_FORMAT.format(itemInInventoryList.get((row - 1) + itemIndex).getEndUseDatetime()));
 					}
 					rowsAdded++;
 				}

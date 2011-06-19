@@ -1,6 +1,6 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
@@ -43,7 +43,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 		log("starting set up");
 		//Set Up Components
 			//Set Up dateBox
-			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+			dateBox.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
 			dateBox.setValue(new Date(), true);
 			dateBox.setStyleName("dateBox");
 			//Set Up usedUpDatePanel
@@ -87,15 +87,15 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 					public void onClick(ClickEvent event) {
 			        	usedUpIngredientList.get(rowToMark).setEndUseDatetime(dateBox.getValue());
 			        	usedUpIngredientFlexTable.clearCell((rowToMark + 1), 6);
-						usedUpIngredientFlexTable.setText((rowToMark + 1),5,dateFormat.format(usedUpIngredientList.get(rowToMark).getEndUseDatetime()));
+						usedUpIngredientFlexTable.setText((rowToMark + 1),5,DATE_FORMAT.format(usedUpIngredientList.get(rowToMark).getEndUseDatetime()));
 			        }
 			        });
 			    // add new row to usedUpIngredientFlexTable
 			    usedUpIngredientFlexTable.setText((rowToMark + 1),0,inUseIngredient.getCode());
 				usedUpIngredientFlexTable.setText((rowToMark + 1),1,inUseIngredient.getInventoryItem().getDescription());
 				usedUpIngredientFlexTable.setText((rowToMark + 1),2,Integer.toString(inUseIngredient.getQuantity()));
-				usedUpIngredientFlexTable.setText((rowToMark + 1),3,dateFormat.format(inUseIngredient.getReceivedDatetime()));
-				usedUpIngredientFlexTable.setText((rowToMark + 1),4,dateFormat.format(inUseIngredient.getStartUseDatetime()));
+				usedUpIngredientFlexTable.setText((rowToMark + 1),3,DATE_FORMAT.format(inUseIngredient.getReceivedDatetime()));
+				usedUpIngredientFlexTable.setText((rowToMark + 1),4,DATE_FORMAT.format(inUseIngredient.getStartUseDatetime()));
 				usedUpIngredientFlexTable.setText((rowToMark + 1),5,"");
 				usedUpIngredientFlexTable.setWidget((rowToMark + 1),6,markIngredientButton);
 				usedUpIngredientFlexTable.getCellFormatter().addStyleName((rowToMark + 1),6,"pointer");

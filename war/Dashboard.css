@@ -5,7 +5,11 @@
   text-align: center;
 }
 
-.dashboardTitle{
+#dashboard {
+	text-align: center;
+}
+
+.title {
   font-size:24px; 
   font-weight: bold;
 }
@@ -16,12 +20,13 @@
   background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgrey)); 
   font-weight: bold;
 }
+
 .smallText {
-  font-size:10px; 
-  font-weight: standard;
+	font-size:10px; 
+	font-weight: standard;
 }
 .greenText {
-color: green;
+	color: green;
 }
 
 
@@ -32,3 +37,4 @@ color: green;
 	font-weight:bold;
 	color:white;
 	background: -webkit-gradient(linear, left top, left bottom, from(red), to(maroon));
+}

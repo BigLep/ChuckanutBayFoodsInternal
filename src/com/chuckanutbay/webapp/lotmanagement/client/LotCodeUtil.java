@@ -1,7 +1,9 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
+import com.chuckanutbay.documentation.ReferenceSource.EffectiveJava;
 import com.chuckanutbay.webapp.common.shared.MyIconBundle;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,12 +18,20 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
+// FIXME: add javadocs
+// TODO: it seems like much of this code can be shared across applications.
+// Lets put it in the common web app.
 public class LotCodeUtil {
-	
-    static public void log(String message) {
+
+	/**
+	 * @deprecated Use {@link Logger} instead
+	 * @see "http://code.google.com/webtoolkit/doc/latest/DevGuideLogging.html"
+	 */
+    @Deprecated
+	static public void log(String message) {
     	GWT.log(message);
     }
-    
+
 	static public void makeButtonWithIcon(Button button, ImageResource icon, String text) {
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		Image formatedIcon = new Image(icon);
@@ -32,7 +42,7 @@ public class LotCodeUtil {
 		buttonPanel.setStyleName("center");
 		button.setHTML(buttonPanel.getElement().getString());
 	}
-	
+
 	static public void makePopupVisible(DecoratedPopupPanel popup, Widget sender, int top, int left) {
         int adjustedLeft = sender.getAbsoluteLeft() + left;
         int adjustedTop = sender.getAbsoluteTop() + top;
@@ -40,12 +50,17 @@ public class LotCodeUtil {
         popup.setWidth("150px");
         popup.show();
 	}
-	
+
 	public static MyIconBundle icons = (MyIconBundle) GWT.create(MyIconBundle.class);
-	
-	public static final String LOT_MANAGEMENT_SHORT_DATE_FORMAT = "MMM d, yyyy";
-    public static DateTimeFormat dateFormat = DateTimeFormat.getFormat(LOT_MANAGEMENT_SHORT_DATE_FORMAT);
-    
+
+    public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("MMM d, yyyy");
+
+
+    /**
+     * @see EffectiveJava#Static_factories_instead_of_constructors
+     * @param <T>
+     * @return new {@link ArrayList}.
+     */
     public static <T> ArrayList<T> newArrayList() {
     	return new ArrayList<T>();
     }

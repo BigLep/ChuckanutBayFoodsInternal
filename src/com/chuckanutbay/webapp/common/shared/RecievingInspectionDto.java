@@ -11,6 +11,7 @@ import com.chuckanutbay.documentation.Terminology;
  * {@link Terminology#DTO} for {@link InventoryItem}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
+// FIXME: I don't see this class being used anywhere.  Is it needed, or is it for a future project?
 public class RecievingInspectionDto implements Serializable {
 	private Date date;
 	private String inspector;
@@ -27,7 +28,7 @@ public class RecievingInspectionDto implements Serializable {
 	private List<Float> temperatureList;
 	private List<Boolean> acceptableList;
 	private String additionalNotes;
-	 
+
 	public Date getDate() {
 		return date;
 	}
@@ -118,10 +119,10 @@ public class RecievingInspectionDto implements Serializable {
 	public String getQuickbooksPO() {
 		return quickbooksPO;
 	}
-	
+
 
 	/**
 	 * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
 	 * */
-	
+
 }

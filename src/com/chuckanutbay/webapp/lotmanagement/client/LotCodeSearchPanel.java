@@ -1,5 +1,5 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
@@ -111,13 +111,13 @@ public class LotCodeSearchPanel extends LotCodeManagerPanel implements ClickHand
 				lotCodeSearchFlexTable.setText(row,1,lotCodeMatch.getInventoryItem().getDescription());
 				lotCodeSearchFlexTable.setText(row,2,Integer.toString(lotCodeMatch.getQuantity()));
 				if (lotCodeMatch.getReceivedDatetime() != null) {
-					lotCodeSearchFlexTable.setText(row,3,dateFormat.format(lotCodeMatch.getReceivedDatetime()));
+					lotCodeSearchFlexTable.setText(row,3,DATE_FORMAT.format(lotCodeMatch.getReceivedDatetime()));
 				}
 				if (lotCodeMatch.getStartUseDatetime() != null) {
-					lotCodeSearchFlexTable.setText(row,4,dateFormat.format(lotCodeMatch.getStartUseDatetime()));
+					lotCodeSearchFlexTable.setText(row,4,DATE_FORMAT.format(lotCodeMatch.getStartUseDatetime()));
 				}
 				if (lotCodeMatch.getEndUseDatetime() != null) {
-					lotCodeSearchFlexTable.setText(row,5,dateFormat.format(lotCodeMatch.getEndUseDatetime()));
+					lotCodeSearchFlexTable.setText(row,5,DATE_FORMAT.format(lotCodeMatch.getEndUseDatetime()));
 				}
 				row++;
 			}

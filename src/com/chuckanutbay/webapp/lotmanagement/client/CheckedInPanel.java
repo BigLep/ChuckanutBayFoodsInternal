@@ -1,6 +1,6 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
@@ -65,7 +65,7 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 			//Set Up ingredientQuantityTextBox
 			ingredientQuantityTextBox.setStyleName("ingredientCodeTextBox");
 			//Set Up dateBox
-			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+			dateBox.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
 			dateBox.setValue(new Date(), true);
 			dateBox.setStyleName("dateBox");
 			//Set Up addIngredientButton
@@ -148,7 +148,7 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 	    checkedInIngredientFlexTable.setText(size,0,checkedInIngredientList.get(size - 1).getCode());
 		checkedInIngredientFlexTable.setText(size,1,checkedInIngredientList.get(size - 1).getInventoryItem().getDescription());
 		checkedInIngredientFlexTable.setText(size,2,Integer.toString(checkedInIngredientList.get(size - 1).getQuantity()));
-		checkedInIngredientFlexTable.setText(size,3,dateFormat.format(checkedInIngredientList.get(size - 1).getReceivedDatetime()));
+		checkedInIngredientFlexTable.setText(size,3,DATE_FORMAT.format(checkedInIngredientList.get(size - 1).getReceivedDatetime()));
 		checkedInIngredientFlexTable.setWidget(size,4,removeButton);
 		checkedInIngredientFlexTable.getCellFormatter().addStyleName(size,4,"pointer");
 	    lotCodeTextBox.setText("Lot Code ...");

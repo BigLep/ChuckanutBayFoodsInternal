@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to="lotcodemanager">
-	<inherits name="com.chuckanutbay.webapp.common.BaseModule"/>																	 -->
+	<inherits name="com.chuckanutbay.webapp.common.BaseModule"/>
 
-	<!-- Specify the app entry point class.												 -->
 	<entry-point class="com.chuckanutbay.webapp.lotmanagement.client.LotCodeManager"/>
 
-	<!-- Specify the paths for translatable code										-->
-	<!--	
+	<!--
 		These paths are relative to the package that contains this XML file.
 		See: http://code.google.com/webtoolkit/doc/latest/DevGuideOrganizingProjects.html#DevGuideModuleXml
 	 -->

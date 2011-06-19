@@ -1,6 +1,6 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
@@ -40,7 +40,7 @@ public class InUsePanel extends LotCodeManagerPanel {
 	public void setUpPanel() {
 		//Set Up Components
 		//Set Up dateBox
-		dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+		dateBox.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
 		dateBox.setValue(new Date(), true);
 		dateBox.setStyleName("dateBox");
 		//Set Up inUseDatePanel
@@ -82,14 +82,14 @@ public class InUsePanel extends LotCodeManagerPanel {
 					public void onClick(ClickEvent event) {
 						inUseIngredientList.get(rowToMark).setStartUseDatetime(dateBox.getValue());
 						inUseIngredientFlexTable.clearCell((rowToMark + 1), 5);
-						inUseIngredientFlexTable.setText((rowToMark + 1),4,dateFormat.format(inUseIngredientList.get(rowToMark).getStartUseDatetime()));
+						inUseIngredientFlexTable.setText((rowToMark + 1),4,DATE_FORMAT.format(inUseIngredientList.get(rowToMark).getStartUseDatetime()));
 					}
 				});
 				// add new row to inUseIngredientFlexTable
 				inUseIngredientFlexTable.setText((rowToMark + 1),0,checkedInIngredient.getCode());
 				inUseIngredientFlexTable.setText((rowToMark + 1),1,checkedInIngredient.getInventoryItem().getDescription());
 				inUseIngredientFlexTable.setText((rowToMark + 1),2,Integer.toString(checkedInIngredient.getQuantity()));
-				inUseIngredientFlexTable.setText((rowToMark + 1),3,dateFormat.format(checkedInIngredient.getReceivedDatetime()));
+				inUseIngredientFlexTable.setText((rowToMark + 1),3,DATE_FORMAT.format(checkedInIngredient.getReceivedDatetime()));
 				inUseIngredientFlexTable.setText((rowToMark + 1),4,"");
 				inUseIngredientFlexTable.setWidget((rowToMark + 1),5,markIngredientButton);
 				inUseIngredientFlexTable.getCellFormatter().addStyleName((rowToMark + 1),5,"pointer");

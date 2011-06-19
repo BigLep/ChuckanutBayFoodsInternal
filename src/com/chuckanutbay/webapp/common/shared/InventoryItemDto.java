@@ -22,12 +22,7 @@ public class InventoryItemDto implements Serializable {
 		this.id = id;
 		this.description = description;
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getDescription() {
-		return description;
-	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -35,4 +30,10 @@ public class InventoryItemDto implements Serializable {
 		return id;
 	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getDescription() {
+		return description;
+	}
 }

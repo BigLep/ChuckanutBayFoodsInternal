@@ -1,6 +1,6 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
 import java.util.Date;
@@ -36,7 +36,7 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	public void setUpPanel() {
 		//Set Up Components
 			//Set Up dateBox
-			dateBox.setText(dateFormat.format(new Date()));
+			dateBox.setText(DATE_FORMAT.format(new Date()));
 			dateBox.setReadOnly(true);
 			dateBox.setStyleName("dateBox");
 			//Set Up dateToSearchPanel
@@ -82,8 +82,8 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 			    activeIngredientsFlexTable.setText(row,0,activeIngredient.getCode());
 				activeIngredientsFlexTable.setText(row,1,activeIngredient.getInventoryItem().getDescription());
 				activeIngredientsFlexTable.setText(row,2,Integer.toString(activeIngredient.getQuantity()));
-				activeIngredientsFlexTable.setText(row,3,dateFormat.format(activeIngredient.getReceivedDatetime()));
-				activeIngredientsFlexTable.setText(row,4,dateFormat.format(activeIngredient.getStartUseDatetime()));
+				activeIngredientsFlexTable.setText(row,3,DATE_FORMAT.format(activeIngredient.getReceivedDatetime()));
+				activeIngredientsFlexTable.setText(row,4,DATE_FORMAT.format(activeIngredient.getStartUseDatetime()));
 				row++;
 			}
 		}

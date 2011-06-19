@@ -1,5 +1,5 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.dateFormat;
+import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
@@ -42,7 +42,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 	public void setUpPanel() {
 		//Set Up Components
 			//Set Up dateBox
-			dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+			dateBox.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
 			dateBox.setValue(new Date(), true);
 			dateBox.setStyleName("dateBox");
 			//Set Up searchButton
@@ -98,10 +98,10 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 		    dateSearchFlexTable.setText(row,0,dateMatch.getCode());
 			dateSearchFlexTable.setText(row,1,dateMatch.getInventoryItem().getDescription());
 			dateSearchFlexTable.setText(row,2,Integer.toString(dateMatch.getQuantity()));
-			dateSearchFlexTable.setText(row,3,dateFormat.format(dateMatch.getReceivedDatetime()));
-			dateSearchFlexTable.setText(row,4,dateFormat.format(dateMatch.getStartUseDatetime()));
+			dateSearchFlexTable.setText(row,3,DATE_FORMAT.format(dateMatch.getReceivedDatetime()));
+			dateSearchFlexTable.setText(row,4,DATE_FORMAT.format(dateMatch.getStartUseDatetime()));
 			if (dateMatch.getEndUseDatetime() != null) {
-				dateSearchFlexTable.setText(row,5,dateFormat.format(dateMatch.getEndUseDatetime()));
+				dateSearchFlexTable.setText(row,5,DATE_FORMAT.format(dateMatch.getEndUseDatetime()));
 			}
 			else dateSearchFlexTable.setText(row,5,"In-Use");
 			row++;

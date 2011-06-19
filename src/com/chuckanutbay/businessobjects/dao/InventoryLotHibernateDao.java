@@ -19,8 +19,8 @@ public class InventoryLotHibernateDao extends GenericHibernateDao<InventoryLot,I
 	@Override
 	public List<InventoryLot> findUnused() {
 		return findByCriteriaDefaultSort(
-					Restrictions.isNull("startUseDatetime")
-				);
+			Restrictions.isNull("startUseDatetime")
+		);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class InventoryLotHibernateDao extends GenericHibernateDao<InventoryLot,I
 				Restrictions.isNull("endUseDatetime")
 			);
 	}
-	
+
 	@Override
 	public List<InventoryLot> findInUseOnDate(Date date) {
 		return findByCriteriaDefaultSort(
@@ -48,7 +48,7 @@ public class InventoryLotHibernateDao extends GenericHibernateDao<InventoryLot,I
 					Restrictions.eq("code", code)
 				);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private List<InventoryLot> findByCriteriaDefaultSort(Criterion...criterion) {
 		// http://stackoverflow.com/questions/870029/hibernate-order-by-association
@@ -57,7 +57,7 @@ public class InventoryLotHibernateDao extends GenericHibernateDao<InventoryLot,I
 			crit.add(c);
 		}
 		return crit.createCriteria("inventoryItem")
-			.addOrder( Order.asc("description"))
+			.addOrder(Order.asc("description"))
 			.list();
 	}
 

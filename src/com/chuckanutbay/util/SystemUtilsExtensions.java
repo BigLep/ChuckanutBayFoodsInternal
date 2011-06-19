@@ -1,7 +1,7 @@
 package com.chuckanutbay.util;
 
 /**
- * Utils/extensions for {@link System}.
+ * Utilities/extensions for {@link System}.
  */
 public class SystemUtilsExtensions {
 
