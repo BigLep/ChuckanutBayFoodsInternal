@@ -28,13 +28,14 @@ public class HibernateUtil {
 	 */
 	public static final String CONFIG_KEY_HIBERNATE_CONFIG_TYPE = "hibernateConfigType";
 	private static final String CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_PROD = "prod";
+	private static final String CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_LOCALHOST = "localhost";
 	public static final String CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_UNIT_TEST = "unit-test";
 
 	private static final Configuration configuration;
 	static {
 		String configFilePath =
 			"hibernate/hibernate-" +
-			ObjectUtilsExtensions.defaultIfNull(SystemUtilsExtensions.getConfigValue(CONFIG_KEY_HIBERNATE_CONFIG_TYPE), CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_PROD) +
+			ObjectUtilsExtensions.defaultIfNull(SystemUtilsExtensions.getConfigValue(CONFIG_KEY_HIBERNATE_CONFIG_TYPE), CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_LOCALHOST) +
 			".cfg.xml";
 		logger.info("Configuring Hibernate with configuration: " + configFilePath);
 		configuration = new Configuration()

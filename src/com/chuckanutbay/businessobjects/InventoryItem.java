@@ -5,6 +5,7 @@ package com.chuckanutbay.businessobjects;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,6 +40,7 @@ public class InventoryItem implements java.io.Serializable {
 	}
 
 	@Id
+	@Basic
 	@Column(name = "id", unique = true, nullable = false, length = 10)
 	public String getId() {
 		return this.id;
