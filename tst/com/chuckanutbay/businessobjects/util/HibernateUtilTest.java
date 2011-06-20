@@ -5,7 +5,7 @@ import org.hibernate.Transaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.chuckanutbay.businessobjects.InventoryItem;
+import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.util.testing.DatabaseResource;
 
 /**
@@ -23,7 +23,10 @@ public class HibernateUtilTest {
 	public void testGetSession() {
 		Session s = HibernateUtil.getSession();
 		Transaction t = s.beginTransaction();
-		s.save(new InventoryItem("id", "description"));
+		Employee e = new Employee();
+		e.setFirstName("firstName");
+		e.setLastName("lastName");
+		s.save(e);
 		t.commit();
 	}
 
