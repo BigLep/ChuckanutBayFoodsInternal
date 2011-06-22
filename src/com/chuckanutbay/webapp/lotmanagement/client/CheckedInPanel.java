@@ -1,7 +1,9 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
+import static com.chuckanutbay.webapp.common.shared.IconUtil.ADD;
+import static com.chuckanutbay.webapp.common.shared.IconUtil.DELETE;
+import static com.chuckanutbay.webapp.common.shared.IconUtil.newImage;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
@@ -69,7 +71,7 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 			dateBox.setValue(new Date(), true);
 			dateBox.setStyleName("dateBox");
 			//Set Up addIngredientButton
-			makeButtonWithIcon(addIngredientButton, icons.addIcon(), "Add");
+			makeButtonWithIcon(addIngredientButton, ADD, "Add");
 			//Set Up newCheckedInIngredientPanel
 			newCheckedInFlexTable.setStyleName("FlexTable");
 			//Set Up checkedInIngredientFlexTable
@@ -132,7 +134,7 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 		final String lotCode = lotCodeTextBox.getText().toUpperCase().trim();
 		lotCodesList.add(lotCode);
 	    // create removeCheckedInIngredientButton with handler
-	    Image removeButton = new Image(icons.deleteIcon());
+	    Image removeButton = newImage(DELETE);
 	    removeButton.addClickHandler(new ClickHandler() {
 	        @Override
 			public void onClick(ClickEvent event) {

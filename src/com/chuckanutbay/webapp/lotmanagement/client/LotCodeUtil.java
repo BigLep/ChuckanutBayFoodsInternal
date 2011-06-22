@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.chuckanutbay.documentation.ReferenceSource.EffectiveJava;
-import com.chuckanutbay.webapp.common.shared.MyIconBundle;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.FocusWidget;
@@ -32,7 +30,7 @@ public class LotCodeUtil {
     	GWT.log(message);
     }
 
-	static public void makeButtonWithIcon(Button button, ImageResource icon, String text) {
+	static public void makeButtonWithIcon(Button button, String icon, String text) {
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		Image formatedIcon = new Image(icon);
 		HTML formatedText = new HTML(text);
@@ -50,8 +48,6 @@ public class LotCodeUtil {
         popup.setWidth("150px");
         popup.show();
 	}
-
-	public static MyIconBundle icons = (MyIconBundle) GWT.create(MyIconBundle.class);
 
     public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("MMM d, yyyy");
 

@@ -35,7 +35,7 @@ public class Dashboard implements EntryPoint, ClickHandler {
 		mainPanel.setCellHorizontalAlignment(title, HasHorizontalAlignment.ALIGN_CENTER);
 		mainPanel.setCellHorizontalAlignment(lotCodeManagerButton, HasHorizontalAlignment.ALIGN_CENTER);
 		//Add mainPanel to rootPanel
-		rootPanel = RootPanel.get("dashboard");
+		rootPanel = RootPanel.get("Dashboard");
 		rootPanel.add(mainPanel);
 	}
 

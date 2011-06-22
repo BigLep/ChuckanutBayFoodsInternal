@@ -1,6 +1,9 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
+
+import static com.chuckanutbay.webapp.common.shared.IconUtil.CANCEL;
+import static com.chuckanutbay.webapp.common.shared.IconUtil.PRINT;
+import static com.chuckanutbay.webapp.common.shared.IconUtil.SAVE;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -44,7 +47,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 				buttonPanel.setSpacing(5);
 				//Set up printButton
 				Button printButton = new Button();
-				makeButtonWithIcon(printButton, icons.printIcon(), "Print");
+				makeButtonWithIcon(printButton, PRINT, "Print");
 				printButton.addClickHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
@@ -53,7 +56,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 				});
 				//Set up saveButton
 				Button saveButton = new Button();
-				makeButtonWithIcon(saveButton, icons.saveIcon(), "Save");
+				makeButtonWithIcon(saveButton, SAVE, "Save");
 				saveButton.addClickHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
@@ -64,7 +67,7 @@ public class LotCodeManagerDialogBox extends DialogBox {
 				});
 				//Set up cancelButton
 				Button cancelButton = new Button();
-				makeButtonWithIcon(cancelButton, icons.cancelIcon(), "Cancel");
+				makeButtonWithIcon(cancelButton, CANCEL, "Cancel");
 				cancelButton.addClickHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {

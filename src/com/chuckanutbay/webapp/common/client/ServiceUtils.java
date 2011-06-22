@@ -13,15 +13,13 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 public class ServiceUtils {
 
 	public static InventoryItemServiceAsync createInventoryItemService() {
-		return ServiceUtils.createServiceHelper(InventoryItemService.class, "InventoryItemService");
+		InventoryItemServiceAsync service = GWT.create(InventoryItemService.class);
+		((ServiceDefTarget)service).setServiceEntryPoint("/common/InventoryItemService");
+		return service;
 	}
 	public static InventoryLotServiceAsync createInventoryLotService() {
-		return ServiceUtils.createServiceHelper(InventoryLotService.class, "InventoryLotService");
-	}
-
-	private static <T> T createServiceHelper(Class<? extends RemoteService> classLiteral, String relativePath) {
-		T service = GWT.<T>create(classLiteral);
-		((ServiceDefTarget)service).setServiceEntryPoint("/common/" + relativePath);
+		InventoryLotServiceAsync service = GWT.create(InventoryLotService.class);
+		((ServiceDefTarget)service).setServiceEntryPoint("/common/InventoryLotService");
 		return service;
 	}
 }

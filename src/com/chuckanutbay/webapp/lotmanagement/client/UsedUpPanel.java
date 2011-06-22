@@ -1,7 +1,7 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
+import static com.chuckanutbay.webapp.common.shared.IconUtil.CANCEL;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
@@ -81,7 +81,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 				hashCodeList.add(inUseIngredient.hashCode());
 			    final int rowToMark = hashCodeList.indexOf(inUseIngredient.hashCode());
 			    // create markIngredientButton with handler
-			    Image markIngredientButton = new Image(icons.cancelIcon());
+			    Image markIngredientButton = new Image(CANCEL);
 			    markIngredientButton.addClickHandler(new ClickHandler() {
 			        @Override
 					public void onClick(ClickEvent event) {

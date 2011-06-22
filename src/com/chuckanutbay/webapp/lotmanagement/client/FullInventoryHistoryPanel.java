@@ -1,6 +1,7 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
+import static com.chuckanutbay.webapp.common.shared.IconUtil.BACK;
+import static com.chuckanutbay.webapp.common.shared.IconUtil.NEXT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.icons;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
@@ -65,8 +66,8 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		//Set Up buttonsPanel
 		buttonsPanel.setSpacing(5);
 		//Set Up buttons
-		makeButtonWithIcon(backButton, icons.backIcon(), "Back");
-		makeButtonWithIcon(nextButton, icons.nextIcon(), "Next");
+		makeButtonWithIcon(backButton, BACK, "Back");
+		makeButtonWithIcon(nextButton, NEXT, "Next");
 		LotCodeUtil.addClickHandler(this, backButton, nextButton);
 		backButton.setStyleName("navigationButton");
 		nextButton.setStyleName("navigationButton");
