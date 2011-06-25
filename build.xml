@@ -21,6 +21,8 @@
 	<property name="config.dir" value="${basedir}/configuration"/>
 	<property name="tst.dir" value="${basedir}/tst"/>
 	<property name="war.dir" value="${basedir}/war"/>
+	<!-- Alternatively, could do ${ant.project.name} -->
+	<property name="war.name" value="ROOT"/>
 	
 	<target name="release" depends="war,javadoc"/>
 	
@@ -157,7 +159,7 @@
 	</target>
 	
 	<target name="war" depends="jar,gwt-compile,setup-war-directory" description="GWT compile to JavaScript">
-		<war destfile="${build.output.dir}/${ant.project.name}.war" webxml="${war.dir}/WEB-INF/web.xml">
+		<war destfile="${build.output.dir}/${war.name}.war" webxml="${war.dir}/WEB-INF/web.xml">
 			<lib dir="${build.output.war.lib.dir}"/>
 			<fileset dir="${build.output.war.dir}">
 				<exclude name="WEB-INF/**"/>

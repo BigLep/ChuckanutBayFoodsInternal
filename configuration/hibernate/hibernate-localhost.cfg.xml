@@ -22,12 +22,14 @@
 			Other c3p0 settings exist in c3p0.properties.
 			http://www.mchange.com/projects/c3p0/#hibernate-specific 
 		-->
+		<!-- 
 		<property name="hibernate.c3p0.acquire_increment">1</property> 
-		<property name="hibernate.c3p0.idle_test_period">100</property> <!-- seconds --> 
-		<property name="hibernate.c3p0.timeout">3600</property> <!-- seconds -->
+		<property name="hibernate.c3p0.idle_test_period">100</property> 
+		<property name="hibernate.c3p0.timeout">3600</property> 
 		<property name="hibernate.c3p0.min_size">1</property> 
 		<property name="hibernate.c3p0.max_size">3</property> 
 		<property name="hibernate.c3p0.max_statements">10</property> 
+		-->
 		
 		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
 		<property name="hibernate.search.autoregister_listeners">false</property>
