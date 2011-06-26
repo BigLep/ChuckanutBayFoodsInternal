@@ -1,20 +1,58 @@
-Global setup:
- Download and install Git
-  git config --global user.name "Steve Loeppky"
-  git config --global user.email stvn@loeppky.com
+Global Git Setup:
+ Download and install Git: http://git-scm.com/
+ Install SSH keys on computer and at github (see http://help.github.com/mac-set-up-git/)
+
+  # Set these variables first
+  fullName="Steve Loeppky"
+  emailAddress="stvn@loeppky.com
+
+  # Commands that can be copy and pasted
+  git config --global user.name $fullName
+  git config --global user.email $emailAddress
         
-Next steps:
-  mkdir ChuckanutBayInternal
-  cd ChuckanutBayInternal
+Creating a local repository from github
+  # Set these variables first
+  # If sharing this project with Eclipse, this is the path to the Eclipse project directory (e.g., ~/Documents/EclipseWorkspace/ChuckanutBayInternal)
+  projectDir=/path/to/project
+  
+  # Commands that can be copy and pasted
+  cd $projectDir
   git init
   git remote add github git@github.com:BigLep/ChuckanutBayFoodsInternal.git
-  git branch steve
-  git checkout steve
-  git push github steve
+  
+  # At this point, you need to either create a new developer branch, or checkout an existing branch.  
+
+Creating a new developer branch
+  # Set these variables first
+  firstName=steve
+  
+  # Commands that can be copy and pasted
+  git fetch github
+  git checkout develop
+  newBranch=develop-${firstName}
+  git branch $newBranch
+  git checkout $newBranch
+  git push github $newBranch
+
+Checkout an existing branch
+  # Set these variables first
+  branchName=develop-steve
+  
+  # Commands that can be copy and pasted
+  git fetch github
+  git checkout $branchName
+
+Adding a new branch to github
+  # Set these variables first
+  oldBranch=steve
+  newBranch=develop
+  
+  # Commands that can be copy and pasted
+  git checkout $oldBranch
+  git branch $newBranch
+  git checkout $newBranch
+  git push github $newBranch
+
 
 Reference:
   http://gitref.org/
-  
-Eclipse Setup
-  To run 
-  
