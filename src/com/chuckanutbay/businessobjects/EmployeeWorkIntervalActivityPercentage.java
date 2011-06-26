@@ -13,8 +13,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "work_interval_activity_percentages")
-public class WorkIntervalActivityPercentage {
+@Table(name = "employee_work_interval_activity_percentages")
+public class EmployeeWorkIntervalActivityPercentage {
 	
 	private Integer id;
 	private EmployeeWorkInterval employeeWorkInterval;
@@ -32,7 +32,7 @@ public class WorkIntervalActivityPercentage {
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "work_interval_id", nullable = false)
+	@JoinColumn(name = "employee_work_interval_id", nullable = false)
 	public EmployeeWorkInterval getEmployeeWorkInterval() {
 		return employeeWorkInterval;
 	}
