@@ -1,3 +1,7 @@
+/.classpath
+/.gwt
+/.project
+/.settings
 /build-output
 /configuration/hibernate/hibernate-prod.cfg.xml
 /war/dashboard
@@ -8,4 +12,3 @@
 /war/WEB-INF/classes
 /war/WEB-INF/deploy
 /war/WEB-INF/lib
-/.gwt
