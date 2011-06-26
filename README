@@ -53,6 +53,33 @@ Adding a new branch to github
   git checkout $newBranch
   git push github $newBranch
 
+Branch strategy:
+* master: This branch should have production ready code.  We only push to this branch from develop when the code has been well tested and is ready for primetime.
+* develop: This represents our latest development code.  Code is pushed to this branch from "develop-user" branches.
+* develop-user: Each developer has their own branch.  A user can commit to this branch whenever and push to github whenever as it only affect them.  When code has been reviewed in a develop-user branch, it can be merged to develop.
+This is a simplification of the ideas discussed in http://nvie.com/posts/a-successful-git-branching-model/
+
+Development workflow:
+* Sync changes from github/develop
+  git fetch github
+  git merge github/develop
+* Make and test changes
+* Commit change to develop-user branch.
+* Push change to github/develop-user for code review
+* Incorporate feedback
+* Commit change to develop-user branch.
+* Push change to github/develop-user for code review
+* Get final sign off
+* Merge change into github/develop so others can pick the change up
+  git fetch github
+  git checkout develop
+  git merge github/develop-user
+  git push github develop
+
+Code reviews:
+Make a commit in your develop-user branch.
+Push the develop-user commit(s) to githut.
+Send an email to other developers to get it reviewed.  The code must be reviewed before it is pushed to develop.
 
 Reference:
   http://gitref.org/
