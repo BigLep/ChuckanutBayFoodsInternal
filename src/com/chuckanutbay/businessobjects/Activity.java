@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Activity {
 	
 	private Integer id;
-	private String activity;
+	private String name;
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -26,12 +26,12 @@ public class Activity {
 		this.id = id;
 	}
 	
-	@Column(name = "activity", nullable = false, length = 20)
-	public String getActivity() {
-		return activity;
+	@Column(name = "name", nullable = false, length = 20)
+	public String getName() {
+		return name;
 	}
-	public void setActivity(String activity) {
-		this.activity = activity;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	
