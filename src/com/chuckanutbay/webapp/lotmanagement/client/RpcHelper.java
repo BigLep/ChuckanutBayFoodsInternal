@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.chuckanutbay.webapp.common.client.InventoryItemServiceAsync;
 import com.chuckanutbay.webapp.common.client.InventoryLotServiceAsync;
+import com.chuckanutbay.webapp.common.client.ServiceUtils.*;
 import com.chuckanutbay.webapp.common.client.ServiceUtils;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
@@ -20,17 +21,6 @@ public class RpcHelper {
 	public RpcHelper() {
 		inventoryLotService = ServiceUtils.createInventoryLotService();
 		inventoryItemService = ServiceUtils.createInventoryItemService();
-	}
-
-	/**
-	 * {@link AsyncCallback} that provides a default {@link AsyncCallback#onFailure(Throwable)} handler.
-	 * @param <T>
-	 */
-	private static abstract class DefaultAsyncCallback<T> implements AsyncCallback<T> {
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("System failed: " + caught);
-		}
 	}
 
 	/**

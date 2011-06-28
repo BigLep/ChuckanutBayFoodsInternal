@@ -3,6 +3,7 @@ package com.chuckanutbay.businessobjects;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +25,7 @@ public class EmployeeWorkInterval {
 	private Employee employee;
 	private Date startDateTime;
 	private Date endDateTime;
+	private Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages;
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -59,6 +62,15 @@ public class EmployeeWorkInterval {
 	}
 	public void setEndDateTime(Date endDateTime) {
 		this.endDateTime = endDateTime;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeWorkInterval")
+	public Set<EmployeeWorkIntervalActivityPercentage> getEmployeeWorkIntervalActivityPercentages() {
+		return employeeWorkIntervalActivityPercentages;
+	}
+	public void setEmployeeWorkIntervalActivityPercentages(
+			Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages) {
+		this.employeeWorkIntervalActivityPercentages = employeeWorkIntervalActivityPercentages;
 	}
 	
 }

@@ -48,6 +48,8 @@ public class EmployeeWorkIntervalActivityPercentage {
 	public void setActivity(Activity activity) {
 		this.activity = activity;
 	}
+	
+	@Column(name = "percentage", nullable = false, length = 3)
 	public Integer getPercentage() {
 		return percentage;
 	}
