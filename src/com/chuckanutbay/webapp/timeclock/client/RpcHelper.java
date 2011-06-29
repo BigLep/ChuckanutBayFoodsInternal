@@ -20,11 +20,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  */
 public class RpcHelper {
-	private final EmployeeClockInOutServiceAsync employeeClockInOutService;
-	
-	public RpcHelper() {
-		employeeClockInOutService = ServiceUtils.createEmployeeClockInOutService();
-	}
+	public static final EmployeeClockInOutServiceAsync employeeClockInOutService = ServiceUtils.createEmployeeClockInOutService();
 	
 	public static AsyncCallback<EmployeeDto> createClockInCallback(final ClockInOutServerCommunicator caller) {
 		return new DefaultAsyncCallback<EmployeeDto>() {
@@ -62,7 +58,7 @@ public class RpcHelper {
 		};
 	}
 	
-	public static AsyncCallback<Set<ActivityDto>> createGetActivities(final ClockInOutServerCommunicator caller) {
+	public static AsyncCallback<Set<ActivityDto>> createGetActivitiesCallback(final ClockInOutServerCommunicator caller) {
 		return new DefaultAsyncCallback<Set<ActivityDto>>() {
 			@Override
 			public void onSuccess(Set<ActivityDto> activities) {

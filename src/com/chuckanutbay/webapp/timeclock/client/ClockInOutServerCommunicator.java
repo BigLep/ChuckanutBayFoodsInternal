@@ -26,7 +26,7 @@ public interface ClockInOutServerCommunicator {
 	/**
 	 * Request all of the activities from the server.
 	 */
-	public void getActivitiesFromDatabse();
+	public void getActivitiesFromDatabase();
 	
 	/**
 	 * Request that the server cancel the clock in of an an {@link employeeDto} with matching {@link BarcodeDto}.

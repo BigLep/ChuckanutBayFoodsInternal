@@ -1,6 +1,7 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -9,6 +10,9 @@ import com.chuckanutbay.webapp.common.shared.BarcodeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -21,24 +25,26 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import static com.chuckanutbay.webapp.common.shared.IconUtil.*;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.*;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.*;
 
-public class TimeClock implements EntryPoint {
+public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorHandler, ClockInOutServerCommunicator, KeyDownHandler {
 	
 	//UI Components
-	FocusPanel mainPanel = new FocusPanel();
-	HorizontalPanel backgroundPanel = new HorizontalPanel();
-	VerticalPanel column1Panel = new VerticalPanel();
-	SimplePanel column2Panel = new SimplePanel();
-	FlexTable employeeTable1 = new FlexTable();
-	SimplePanel column3Panel = new SimplePanel();
-	FlexTable employeeTable2 = new FlexTable();
-	RootPanel rootPanel = RootPanel.get("TimeClock");
+	private FocusPanel mainPanel = new FocusPanel();
+	private HorizontalPanel backgroundPanel = new HorizontalPanel();
+	private VerticalPanel column1Panel = new VerticalPanel();
+	private SimplePanel column2Panel = new SimplePanel();
+	private FlexTable employeeTable1 = new FlexTable();
+	private SimplePanel column3Panel = new SimplePanel();
+	private FlexTable employeeTable2 = new FlexTable();
+	private RootPanel rootPanel = RootPanel.get("TimeClock");
 	
 	//Data Objects
-	Set<EmployeeDto> clockedInEmployees;
-	Set<ActivityDto> activities;
+	private Set<EmployeeDto> clockedInEmployees = new HashSet<EmployeeDto>();
+	private Set<ActivityDto> activities = new HashSet<ActivityDto>();
 	
 	//Other Objects
+	BarcodeFormulation barcodeFormulation = new BarcodeFormulation();
 	private Timer timer = new Timer() {
 		@Override
 		public void run() {
@@ -54,6 +60,8 @@ public class TimeClock implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		initializeUI();
+		getClcockedInEmployeesFromDatabase();
+		getActivitiesFromDatabase();
 	}
 	
 	/**
@@ -84,12 +92,17 @@ public class TimeClock implements EntryPoint {
 	 */
 	private void addToFlexTable(FlexTable flexTable, int row, EmployeeDto employee) {
 		//Set first column as Employee Name
-		flexTable.setWidget(row-1, 0, new Label(employee.getFirstName() + " " + employee.getLastName()));
+		Label nameLabel = new Label(employee.getFirstName() + " " + employee.getLastName());
+		nameLabel.setStyleName("employeeFlexTableNameColumn");
+		flexTable.setWidget(row-1, 0, nameLabel);
 		
 		//Set second column as Time worked this week in format (hrs:mins)
-		final int hoursWorkedThisWeek = employee.minsWorkedThisWeek % 60;
+		NumberFormat numberFormat = NumberFormat.getFormat("00");
+		final int hoursWorkedThisWeek = employee.minsWorkedThisWeek / 60;
 		final int remainderInMinutes = employee.minsWorkedThisWeek - (60*hoursWorkedThisWeek);
-		flexTable.setWidget(row-1, 1, new Label("(" + hoursWorkedThisWeek + ":" + remainderInMinutes + ")"));
+		Label timeLabel = new Label("(" + numberFormat.format(hoursWorkedThisWeek) + ":" + numberFormat.format(remainderInMinutes) + ")");
+		timeLabel.setStyleName("employeeFlexTableTimeColumn");
+		flexTable.setWidget(row-1, 1, timeLabel);
 	}
 
 	/**
@@ -116,8 +129,6 @@ public class TimeClock implements EntryPoint {
 				SimplePanel flexTablePanel1 = new SimplePanel();
 				flexTablePanel1.setStyleName("employeeFlexTable");
 				flexTablePanel1.add(employeeTable1);
-					employeeTable1.getColumnFormatter().addStyleName(0, "employeeFlexTableNameColumn");
-					employeeTable1.getColumnFormatter().addStyleName(1, "employeeFlexTableTimeColumn");
 			verticalPanel1.add(flexTablePanel1);
 		column2Panel.add(verticalPanel1);
 		
@@ -132,8 +143,6 @@ public class TimeClock implements EntryPoint {
 				SimplePanel flexTablePanel2 = new SimplePanel();
 				flexTablePanel2.setStyleName("employeeFlexTable");
 				flexTablePanel2.add(employeeTable2);
-					employeeTable2.getColumnFormatter().addStyleName(0, "employeeFlexTableNameColumn");
-					employeeTable2.getColumnFormatter().addStyleName(1, "employeeFlexTableTimeColumn");
 			verticalPanel2.add(flexTablePanel2);
 		column3Panel.add(verticalPanel2);
 		
@@ -146,6 +155,8 @@ public class TimeClock implements EntryPoint {
 		
 		//Setup mainPanel
 		mainPanel.add(backgroundPanel);
+		mainPanel.addKeyDownHandler(this);
+		mainPanel.setFocus(true);
 		
 		//Setup Window
 		Window.enableScrolling(false);
@@ -193,6 +204,140 @@ public class TimeClock implements EntryPoint {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void onScan(BarcodeDto barcode) {
+		GWT.log("The following barcode just got scanned: " + barcode.getBarcodeNumber());
+		for (EmployeeDto employee : clockedInEmployees) {
+			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode (" + barcode.getBarcodeNumber() + ")");
+			if (employee.getBarcodeNumber().equals(barcode)) {
+				GWT.log("Found that " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode matches the scanned code");
+				onClockOutScan(barcode);
+				return;
+			}
+		}
+		GWT.log("Didn't find any matching barcodes to: " + barcode.getBarcodeNumber());
+		onClockInScan(barcode);
+	}
+
+	@Override
+	public void onClockInScan(BarcodeDto barcode) {
+		clockInOnDatabase(barcode);
+		
+	}
+
+	@Override
+	public void onClockOutScan(BarcodeDto barcode) {
+		for (EmployeeDto employee : clockedInEmployees) {
+			if (employee.getBarcodeNumber().equals(barcode)) {
+				clockOutOnDatabase(employee);
+				clockedInEmployees.remove(employee);
+				updateEmployeeTables();
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void onClockInError(BarcodeDto barcode) {
+		GWT.log("Clock in error with barcode: " + barcode.getBarcodeNumber().toString());
+		cancelClockInOnDatabase(barcode);
+		Iterator<EmployeeDto> iterator = clockedInEmployees.iterator();
+		while (iterator.hasNext()) {
+			EmployeeDto employeeToCheck = iterator.next();
+			if (employeeToCheck.getBarcodeNumber().equals(barcode)) {
+				GWT.log("Removing " + employeeToCheck.firstName + " " + employeeToCheck.lastName + " from clocked-in employees");
+				clockedInEmployees.remove(employeeToCheck);
+				updateEmployeeTables();
+				break;
+			}
+		}
+		
+	}
+
+	@Override
+	public void onClockOutError(EmployeeDto employee) {
+		//Add the employee back to the employee tables.
+		clockedInEmployees.add(employee);
+		updateEmployeeTables();
+	}
+
+	@Override
+	public void getClcockedInEmployeesFromDatabase() {
+		GWT.log("Requesting clocked in employees from server");
+		employeeClockInOutService.getClockedInEmployees(createGetClockedInEmployeesCallback(this));
+	}
+
+	@Override
+	public void clockInOnDatabase(BarcodeDto barcode) {
+		GWT.log("Requesting that the server clock-in employee with barcode number: " + barcode.barcodeNumber);
+		employeeClockInOutService.clockIn(barcode, createClockInCallback(this));
+	}
+
+	@Override
+	public void clockOutOnDatabase(EmployeeDto employee) {
+		GWT.log("Requesting that the server clock-out employee: " + employee.firstName + " " + employee.lastName);
+		employeeClockInOutService.clockOut(employee, createClockOutCallback(this));
+	}
+
+	@Override
+	public void getActivitiesFromDatabase() {
+		GWT.log("Requesting activities from server");
+		employeeClockInOutService.getActivities(createGetActivitiesCallback(this));
+	}
+
+	@Override
+	public void cancelClockInOnDatabase(BarcodeDto barcode) {
+		GWT.log("Requesting cancellation of clock in from Server for barcode number: " + barcode.barcodeNumber);
+		employeeClockInOutService.cancelClockIn(barcode, createCancelClockInCallback(this));
+	}
+
+	@Override
+	public void onSuccessfulClockIn(EmployeeDto employee) {
+		clockedInEmployees.add(employee);
+		updateEmployeeTables();
+		GWT.log("Successful Clock In from Server");
+	}
+
+	@Override
+	public void onSuccessfulClockOut() {
+		// Do nothing
+		GWT.log("Successful Clock Out from Server");
+	}
+
+	@Override
+	public void onSuccessfulCancelClockIn() {
+		// Do nothing
+		GWT.log("Successful Clock In cancellation from Server");
+	}
+
+	@Override
+	public void onSuccessfulGetClockedInEmployees(
+			Set<EmployeeDto> clockedInEmployees) {
+		this.clockedInEmployees.clear();
+		this.clockedInEmployees.addAll(clockedInEmployees);
+		updateEmployeeTables();
+		GWT.log("Successfully got clocked-in employees from Server");
+	}
+
+	@Override
+	public void onSuccessfulGetActivities(Set<ActivityDto> activities) {
+		this.activities.clear();
+		this.activities.addAll(activities);
+		GWT.log("Successfully got activities from Server");
+	}
+
+	@Override
+	public void onKeyDown(KeyDownEvent event) {
+		GWT.log("Key entered: " + event.getNativeKeyCode());
+		final int keyCode = event.getNativeKeyCode();
+		if (keyCode >= ZERO_KEY_CODE && keyCode <= NINE_KEY_CODE) {
+			barcodeFormulation.addCharacter(new Integer(keyCode).byteValue());
+		} else if (keyCode == ENTER_KEY_CODE) {
+			onScan(barcodeFormulation.getBarcode());
+			barcodeFormulation = new BarcodeFormulation();
+		}
 	}
 
 }

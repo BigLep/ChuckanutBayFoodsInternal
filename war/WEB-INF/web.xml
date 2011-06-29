@@ -45,6 +45,16 @@
 		<url-pattern>/common/InventoryLotService</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+	<servlet-name>EmployeeClockInOutService</servlet-name>
+		<servlet-class>com.chuckanutbay.webapp.common.server.EmployeeClockInOutServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>EmployeeClockInOutService</servlet-name>
+		<url-pattern>/common/EmployeeClockInOutService</url-pattern>
+	</servlet-mapping>
+	
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>Dashboard.html</welcome-file>
