@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import static com.chuckanutbay.webapp.common.shared.IconUtil.*;
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.*;
 
 public class TimeClock implements EntryPoint {
 	
@@ -152,6 +153,9 @@ public class TimeClock implements EntryPoint {
 		//Setup rootPanel
 		rootPanel.add(mainPanel);
 		GWT.log("Finnished UI Initialization");
+		
+		//Setup Timer
+		timer.scheduleRepeating(MIN_IN_MILLISECONDS);
 	}
 	
 	/**

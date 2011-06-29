@@ -1,13 +1,13 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
-import java.text.DateFormat;
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.MIN_IN_MILLISECONDS;
+
 import java.util.Date;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
  *
  */
 public class Clock extends SimplePanel {
-	public static final int MIN_IN_MILLISECONDS = 60000;
 	private Label timeLabel = new Label();
 	private DateTimeFormat dateFormat = DateTimeFormat.getFormat("h:mm a");
 	private Timer timer = new Timer() {
@@ -32,6 +31,7 @@ public class Clock extends SimplePanel {
 	 * @param isAutoIncrement If true, {@link Clock} will automatically keep time.
 	 */
 	public Clock(Date time, boolean isAutoIncrement) {
+		GWT.log("Initializing Clock");
 		setTime(time);
 		this.add(timeLabel);
 		if (isAutoIncrement) {
@@ -46,13 +46,9 @@ public class Clock extends SimplePanel {
 	 * @param isAutoIncrement If true, {@link Clock} will automatically keep time.
 	 */
 	public Clock(Date time, boolean isAutoIncrement, int width, int height) {
-		setTime(time);
-		this.add(timeLabel);
-		if (isAutoIncrement) {
-			timer.scheduleRepeating(MIN_IN_MILLISECONDS);
-		}
+		this(time, isAutoIncrement);
 		this.setPixelSize(width, height);
-		this.setStyleName("clockBackground");
+		
 	}
 	
 	/**
@@ -61,5 +57,6 @@ public class Clock extends SimplePanel {
 	 */
 	public void setTime(Date time) {
 		timeLabel.setText(dateFormat.format(time));
+		GWT.log(dateFormat.format(time));
 	}
 }
