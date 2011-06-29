@@ -19,6 +19,8 @@ public class IconUtil {
 	public static final String CHECKMARK = "icons/tick.png";
 	public static final String WARNING = "icons/error_go.png";
 	public static final String CANCEL = "icons/cross.png";
+	public static final String WHITE_LOGO = "icons/white_logo.png";
+	public static final String WHITE_LOGO_NO_ISLAND = "icons/white_logo_no_island.png";
 	
 	public static Image newImage(String image) {
 		return new Image(image);

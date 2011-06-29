@@ -98,4 +98,13 @@ public class EmployeeDto implements Serializable {
 	public void setBarcodeNumber(BarcodeDto barcodeNumber) {
 		this.barcodeNumber = barcodeNumber;
 	}
+	
+	/**
+	 * Determines if two {@link EmployeeDto}s are the same based on their {@link BarcodeDto}s.
+	 * @param employee The {@link EmployeeDto} to check for equivalency.
+	 * @return Returns true if the two {@link EmployeeDto}s have the same barcode number.
+	 */
+	public boolean equals(EmployeeDto employee) {
+		return this.barcodeNumber.equals(employee.barcodeNumber);
+	}
 }

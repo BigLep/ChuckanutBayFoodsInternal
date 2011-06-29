@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module rename-to="TimeClcok">
+<module rename-to="timeclock">
 	<inherits name="com.chuckanutbay.webapp.common.BaseModule"/>
 
 	<entry-point class="com.chuckanutbay.webapp.timeclock.client.TimeClock"/>
