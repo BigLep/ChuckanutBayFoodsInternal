@@ -42,7 +42,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	private RootPanel rootPanel = RootPanel.get("TimeClock");
 	private SimplePanel confirmationPanelContainer = new SimplePanel();
 	private ClockInConfirmationPanel clockInConfirmationPanel;
-	//private ClockOutDialogBox clockOutDialogBox;
+	private ClockOutDialogBox clockOutDialogBox;
 	
 	//Data Objects
 	private Set<EmployeeDto> clockedInEmployees = new HashSet<EmployeeDto>();
@@ -197,13 +197,11 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	 * @param barcode {@link BarcodeDto} to check for equivalency with.
 	 * @return Returns true if there is an employee with a matching barcode number.
 	 */
-	private boolean employeeIsClockedIn(BarcodeDto barcode) {
-		for (EmployeeDto employee : clockedInEmployees) {
-			if (employee.barcodeNumber.equals(barcode)) {
-				return true;
-			}
+	public boolean employeeIsClockedIn(BarcodeDto barcode) {
+		if (findMatchingClockedInEmployee(barcode) == null) {
+			return false;
 		}
-		return false;
+		else return true;
 	}
 	
 	/**
@@ -211,28 +209,30 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	 * @param barcode {@link BarcodeDto} to check for equivalency with.
 	 * @return Returns true if there is an employee with a matching barcode number.
 	 */
-	private boolean employeeIsClockedIn(EmployeeDto employee) {
+	public boolean employeeIsClockedIn(EmployeeDto employee) {
+		return employeeIsClockedIn(employee.getBarcodeNumber());
+	}
+	
+	private EmployeeDto findMatchingClockedInEmployee(BarcodeDto barcode) {
 		for (EmployeeDto employeeToCheck : clockedInEmployees) {
-			if (employeeToCheck.barcodeNumber.equals(employee)) {
-				return true;
+			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employeeToCheck.getFirstName() + " " + employeeToCheck.getLastName() + "'s barcode (" + employeeToCheck.getBarcodeNumber().getBarcodeNumber() + ")");
+			if (employeeToCheck.getBarcodeNumber().equals(barcode)) {
+				GWT.log("Found that " + employeeToCheck.getFirstName() + " " + employeeToCheck.getLastName() + "'s barcode matches the scanned code");
+				return employeeToCheck;
 			}
 		}
-		return false;
+		return null;
 	}
+	
 
 	@Override
 	public void onScan(BarcodeDto barcode) {
 		GWT.log("The following barcode just got scanned: " + barcode.getBarcodeNumber());
-		for (EmployeeDto employee : clockedInEmployees) {
-			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode (" + employee.getBarcodeNumber().getBarcodeNumber() + ")");
-			if (employee.getBarcodeNumber().equals(barcode)) {
-				GWT.log("Found that " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode matches the scanned code");
-				onClockOutScan(barcode);
-				return;
-			}
+		if (employeeIsClockedIn(barcode)) {
+			onClockOutScan(findMatchingClockedInEmployee(barcode));
+		} else {
+			onClockInScan(barcode);
 		}
-		GWT.log("Didn't find any matching barcodes to: " + barcode.getBarcodeNumber());
-		onClockInScan(barcode);
 	}
 
 	@Override
@@ -241,37 +241,28 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 
 	@Override
-	public void onClockOutScan(BarcodeDto barcode) {
+	public void onClockOutScan(EmployeeDto employee) {
 		confirmationPanelContainer.clear();
-		for (EmployeeDto employee : clockedInEmployees) {
-			if (employee.getBarcodeNumber().equals(barcode)) {
-				clockOutOnDatabase(employee);
-				clockedInEmployees.remove(employee);
-				updateEmployeeTables();
-				return;
-			}
-		}
+		clockOutDialogBox = new ClockOutDialogBox(employee, activities, this, this, 40, 310, 400, 360);
+		clockOutDialogBox.show();
+		clockedInEmployees.remove(employee);
+		updateEmployeeTables();
 	}
 
 	@Override
 	public void onClockInError(BarcodeDto barcode) {
 		GWT.log("Clock in error with barcode: " + barcode.getBarcodeNumber().toString());
 		confirmationPanelContainer.clear();
-		for (EmployeeDto employee : clockedInEmployees) {
-			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode (" + employee.getBarcodeNumber().getBarcodeNumber() + ")");
-			if (employee.getBarcodeNumber().equals(barcode)) {
-				GWT.log("Found that " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode matches the scanned code");
-				clockedInEmployees.remove(employee);
-				updateEmployeeTables();
-				break;
-			}
-		}
+		clockedInEmployees.remove(findMatchingClockedInEmployee(barcode));
+		updateEmployeeTables();
 		cancelClockInOnDatabase(barcode);
 	}
 
 	@Override
 	public void onClockOutError(EmployeeDto employee) {
 		GWT.log("Clock-out error with employee: " + employee.getFirstName() + " " + employee.getLastName());
+		clockOutDialogBox.hide();
+		mainPanel.setFocus(true);
 		//Add the employee back to the employee tables.
 		clockedInEmployees.add(employee);
 		updateEmployeeTables();
@@ -293,6 +284,8 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	public void clockOutOnDatabase(EmployeeDto employee) {
 		GWT.log("Requesting that the server clock-out employee: " + employee.firstName + " " + employee.lastName);
 		employeeClockInOutService.clockOut(employee, createClockOutCallback(this));
+		clockOutDialogBox.hide();
+		mainPanel.setFocus(true);
 	}
 
 	@Override
@@ -341,13 +334,19 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		this.clockedInEmployees.addAll(clockedInEmployees);
 		updateEmployeeTables();
 		GWT.log("Successfully got clocked-in employees from Server");
+		for (EmployeeDto employee : clockedInEmployees) {
+			GWT.log("     " + employee.getFirstName() + " " + employee.getLastName());
+		}
 	}
 
 	@Override
 	public void onSuccessfulGetActivities(Set<ActivityDto> activities) {
 		this.activities.clear();
 		this.activities.addAll(activities);
-		GWT.log("Successfully got activities from Server");
+		GWT.log("Successfully got activities from Server:");
+		for (ActivityDto activity : activities) {
+			GWT.log("     " + activity.getName());
+		}
 	}
 
 	@Override

@@ -81,3 +81,64 @@
 	font-weight: bold;
 	text-align: center;
 }
+.clockOutDialogBox {
+  	border: 5px solid Red;
+  	font-family: Tahoma;
+  	padding: 0px;
+ 	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+  	border-radius: 5px;
+}
+.clockOutDialogBoxGlass {
+  	background-color: #000000;
+  	opacity: 0.7;
+  	filter: alpha(opacity=20);
+}
+.clockOutTitleLabel {
+	background: Red;
+	color: white;
+	padding: 5px;
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: left;
+	text-shadow: 1px 1px 2px #aaa;
+}
+.clockOutDialogBoxLabel {
+	color: Red;
+	padding: 5px 10px;
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: right;
+	text-shadow: 1px 1px 2px #aaa;
+}
+.clockOutDialogBoxTotalLabel {
+	color: Red;
+	padding: 5px 10px;
+	font-size: 36px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: right;
+	text-shadow: 1px 1px 2px #aaa;
+}
+.clockOutDialogBoxButton {
+	background: red;
+	border-radius: 7px;
+	color: White;
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #aaa;
+}
+
+.clockOutDialogBoxButton[Disabled] {
+	background: darkred;
+	border-radius: 7px;
+	color: lightgrey;
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #aaa;
+}

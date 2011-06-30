@@ -29,6 +29,19 @@ public class ActivityDto implements Serializable {
 		this.name = name;
 	}
 	
+	/**
+	 * Checks if the two {@link ActivityDto}s have the same id number.
+	 * @param activity The {@link ActivityDto} to test for equivalency with with.
+	 * @return Returns true if the two {@link ActivityDto}s have the same id number.
+	 */
+	public boolean equals(ActivityDto activity) {
+		if (this.getId().equals(activity.getId())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/*####################################
 	 * JavaBean getters/setters 
 	 *####################################*/
