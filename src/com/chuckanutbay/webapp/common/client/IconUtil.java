@@ -1,4 +1,4 @@
-package com.chuckanutbay.webapp.common.shared;
+package com.chuckanutbay.webapp.common.client;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;

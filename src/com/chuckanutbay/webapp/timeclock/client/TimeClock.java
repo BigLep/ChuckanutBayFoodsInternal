@@ -24,7 +24,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.*;
+
+import static com.chuckanutbay.webapp.common.client.IconUtil.*;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.*;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.*;
 

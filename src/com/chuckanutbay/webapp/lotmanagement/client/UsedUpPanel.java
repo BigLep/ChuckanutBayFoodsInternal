@@ -1,6 +1,6 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.common.shared.IconUtil.CANCEL;
+import static com.chuckanutbay.webapp.common.client.IconUtil.CANCEL;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;

@@ -1,12 +1,12 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.CANCEL;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.CHECKMARK;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.DATABASE;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.DATE;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.LIST;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.SEARCH;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.WARNING;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.createButtonWithIcon;
+import static com.chuckanutbay.webapp.common.client.IconUtil.CANCEL;
+import static com.chuckanutbay.webapp.common.client.IconUtil.CHECKMARK;
+import static com.chuckanutbay.webapp.common.client.IconUtil.DATABASE;
+import static com.chuckanutbay.webapp.common.client.IconUtil.DATE;
+import static com.chuckanutbay.webapp.common.client.IconUtil.LIST;
+import static com.chuckanutbay.webapp.common.client.IconUtil.SEARCH;
+import static com.chuckanutbay.webapp.common.client.IconUtil.WARNING;
+import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makePopupVisible;
 
 import com.google.gwt.core.client.EntryPoint;

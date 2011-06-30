@@ -1,11 +1,11 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.common.shared.IconUtil.ADD;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.DELETE;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.newImage;
+import static com.chuckanutbay.webapp.common.client.IconUtil.ADD;
+import static com.chuckanutbay.webapp.common.client.IconUtil.DELETE;
+import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
+import static com.chuckanutbay.webapp.common.client.IconUtil.newImage;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.createButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
 import java.util.Date;

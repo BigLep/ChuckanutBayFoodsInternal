@@ -1,10 +1,10 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
 
-import static com.chuckanutbay.webapp.common.shared.IconUtil.CANCEL;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.PRINT;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.SAVE;
-import static com.chuckanutbay.webapp.common.shared.IconUtil.createButtonWithIcon;
+import static com.chuckanutbay.webapp.common.client.IconUtil.CANCEL;
+import static com.chuckanutbay.webapp.common.client.IconUtil.PRINT;
+import static com.chuckanutbay.webapp.common.client.IconUtil.SAVE;
+import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
