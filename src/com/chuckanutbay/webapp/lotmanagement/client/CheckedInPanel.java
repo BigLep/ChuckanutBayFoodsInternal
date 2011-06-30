@@ -5,7 +5,7 @@ import static com.chuckanutbay.webapp.common.shared.IconUtil.DELETE;
 import static com.chuckanutbay.webapp.common.shared.IconUtil.newImage;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.common.shared.IconUtil.createButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
 import java.util.Date;
@@ -71,7 +71,7 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 			dateBox.setValue(new Date(), true);
 			dateBox.setStyleName("dateBox");
 			//Set Up addIngredientButton
-			makeButtonWithIcon(addIngredientButton, ADD, "Add");
+			createButtonWithIcon(addIngredientButton, ADD, "Add");
 			//Set Up newCheckedInIngredientPanel
 			newCheckedInFlexTable.setStyleName("FlexTable");
 			//Set Up checkedInIngredientFlexTable

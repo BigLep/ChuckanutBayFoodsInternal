@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -38,6 +39,9 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	private SimplePanel column3Panel = new SimplePanel();
 	private FlexTable employeeTable2 = new FlexTable();
 	private RootPanel rootPanel = RootPanel.get("TimeClock");
+	private SimplePanel confirmationPanelContainer = new SimplePanel();
+	private ClockInConfirmationPanel clockInConfirmationPanel;
+	//private ClockOutDialogBox clockOutDialogBox;
 	
 	//Data Objects
 	private Set<EmployeeDto> clockedInEmployees = new HashSet<EmployeeDto>();
@@ -52,6 +56,12 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 				addOneMinuteWorked(employee);
 			}
 			updateEmployeeTables();
+		}
+	};
+	private Timer employeeSignInConfirmationTimer = new Timer() {
+		@Override
+		public void run() {
+			confirmationPanelContainer.clear();
 		}
 	};
 	
@@ -81,7 +91,8 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		for(int i=0; i<20 && iterator.hasNext(); i++) {
 			addToFlexTable(employeeTable2, i+1, iterator.next());
 		}
-		
+
+		mainPanel.setFocus(true);
 	}
 	
 	/**
@@ -116,9 +127,11 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		image.setWidth("400px");
 		column1Panel.add(image);
 		column1Panel.add(new Clock(new Date(), true, 400, 100));
+		column1Panel.add(confirmationPanelContainer);
+		column1Panel.setSpacing(20);
 		
 		//Setup column2Panel and column3Panel
-		column2Panel.setPixelSize(376, 660);
+		column2Panel.setPixelSize(350, 660);
 		column2Panel.setStyleName("columnPanel");
 			VerticalPanel verticalPanel1 = new VerticalPanel();
 			verticalPanel1.setWidth("376px");
@@ -132,7 +145,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 			verticalPanel1.add(flexTablePanel1);
 		column2Panel.add(verticalPanel1);
 		
-		column3Panel.setPixelSize(376, 660);
+		column3Panel.setPixelSize(350, 660);
 		column3Panel.setStyleName("columnPanel");
 			VerticalPanel verticalPanel2 = new VerticalPanel();
 			verticalPanel2.setWidth("376px");
@@ -210,7 +223,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	public void onScan(BarcodeDto barcode) {
 		GWT.log("The following barcode just got scanned: " + barcode.getBarcodeNumber());
 		for (EmployeeDto employee : clockedInEmployees) {
-			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode (" + barcode.getBarcodeNumber() + ")");
+			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode (" + employee.getBarcodeNumber().getBarcodeNumber() + ")");
 			if (employee.getBarcodeNumber().equals(barcode)) {
 				GWT.log("Found that " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode matches the scanned code");
 				onClockOutScan(barcode);
@@ -224,11 +237,11 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	@Override
 	public void onClockInScan(BarcodeDto barcode) {
 		clockInOnDatabase(barcode);
-		
 	}
 
 	@Override
 	public void onClockOutScan(BarcodeDto barcode) {
+		confirmationPanelContainer.clear();
 		for (EmployeeDto employee : clockedInEmployees) {
 			if (employee.getBarcodeNumber().equals(barcode)) {
 				clockOutOnDatabase(employee);
@@ -242,22 +255,22 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	@Override
 	public void onClockInError(BarcodeDto barcode) {
 		GWT.log("Clock in error with barcode: " + barcode.getBarcodeNumber().toString());
-		cancelClockInOnDatabase(barcode);
-		Iterator<EmployeeDto> iterator = clockedInEmployees.iterator();
-		while (iterator.hasNext()) {
-			EmployeeDto employeeToCheck = iterator.next();
-			if (employeeToCheck.getBarcodeNumber().equals(barcode)) {
-				GWT.log("Removing " + employeeToCheck.firstName + " " + employeeToCheck.lastName + " from clocked-in employees");
-				clockedInEmployees.remove(employeeToCheck);
+		confirmationPanelContainer.clear();
+		for (EmployeeDto employee : clockedInEmployees) {
+			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode (" + employee.getBarcodeNumber().getBarcodeNumber() + ")");
+			if (employee.getBarcodeNumber().equals(barcode)) {
+				GWT.log("Found that " + employee.getFirstName() + " " + employee.getLastName() + "'s barcode matches the scanned code");
+				clockedInEmployees.remove(employee);
 				updateEmployeeTables();
 				break;
 			}
 		}
-		
+		cancelClockInOnDatabase(barcode);
 	}
 
 	@Override
 	public void onClockOutError(EmployeeDto employee) {
+		GWT.log("Clock-out error with employee: " + employee.getFirstName() + " " + employee.getLastName());
 		//Add the employee back to the employee tables.
 		clockedInEmployees.add(employee);
 		updateEmployeeTables();
@@ -295,9 +308,17 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 
 	@Override
 	public void onSuccessfulClockIn(EmployeeDto employee) {
-		clockedInEmployees.add(employee);
-		updateEmployeeTables();
-		GWT.log("Successful Clock In from Server");
+		if (employee == null) {
+			GWT.log("Invalid clock-in");
+		} else {
+			clockInConfirmationPanel = new ClockInConfirmationPanel(this, employee, 400, 372);
+			confirmationPanelContainer.clear();
+			confirmationPanelContainer.add(clockInConfirmationPanel);
+			employeeSignInConfirmationTimer.schedule(TEN_SECONDS_IN_MILLISECONDS);
+			clockedInEmployees.add(employee);
+			updateEmployeeTables();
+			GWT.log("Successful Clock In from Server");
+		}
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import static com.chuckanutbay.webapp.common.shared.IconUtil.DATE;
 import static com.chuckanutbay.webapp.common.shared.IconUtil.LIST;
 import static com.chuckanutbay.webapp.common.shared.IconUtil.SEARCH;
 import static com.chuckanutbay.webapp.common.shared.IconUtil.WARNING;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.common.shared.IconUtil.createButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makePopupVisible;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -61,13 +61,13 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 	public void onModuleLoad() {
 		GWT.log("Starting UP");
 		//Set Up iconButtons
-		makeButtonWithIcon(checkedInButton, CHECKMARK, "Checked-In");
-		makeButtonWithIcon(inUseButton, WARNING, "In Use");
-		makeButtonWithIcon(usedUpButton, CANCEL, "Used Up");
-		makeButtonWithIcon(lotCodeSearch, SEARCH, "Lot Code Search");
-		makeButtonWithIcon(dateSearch, DATE, "Date Search");
-		makeButtonWithIcon(activeIngredientsButton, LIST, "Active Ingredients");
-		makeButtonWithIcon(viewFullInventoryHistoryButton, DATABASE, "View Full Inventory History");
+		createButtonWithIcon(checkedInButton, CHECKMARK, "Checked-In");
+		createButtonWithIcon(inUseButton, WARNING, "In Use");
+		createButtonWithIcon(usedUpButton, CANCEL, "Used Up");
+		createButtonWithIcon(lotCodeSearch, SEARCH, "Lot Code Search");
+		createButtonWithIcon(dateSearch, DATE, "Date Search");
+		createButtonWithIcon(activeIngredientsButton, LIST, "Active Ingredients");
+		createButtonWithIcon(viewFullInventoryHistoryButton, DATABASE, "View Full Inventory History");
 		
 		//Add Handlers
 		LotCodeUtil.addClickHandler(this, checkedInButton, inUseButton, usedUpButton, lotCodeSearch, dateSearch, activeIngredientsButton, viewFullInventoryHistoryButton);

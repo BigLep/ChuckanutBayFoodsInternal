@@ -30,17 +30,6 @@ public class LotCodeUtil {
     	GWT.log(message);
     }
 
-	static public void makeButtonWithIcon(Button button, String icon, String text) {
-		HorizontalPanel buttonPanel = new HorizontalPanel();
-		Image formatedIcon = new Image(icon);
-		HTML formatedText = new HTML(text);
-		buttonPanel.setSpacing(2);
-		buttonPanel.add(formatedIcon);
-		buttonPanel.add(formatedText);
-		buttonPanel.setStyleName("center");
-		button.setHTML(buttonPanel.getElement().getString());
-	}
-
 	static public void makePopupVisible(DecoratedPopupPanel popup, Widget sender, int top, int left) {
         int adjustedLeft = sender.getAbsoluteLeft() + left;
         int adjustedTop = sender.getAbsoluteTop() + top;

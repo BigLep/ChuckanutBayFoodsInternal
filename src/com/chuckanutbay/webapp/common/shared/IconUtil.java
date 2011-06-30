@@ -1,5 +1,8 @@
 package com.chuckanutbay.webapp.common.shared;
 
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 
 public class IconUtil {
@@ -24,6 +27,30 @@ public class IconUtil {
 	
 	public static Image newImage(String image) {
 		return new Image(image);
+	}
+	
+	static public void createButtonWithIcon(Button button, String icon, String text) {
+		HorizontalPanel buttonPanel = new HorizontalPanel();
+		Image formatedIcon = new Image(icon);
+		HTML formatedText = new HTML(text);
+		buttonPanel.setSpacing(2);
+		buttonPanel.add(formatedIcon);
+		buttonPanel.add(formatedText);
+		buttonPanel.setStyleName("center");
+		button.setHTML(buttonPanel.getElement().getString());
+	}
+	
+	static public Button createButtonWithIcon(String icon, String text) {
+		Button newButton = new Button();
+		HorizontalPanel buttonPanel = new HorizontalPanel();
+		Image formatedIcon = new Image(icon);
+		HTML formatedText = new HTML(text);
+		buttonPanel.setSpacing(2);
+		buttonPanel.add(formatedIcon);
+		buttonPanel.add(formatedText);
+		buttonPanel.setStyleName("center");
+		newButton.setHTML(buttonPanel.getElement().getString());
+		return newButton;
 	}
 	
 }

@@ -1,7 +1,7 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 import static com.chuckanutbay.webapp.common.shared.IconUtil.SEARCH;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makeButtonWithIcon;
+import static com.chuckanutbay.webapp.common.shared.IconUtil.createButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
 
 import java.util.Date;
@@ -46,7 +46,7 @@ public class DateSearchPanel extends LotCodeManagerPanel implements ClickHandler
 			dateBox.setValue(new Date(), true);
 			dateBox.setStyleName("dateBox");
 			//Set Up searchButton
-			makeButtonWithIcon(searchButton, SEARCH, "Search");
+			createButtonWithIcon(searchButton, SEARCH, "Search");
 			searchButton.setWidth("250px");
 			searchButton.addClickHandler(this);
 			//Set Up dateToSearchPanel

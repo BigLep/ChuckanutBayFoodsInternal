@@ -17,7 +17,6 @@
 }
 .columnPanel {
 	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
-	padding: 20px;
 	border-radius: 10px;
 	color: Black;
 	padding: 2px 4px;
@@ -42,7 +41,7 @@
 	font-weight: bold;
 	text-align: center;
 	text-shadow: 1px 1px 2px #aaa;
-	width: 250px;
+	width: 230px;
 }
 .employeeFlexTableTimeColumn {
 	color: Black;
@@ -52,4 +51,33 @@
 	text-align: center;
 	text-shadow: 1px 1px 2px #aaa;
 	width: 100px;
+}
+.clockInConfirmationPanel {
+	//background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+	border-radius: 10px;
+	padding: 2px 4px;
+}
+.welcomeLabel {
+	color: white;
+	font-size: 66px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 2px 2px 4px #333;
+}
+.incorrectEmployeeButtonPanel {
+	color: white;
+	font-size: 66px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #aaa;
+	width: 400px;
+}
+.incorrectEmployeeButton {
+	color: red;
+	font-size: 36px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
 }
