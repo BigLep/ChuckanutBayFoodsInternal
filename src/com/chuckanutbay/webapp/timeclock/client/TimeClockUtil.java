@@ -14,4 +14,16 @@ public class TimeClockUtil {
 	public static final int EIGHT_KEY_CODE = 56;
 	public static final int NINE_KEY_CODE = 57;
 	public static final int ENTER_KEY_CODE = 13;
+	
+	public static int stringToInt(String string) {
+		return new Integer(string);
+	}
+	
+	public static String removeLastChar(String string) {
+		return string.substring(0, string.length() - 1);
+	}
+	
+	public static String getLastChar(String string) {
+		return string.substring(string.length() - 1);
+	}
 }

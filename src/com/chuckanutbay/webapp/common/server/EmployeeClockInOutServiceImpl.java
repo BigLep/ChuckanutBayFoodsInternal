@@ -3,6 +3,10 @@ package com.chuckanutbay.webapp.common.server;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.chuckanutbay.businessobjects.dao.ActivityDao;
+import com.chuckanutbay.businessobjects.dao.ActivityHibernateDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotHibernateDao;
 import com.chuckanutbay.webapp.common.client.EmployeeClockInOutService;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.BarcodeDto;
@@ -63,7 +67,8 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 
 	@Override
 	public Set<ActivityDto> getActivities() {
-		return activities;
+		ActivityDao dao = new ActivityHibernateDao();
+		return new HashSet<ActivityDto>(DtoUtils.transform(dao.findAll(), DtoUtils.toActivityDto));
 	}
 	
 	

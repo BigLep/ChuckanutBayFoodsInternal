@@ -2,10 +2,14 @@ package com.chuckanutbay.businessobjects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -15,6 +19,7 @@ public class Activity {
 	
 	private Integer id;
 	private String name;
+	private Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages;
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -32,6 +37,15 @@ public class Activity {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "activity")
+	public Set<EmployeeWorkIntervalActivityPercentage> getEmployeeWorkIntervalActivityPercentages() {
+		return employeeWorkIntervalActivityPercentages;
+	}
+	public void setEmployeeWorkIntervalActivityPercentages(
+			Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages) {
+		this.employeeWorkIntervalActivityPercentages = employeeWorkIntervalActivityPercentages;
 	}
 	
 	

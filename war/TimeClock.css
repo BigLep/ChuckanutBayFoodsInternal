@@ -82,11 +82,6 @@
 	text-align: center;
 }
 .clockOutDialogBox {
-  	border: 5px solid Red;
-  	font-family: Tahoma;
-  	padding: 0px;
- 	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
-  	border-radius: 5px;
 }
 .clockOutDialogBoxGlass {
   	background-color: #000000;
@@ -96,7 +91,7 @@
 .clockOutTitleLabel {
 	background: Red;
 	color: white;
-	padding: 5px;
+	padding: 0px 0px 5px 0px;
 	font-size: 24px;
 	font-family: Tahoma, Geneva;
 	font-weight: bold;
@@ -141,4 +136,12 @@
 	font-weight: bold;
 	text-align: center;
 	text-shadow: 1px 1px 2px #aaa;
+}
+
+.clockOutDialogBoxFlexTable {
+	border: 5px solid Red;
+  	font-family: Tahoma;
+  	padding: 0px;
+ 	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+  	border-radius: 5px;
 }

@@ -3,9 +3,11 @@ package com.chuckanutbay.webapp.common.server;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.chuckanutbay.businessobjects.Activity;
 import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.documentation.Technology;
+import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.common.base.Function;
@@ -67,6 +69,16 @@ public class DtoUtils {
 		@Override
 		public InventoryItem apply(InventoryItemDto input) {
 			return new InventoryItem(input.getId(), input.getDescription());
+		}
+	};
+	
+	public static final Function<Activity, ActivityDto> toActivityDto = new Function<Activity, ActivityDto>() {
+		@Override
+		public ActivityDto apply(Activity input) {
+			ActivityDto output = new ActivityDto();
+			output.setId(input.getId());
+			output.setName(input.getName());
+			return output;
 		}
 	};
 }

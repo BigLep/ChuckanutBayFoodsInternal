@@ -213,6 +213,11 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		return employeeIsClockedIn(employee.getBarcodeNumber());
 	}
 	
+	/**
+	 * Finds if there are any {@link EmployeeDto}s clocked in that have the given barcode.
+	 * @param barcode The {@link BarcodeDto} to use to check for matches with.
+	 * @return Returns the matching {@link EmployeeDto}. If no match is found then null is returned.
+	 */
 	private EmployeeDto findMatchingClockedInEmployee(BarcodeDto barcode) {
 		for (EmployeeDto employeeToCheck : clockedInEmployees) {
 			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employeeToCheck.getFirstName() + " " + employeeToCheck.getLastName() + "'s barcode (" + employeeToCheck.getBarcodeNumber().getBarcodeNumber() + ")");
@@ -243,7 +248,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	@Override
 	public void onClockOutScan(EmployeeDto employee) {
 		confirmationPanelContainer.clear();
-		clockOutDialogBox = new ClockOutDialogBox(employee, activities, this, this, 40, 310, 400, 360);
+		clockOutDialogBox = new ClockOutDialogBox(employee, activities, this, this, 40, 310, 408, 360);
 		clockOutDialogBox.show();
 		clockedInEmployees.remove(employee);
 		updateEmployeeTables();
