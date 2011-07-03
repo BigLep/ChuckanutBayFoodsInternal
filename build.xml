@@ -167,14 +167,21 @@
 		</war>
 	</target>
 	
+	<!--
+		This target sets up Eclipse for GWT debug mode by getting necessary configuration and jars in place.
+		The reason some jars need to be copied explicitly, is because the auto classloading doesn't work for these jars.
+		The dependencies that have this issue are slf4j and hibernate annotations (which needs Hibernate validator).  
+		The commanlity between this is that they are looking for implementations to be on the classpath,
+		which doesn't give the classpath loader a chance to load them from the Eclipse "ivy.xml" build-path library. 
+	-->
 	<target name="eclipse-gwt-debug-setup">
 		<copy todir="${war.dir}/WEB-INF/classes">
 			<fileset dir="${config.dir}/c3p0" />
 			<fileset dir="${config.dir}/log4j" />
 		</copy>
-		<ivyfileset setid="ivy.logging.fileset.ref" conf="logging"/>
+		<ivyfileset setid="ivy.gwt-debug-mode.fileset.ref" conf="gwt-debug-mode"/>
 		<copy todir="${war.dir}/WEB-INF/lib">
-			<resources refid="ivy.logging.fileset.ref" />
+			<resources refid="ivy.gwt-debug-mode.fileset.ref" />
 			<flattenmapper/>
 		</copy>
 	</target>
