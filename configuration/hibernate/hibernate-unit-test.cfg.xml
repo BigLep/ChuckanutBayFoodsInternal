@@ -6,9 +6,19 @@
 
     <session-factory>
 
+		<!-- 
+			We use H2 instead of HSQLDB because at least as of 7/2/11 with Hibernate 3.6.5 and HSQLDB 2.2.4,
+			tables were not successfully created during schema export.
+			Switching over to H2 caused worked flawlessly.
+		-->
+		
         <!-- Database connection settings -->
+        <!--
         <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
-        <property name="connection.url">jdbc:hsqldb:mem:testdb</property>
+        <property name="connection.url">jdbc:hsqldb:mem:testdb</property>  
+        -->
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.url">jdbc:h2:mem:testdb</property>
         <property name="connection.username">sa</property>
         <property name="connection.password"></property>
 
@@ -16,14 +26,21 @@
         <property name="connection.pool_size">1</property>
 
         <!-- SQL dialect -->
+        <!--
         <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
+        -->
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
 
         <!-- Disable the second-level cache  -->
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
 
         <property name="current_session_context_class">thread</property>
 
-        <!-- Drop and re-create the database schema on startup -->
+        <!-- 
+        	Drop and re-create the database schema on startup.
+        	We don't do this because we want to drop tables after each test run.
+        	This is handled by com.chuckanutbay.util.testing.DatabaseResource.
+        -->
         <!-- <property name="hbm2ddl.auto">create</property> -->
         
         <property name="id.new_generator_mappings">true</property>
