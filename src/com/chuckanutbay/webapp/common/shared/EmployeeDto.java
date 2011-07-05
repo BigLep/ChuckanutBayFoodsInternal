@@ -3,9 +3,10 @@ package com.chuckanutbay.webapp.common.shared;
 import java.io.Serializable;
 import java.util.Set;
 
-import com.chuckanutbay.businessobjects.InventoryLot;
+import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.documentation.Terminology;
 import com.google.common.base.Objects;
+
 /**
  * {@link Terminology#DTO} for {@link Employee}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"

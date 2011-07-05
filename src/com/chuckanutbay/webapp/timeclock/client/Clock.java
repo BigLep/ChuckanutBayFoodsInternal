@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * A styled clock
- * @author mloeppky
  *
  */
 public class Clock extends SimplePanel {

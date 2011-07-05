@@ -1,9 +1,5 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
-
-import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.client.EmployeeClockInOutServiceAsync;
@@ -11,13 +7,10 @@ import com.chuckanutbay.webapp.common.client.ServiceUtils;
 import com.chuckanutbay.webapp.common.client.ServiceUtils.DefaultAsyncCallback;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
-import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
-import com.chuckanutbay.webapp.lotmanagement.client.LotCodeManagerPanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * The {@link RpcHelper} class does many of the administrative tasks associated with making RPC calls to the database
- * @author mloeppky
+ * The {@link RpcHelper} class does many of the administrative tasks associated with making RPC calls to the database.
  *
  */
 public class RpcHelper {

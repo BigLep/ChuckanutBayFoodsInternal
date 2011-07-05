@@ -1,15 +1,23 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
 
-import java.util.Calendar;
+import static com.chuckanutbay.webapp.common.client.IconUtil.WHITE_LOGO;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createCancelClockInCallback;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createClockInCallback;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createClockOutCallback;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetActivitiesCallback;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetClockedInEmployeesCallback;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.employeeClockInOutService;
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.ENTER_KEY_CODE;
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.MIN_IN_MILLISECONDS;
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.NINE_KEY_CODE;
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.TEN_SECONDS_IN_MILLISECONDS;
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.ZERO_KEY_CODE;
+
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.joda.time.format.DateTimeFormatter;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.BarcodeDto;
@@ -18,7 +26,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -27,14 +34,9 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
-import static com.chuckanutbay.webapp.common.client.IconUtil.*;
-import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.*;
-import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.*;
 
 public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorHandler, ClockInOutServerCommunicator, KeyDownHandler {
 	

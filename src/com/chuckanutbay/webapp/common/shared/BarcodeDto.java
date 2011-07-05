@@ -2,14 +2,10 @@ package com.chuckanutbay.webapp.common.shared;
 
 import java.io.Serializable;
 
-import com.chuckanutbay.businessobjects.Activity;
-import com.chuckanutbay.documentation.Terminology;
 import com.google.common.base.Objects;
 
 /**
  * A Serializable object that stores a barcode number
- * @author mloeppky
- * {@link Terminology#DTO} for {@link Employee}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
 

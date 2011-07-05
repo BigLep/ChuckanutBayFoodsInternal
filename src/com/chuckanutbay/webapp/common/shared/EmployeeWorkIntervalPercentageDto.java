@@ -6,7 +6,6 @@ import com.chuckanutbay.documentation.Terminology;
 
 /**
  * A Dto version of {@link EmployeeWorkIntervalPercentage}
- * @author mloeppky
  * {@link Terminology#DTO} for {@link EmployeeWorkIntervalPercentage}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */

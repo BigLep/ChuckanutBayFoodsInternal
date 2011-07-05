@@ -4,8 +4,7 @@ import com.chuckanutbay.webapp.common.shared.BarcodeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 
 /**
- * Handles scanned barcodes to clock employees in or out
- * @author mloeppky
+ * Handles scanned barcodes to clock employees in or out.
  *
  */
 public interface ScanInOutHandler {

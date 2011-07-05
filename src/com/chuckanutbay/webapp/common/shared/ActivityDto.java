@@ -2,13 +2,11 @@ package com.chuckanutbay.webapp.common.shared;
 
 import java.io.Serializable;
 
-import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.documentation.Terminology;
 
 /**
  * A Serializable object of an employee activity done during an {@link EmployeWorkInterval}
- * @author mloeppky
- * {@link Terminology#DTO} for {@link Employee}.
+ * {@link Terminology#DTO} for {@link Activity}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
 public class ActivityDto implements Serializable, Comparable<Object> {

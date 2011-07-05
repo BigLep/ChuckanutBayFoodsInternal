@@ -205,23 +205,19 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 	}
 
 	private void matchIngredientDescriptionToCode() {
-		if (inventoryItemList.size() > 0) {
-			for (InventoryItemDto item : inventoryItemList) {
-				if (item.getId().equals(ingredientCodeTextBox.getText())) {
-					ingredientListBox.setItemSelected(inventoryItemList.indexOf(item), true);
-					break;
-				}
+		for (InventoryItemDto item : inventoryItemList) {
+			if (item.getId().equals(ingredientCodeTextBox.getText())) {
+				ingredientListBox.setItemSelected(inventoryItemList.indexOf(item), true);
+				break;
 			}
 		}
 	}
 	
 	private void matchIngredientCodeToDescription() {
-		if (inventoryItemList.size() > 0) {
-			for (InventoryItemDto item : inventoryItemList) {
-				if (item.getDescription().equals(ingredientListBox.getItemText(ingredientListBox.getSelectedIndex()))) {
-					ingredientCodeTextBox.setText(item.getId());
-					break;
-				}
+		for (InventoryItemDto item : inventoryItemList) {
+			if (item.getDescription().equals(ingredientListBox.getItemText(ingredientListBox.getSelectedIndex()))) {
+				ingredientCodeTextBox.setText(item.getId());
+				break;
 			}
 		}
 	}

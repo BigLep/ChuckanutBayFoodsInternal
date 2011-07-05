@@ -1,8 +1,8 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
 public class TimeClockUtil {
-	public static final int MIN_IN_MILLISECONDS = 60000;
-	public static final int TEN_SECONDS_IN_MILLISECONDS = 10000;
+	public static final int MIN_IN_MILLISECONDS = 60 * 1000; // 60 sec per min * 1000 milliseconds per sec;
+	public static final int TEN_SECONDS_IN_MILLISECONDS = 10 * 1000; // 10 sec * 1000 milliseconds per sec;
 	public static final int ZERO_KEY_CODE = 48;
 	public static final int ONE_KEY_CODE = 49;
 	public static final int TWO_KEY_CODE = 50;

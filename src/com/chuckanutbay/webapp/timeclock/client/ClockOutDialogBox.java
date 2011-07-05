@@ -1,16 +1,17 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.getLastChar;
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.removeLastChar;
+import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.stringToInt;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalPercentageDto;
-import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -21,11 +22,14 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 
+/**
+ * A {@link DialogBox} that allows employees to enter the percentage of time that they worked on each activity before clocking out.
+ *
+ */
 public class ClockOutDialogBox extends DialogBox {
 	
 	private ClockInOutErrorHandler errorHandler;

@@ -1,14 +1,10 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.chuckanutbay.webapp.common.shared.BarcodeDto;
 import com.google.gwt.core.client.GWT;
 
 /**
  * Formulates a barcode number one character at a type. Maximum barcode length is 9 digits.
- * @author mloeppky
  *
  */
 public class BarcodeFormulation {

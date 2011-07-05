@@ -1,5 +1,8 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
+import static com.chuckanutbay.webapp.common.client.IconUtil.CANCEL;
+import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
+
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -8,11 +11,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import static com.chuckanutbay.webapp.common.client.IconUtil.*;
-
 /**
  * Allows an employee to cancel their clock in if there was a mistake.
- * @author mloeppky
  *
  */
 public class ClockInConfirmationPanel extends SimplePanel implements ClickHandler{

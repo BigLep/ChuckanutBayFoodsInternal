@@ -7,8 +7,7 @@
 /war/dashboard
 /war/employeemonitor
 /war/lotcodemanager
-/war/employeemonitor
-/war/recievinginspection
+/war/timeclock
 /war/WEB-INF/classes
 /war/WEB-INF/deploy
 /war/WEB-INF/lib
