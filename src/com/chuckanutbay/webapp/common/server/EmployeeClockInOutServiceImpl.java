@@ -1,5 +1,7 @@
 package com.chuckanutbay.webapp.common.server;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +14,8 @@ import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.BarcodeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalPercentageDto;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implements EmployeeClockInOutService {
@@ -56,6 +60,18 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 
 	@Override
 	public Set<EmployeeDto> getClockedInEmployees() {
+		/**
+		String today = new String(DateTimeFormat.getFormat("EEEE, MMMM d, y h:mm:ss a zzzz").format(new Date()));
+		GWT.log("Today: " + today);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.roll(cal.WEEK_OF_YEAR, false);
+		String oneWeekAgo = new String(DateTimeFormat.getFormat("EEEE, MMMM d, y h:mm:ss a zzzz").format(cal.getTime()));
+		GWT.log("One Week Ago: " + oneWeekAgo);
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		String lastSunday = new String(DateTimeFormat.getFormat("EEEE, MMMM d, y h:mm:ss a zzzz").format(cal.getTime()));
+		GWT.log("One Week Ago: " + lastSunday);
+		*/
 		return employees;
 	}
 

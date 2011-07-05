@@ -22,6 +22,10 @@
 		<filter-name>HibernateFilter</filter-name>
 		<url-pattern>/common/InventoryLotService</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>HibernateFilter</filter-name>
+		<url-pattern>/common/ClockInOutService</url-pattern>
+	</filter-mapping>
 	
 	<!-- Servlets -->
 	 

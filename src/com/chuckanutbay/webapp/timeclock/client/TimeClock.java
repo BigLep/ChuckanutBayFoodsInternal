@@ -1,9 +1,13 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
+
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.joda.time.format.DateTimeFormatter;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.BarcodeDto;
@@ -12,6 +16,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -181,6 +186,15 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		
 		//Setup Timer
 		timer.scheduleRepeating(MIN_IN_MILLISECONDS);
+
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 	
 	/**
