@@ -3,6 +3,7 @@ package com.chuckanutbay.webapp.common.shared;
 import java.io.Serializable;
 
 import com.chuckanutbay.documentation.Terminology;
+import com.google.common.base.Objects;
 
 /**
  * A Serializable object of an employee activity done during an {@link EmployeWorkInterval}
@@ -30,17 +31,18 @@ public class ActivityDto implements Serializable, Comparable<Object> {
 		this.name = name;
 	}
 	
-	/**
-	 * Checks if the two {@link ActivityDto}s have the same id number.
-	 * @param activity The {@link ActivityDto} to test for equivalency with with.
-	 * @return Returns true if the two {@link ActivityDto}s have the same id number.
-	 */
-	public boolean equals(ActivityDto activity) {
-		if (this.getId().equals(activity.getId())) {
-			return true;
-		} else {
-			return false;
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(super.hashCode(), name);
+	}
+
+	@Override
+	public boolean equals(Object object){
+		if (object instanceof ActivityDto) {
+			ActivityDto that = (ActivityDto)object;
+			return Objects.equal(this.name, that.name);
 		}
+		return false;
 	}
 	
 	/*####################################

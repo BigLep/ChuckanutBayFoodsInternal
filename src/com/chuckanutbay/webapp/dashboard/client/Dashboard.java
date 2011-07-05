@@ -17,23 +17,26 @@ public class Dashboard implements EntryPoint, ClickHandler {
 
 	private final VerticalPanel mainPanel = new VerticalPanel();
 	private final Label title = new Label("Chuckanut Bay Internal Web Apps");
-	private final Button lotCodeManagerButton = new Button("LotCodeManager");
+	private final Button lotCodeManagerButton = new Button("Lot Code Manager");
+	private final Button timeClockButton = new Button("Time Clock");
 	private RootPanel rootPanel;
 
 
 	@Override
 	public void onModuleLoad() {
-		title.setStyleName("title");
-		lotCodeManagerButton.setStyleName("buttons");
+		title.setStyleName("titleLabel");
+		lotCodeManagerButton.setStyleName("lotCodeManagerButton");
 		lotCodeManagerButton.addClickHandler(this);
+		timeClockButton.setStyleName("timeClockButton");
+		timeClockButton.addClickHandler(this);
+		mainPanel.setSpacing(10);
 		mainPanel.add(title);
 		mainPanel.add(lotCodeManagerButton);
+		mainPanel.add(timeClockButton);
 		mainPanel.setStyleName("mainPanel");
-		// FIXME: set these through CSS
-		mainPanel.setSpacing(10);
-		mainPanel.setWidth("500px");
 		mainPanel.setCellHorizontalAlignment(title, HasHorizontalAlignment.ALIGN_CENTER);
 		mainPanel.setCellHorizontalAlignment(lotCodeManagerButton, HasHorizontalAlignment.ALIGN_CENTER);
+		mainPanel.setCellHorizontalAlignment(timeClockButton, HasHorizontalAlignment.ALIGN_CENTER);
 		//Add mainPanel to rootPanel
 		rootPanel = RootPanel.get("Dashboard");
 		rootPanel.add(mainPanel);
@@ -45,6 +48,9 @@ public class Dashboard implements EntryPoint, ClickHandler {
 		Object sender = event.getSource();
 		if(sender == lotCodeManagerButton) {
 			Window.open("LotCodeManager.html", "LotCodeManager", "");
+		}
+		if(sender == timeClockButton) {
+			Window.open("TimeClock.html", "TimeClock", "");
 		}
 
 	}

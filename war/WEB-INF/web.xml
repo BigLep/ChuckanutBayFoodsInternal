@@ -24,7 +24,7 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
-		<url-pattern>/common/ClockInOutService</url-pattern>
+		<url-pattern>/common/EmployeeClockInOutService</url-pattern>
 	</filter-mapping>
 	
 	<!-- Servlets -->

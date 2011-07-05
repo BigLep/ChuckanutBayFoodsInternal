@@ -1,40 +1,34 @@
-/** Add css rules here for your application. *//** Add css rules here for your application. */
-.center {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
-#dashboard {
-	text-align: center;
-}
-
-.title {
-  font-size:24px; 
-  font-weight: bold;
+.titleLabel {
+	font-size:24px; 
+	font-weight: bold;
+	font-family: Tahoma, Geneva;
 }
 
 .mainPanel {
-  border: 1px solid silver;
-  padding: 5px;
-  background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgrey)); 
-  font-weight: bold;
+	border: 1px solid silver;
+	padding: 5px;
+	width: 500px;
+	spacing: 5px;
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+    font-weight: bold;
 }
 
-.smallText {
-	font-size:10px; 
-	font-weight: standard;
-}
-.greenText {
-	color: green;
-}
-
-
-.buttons {
+.lotCodeManagerButton {
 	width:200px;
 	height:40px;
 	font-size:16px;
 	font-weight:bold;
+	font-family: Tahoma, Geneva;
 	color:white;
-	background: -webkit-gradient(linear, left top, left bottom, from(red), to(maroon));
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#c40000), color-stop(45%,#ff0000), color-stop(56%,#ff0000), color-stop(100%,#c40000)); /* Chrome,Safari4+ */
+}
+
+.timeClockButton {
+	width:200px;
+	height:40px;
+	font-size:16px;
+	font-weight:bold;
+	font-family: Tahoma, Geneva;
+	color:white;
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#c40000), color-stop(45%,#ff0000), color-stop(56%,#ff0000), color-stop(100%,#c40000)); /* Chrome,Safari4+ */
 }
