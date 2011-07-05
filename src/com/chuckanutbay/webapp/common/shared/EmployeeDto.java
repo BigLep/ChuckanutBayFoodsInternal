@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.documentation.Terminology;
+import com.google.common.base.Objects;
 /**
  * {@link Terminology#DTO} for {@link Employee}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
@@ -99,13 +100,18 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 		this.barcodeNumber = barcodeNumber;
 	}
 	
-	/**
-	 * Determines if two {@link EmployeeDto}s are the same based on their {@link BarcodeDto}s.
-	 * @param employee The {@link EmployeeDto} to check for equivalency.
-	 * @return Returns true if the two {@link EmployeeDto}s have the same barcode number.
-	 */
-	public boolean equals(EmployeeDto employee) {
-		return this.barcodeNumber.equals(employee.barcodeNumber);
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(super.hashCode(), barcodeNumber);
+	}
+
+	@Override
+	public boolean equals(Object object){
+		if (object instanceof EmployeeDto) {
+			EmployeeDto that = (EmployeeDto)object;
+			return Objects.equal(this.barcodeNumber, that.barcodeNumber);
+		}
+		return false;
 	}
 
 	@Override

@@ -209,7 +209,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		if (findMatchingClockedInEmployee(barcode) == null) {
 			return false;
 		}
-		else return true;
+		return true;
 	}
 	
 	/**
@@ -222,9 +222,8 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 	
 	/**
-	 * Finds if there are any {@link EmployeeDto}s clocked in that have the given barcode.
-	 * @param barcode The {@link BarcodeDto} to use to check for matches with.
-	 * @return Returns the matching {@link EmployeeDto}. If no match is found then null is returned.
+	 * @param barcode The {@link BarcodeDto} to check for a match with.
+	 * @return The matching {@link EmployeeDto}, or null if no matches.
 	 */
 	private EmployeeDto findMatchingClockedInEmployee(BarcodeDto barcode) {
 		for (EmployeeDto employeeToCheck : clockedInEmployees) {

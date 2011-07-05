@@ -84,9 +84,9 @@
 .clockOutDialogBox {
 }
 .clockOutDialogBoxGlass {
-  	background-color: #000000;
-  	opacity: 0.7;
-  	filter: alpha(opacity=20);
+	background-color: #000000;
+	opacity: 0.7;
+	filter: alpha(opacity=20);
 }
 .clockOutTitleLabel {
 	background: Red;
@@ -140,8 +140,8 @@
 
 .clockOutDialogBoxFlexTable {
 	border: 5px solid Red;
-  	font-family: Tahoma;
-  	padding: 0px;
- 	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
-  	border-radius: 5px;
+	font-family: Tahoma;
+	padding: 0px;
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+	border-radius: 5px;
 }

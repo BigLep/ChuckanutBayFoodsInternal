@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.google.common.base.Objects;
+
 
 @Entity
 @Table(name = "employee_work_interval_activity_percentages")
@@ -57,4 +59,19 @@ public class EmployeeWorkIntervalActivityPercentage {
 		this.percentage = percentage;
 	}
 	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(super.hashCode(), employeeWorkInterval, activity);
+	}
+
+	@Override
+	public boolean equals(Object object){
+		if (object instanceof EmployeeWorkIntervalActivityPercentage) {
+			EmployeeWorkIntervalActivityPercentage that = (EmployeeWorkIntervalActivityPercentage)object;
+			if (Objects.equal(this.employeeWorkInterval, that.employeeWorkInterval) && Objects.equal(this.activity, that.activity)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

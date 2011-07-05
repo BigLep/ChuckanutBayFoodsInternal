@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Objects;
+
 @Entity
 @Table(name = "employees")
 public class Employee {
@@ -20,6 +22,8 @@ public class Employee {
 	private Integer id;
 	private String firstName;
 	private String lastName;
+	private Integer barcodeNumber;
+	private Integer shift;
 	private Set<EmployeeWorkInterval> employeeWorkIntervals = new HashSet<EmployeeWorkInterval>(0);
 
 	@Id
@@ -47,12 +51,42 @@ public class Employee {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
+	
+	@Column(name = "barcode_number", nullable = false, length = 12)
+	public Integer getBarcodeNumber() {
+		return barcodeNumber;
+	}
+	public void setBarcodeNumber(Integer barcodeNumber) {
+		this.barcodeNumber = barcodeNumber;
+	}
+	
+	@Column(name = "shift", nullable = true, length = 2)
+	public Integer getShift() {
+		return shift;
+	}
+	public void setShift(Integer shift) {
+		this.shift = shift;
+	}
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
 	public Set<EmployeeWorkInterval> getEmployeeWorkIntervals() {
 		return employeeWorkIntervals;
 	}
 	public void setEmployeeWorkIntervals(Set<EmployeeWorkInterval> employeeWorkIntervals) {
 		this.employeeWorkIntervals = employeeWorkIntervals;
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(super.hashCode(), barcodeNumber);
+	}
+
+	@Override
+	public boolean equals(Object object){
+		if (object instanceof Employee) {
+			Employee that = (Employee)object;
+			return Objects.equal(this.barcodeNumber, that.barcodeNumber);
+		}
+		return false;
 	}
 }

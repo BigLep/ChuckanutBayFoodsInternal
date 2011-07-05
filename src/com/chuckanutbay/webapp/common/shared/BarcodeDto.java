@@ -2,7 +2,9 @@ package com.chuckanutbay.webapp.common.shared;
 
 import java.io.Serializable;
 
+import com.chuckanutbay.businessobjects.Activity;
 import com.chuckanutbay.documentation.Terminology;
+import com.google.common.base.Objects;
 
 /**
  * A Serializable object that stores a barcode number
@@ -38,12 +40,17 @@ public class BarcodeDto implements Serializable {
 		this.barcodeNumber = barcodeNumber;
 	}
 	
-	/**
-	 * Determines if two {@link BarcodeDto}s have the same barcode numbers.
-	 * @param barcode The {@link BarcodeDto} to check for equivalency with.
-	 * @return Returns true if the two {@link BarcodeDto}s have the same number.
-	 */
-	public boolean equals(BarcodeDto barcode) {
-		return barcodeNumber.equals(barcode.getBarcodeNumber());
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(super.hashCode(), barcodeNumber);
+	}
+
+	@Override
+	public boolean equals(Object object){
+		if (object instanceof BarcodeDto) {
+			BarcodeDto that = (BarcodeDto)object;
+			return Objects.equal(this.barcodeNumber, that.barcodeNumber);
+		}
+		return false;
 	}
 }

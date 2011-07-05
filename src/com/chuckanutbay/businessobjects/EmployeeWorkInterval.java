@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.google.common.base.Objects;
+
 @Entity
 @Table(name = "employee_work_intervals")
 public class EmployeeWorkInterval {
@@ -71,6 +73,22 @@ public class EmployeeWorkInterval {
 	public void setEmployeeWorkIntervalActivityPercentages(
 			Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages) {
 		this.employeeWorkIntervalActivityPercentages = employeeWorkIntervalActivityPercentages;
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(super.hashCode(), employee, startDateTime);
+	}
+
+	@Override
+	public boolean equals(Object object){
+		if (object instanceof EmployeeWorkInterval) {
+			EmployeeWorkInterval that = (EmployeeWorkInterval)object;
+			if (Objects.equal(this.employee, that.employee) && Objects.equal(this.startDateTime, that.startDateTime)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

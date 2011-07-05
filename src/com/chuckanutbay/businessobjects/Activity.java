@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Objects;
+
 
 @Entity
 @Table(name = "activities")
@@ -46,6 +48,20 @@ public class Activity {
 	public void setEmployeeWorkIntervalActivityPercentages(
 			Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages) {
 		this.employeeWorkIntervalActivityPercentages = employeeWorkIntervalActivityPercentages;
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(super.hashCode(), name);
+	}
+
+	@Override
+	public boolean equals(Object object){
+		if (object instanceof Activity) {
+			Activity that = (Activity)object;
+			return Objects.equal(this.name, that.name);
+		}
+		return false;
 	}
 	
 	
