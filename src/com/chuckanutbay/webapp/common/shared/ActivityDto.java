@@ -2,6 +2,7 @@ package com.chuckanutbay.webapp.common.shared;
 
 import java.io.Serializable;
 
+import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.documentation.Terminology;
 
 /**
@@ -10,7 +11,9 @@ import com.chuckanutbay.documentation.Terminology;
  * {@link Terminology#DTO} for {@link Employee}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
-public class ActivityDto implements Serializable {
+public class ActivityDto implements Serializable, Comparable<Object> {
+	
+	private static final long serialVersionUID = 1L;
 	public Integer id;
 	public String name;
 	
@@ -59,5 +62,14 @@ public class ActivityDto implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		if (o instanceof ActivityDto) {
+			ActivityDto that = (ActivityDto)o;
+			return (this.getId() - that.getId());
+		}
+		return 0;
 	}
 }

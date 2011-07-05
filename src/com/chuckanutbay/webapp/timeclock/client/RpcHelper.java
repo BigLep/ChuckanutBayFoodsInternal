@@ -4,6 +4,7 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
 
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.client.EmployeeClockInOutServiceAsync;
 import com.chuckanutbay.webapp.common.client.ServiceUtils;
@@ -49,19 +50,19 @@ public class RpcHelper {
 		};
 	}
 	
-	public static AsyncCallback<Set<EmployeeDto>> createGetClockedInEmployeesCallback(final ClockInOutServerCommunicator caller) {
-		return new DefaultAsyncCallback<Set<EmployeeDto>>() {
+	public static AsyncCallback<SortedSet<EmployeeDto>> createGetClockedInEmployeesCallback(final ClockInOutServerCommunicator caller) {
+		return new DefaultAsyncCallback<SortedSet<EmployeeDto>>() {
 			@Override
-			public void onSuccess(Set<EmployeeDto> employees) {
+			public void onSuccess(SortedSet<EmployeeDto> employees) {
 				caller.onSuccessfulGetClockedInEmployees(employees);
 			}
 		};
 	}
 	
-	public static AsyncCallback<Set<ActivityDto>> createGetActivitiesCallback(final ClockInOutServerCommunicator caller) {
-		return new DefaultAsyncCallback<Set<ActivityDto>>() {
+	public static AsyncCallback<SortedSet<ActivityDto>> createGetActivitiesCallback(final ClockInOutServerCommunicator caller) {
+		return new DefaultAsyncCallback<SortedSet<ActivityDto>>() {
 			@Override
-			public void onSuccess(Set<ActivityDto> activities) {
+			public void onSuccess(SortedSet<ActivityDto> activities) {
 				caller.onSuccessfulGetActivities(activities);
 			}
 		};

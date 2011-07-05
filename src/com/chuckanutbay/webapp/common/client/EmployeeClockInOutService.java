@@ -1,6 +1,7 @@
 package com.chuckanutbay.webapp.common.client;
 
 import java.util.Set;
+import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.BarcodeDto;
@@ -23,10 +24,10 @@ public interface EmployeeClockInOutService extends RemoteService {
 	
 	void clockOut(EmployeeDto employee);
 	
-	Set<EmployeeDto> getClockedInEmployees();
+	SortedSet<EmployeeDto> getClockedInEmployees();
 	
 	void cancelClockIn(BarcodeDto barcode);
 	
-	Set<ActivityDto> getActivities();
+	SortedSet<ActivityDto> getActivities();
 	
 }

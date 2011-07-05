@@ -1,6 +1,7 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
 import java.util.Set;
+import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.*;
 
@@ -54,11 +55,11 @@ public interface ClockInOutServerCommunicator {
 	 * When the server successfully returns the {@link clockedInEmployees}.
 	 * @param clockedInEmployees The {@link EmployeeDto}s sent from the server.
 	 */
-	public void onSuccessfulGetClockedInEmployees(Set<EmployeeDto> clockedInEmployees);
+	public void onSuccessfulGetClockedInEmployees(SortedSet<EmployeeDto> clockedInEmployees);
 	
 	/**
 	 * When the server successfully returns the {@link activities}.
 	 * @param activities The {@link activities} sent from the server.
 	 */
-	public void onSuccessfulGetActivities(Set<ActivityDto> activities);
+	public void onSuccessfulGetActivities(SortedSet<ActivityDto> activities);
 }

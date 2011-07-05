@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.joda.time.format.DateTimeFormatter;
 
@@ -50,8 +52,8 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	private ClockOutDialogBox clockOutDialogBox;
 	
 	//Data Objects
-	private Set<EmployeeDto> clockedInEmployees = new HashSet<EmployeeDto>();
-	private Set<ActivityDto> activities = new HashSet<ActivityDto>();
+	private SortedSet<EmployeeDto> clockedInEmployees = new TreeSet<EmployeeDto>();
+	private SortedSet<ActivityDto> activities = new TreeSet<ActivityDto>();
 	
 	//Other Objects
 	BarcodeFormulation barcodeFormulation = new BarcodeFormulation();
@@ -187,14 +189,6 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		//Setup Timer
 		timer.scheduleRepeating(MIN_IN_MILLISECONDS);
 
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 	
 	/**
@@ -348,7 +342,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 
 	@Override
 	public void onSuccessfulGetClockedInEmployees(
-			Set<EmployeeDto> clockedInEmployees) {
+			SortedSet<EmployeeDto> clockedInEmployees) {
 		this.clockedInEmployees.clear();
 		this.clockedInEmployees.addAll(clockedInEmployees);
 		updateEmployeeTables();
@@ -359,7 +353,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 
 	@Override
-	public void onSuccessfulGetActivities(Set<ActivityDto> activities) {
+	public void onSuccessfulGetActivities(SortedSet<ActivityDto> activities) {
 		this.activities.clear();
 		this.activities.addAll(activities);
 		GWT.log("Successfully got activities from Server:");

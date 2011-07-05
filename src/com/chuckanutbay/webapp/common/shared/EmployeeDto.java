@@ -9,8 +9,8 @@ import com.chuckanutbay.documentation.Terminology;
  * {@link Terminology#DTO} for {@link Employee}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
-public class EmployeeDto implements Serializable {
-	
+public class EmployeeDto implements Serializable, Comparable<Object> {
+	private static final long serialVersionUID = 1L;
 	public Integer id;
 	public String firstName;
 	public String lastName;
@@ -106,5 +106,14 @@ public class EmployeeDto implements Serializable {
 	 */
 	public boolean equals(EmployeeDto employee) {
 		return this.barcodeNumber.equals(employee.barcodeNumber);
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		if (o instanceof EmployeeDto) {
+			EmployeeDto that = (EmployeeDto)o;
+			return (this.getLastName().compareTo(that.getLastName()));
+		}
+		return 0;
 	}
 }

@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.chuckanutbay.businessobjects.dao.ActivityDao;
 import com.chuckanutbay.businessobjects.dao.ActivityHibernateDao;
@@ -22,12 +24,12 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 
 	private static final long serialVersionUID = 1L;
 	
-	private Set<EmployeeDto> employees;
+	private SortedSet<EmployeeDto> employees;
 	private Set<EmployeeWorkIntervalPercentageDto> activitiyPercentages;
-	private Set<ActivityDto> activities;
+	private SortedSet<ActivityDto> activities;
 	
 	public EmployeeClockInOutServiceImpl() {
-		activities = new HashSet<ActivityDto>();
+		activities = new TreeSet<ActivityDto>();
 		activities.add(new ActivityDto(1, "Production"));
 		activities.add(new ActivityDto(2, "Packaging"));
 		activities.add(new ActivityDto(3, "RIE"));
@@ -39,7 +41,7 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 		activitiyPercentages.add(new EmployeeWorkIntervalPercentageDto(3, new ActivityDto(3, "RIE"), 20));
 		activitiyPercentages.add(new EmployeeWorkIntervalPercentageDto(4, new ActivityDto(4, "DropShip"), 20));
 		activitiyPercentages.add(new EmployeeWorkIntervalPercentageDto(5, new ActivityDto(5, "Other"), 20));
-		employees = new HashSet<EmployeeDto>();
+		employees = new TreeSet<EmployeeDto>();
 		employees.add(new EmployeeDto(1, "Steve", "Jobs", 300, activitiyPercentages, new BarcodeDto(123456789)));
 		employees.add(new EmployeeDto(2, "Bill", "Gates", 222, activitiyPercentages, new BarcodeDto(234567890)));
 		employees.add(new EmployeeDto(3, "Tom", "Brady", 121, activitiyPercentages, new BarcodeDto(345678901)));
@@ -59,7 +61,7 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 	}
 
 	@Override
-	public Set<EmployeeDto> getClockedInEmployees() {
+	public SortedSet<EmployeeDto> getClockedInEmployees() {
 		/**
 		String today = new String(DateTimeFormat.getFormat("EEEE, MMMM d, y h:mm:ss a zzzz").format(new Date()));
 		GWT.log("Today: " + today);
@@ -78,14 +80,11 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 	@Override
 	public void cancelClockIn(BarcodeDto barcode) {
 		//Do nothing right now
-		
 	}
 
 	@Override
-	public Set<ActivityDto> getActivities() {
+	public SortedSet<ActivityDto> getActivities() {
 		ActivityDao dao = new ActivityHibernateDao();
-		return new HashSet<ActivityDto>(DtoUtils.transform(dao.findAll(), DtoUtils.toActivityDto));
+		return new TreeSet<ActivityDto>(DtoUtils.transform(dao.findAll(), DtoUtils.toActivityDto));
 	}
-	
-	
 }

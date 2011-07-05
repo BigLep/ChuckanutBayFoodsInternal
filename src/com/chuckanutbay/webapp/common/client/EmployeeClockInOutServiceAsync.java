@@ -1,6 +1,7 @@
 package com.chuckanutbay.webapp.common.client;
 
 import java.util.Set;
+import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.BarcodeDto;
@@ -15,8 +16,8 @@ public interface EmployeeClockInOutServiceAsync {
 
 	void clockOut(EmployeeDto employee, AsyncCallback<Void> callback);
 
-	void getActivities(AsyncCallback<Set<ActivityDto>> callback);
+	void getActivities(AsyncCallback<SortedSet<ActivityDto>> callback);
 
-	void getClockedInEmployees(AsyncCallback<Set<EmployeeDto>> callback);
+	void getClockedInEmployees(AsyncCallback<SortedSet<EmployeeDto>> callback);
 
 }
