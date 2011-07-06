@@ -7,5 +7,5 @@ import com.chuckanutbay.documentation.Technology;
  * {@link EmployeeDao} that uses {@link Technology#Hibernate}.
  */
 public class EmployeeHibernateDao extends GenericHibernateDao<Employee,Integer> implements EmployeeDao {
-
+	
 }

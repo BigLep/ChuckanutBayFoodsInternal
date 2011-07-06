@@ -1,7 +1,5 @@
 package com.chuckanutbay.webapp.common.server;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
@@ -9,15 +7,11 @@ import java.util.TreeSet;
 
 import com.chuckanutbay.businessobjects.dao.ActivityDao;
 import com.chuckanutbay.businessobjects.dao.ActivityHibernateDao;
-import com.chuckanutbay.businessobjects.dao.InventoryLotDao;
-import com.chuckanutbay.businessobjects.dao.InventoryLotHibernateDao;
 import com.chuckanutbay.webapp.common.client.EmployeeClockInOutService;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.BarcodeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalPercentageDto;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implements EmployeeClockInOutService {
@@ -39,7 +33,7 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 		activitiyPercentages.add(new EmployeeWorkIntervalPercentageDto(1, new ActivityDto(1, "Production"), 20));
 		activitiyPercentages.add(new EmployeeWorkIntervalPercentageDto(2, new ActivityDto(2, "Packaging"), 20));
 		activitiyPercentages.add(new EmployeeWorkIntervalPercentageDto(3, new ActivityDto(3, "RIE"), 20));
-		activitiyPercentages.add(new EmployeeWorkIntervalPercentageDto(4, new ActivityDto(4, "DropShip"), 20));
+		activitiyPercentages.add(new EmployeeWorkIntervalPercentageDto(4, new ActivityDto(4, "Drop Ship"), 20));
 		activitiyPercentages.add(new EmployeeWorkIntervalPercentageDto(5, new ActivityDto(5, "Other"), 20));
 		employees = new TreeSet<EmployeeDto>();
 		employees.add(new EmployeeDto(1, "Steve", "Jobs", 300, activitiyPercentages, new BarcodeDto(123456789)));

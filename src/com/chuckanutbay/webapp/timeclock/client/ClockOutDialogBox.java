@@ -7,7 +7,7 @@ import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.stringToInt
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
@@ -45,30 +45,26 @@ public class ClockOutDialogBox extends DialogBox {
 	private int height;
 	
 	public ClockOutDialogBox(EmployeeDto employee, 
-			Set<ActivityDto> activities, 
+			SortedSet<ActivityDto> activities, 
 			ClockInOutErrorHandler errorHandler, 
 			ClockInOutServerCommunicator serverCommunicator, 
 			int x, int y, int width, int height) {
 		
 		GWT.log("ClockOutDialogBox: Initializing");
 		
-		//Find each activity and percentage that the employee did last time.
-		for (EmployeeWorkIntervalPercentageDto percentage : employee.getEmployeeWorkIntervalPercentages()) {
-			GWT.log("ClockOutDialogBox: " + percentage.getActivity().getName() + ", " + percentage.getPercentage());
-			actvityPercentages.add(percentage);
-		}
-		
-		//Find each activity that the employee din't do last time and set the percentage to 0
+		//For each activity, create a new EmployeeWorkIntervalPercentageDto and set the percentage to 0.
 		for (ActivityDto activity : activities) {
-			boolean foundMatch = false;
-			for (EmployeeWorkIntervalPercentageDto percentage : actvityPercentages) {
-				if (percentage.getActivity().equals(activity)) {
-					foundMatch = true;
-					break;
+			GWT.log("ClockOutDialogBox:       " + activity.getName() + ", 0");
+			actvityPercentages.add(new EmployeeWorkIntervalPercentageDto(null, activity, 0));
+		}
+				
+		//Change the percentages to what the employee did last work interval.
+		for (EmployeeWorkIntervalPercentageDto percentage : employee.getEmployeeWorkIntervalPercentages()) {
+			for (EmployeeWorkIntervalPercentageDto percentageToCheck : actvityPercentages) {
+				if (percentage.getActivity().equals(percentageToCheck.getActivity())) {
+					GWT.log("ClockOutDialogBox: Changing " + percentage.getActivity().getName() + " to " + percentage.getPercentage());
+					percentageToCheck.setPercentage(percentage.getPercentage());
 				}
-			} if (!foundMatch) {
-				GWT.log("ClockOutDialogBox:       " + activity.getName() + ", 0");
-				actvityPercentages.add(new EmployeeWorkIntervalPercentageDto(null, activity, 0));
 			}
 		}
 		

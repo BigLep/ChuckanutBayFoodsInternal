@@ -2,11 +2,23 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
-	<schema-selection match-schema="loeppky_chuckanutbayextra"/>
+	<schema-selection match-schema="chuckanut_bay_internal"/>
 	<table-filter match-name="inventory_items" />
 	<table-filter match-name="inventory_lots" />
+	<table-filter match-name="activities" />
+	<table-filter match-name="employees" />
+	<table-filter match-name="employee_work_intervals" />
+	<table-filter match-name="employee_work_interval_activity_percentages" />
 	<table name="inventory_items" class="InventoryItem">
 	</table>
 	<table name="inventory_lots" class="InventoryLot">
+	</table>
+	<table name="activities" class="Activity">
+	</table>
+	<table name="employees" class="Employee">
+	</table>
+	<table name="employee_work_intervals" class="EmployeeWorkInterval">
+	</table>
+	<table name="employee_work_interval_activity_percentages" class="EmployeeWorkIntervalActivityPercentage">
 	</table>
 </hibernate-reverse-engineering>

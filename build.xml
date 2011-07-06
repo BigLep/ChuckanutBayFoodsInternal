@@ -154,6 +154,8 @@
 			<fileset dir="${war.dir}">
 				<exclude name="WEB-INF/**"/>
 				<exclude name="lotcodemanager/**"/>
+				<exclude name="timeclock/**"/>
+				<exclude name="dashboard/**"/>
 			</fileset>
 		</copy>
 	</target>

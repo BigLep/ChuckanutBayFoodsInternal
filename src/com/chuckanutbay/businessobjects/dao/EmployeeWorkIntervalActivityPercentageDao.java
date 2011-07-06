@@ -8,4 +8,5 @@ import com.chuckanutbay.documentation.Terminology;
  */
 public interface EmployeeWorkIntervalActivityPercentageDao extends GenericDao<EmployeeWorkIntervalActivityPercentage, Integer> {
 
+	
 }
