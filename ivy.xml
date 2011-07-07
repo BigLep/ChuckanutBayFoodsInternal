@@ -21,8 +21,16 @@
 			Dependency searching:
 			http://www.mvnbrowser.com/
 			https://repository.jboss.org/nexus/index.html
+			http://ivyroundup.googlecode.com/svn/trunk/repo/modules.xml
 		-->
 		<dependency org="com.google.guava" name="guava" rev="r09" conf="compile->default"/>
+		<!-- 
+			We need a special Guava jar for using it with client-side GWT code as discussed here:
+			http://stackoverflow.com/questions/2005687/guava-libraries-and-gwt
+			I (Big Lep) could only figure out how to get this jar using the ivyroundup repository,
+			which has a different org for the guava libraries.
+		-->
+		<dependency org="com.google.common" name="guava-libraries" rev="r09" conf="build->gwt"/>
 		<dependency org="joda-time" name="joda-time" rev="1.6" conf="compile->default"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="compile->default;gwt-debug-mode->default"/>
 		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" conf="runtime->default;test->default;gwt-debug-mode->default"/>
