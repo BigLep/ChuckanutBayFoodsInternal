@@ -9,7 +9,7 @@ import com.chuckanutbay.documentation.Terminology;
  * {@link Terminology#DTO} for {@link EmployeeWorkIntervalPercentage}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
-public class EmployeeWorkIntervalPercentageDto implements Serializable {
+public class EmployeeWorkIntervalActivityPercentageDto implements Serializable {
 	public Integer id;
 	public ActivityDto activity;
 	public Integer percentage;
@@ -17,15 +17,15 @@ public class EmployeeWorkIntervalPercentageDto implements Serializable {
 	/**
 	 * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
 	 */
-	public EmployeeWorkIntervalPercentageDto(){}
+	public EmployeeWorkIntervalActivityPercentageDto(){}
 	
 	/**
-	 * Basic constructor for {@link EmployeeWorkIntervalPercentageDto} objects
+	 * Basic constructor for {@link EmployeeWorkIntervalActivityPercentageDto} objects
 	 * @param id Database id for the {@link EmployeeWorkIntervalPercentage}
 	 * @param activity The activity worked during the interval
 	 * @param percentage the percentage of the interval worked on the activity
 	 */
-	public EmployeeWorkIntervalPercentageDto(Integer id, ActivityDto activity, Integer percentage) {
+	public EmployeeWorkIntervalActivityPercentageDto(Integer id, ActivityDto activity, Integer percentage) {
 		this.id = id;
 		this.activity = activity;
 		this.percentage = percentage;

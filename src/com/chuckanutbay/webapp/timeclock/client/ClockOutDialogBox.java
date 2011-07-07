@@ -11,7 +11,7 @@ import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
-import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalPercentageDto;
+import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -38,7 +38,7 @@ public class ClockOutDialogBox extends DialogBox {
 	private FlexTable flexTable;
 	private int xPosition;
 	private int yPosition;
-	private List<EmployeeWorkIntervalPercentageDto> actvityPercentages = new ArrayList<EmployeeWorkIntervalPercentageDto>();
+	private List<EmployeeWorkIntervalActivityPercentageDto> actvityPercentages = new ArrayList<EmployeeWorkIntervalActivityPercentageDto>();
 	private ListBox totalListBox;
 	private Button clockOutButton;
 	private int width;
@@ -55,12 +55,12 @@ public class ClockOutDialogBox extends DialogBox {
 		//For each activity, create a new EmployeeWorkIntervalPercentageDto and set the percentage to 0.
 		for (ActivityDto activity : activities) {
 			GWT.log("ClockOutDialogBox:       " + activity.getName() + ", 0");
-			actvityPercentages.add(new EmployeeWorkIntervalPercentageDto(null, activity, 0));
+			actvityPercentages.add(new EmployeeWorkIntervalActivityPercentageDto(null, activity, 0));
 		}
 				
 		//Change the percentages to what the employee did last work interval.
-		for (EmployeeWorkIntervalPercentageDto percentage : employee.getEmployeeWorkIntervalPercentages()) {
-			for (EmployeeWorkIntervalPercentageDto percentageToCheck : actvityPercentages) {
+		for (EmployeeWorkIntervalActivityPercentageDto percentage : employee.getEmployeeWorkIntervalPercentages()) {
+			for (EmployeeWorkIntervalActivityPercentageDto percentageToCheck : actvityPercentages) {
 				if (percentage.getActivity().equals(percentageToCheck.getActivity())) {
 					GWT.log("ClockOutDialogBox: Changing " + percentage.getActivity().getName() + " to " + percentage.getPercentage());
 					percentageToCheck.setPercentage(percentage.getPercentage());
@@ -107,7 +107,7 @@ public class ClockOutDialogBox extends DialogBox {
 		
 		//Setup activity labels and listboxes
 		int i = 1;
-		for(EmployeeWorkIntervalPercentageDto activityPercentage : actvityPercentages) {
+		for(EmployeeWorkIntervalActivityPercentageDto activityPercentage : actvityPercentages) {
 			Label label = new Label(activityPercentage.getActivity().getName());
 			label.setStyleName("clockOutDialogBoxLabel");
 			flexTable.setWidget(i, 0, label);
@@ -126,7 +126,7 @@ public class ClockOutDialogBox extends DialogBox {
 					ListBox listBox = ((ListBox) event.getSource());
 					String selectedString = listBox.getItemText(listBox.getSelectedIndex());
 					Integer selectedInteger = new Integer(removeLastChar(selectedString));
-					EmployeeWorkIntervalPercentageDto percentageDto = actvityPercentages.get(stringToInt(getLastChar(listBox.getTitle())) - 1);
+					EmployeeWorkIntervalActivityPercentageDto percentageDto = actvityPercentages.get(stringToInt(getLastChar(listBox.getTitle())) - 1);
 					percentageDto.setPercentage(selectedInteger);
 					GWT.log("ClockOutDialogBox: Changed " + percentageDto.getActivity().getName() + " percentage to " + selectedInteger);
 					updateTotalPercentageListBox();
@@ -154,7 +154,7 @@ public class ClockOutDialogBox extends DialogBox {
 			public void onClick(ClickEvent event) {
 				savePercentages();
 				GWT.log("ClockOutDialogBox: Requesting Clock-Out for " + employee.getFirstName() + " " + employee.getLastName());
-				for (EmployeeWorkIntervalPercentageDto activityPercentage : employee.getEmployeeWorkIntervalPercentages()) {
+				for (EmployeeWorkIntervalActivityPercentageDto activityPercentage : employee.getEmployeeWorkIntervalPercentages()) {
 					GWT.log("ClockOutDialogBox:      " + activityPercentage.getActivity().getName() + " " + activityPercentage.getPercentage());
 				}
 				serverCommunicator.clockOutOnDatabase(employee);
@@ -177,7 +177,7 @@ public class ClockOutDialogBox extends DialogBox {
 	}
 	
 	private void savePercentages() {
-		employee.setEmployeeWorkIntervalPercentages(new HashSet<EmployeeWorkIntervalPercentageDto>(actvityPercentages));
+		employee.setEmployeeWorkIntervalPercentages(new HashSet<EmployeeWorkIntervalActivityPercentageDto>(actvityPercentages));
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class ClockOutDialogBox extends DialogBox {
 	 */
 	private int calcTotalPercentage() {
 		int totalPercentage = 0;
-		for (EmployeeWorkIntervalPercentageDto percentage : actvityPercentages) {
+		for (EmployeeWorkIntervalActivityPercentageDto percentage : actvityPercentages) {
 			totalPercentage += percentage.getPercentage();
 		}
 		GWT.log("ClockOutDialogBox: Total percentage is " + totalPercentage);

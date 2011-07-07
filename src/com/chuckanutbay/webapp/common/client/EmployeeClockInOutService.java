@@ -22,7 +22,7 @@ public interface EmployeeClockInOutService extends RemoteService {
 	
 	EmployeeDto clockIn(BarcodeDto barcode);
 	
-	void clockOut(EmployeeDto employee);
+	void clockOut(EmployeeDto employeeDto);
 	
 	SortedSet<EmployeeDto> getClockedInEmployees();
 	

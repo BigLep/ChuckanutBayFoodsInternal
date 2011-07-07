@@ -7,5 +7,6 @@ import com.chuckanutbay.documentation.Terminology;
  * {@link Terminology#DAO} for {@link Employee}.
  */
 public interface EmployeeDao extends GenericDao<Employee, Integer> {
-
+	
+	Employee findEmployeeWithBarcodeNumber(Integer barcodeNumber);
 }

@@ -14,7 +14,7 @@ public interface EmployeeClockInOutServiceAsync {
 
 	void clockIn(BarcodeDto barcode, AsyncCallback<EmployeeDto> callback);
 
-	void clockOut(EmployeeDto employee, AsyncCallback<Void> callback);
+	void clockOut(EmployeeDto employeeDto, AsyncCallback<Void> callback);
 
 	void getActivities(AsyncCallback<SortedSet<ActivityDto>> callback);
 
