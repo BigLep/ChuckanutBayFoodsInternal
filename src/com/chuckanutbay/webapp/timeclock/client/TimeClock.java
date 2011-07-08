@@ -95,10 +95,10 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		//Iterate over the set of employees adding the first 20 to the first table
 		//and up to 20 more on the next table.
 		Iterator<EmployeeDto> iterator = clockedInEmployees.iterator();
-		for(int i=0; i<20 && iterator.hasNext(); i++) {
+		for(int i=0; i<17 && iterator.hasNext(); i++) {
 			addToFlexTable(employeeTable1, i+1, iterator.next());
 		}
-		for(int i=0; i<20 && iterator.hasNext(); i++) {
+		for(int i=0; i<17 && iterator.hasNext(); i++) {
 			addToFlexTable(employeeTable2, i+1, iterator.next());
 		}
 
@@ -118,6 +118,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		flexTable.setWidget(row-1, 0, nameLabel);
 		
 		//Set second column as Time worked this week in format (hrs:mins)
+		GWT.log("Mins Worked This Week: " + employee.minsWorkedThisWeek);
 		NumberFormat numberFormat = NumberFormat.getFormat("00");
 		final int hoursWorkedThisWeek = employee.minsWorkedThisWeek / 60;
 		final int remainderInMinutes = employee.minsWorkedThisWeek - (60*hoursWorkedThisWeek);

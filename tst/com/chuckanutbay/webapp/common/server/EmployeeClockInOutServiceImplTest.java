@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.joda.time.DateMidnight;
@@ -26,7 +27,6 @@ import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalActivityPercenta
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalHibernateDao;
 import com.chuckanutbay.util.testing.DatabaseResource;
-import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.BarcodeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
@@ -38,7 +38,90 @@ public class EmployeeClockInOutServiceImplTest {
 	
 	@Rule 
 	public final DatabaseResource databaseResource = new DatabaseResource();
-	
+	/**
+	 *  @see EmployeeClockInOutServiceImpl#clockOut(EmployeeDto employeeDto)
+	 */
+	@Test
+	public void testClockOut() {
+		EmployeeDao employeeDao = new EmployeeHibernateDao();
+		ActivityDao activityDao = new ActivityHibernateDao();
+		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
+		EmployeeWorkIntervalActivityPercentageDao percentageDao = new EmployeeWorkIntervalActivityPercentageHibernateDao();
+		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
+		
+		//1 Open and 1 Closed interval for two employees
+		Employee employee1 = new Employee();
+		employee1.setBarcodeNumber(123456789);
+		employee1.setFirstName("Steve");
+		employee1.setLastName("Jobs");
+		employeeDao.makePersistent(employee1);
+		
+		Activity activity = new Activity();
+		activity.setName("Packaging");
+		activityDao.makePersistent(activity);
+		
+		EmployeeDto employee1Dto = DtoUtils.toEmployeeDto(employee1);
+		EmployeeWorkIntervalActivityPercentageDto percentageDto = new EmployeeWorkIntervalActivityPercentageDto();
+		percentageDto.setActivity(DtoUtils.toActivityDto(activity));
+		percentageDto.setPercentage(30);
+		List<EmployeeWorkIntervalActivityPercentageDto> percentages = newArrayList(percentageDto);
+		employee1Dto.setEmployeeWorkIntervalPercentages(percentages);
+		
+		Employee employee2 = new Employee();
+		employee2.setBarcodeNumber(234567890);
+		employee2.setFirstName("Bill");
+		employee2.setLastName("Gates");
+		employeeDao.makePersistent(employee2);
+		
+		EmployeeWorkInterval employee1WorkInterval1 = new EmployeeWorkInterval();
+		employee1WorkInterval1.setEmployee(employee1);
+		employee1WorkInterval1.setStartDateTime(new Date());
+		employee1WorkInterval1.setEndDateTime(new Date());
+		intervalDao.makePersistent(employee1WorkInterval1);
+		
+		EmployeeWorkInterval employee1WorkInterval2 = new EmployeeWorkInterval();
+		employee1WorkInterval2.setEmployee(employee1);
+		employee1WorkInterval2.setStartDateTime(new Date());
+		intervalDao.makePersistent(employee1WorkInterval2);
+		
+		EmployeeWorkInterval employee2WorkInterval1 = new EmployeeWorkInterval();
+		employee2WorkInterval1.setEmployee(employee2);
+		employee2WorkInterval1.setStartDateTime(new Date());
+		employee2WorkInterval1.setEndDateTime(new Date());
+		intervalDao.makePersistent(employee2WorkInterval1);
+		
+		EmployeeWorkInterval employee2WorkInterval2 = new EmployeeWorkInterval();
+		employee2WorkInterval2.setEmployee(employee2);
+		employee2WorkInterval2.setStartDateTime(new Date());
+		intervalDao.makePersistent(employee2WorkInterval2);
+		
+		EmployeeWorkIntervalActivityPercentage percentage1 = new EmployeeWorkIntervalActivityPercentage();
+		percentage1.setActivity(activity);
+		percentage1.setPercentage(10);
+		percentage1.setEmployeeWorkInterval(employee1WorkInterval1);
+		percentageDao.makePersistent(percentage1);
+		Set<EmployeeWorkIntervalActivityPercentage> percentages1 = new HashSet<EmployeeWorkIntervalActivityPercentage>();
+		percentages1.add(percentage1);
+		employee1WorkInterval1.setEmployeeWorkIntervalActivityPercentages(percentages1);
+		
+		EmployeeWorkIntervalActivityPercentage percentage3 = new EmployeeWorkIntervalActivityPercentage();
+		percentage3.setActivity(activity);
+		percentage3.setPercentage(30);
+		percentage3.setEmployeeWorkInterval(employee2WorkInterval1);
+		percentageDao.makePersistent(percentage3);
+		Set<EmployeeWorkIntervalActivityPercentage> percentages3 = new HashSet<EmployeeWorkIntervalActivityPercentage>();
+		percentages3.add(percentage3);
+		employee2WorkInterval1.setEmployeeWorkIntervalActivityPercentages(percentages3);
+		
+		assertEquals(newArrayList(employee2WorkInterval2, employee1WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
+		
+		//Cancel 1 Open interval
+		server.clockOut(employee1Dto);
+		System.out.println("successful sign out");
+		assertEquals(3, percentageDao.findAll().size());
+		assertEquals(newArrayList(employee2WorkInterval1), intervalDao.findOpenEmployeeWorkIntervals());
+		assertEquals(4, intervalDao.findAll().size());
+	}
 	/**
 	 * @see EmployeeClockInOutServiceImpl#getStartOfLastPayPeriod()
 	 */
@@ -138,66 +221,7 @@ public class EmployeeClockInOutServiceImplTest {
 		assertEquals(3, intervalDao.findAll().size());
 	}
 	
-	/**
-	 *  @see EmployeeClockInOutServiceImpl#clockOut(EmployeeDto employeeDto)
-	 */
-	@Test
-	public void testClockOut() {
-		EmployeeDao employeeDao = new EmployeeHibernateDao();
-		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
-		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
-		
-		//1 Open and 1 Closed interval for two employees
-		Employee employee1 = new Employee();
-		employee1.setBarcodeNumber(123456789);
-		employee1.setFirstName("Steve");
-		employee1.setLastName("Jobs");
-		employeeDao.makePersistent(employee1);
-		
-		EmployeeDto employee1Dto = DtoUtils.toEmployeeDto(employee1);
-		Set<EmployeeWorkIntervalActivityPercentageDto> percentages = new HashSet<EmployeeWorkIntervalActivityPercentageDto>();
-		EmployeeWorkIntervalActivityPercentageDto percentage = new EmployeeWorkIntervalActivityPercentageDto();
-		ActivityDto activity = new ActivityDto();
-		activity.setName("Production");
-		percentage.setActivity(activity);
-		percentages.add(percentage);
-		employee1Dto.setEmployeeWorkIntervalPercentages(percentages);
-		
-		Employee employee2 = new Employee();
-		employee2.setBarcodeNumber(234567890);
-		employee2.setFirstName("Bill");
-		employee2.setLastName("Gates");
-		employeeDao.makePersistent(employee2);
-		
-		EmployeeWorkInterval employee1WorkInterval1 = new EmployeeWorkInterval();
-		employee1WorkInterval1.setEmployee(employee1);
-		employee1WorkInterval1.setStartDateTime(new Date());
-		employee1WorkInterval1.setEndDateTime(new Date());
-		intervalDao.makePersistent(employee1WorkInterval1);
-		
-		EmployeeWorkInterval employee1WorkInterval2 = new EmployeeWorkInterval();
-		employee1WorkInterval2.setEmployee(employee1);
-		employee1WorkInterval2.setStartDateTime(new Date());
-		intervalDao.makePersistent(employee1WorkInterval2);
-		
-		EmployeeWorkInterval employee2WorkInterval1 = new EmployeeWorkInterval();
-		employee2WorkInterval1.setEmployee(employee2);
-		employee2WorkInterval1.setStartDateTime(new Date());
-		employee2WorkInterval1.setEndDateTime(new Date());
-		intervalDao.makePersistent(employee2WorkInterval1);
-		
-		EmployeeWorkInterval employee2WorkInterval2 = new EmployeeWorkInterval();
-		employee2WorkInterval2.setEmployee(employee2);
-		employee2WorkInterval2.setStartDateTime(new Date());
-		intervalDao.makePersistent(employee2WorkInterval2);
-		assertEquals(newArrayList(employee2WorkInterval2, employee1WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
-		
-		//Cancel 1 Open interval
-		server.clockOut(employee1Dto);
-		System.out.println("successful sign out");
-		assertEquals(newArrayList(employee2WorkInterval1), intervalDao.findOpenEmployeeWorkIntervals());
-		assertEquals(4, intervalDao.findAll().size());
-	}
+	
 	/**
 	 * Test should not be run on a Monday
 	 * @see EmployeeClockInOutServiceImpl#clockIn(BarcodeDto barcode)

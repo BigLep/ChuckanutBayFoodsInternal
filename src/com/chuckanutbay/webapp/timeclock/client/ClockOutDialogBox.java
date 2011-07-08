@@ -5,7 +5,6 @@ import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.removeLastC
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.stringToInt;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -177,7 +176,13 @@ public class ClockOutDialogBox extends DialogBox {
 	}
 	
 	private void savePercentages() {
-		employee.setEmployeeWorkIntervalPercentages(new HashSet<EmployeeWorkIntervalActivityPercentageDto>(actvityPercentages));
+		List<EmployeeWorkIntervalActivityPercentageDto> percentages = new ArrayList<EmployeeWorkIntervalActivityPercentageDto>();
+		for (EmployeeWorkIntervalActivityPercentageDto percentage : actvityPercentages) {
+			if (percentage.getPercentage() > 0) {
+				percentages.add(percentage);
+			}
+		}
+		employee.setEmployeeWorkIntervalPercentages(percentages);
 	}
 
 	/**

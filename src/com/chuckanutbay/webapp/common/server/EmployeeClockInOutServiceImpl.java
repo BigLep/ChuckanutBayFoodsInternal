@@ -1,15 +1,15 @@
 package com.chuckanutbay.webapp.common.server;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.joda.time.PeriodType;
 
 import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
@@ -18,6 +18,8 @@ import com.chuckanutbay.businessobjects.dao.ActivityDao;
 import com.chuckanutbay.businessobjects.dao.ActivityHibernateDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeHibernateDao;
+import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalActivityPercentageDao;
+import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalActivityPercentageHibernateDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalHibernateDao;
 import com.chuckanutbay.webapp.common.client.EmployeeClockInOutService;
@@ -58,11 +60,21 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 
 	@Override
 	public void clockOut(EmployeeDto employeeDto) {
-		EmployeeWorkIntervalDao dao = new EmployeeWorkIntervalHibernateDao();
-		EmployeeWorkInterval interval = dao.findOpenEmployeeWorkInterval(DtoUtils.fromEmployeeDto(employeeDto));
+		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
+		EmployeeWorkIntervalActivityPercentageDao percentageDao = new EmployeeWorkIntervalActivityPercentageHibernateDao();
+				
+		EmployeeWorkInterval interval = intervalDao.findOpenEmployeeWorkInterval(DtoUtils.fromEmployeeDto(employeeDto));
 		interval.setEndDateTime(new Date());
-		interval.setEmployeeWorkIntervalActivityPercentages(new HashSet<EmployeeWorkIntervalActivityPercentage>(DtoUtils.transform(employeeDto.getEmployeeWorkIntervalPercentages(), DtoUtils.fromEmployeeWorkIntervalActivityPercentageDto)));
-		dao.makePersistent(interval);
+		intervalDao.makePersistent(interval);
+		System.out.println("Persisted Interval");
+		
+		List<EmployeeWorkIntervalActivityPercentage> percentages = DtoUtils.transform(employeeDto.getEmployeeWorkIntervalPercentages(), DtoUtils.fromEmployeeWorkIntervalActivityPercentageDto);
+		for (EmployeeWorkIntervalActivityPercentage percentage : percentages) {
+			percentage.setEmployeeWorkInterval(interval);
+			System.out.println("Percentage: ActivityId(" + percentage.getActivity().getId() + ") IntervalId(" + percentage.getEmployeeWorkInterval().getId() + ") Percentage(" + percentage.getPercentage() + ") of " + percentages.size());
+			percentageDao.makePersistent(percentage);
+		}
+		System.out.println("Persisted Percentages");
 	}
 
 	@Override
@@ -119,25 +131,29 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 			
 			//If the interval isn't closed then use the current time to determine the number of minutes worked. Otherwise use the difference between start and end time.
 			if (interval.getEndDateTime() == null) {
-				Period period = new Period(new DateTime(interval.getStartDateTime()), new DateTime());
+				Period period = new Period(new DateTime(interval.getStartDateTime()), new DateTime(), PeriodType.minutes());
 				System.out.println("Period length in min: " + period.getMinutes());
+				System.out.println("Minutes worked before update: " + employeeDto.getMinsWorkedThisWeek());
 				employeeDto.setMinsWorkedThisWeek(employeeDto.getMinsWorkedThisWeek() + period.getMinutes());
+				System.out.println("Minutes worked after update: " + employeeDto.getMinsWorkedThisWeek());
 			} else {
-				Period period = new Period(new DateTime(interval.getStartDateTime()), new DateTime(interval.getEndDateTime()));
+				Period period = new Period(new DateTime(interval.getStartDateTime()), new DateTime(interval.getEndDateTime()), PeriodType.minutes());
 				System.out.println("Time now in mill: " + new DateMidnight().getMillis());
 				System.out.println("StartTime in mill: " + new DateTime(interval.getStartDateTime()).getMillis());
 				System.out.println("EndTime in mill: " + new DateTime(interval.getEndDateTime()).getMillis());
-				System.out.println("Period length in min: " + period.getMinutes());
+				System.out.println("Period length in sec: " + period.getSeconds());
+				System.out.println("Minutes worked before update: " + employeeDto.getMinsWorkedThisWeek());
 				employeeDto.setMinsWorkedThisWeek(employeeDto.getMinsWorkedThisWeek() + period.getMinutes());
+				System.out.println("Minutes worked after update: " + employeeDto.getMinsWorkedThisWeek());
 			}
 		}
 		
 		//Set the percentages to be what they were for the most recently closed interval
-		Set<EmployeeWorkIntervalActivityPercentageDto> percentageDtos;
+		List<EmployeeWorkIntervalActivityPercentageDto> percentageDtos;
 		if (mostRecentlyClosedInterval == null) {
-			percentageDtos = new HashSet<EmployeeWorkIntervalActivityPercentageDto>();
+			percentageDtos = new ArrayList<EmployeeWorkIntervalActivityPercentageDto>();
 		} else {
-			percentageDtos = new HashSet<EmployeeWorkIntervalActivityPercentageDto>(DtoUtils.transform(mostRecentlyClosedInterval.getEmployeeWorkIntervalActivityPercentages(), DtoUtils.toEmployeeWorkIntervalActivityPercentageDto));
+			percentageDtos = DtoUtils.transform(mostRecentlyClosedInterval.getEmployeeWorkIntervalActivityPercentages(), DtoUtils.toEmployeeWorkIntervalActivityPercentageDto);
 		}
 		employeeDto.setEmployeeWorkIntervalPercentages(percentageDtos);
 		return employeeDto;

@@ -1,7 +1,7 @@
 package com.chuckanutbay.webapp.common.shared;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.documentation.Terminology;
@@ -17,7 +17,7 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 	public String firstName;
 	public String lastName;
 	public int minsWorkedThisWeek;
-	public Set<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages;
+	public List<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages;
 	public BarcodeDto barcodeNumber;
 	
 	/**
@@ -39,7 +39,7 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 			String firstName,
 			String lastName,
 			int minsWorkedThisWeek,
-			Set<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages,
+			List<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages,
 			BarcodeDto barcode) {
 		this.id = id;
 		this.firstName = firstName;
@@ -84,12 +84,12 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 		this.minsWorkedThisWeek = minsWorkedThisWeek;
 	}
 
-	public Set<EmployeeWorkIntervalActivityPercentageDto> getEmployeeWorkIntervalPercentages() {
+	public List<EmployeeWorkIntervalActivityPercentageDto> getEmployeeWorkIntervalPercentages() {
 		return employeeWorkIntervalPercentages;
 	}
 
 	public void setEmployeeWorkIntervalPercentages(
-			Set<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages) {
+			List<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages) {
 		this.employeeWorkIntervalPercentages = employeeWorkIntervalPercentages;
 	}
 
