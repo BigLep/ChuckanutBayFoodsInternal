@@ -140,7 +140,8 @@
 			<arg value="com.chuckanutbay.webapp.lotmanagement.LotCodeManager"/>
 			<arg value="com.chuckanutbay.webapp.dashboard.Dashboard"/>
 			<arg value="com.chuckanutbay.webapp.timeclock.TimeClock"/>
-			<!-- add any other entry points here -->
+			<arg value="com.chuckanutbay.webapp.timeclock.TimeClockReport"/>
+			<!-- add any other modules here -->
 		</java>
 	</target>
 	
@@ -157,6 +158,8 @@
 				<exclude name="lotcodemanager/**"/>
 				<exclude name="timeclock/**"/>
 				<exclude name="dashboard/**"/>
+				<exclude name="timeclockreport/**"/>
+				<!-- add other files to exclude here -->
 			</fileset>
 		</copy>
 	</target>

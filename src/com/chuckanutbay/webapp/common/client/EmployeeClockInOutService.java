@@ -1,6 +1,5 @@
 package com.chuckanutbay.webapp.common.client;
 
-import java.util.Set;
 import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
@@ -8,7 +7,6 @@ import com.chuckanutbay.webapp.common.shared.BarcodeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 /**
  * Since this {@link RemoteService} is defined within a base module,
@@ -17,7 +15,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  * use {@link ServiceUtils#createEmployeeService()}.
  * This is the preferred/support method of access.
  */
-@RemoteServiceRelativePath("EmployeeService")
 public interface EmployeeClockInOutService extends RemoteService {
 	
 	EmployeeDto clockIn(BarcodeDto barcode);

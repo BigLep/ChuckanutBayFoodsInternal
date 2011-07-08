@@ -29,8 +29,9 @@ public class EmployeeWorkIntervalHibernateDao extends GenericHibernateDao<Employ
 	
 	@Override
 	public EmployeeWorkInterval findOpenEmployeeWorkInterval(Employee employee) {
+		System.out.println("Searching for intervals belonging to " + employee.getFirstName());
 		for (EmployeeWorkInterval interval : findByCriteriaDefaultSort(Restrictions.isNull("endDateTime"))) {
-			System.out.println("Open Employee Work Interval belonging to: " + interval.getEmployee().getFirstName());
+			System.out.println("Found Open Employee Work Interval belonging to: " + interval.getEmployee().getFirstName() + interval.getEmployee().getBarcodeNumber());
 			if (Objects.equal(interval.getEmployee().getBarcodeNumber(), employee.getBarcodeNumber())) {
 				return interval;
 			}

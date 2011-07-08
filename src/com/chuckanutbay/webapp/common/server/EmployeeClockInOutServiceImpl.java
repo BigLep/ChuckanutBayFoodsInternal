@@ -3,6 +3,7 @@ package com.chuckanutbay.webapp.common.server;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -32,8 +33,27 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 	
 	@Override
 	public EmployeeDto clockIn(BarcodeDto barcode) {
-		EmployeeDao dao = new EmployeeHibernateDao();
-		return completeToEmployeeDto(dao.findEmployeeWithBarcodeNumber(barcode.getBarcodeNumber()));
+		EmployeeDao employeeDao = new EmployeeHibernateDao();
+		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
+		
+		//Find employee from barcode
+		Employee employee = employeeDao.findEmployeeWithBarcodeNumber(barcode.getBarcodeNumber());
+		if (employee == null) {
+			System.out.println("No Employees had the barcode number");
+			return null;
+		}
+		System.out.println("The employee with the barcode number is: " + employee.getFirstName());
+		
+		//Start a new employee work interval
+		EmployeeWorkInterval newInterval = new EmployeeWorkInterval();
+		newInterval.setEmployee(employee);
+		newInterval.setStartDateTime(new Date());
+		intervalDao.makePersistent(newInterval);
+		
+		System.out.println("The new interval was persisted");
+		
+		//Return a complete EmployeeDto
+		return completeToEmployeeDto(employee);
 	}
 
 	@Override
@@ -72,6 +92,7 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 		return new TreeSet<ActivityDto>(DtoUtils.transform(dao.findAll(), DtoUtils.toActivityDto));
 	}
 	
+	@SuppressWarnings("unused")
 	private static EmployeeDto completeToEmployeeDto(Employee employee) {
 		EmployeeWorkIntervalDao dao = new EmployeeWorkIntervalHibernateDao();
 		
@@ -88,28 +109,37 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 		for (EmployeeWorkInterval interval : employeeWorkIntervals) {
 			
 			//Determine if the interval is the most recently closed
-			if (mostRecentlyClosedInterval == null) {
-				mostRecentlyClosedInterval = interval;
-			} else if (interval.getEndDateTime() == null && new DateTime(mostRecentlyClosedInterval.getStartDateTime()).getMillis() < new DateTime(interval.getStartDateTime()).getMillis()) {
-				mostRecentlyClosedInterval = interval;
-			}
-			//If the interval is the most recently closed interval then use those percentages 
-			if (interval.getId() == employeeWorkIntervals.get(1).getId()) {
-				
+			if (interval.getEndDateTime() != null) {
+				if (mostRecentlyClosedInterval == null) {
+					mostRecentlyClosedInterval = interval;
+				} else if (new DateTime(mostRecentlyClosedInterval.getStartDateTime()).getMillis() < new DateTime(interval.getStartDateTime()).getMillis()) {
+					mostRecentlyClosedInterval = interval;
+				}
 			}
 			
 			//If the interval isn't closed then use the current time to determine the number of minutes worked. Otherwise use the difference between start and end time.
 			if (interval.getEndDateTime() == null) {
 				Period period = new Period(new DateTime(interval.getStartDateTime()), new DateTime());
+				System.out.println("Period length in min: " + period.getMinutes());
 				employeeDto.setMinsWorkedThisWeek(employeeDto.getMinsWorkedThisWeek() + period.getMinutes());
 			} else {
 				Period period = new Period(new DateTime(interval.getStartDateTime()), new DateTime(interval.getEndDateTime()));
+				System.out.println("Time now in mill: " + new DateMidnight().getMillis());
+				System.out.println("StartTime in mill: " + new DateTime(interval.getStartDateTime()).getMillis());
+				System.out.println("EndTime in mill: " + new DateTime(interval.getEndDateTime()).getMillis());
+				System.out.println("Period length in min: " + period.getMinutes());
 				employeeDto.setMinsWorkedThisWeek(employeeDto.getMinsWorkedThisWeek() + period.getMinutes());
 			}
 		}
 		
 		//Set the percentages to be what they were for the most recently closed interval
-		employeeDto.setEmployeeWorkIntervalPercentages(new HashSet<EmployeeWorkIntervalActivityPercentageDto>(DtoUtils.transform(mostRecentlyClosedInterval.getEmployeeWorkIntervalActivityPercentages(), DtoUtils.toEmployeeWorkIntervalActivityPercentageDto)));
+		Set<EmployeeWorkIntervalActivityPercentageDto> percentageDtos;
+		if (mostRecentlyClosedInterval == null) {
+			percentageDtos = new HashSet<EmployeeWorkIntervalActivityPercentageDto>();
+		} else {
+			percentageDtos = new HashSet<EmployeeWorkIntervalActivityPercentageDto>(DtoUtils.transform(mostRecentlyClosedInterval.getEmployeeWorkIntervalActivityPercentages(), DtoUtils.toEmployeeWorkIntervalActivityPercentageDto));
+		}
+		employeeDto.setEmployeeWorkIntervalPercentages(percentageDtos);
 		return employeeDto;
 	}
 }

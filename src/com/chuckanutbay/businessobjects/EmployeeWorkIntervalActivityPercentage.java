@@ -23,6 +23,16 @@ public class EmployeeWorkIntervalActivityPercentage {
 	private Activity activity;
 	private Integer percentage;
 	
+	public EmployeeWorkIntervalActivityPercentage() {
+		
+	}
+	
+	public EmployeeWorkIntervalActivityPercentage(Integer id, Activity activity, Integer percentage) {
+		this.id = id;
+		this.activity = activity;
+		this.percentage = percentage;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
