@@ -1,6 +1,6 @@
 package com.chuckanutbay.webapp.common.client;
 
-import java.util.Set;
+import java.util.Date;
 import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
@@ -19,5 +19,9 @@ public interface EmployeeClockInOutServiceAsync {
 	void getActivities(AsyncCallback<SortedSet<ActivityDto>> callback);
 
 	void getClockedInEmployees(AsyncCallback<SortedSet<EmployeeDto>> callback);
+
+	void getEndOfLastPayPeriodFromServer(AsyncCallback<Date> callback);
+
+	void getStartOfLastPayPeriodFromServer(AsyncCallback<Date> callback);
 
 }

@@ -1,5 +1,6 @@
 package com.chuckanutbay.webapp.common.client;
 
+import java.util.Date;
 import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
@@ -26,5 +27,15 @@ public interface EmployeeClockInOutService extends RemoteService {
 	void cancelClockIn(BarcodeDto barcode);
 	
 	SortedSet<ActivityDto> getActivities();
+	
+	/**
+	 * Finds the day that the most recently completed pay period started on.
+	 */
+	Date getStartOfLastPayPeriodFromServer();
+	
+	/**
+	 * Finds the day that the most recently completed pay period ended on.
+	 */
+	Date getEndOfLastPayPeriodFromServer();
 	
 }

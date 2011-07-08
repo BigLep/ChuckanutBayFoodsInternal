@@ -40,6 +40,26 @@ public class EmployeeClockInOutServiceImplTest {
 	public final DatabaseResource databaseResource = new DatabaseResource();
 	
 	/**
+	 * @see EmployeeClockInOutServiceImpl#getStartOfLastPayPeriod()
+	 */
+	@Test
+	public void testGetStartOfLastPayPeriod() {
+		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
+		DateTime dt = new DateTime(server.getStartOfLastPayPeriodFromServer());
+		assertEquals(dt.getMonthOfYear(), 6);
+		assertEquals(dt.getDayOfMonth(), 16);
+	}
+	/**
+	 * @see EmployeeClockInOutServiceImpl#getEndOfLastPayPeriod()
+	 */
+	@Test
+	public void testGetEndOfLastPayPeriod() {
+		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
+		DateTime dt = new DateTime(server.getEndOfLastPayPeriodFromServer());
+		assertEquals(dt.getMonthOfYear(), 6);
+		assertEquals(dt.getDayOfMonth(), 30);
+	}
+	/**
 	 * @see EmployeeClockInOutServiceImpl#getActivities()
 	 */
 	@Test

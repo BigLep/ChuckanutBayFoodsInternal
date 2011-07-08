@@ -142,4 +142,30 @@ public class EmployeeClockInOutServiceImpl extends RemoteServiceServlet implemen
 		employeeDto.setEmployeeWorkIntervalPercentages(percentageDtos);
 		return employeeDto;
 	}
+
+	@Override
+	public Date getStartOfLastPayPeriodFromServer() {
+		DateTime startOfPayPeriod = new DateTime();
+		DateTime today = new DateTime();
+		if(today.getDayOfMonth() > 15) {
+			startOfPayPeriod = startOfPayPeriod.withDayOfMonth(1);
+		} else {
+			startOfPayPeriod = startOfPayPeriod.minusMonths(1);
+			startOfPayPeriod = startOfPayPeriod.withDayOfMonth(16);
+		}
+		return startOfPayPeriod.toDate();
+	}
+
+	@Override
+	public Date getEndOfLastPayPeriodFromServer() {
+		DateTime endOfPayPeriod = new DateTime();
+		DateTime today = new DateTime();
+		if(today.getDayOfMonth() > 15) {
+			endOfPayPeriod = endOfPayPeriod.withDayOfMonth(15);
+		} else {
+			endOfPayPeriod = endOfPayPeriod.minusMonths(1);
+			endOfPayPeriod = endOfPayPeriod.dayOfMonth().withMaximumValue();
+		}
+		return endOfPayPeriod.toDate();
+	}
 }

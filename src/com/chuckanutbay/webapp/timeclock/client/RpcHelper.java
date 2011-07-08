@@ -1,5 +1,6 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
+import java.util.Date;
 import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.client.EmployeeClockInOutServiceAsync;
@@ -57,6 +58,24 @@ public class RpcHelper {
 			@Override
 			public void onSuccess(SortedSet<ActivityDto> activities) {
 				caller.onSuccessfulGetActivities(activities);
+			}
+		};
+	}
+	
+	public static AsyncCallback<Date> createGetStartOfLastPayPeriodCallback(final TimeClockReportHandler caller) {
+		return new DefaultAsyncCallback<Date>() {
+			@Override
+			public void onSuccess(Date date) {
+				caller.onSuccessfulGetStartOfLastPayPeriod(date);
+			}
+		};
+	}
+	
+	public static AsyncCallback<Date> createGetEndOfLastPayPeriodCallback(final TimeClockReportHandler caller) {
+		return new DefaultAsyncCallback<Date>() {
+			@Override
+			public void onSuccess(Date date) {
+				caller.onSuccessfulGetEndOfLastPayPeriod(date);
 			}
 		};
 	}
