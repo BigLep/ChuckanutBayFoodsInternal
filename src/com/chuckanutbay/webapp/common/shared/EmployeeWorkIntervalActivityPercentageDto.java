@@ -10,7 +10,6 @@ import com.chuckanutbay.documentation.Terminology;
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
 public class EmployeeWorkIntervalActivityPercentageDto implements Serializable {
-	public Integer id;
 	public ActivityDto activity;
 	public Integer percentage;
 	
@@ -26,7 +25,6 @@ public class EmployeeWorkIntervalActivityPercentageDto implements Serializable {
 	 * @param percentage the percentage of the interval worked on the activity
 	 */
 	public EmployeeWorkIntervalActivityPercentageDto(Integer id, ActivityDto activity, Integer percentage) {
-		this.id = id;
 		this.activity = activity;
 		this.percentage = percentage;
 	}
@@ -34,13 +32,6 @@ public class EmployeeWorkIntervalActivityPercentageDto implements Serializable {
 	/*####################################
 	 * JavaBean getters/setters 
 	 *####################################*/
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public ActivityDto getActivity() {
 		return activity;

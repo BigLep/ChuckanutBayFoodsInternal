@@ -24,7 +24,7 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
-		<url-pattern>/common/EmployeeClockInOutService</url-pattern>
+		<url-pattern>/common/TimeClockService</url-pattern>
 	</filter-mapping>
 	
 	<!-- Servlets -->
@@ -50,13 +50,13 @@
 	</servlet-mapping>
 	
 	<servlet>
-	<servlet-name>EmployeeClockInOutService</servlet-name>
-		<servlet-class>com.chuckanutbay.webapp.common.server.EmployeeClockInOutServiceImpl</servlet-class>
+	<servlet-name>TimeClockService</servlet-name>
+		<servlet-class>com.chuckanutbay.webapp.common.server.TimeClockServiceImpl</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>EmployeeClockInOutService</servlet-name>
-		<url-pattern>/common/EmployeeClockInOutService</url-pattern>
+		<servlet-name>TimeClockService</servlet-name>
+		<url-pattern>/common/TimeClockService</url-pattern>
 	</servlet-mapping>
 	
 	<!-- Default page to serve -->

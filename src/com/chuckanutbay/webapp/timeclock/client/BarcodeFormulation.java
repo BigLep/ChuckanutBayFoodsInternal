@@ -1,6 +1,6 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
-import com.chuckanutbay.webapp.common.shared.BarcodeDto;
+import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.google.gwt.core.client.GWT;
 
 /**
@@ -38,10 +38,10 @@ public class BarcodeFormulation {
 	 * Returns the barcode that has been generated as an BarcodeDto.
 	 * @return The barcode as an BarcodeDto.
 	 */
-	public BarcodeDto getBarcode() {
+	public Barcode getBarcode() {
 		String formulatedBarcodeString = new String(barcodeNumberBeingFormulated);
 		GWT.log("Barcode is: " + formulatedBarcodeString.length() + " characters long");
 		GWT.log(formulatedBarcodeString);
-		return new BarcodeDto(new Integer(formulatedBarcodeString));
+		return new Barcode(new Integer(formulatedBarcodeString));
 	}
 }

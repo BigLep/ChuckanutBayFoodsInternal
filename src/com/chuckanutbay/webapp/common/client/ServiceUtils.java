@@ -23,9 +23,9 @@ public class ServiceUtils {
 		((ServiceDefTarget)service).setServiceEntryPoint("/common/InventoryLotService");
 		return service;
 	}
-	public static EmployeeClockInOutServiceAsync createEmployeeClockInOutService() {
-		EmployeeClockInOutServiceAsync service = GWT.create(EmployeeClockInOutService.class);
-		((ServiceDefTarget)service).setServiceEntryPoint("/common/EmployeeClockInOutService");
+	public static TimeClockServiceAsync createTimeClockService() {
+		TimeClockServiceAsync service = GWT.create(TimeClockService.class);
+		((ServiceDefTarget)service).setServiceEntryPoint("/common/TimeClockService");
 		return service;
 	}
 	

@@ -3,6 +3,7 @@ package com.chuckanutbay.businessobjects.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.chuckanutbay.businessobjects.Employee;
@@ -24,5 +25,13 @@ public class EmployeeHibernateDao extends GenericHibernateDao<Employee,Integer> 
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public List<Employee> findEmployeesByShift(Integer shift) {
+		Criteria crit = getCriteria();
+		crit.add(Restrictions.eq("shift", shift));
+		crit.addOrder(Order.asc("lastName"));
+		return crit.list();
 	}
 }

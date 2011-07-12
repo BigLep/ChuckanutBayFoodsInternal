@@ -27,19 +27,19 @@ import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalActivityPercenta
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalHibernateDao;
 import com.chuckanutbay.util.testing.DatabaseResource;
-import com.chuckanutbay.webapp.common.shared.BarcodeDto;
+import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
 
 /**
  * @see EmployeeWorkIntervalHibernateDao
  */
-public class EmployeeClockInOutServiceImplTest {
+public class TimeClockServiceImplTest {
 	
 	@Rule 
 	public final DatabaseResource databaseResource = new DatabaseResource();
 	/**
-	 *  @see EmployeeClockInOutServiceImpl#clockOut(EmployeeDto employeeDto)
+	 *  @see TimeClockServiceImpl#clockOut(EmployeeDto employeeDto)
 	 */
 	@Test
 	public void testClockOut() {
@@ -47,7 +47,7 @@ public class EmployeeClockInOutServiceImplTest {
 		ActivityDao activityDao = new ActivityHibernateDao();
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
 		EmployeeWorkIntervalActivityPercentageDao percentageDao = new EmployeeWorkIntervalActivityPercentageHibernateDao();
-		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
+		TimeClockServiceImpl server = new TimeClockServiceImpl();
 		
 		//1 Open and 1 Closed interval for two employees
 		Employee employee1 = new Employee();
@@ -123,27 +123,27 @@ public class EmployeeClockInOutServiceImplTest {
 		assertEquals(4, intervalDao.findAll().size());
 	}
 	/**
-	 * @see EmployeeClockInOutServiceImpl#getStartOfLastPayPeriod()
+	 * @see TimeClockServiceImpl#getStartOfLastPayPeriod()
 	 */
 	@Test
 	public void testGetStartOfLastPayPeriod() {
-		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
+		TimeClockServiceImpl server = new TimeClockServiceImpl();
 		DateTime dt = new DateTime(server.getStartOfLastPayPeriodFromServer());
 		assertEquals(dt.getMonthOfYear(), 6);
 		assertEquals(dt.getDayOfMonth(), 16);
 	}
 	/**
-	 * @see EmployeeClockInOutServiceImpl#getEndOfLastPayPeriod()
+	 * @see TimeClockServiceImpl#getEndOfLastPayPeriod()
 	 */
 	@Test
 	public void testGetEndOfLastPayPeriod() {
-		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
+		TimeClockServiceImpl server = new TimeClockServiceImpl();
 		DateTime dt = new DateTime(server.getEndOfLastPayPeriodFromServer());
 		assertEquals(dt.getMonthOfYear(), 6);
 		assertEquals(dt.getDayOfMonth(), 30);
 	}
 	/**
-	 * @see EmployeeClockInOutServiceImpl#getActivities()
+	 * @see TimeClockServiceImpl#getActivities()
 	 */
 	@Test
 	public void testGetActivites() {
@@ -170,13 +170,13 @@ public class EmployeeClockInOutServiceImplTest {
 	}
 	
 	/**
-	 * @see EmployeeClockInOutServiceImpl#cancelClockIn(BarcodeDto barcode)
+	 * @see TimeClockServiceImpl#cancelClockIn(Barcode barcode)
 	 */
 	@Test
 	public void testCancelClockIn() {
 		EmployeeDao employeeDao = new EmployeeHibernateDao();
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
-		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
+		TimeClockServiceImpl server = new TimeClockServiceImpl();
 		
 		//1 Open and 1 Closed interval for two employees
 		Employee employee1 = new Employee();
@@ -215,7 +215,7 @@ public class EmployeeClockInOutServiceImplTest {
 		assertEquals(newArrayList(employee2WorkInterval2, employee1WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
 		
 		//Cancel 1 Open interval
-		server.cancelClockIn(new BarcodeDto(123456789));
+		server.cancelClockIn(new Barcode(123456789));
 		System.out.println("successful clock in cancel");
 		assertEquals(newArrayList(employee2WorkInterval1), intervalDao.findOpenEmployeeWorkIntervals());
 		assertEquals(3, intervalDao.findAll().size());
@@ -224,7 +224,7 @@ public class EmployeeClockInOutServiceImplTest {
 	
 	/**
 	 * Test should not be run on a Monday
-	 * @see EmployeeClockInOutServiceImpl#clockIn(BarcodeDto barcode)
+	 * @see TimeClockServiceImpl#clockIn(Barcode barcode)
 	 */
 	@Test
 	public void testClockIn() {
@@ -232,10 +232,10 @@ public class EmployeeClockInOutServiceImplTest {
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
 		ActivityDao activityDao = new ActivityHibernateDao();
 		EmployeeWorkIntervalActivityPercentageDao percentageDao = new EmployeeWorkIntervalActivityPercentageHibernateDao();
-		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
+		TimeClockServiceImpl server = new TimeClockServiceImpl();
 		
 		// Empty database
-		assertEquals(null, server.clockIn(new BarcodeDto(234567890)));
+		assertEquals(null, server.clockIn(new Barcode(234567890)));
 		assertEquals(newArrayList(), intervalDao.findOpenEmployeeWorkIntervals());
 		
 		// A 1 closed interval earlier and 1 since Sunday for each employee
@@ -341,14 +341,14 @@ public class EmployeeClockInOutServiceImplTest {
 			System.out.println("There is an interval on the database with " + interval.getEmployeeWorkIntervalActivityPercentages().size() + " percentages");
 		}
 		
-		EmployeeDto clockedInEmployee = server.clockIn(new BarcodeDto(234567890));
+		EmployeeDto clockedInEmployee = server.clockIn(new Barcode(234567890));
 		assertEquals(3, clockedInEmployee.getMinsWorkedThisWeek());
 		assertEquals("Bill", clockedInEmployee.getFirstName());
 		assertEquals(1, intervalDao.findOpenEmployeeWorkIntervals().size());
 	}
 	
 	/**
-	 * @see EmployeeClockInOutServiceImpl#getClockedInEmployees()
+	 * @see TimeClockServiceImpl#getClockedInEmployees()
 	 */
 	
 	@Test
@@ -357,7 +357,7 @@ public class EmployeeClockInOutServiceImplTest {
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
 		ActivityDao activityDao = new ActivityHibernateDao();
 		EmployeeWorkIntervalActivityPercentageDao percentageDao = new EmployeeWorkIntervalActivityPercentageHibernateDao();
-		EmployeeClockInOutServiceImpl server = new EmployeeClockInOutServiceImpl();
+		TimeClockServiceImpl server = new TimeClockServiceImpl();
 		
 		// Empty database
 		assertEquals(newArrayList(), new ArrayList<EmployeeDto>(server.getClockedInEmployees()));

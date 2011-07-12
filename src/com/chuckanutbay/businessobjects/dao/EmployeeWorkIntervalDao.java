@@ -1,7 +1,8 @@
 package com.chuckanutbay.businessobjects.dao;
 
-import java.util.Date;
 import java.util.List;
+
+import org.joda.time.DateTime;
 
 import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
@@ -16,5 +17,5 @@ public interface EmployeeWorkIntervalDao extends GenericDao<EmployeeWorkInterval
 
 	List<EmployeeWorkInterval> findOpenEmployeeWorkIntervals();
 	
-	List<EmployeeWorkInterval> findEmployeeWorkIntervalsSinceDate(Date date, Employee employee);
+	List<EmployeeWorkInterval> findEmployeeWorkIntervalsBetweenDates(Employee employee, DateTime start, DateTime end);
 }

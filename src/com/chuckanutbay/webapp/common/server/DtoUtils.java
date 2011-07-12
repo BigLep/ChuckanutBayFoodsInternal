@@ -5,14 +5,16 @@ import java.util.Collection;
 
 import com.chuckanutbay.businessobjects.Activity;
 import com.chuckanutbay.businessobjects.Employee;
+import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
 import com.chuckanutbay.businessobjects.EmployeeWorkIntervalActivityPercentage;
 import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.documentation.Technology;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
-import com.chuckanutbay.webapp.common.shared.BarcodeDto;
+import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
+import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalDto;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.common.base.Function;
@@ -39,7 +41,7 @@ public class DtoUtils {
 		output.setId(input.getId());
 		output.setFirstName(input.getFirstName());
 		output.setLastName(input.getLastName());
-		output.setBarcodeNumber(new BarcodeDto(input.getBarcodeNumber()));
+		output.setBarcodeNumber(new Barcode(input.getBarcodeNumber()));
 		return output;
 	}
 	
@@ -66,9 +68,22 @@ public class DtoUtils {
 		return output;
 	}
 	
+	public static EmployeeWorkInterval fromEmployeeWorkIntervalDto(EmployeeWorkIntervalDto input) {
+		EmployeeWorkInterval output = new EmployeeWorkInterval();
+		output.setStartDateTime(input.getStartDateTime());
+		output.setEndDateTime(input.getEndDateTime());
+		return output;
+	}
+	
+	public static EmployeeWorkIntervalDto toEmployeeWorkIntervalDto(EmployeeWorkInterval input) {
+		EmployeeWorkIntervalDto output = new EmployeeWorkIntervalDto();
+		output.setStartDateTime(input.getStartDateTime());
+		output.setEndDateTime(input.getEndDateTime());
+		return output;
+	}
+	
 	public static EmployeeWorkIntervalActivityPercentageDto toEmployeeWorkIntervalActivityPercentageDto(EmployeeWorkIntervalActivityPercentage input) {
 		EmployeeWorkIntervalActivityPercentageDto output = new EmployeeWorkIntervalActivityPercentageDto();
-		output.setId(input.getId());
 		output.setActivity(toActivityDto(input.getActivity()));
 		output.setPercentage(input.getPercentage());
 		return output;
@@ -76,7 +91,6 @@ public class DtoUtils {
 	
 	public static EmployeeWorkIntervalActivityPercentage fromEmployeeWorkIntervalActivityPercentageDto(EmployeeWorkIntervalActivityPercentageDto input) {
 		EmployeeWorkIntervalActivityPercentage output = new EmployeeWorkIntervalActivityPercentage();
-		output.setId(input.getId());
 		output.setActivity(fromActivityDto(input.getActivity()));
 		output.setPercentage(input.getPercentage());
 		return output;

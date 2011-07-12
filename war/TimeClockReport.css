@@ -11,4 +11,65 @@
 .dateBoxPanel {
 	border: 1px solid darkgrey;
 }
-
+.timeClockReportPanelTitleLabel {
+	font-size: 18px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+}
+.timeClockReportPanelNameLabel {
+	font-size: 16px;
+	font-family: Tahoma, Geneva;
+}
+.timeClockReportPanelDateLabel {
+	font-size: 12px;
+	font-family: Tahoma, Geneva;
+}
+.timeClockReportPanelPayPeriodLabel {
+	font-size: 12px;
+	font-family: Tahoma, Geneva;
+}
+.timeClockReportPanel {
+	border: 1px solid lightgrey;
+	padding: 2px;
+	page-break-after:always;
+}
+.timeClockReportPanelHeader {
+	border-bottom: 3px solid black;
+}
+.timeClockReportFlexTable {
+	border: 1px solid #BBBBBB;
+	background: #CCCCCC;
+}
+.timeClockReportFlexTableHeaderRow {
+	background: #EEEEEE;
+	font-size: 12px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+}
+.timeClockReportFlexTableFooterRow {
+	background-color: #EEEEEE;
+	font-size: 12px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+}
+.timeClockReportFlexTableDataRow {
+	background: #FFFFFF;
+	font-size: 12px;
+	font-family: Tahoma, Geneva;
+	text-align: right;
+}
+.pageBreak {
+	page-break-before: always;
+}
+.timeClockReportFlexTablePayPeriodTotals {
+	background-color: #EEEEEE;
+	font-size: 16px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+}
+.signaturesFlexTable {
+	font-size: 10px;
+	font-family: Tahoma, Geneva;
+	text-align: center;
+}

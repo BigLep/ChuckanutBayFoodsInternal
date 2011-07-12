@@ -1,20 +1,24 @@
 package com.chuckanutbay.webapp.timeclock.client;
-
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetEndOfLastPayPeriodCallback;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetPayPeriodReportDataCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetStartOfLastPayPeriodCallback;
-import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.employeeClockInOutService;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.timeClockService;
+import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.webapp.common.client.IconUtil;
-import com.chuckanutbay.webapp.common.shared.EmployeePayPeriodReportDto;
+import com.chuckanutbay.webapp.common.shared.DayReportData;
+import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalDto;
+import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
+import com.chuckanutbay.webapp.common.shared.WeekReportData;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -42,7 +46,7 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 	private final ListBox shiftListBox = new ListBox();
 	private final Button generateButton = new Button("Generate");
 	
-	private final List<EmployeePayPeriodReportDto> employeePayPeriodReportDtos = new ArrayList<EmployeePayPeriodReportDto>();
+	private List<PayPeriodReportData> payPeriodReportData;
 	
 	//Date Formats
 	//shortDayOfMonth - Mon, Sep 13
@@ -51,19 +55,7 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 	@Override
 	public void onModuleLoad() {
 		
-		
-		EmployeePayPeriodReportDto employeePayPeriodReportDto = new EmployeePayPeriodReportDto();
-		employeePayPeriodReportDto.setDate(new Date());
-		employeePayPeriodReportDto.setPayPeriodStart(new Date());
-		employeePayPeriodReportDto.setPayPeriodEnd(new Date());
-		employeePayPeriodReportDto.setName("Steve Jobs");
-		employeePayPeriodReportDtos.add(employeePayPeriodReportDto);
-		
-		
-		
-		
-		
-		
+		//generateSampleData();
 		
 		//Setup logo
 		logo.setWidth("300px");
@@ -112,10 +104,21 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				rootPanel.remove(mainPanel);
-				//generateReports();
+				mainPanel.clear();
+				int shift;
+				if (startDateBox.getValue() == null) {
+					Window.alert("Please enter a start date.");
+				} else if (endDateBox.getValue() == null) {
+					Window.alert("Please enter an end date.");
+				} else {
+					if (shiftListBox.getItemText(shiftListBox.getSelectedIndex()).equals("All")){
+						shift = 0;
+					} else {
+						shift = Integer.parseInt(shiftListBox.getItemText(shiftListBox.getSelectedIndex()));
+					}
+					getPayPeriodReportData(startDateBox.getValue(), endDateBox.getValue(), shift);
+				}
 			}
-			
 		});
 		gernateButtonPanel.setWidth("550px");
 		gernateButtonPanel.setSpacing(5);
@@ -136,16 +139,60 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 		rootPanel.add(mainPanel);
 	}
 
+	@SuppressWarnings("unused")
+	private void generateSampleData() {
+		EmployeeWorkIntervalDto interval1 = new EmployeeWorkIntervalDto();
+		interval1.setStartDateTime(new Date());
+		interval1.setEndDateTime(new Date());
+		interval1.setHoursWorked(4.42);
+		
+		EmployeeWorkIntervalDto interval2 = new EmployeeWorkIntervalDto();
+		interval2.setStartDateTime(new Date());
+		interval2.setEndDateTime(new Date());
+		interval2.setHoursWorked(4.40);
+		
+		List<EmployeeWorkIntervalDto> intervals1 = newArrayList(interval1, interval2);
+		List<EmployeeWorkIntervalDto> intervals2 = newArrayList(interval2, interval1);
+		
+		DayReportData dayReportData1 = new DayReportData();
+		dayReportData1.setTotalHoursWorked(8.42);
+		dayReportData1.setEmployeeWorkIntervals(intervals1);
+		
+		DayReportData dayReportData2 = new DayReportData();
+		dayReportData2.setTotalHoursWorked(7.42);
+		dayReportData2.setEmployeeWorkIntervals(intervals2);
+		
+		List<DayReportData> DayIntervalsDtos = newArrayList(dayReportData1, dayReportData2);
+		
+		WeekReportData weekReportData1 = new WeekReportData();
+		weekReportData1.setHoursNormalPay(22.3643);
+		weekReportData1.setHoursOvertime(0);
+		weekReportData1.setDayReportData(DayIntervalsDtos);
+		
+		WeekReportData weekReportData2 = new WeekReportData();
+		weekReportData2.setHoursNormalPay(40.00);
+		weekReportData2.setHoursOvertime(6.32);
+		weekReportData2.setDayReportData(DayIntervalsDtos);
+		
+		PayPeriodReportData payPeriodReportData1 = new PayPeriodReportData();
+		payPeriodReportData1.setDate(new Date());
+		payPeriodReportData1.setPayPeriodStart(new Date());
+		payPeriodReportData1.setPayPeriodEnd(new Date());
+		payPeriodReportData1.setName("Steve Jobs");
+		payPeriodReportData1.setWeekReportData(newArrayList(weekReportData1, weekReportData2));
+		payPeriodReportData = newArrayList(payPeriodReportData1);
+	}
+
 	@Override
 	public void getStartOfLastPayPeriodFromServer() {
 		GWT.log("Requesting Start of Pay Period");
-		employeeClockInOutService.getStartOfLastPayPeriodFromServer(createGetStartOfLastPayPeriodCallback(this));
+		timeClockService.getStartOfLastPayPeriodFromServer(createGetStartOfLastPayPeriodCallback(this));
 	}
 
 	@Override
 	public void getEndOfLastPayPeriodFromServer() {
 		GWT.log("Requesting End of Pay Period");
-		employeeClockInOutService.getEndOfLastPayPeriodFromServer(createGetEndOfLastPayPeriodCallback(this));
+		timeClockService.getEndOfLastPayPeriodFromServer(createGetEndOfLastPayPeriodCallback(this));
 	}
 
 	@Override
@@ -159,11 +206,24 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 		GWT.log("Got End of Pay Period");
 		endDateBox.setValue(date);
 	}
-	/**
+	
+	@Override
+	public void getPayPeriodReportData(Date start, Date end, Integer shift) {
+		timeClockService.getPayPeriodReportDataFromDatabase(start, end, shift, createGetPayPeriodReportDataCallback(this)); 
+		
+	}
+
+	@Override
+	public void onSuccessfulGetPayPeriodReportData(
+			List<PayPeriodReportData> reportData) {
+		payPeriodReportData = reportData;
+		generateReports();
+	}
+
 	private void generateReports() {
-		for (EmployeePayPeriodReportDto employeeReport : employeePayPeriodReportDtos) {
+		for (PayPeriodReportData employeeReport : payPeriodReportData) {
 			TimeClockReportPanel panel = new TimeClockReportPanel(employeeReport);
+			mainPanel.add(panel);
 		}
 	}
-	*/
 }

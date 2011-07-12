@@ -13,17 +13,7 @@
     font-weight: bold;
 }
 
-.lotCodeManagerButton {
-	width:200px;
-	height:40px;
-	font-size:16px;
-	font-weight:bold;
-	font-family: Tahoma, Geneva;
-	color:white;
-	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#c40000), color-stop(45%,#ff0000), color-stop(56%,#ff0000), color-stop(100%,#c40000)); /* Chrome,Safari4+ */
-}
-
-.timeClockButton {
+.dashboardButton {
 	width:200px;
 	height:40px;
 	font-size:16px;

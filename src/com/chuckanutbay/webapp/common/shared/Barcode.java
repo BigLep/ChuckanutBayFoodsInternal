@@ -9,19 +9,19 @@ import com.google.common.base.Objects;
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
 
-public class BarcodeDto implements Serializable {
+public class Barcode implements Serializable {
 	public Integer barcodeNumber;
 	
 	/**
 	 * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
 	 */
-	public BarcodeDto(){}
+	public Barcode(){}
 	
 	/**
-	 * Basic constructor for {@link BarcodeDto} objects
+	 * Basic constructor for {@link Barcode} objects
 	 * @param barcodeNumber The barcode number
 	 */
-	public BarcodeDto(Integer barcodeNumber) {
+	public Barcode(Integer barcodeNumber) {
 		this.barcodeNumber = barcodeNumber;
 	}
 	
@@ -43,8 +43,8 @@ public class BarcodeDto implements Serializable {
 
 	@Override
 	public boolean equals(Object object){
-		if (object instanceof BarcodeDto) {
-			BarcodeDto that = (BarcodeDto)object;
+		if (object instanceof Barcode) {
+			Barcode that = (Barcode)object;
 			return Objects.equal(this.barcodeNumber, that.barcodeNumber);
 		}
 		return false;

@@ -1,5 +1,7 @@
 package com.chuckanutbay.businessobjects.dao;
 
+import java.util.List;
+
 import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.documentation.Terminology;
 
@@ -9,4 +11,10 @@ import com.chuckanutbay.documentation.Terminology;
 public interface EmployeeDao extends GenericDao<Employee, Integer> {
 	
 	Employee findEmployeeWithBarcodeNumber(Integer barcodeNumber);
+	
+	/**
+	 * @param shift 
+	 * @return A list of {@link Employee}s with matching shift number.
+	 */
+	List<Employee> findEmployeesByShift(Integer shift);
 }

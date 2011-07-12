@@ -1,5 +1,9 @@
 package com.chuckanutbay.webapp.dashboard.client;
 
+import static com.google.common.collect.Lists.newArrayList;
+
+import java.util.List;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -19,24 +23,28 @@ public class Dashboard implements EntryPoint, ClickHandler {
 	private final Label title = new Label("Chuckanut Bay Internal Web Apps");
 	private final Button lotCodeManagerButton = new Button("Lot Code Manager");
 	private final Button timeClockButton = new Button("Time Clock");
+	private final Button timeClockReportButton = new Button("Time Clock Report");
 	private RootPanel rootPanel;
+	private List<Button> buttons;
 
 
 	@Override
 	public void onModuleLoad() {
+		
 		title.setStyleName("titleLabel");
-		lotCodeManagerButton.setStyleName("lotCodeManagerButton");
-		lotCodeManagerButton.addClickHandler(this);
-		timeClockButton.setStyleName("timeClockButton");
-		timeClockButton.addClickHandler(this);
 		mainPanel.setSpacing(10);
 		mainPanel.add(title);
-		mainPanel.add(lotCodeManagerButton);
-		mainPanel.add(timeClockButton);
 		mainPanel.setStyleName("mainPanel");
 		mainPanel.setCellHorizontalAlignment(title, HasHorizontalAlignment.ALIGN_CENTER);
-		mainPanel.setCellHorizontalAlignment(lotCodeManagerButton, HasHorizontalAlignment.ALIGN_CENTER);
-		mainPanel.setCellHorizontalAlignment(timeClockButton, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		buttons = newArrayList(lotCodeManagerButton, timeClockButton, timeClockReportButton);
+		for (Button button : buttons) {
+			button.setStyleName("dashboardButton");
+			button.addClickHandler(this);
+			mainPanel.add(button);
+			mainPanel.setCellHorizontalAlignment(button, HasHorizontalAlignment.ALIGN_CENTER);
+		}
+		
 		//Add mainPanel to rootPanel
 		rootPanel = RootPanel.get("Dashboard");
 		rootPanel.add(mainPanel);
@@ -52,7 +60,8 @@ public class Dashboard implements EntryPoint, ClickHandler {
 		if(sender == timeClockButton) {
 			Window.open("TimeClock.html", "TimeClock", "");
 		}
-
+		if(sender == timeClockReportButton) {
+			Window.open("TimeClockReport.html", "TimeClockReport", "");
+		}
 	}
-
 }

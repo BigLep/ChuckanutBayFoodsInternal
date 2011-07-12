@@ -7,7 +7,7 @@ public class EmployeeWorkIntervalDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public Date startDateTime;
 	public Date endDateTime;
-	public Integer minutesWorked;
+	public double hoursWorked;
 	
 	public EmployeeWorkIntervalDto(){}
 
@@ -27,13 +27,15 @@ public class EmployeeWorkIntervalDto implements Serializable {
 		this.endDateTime = endDateTime;
 	}
 
-	public Integer getMinutesWorked() {
-		return minutesWorked;
+	public double getHoursWorked() {
+		return hoursWorked;
 	}
 
-	public void setMinutesWorked(Integer minutesWorked) {
-		this.minutesWorked = minutesWorked;
+	public void setHoursWorked(double hoursWorked) {
+		this.hoursWorked = hoursWorked;
 	}
 	
-	
+	public void addHours(double hours) {
+		hoursWorked += hours;
+	}
 }

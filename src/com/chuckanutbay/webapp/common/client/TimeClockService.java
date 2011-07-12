@@ -1,11 +1,13 @@
 package com.chuckanutbay.webapp.common.client;
 
 import java.util.Date;
+import java.util.List;
 import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
-import com.chuckanutbay.webapp.common.shared.BarcodeDto;
+import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
+import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 
@@ -16,15 +18,15 @@ import com.google.gwt.user.client.rpc.RemoteService;
  * use {@link ServiceUtils#createEmployeeService()}.
  * This is the preferred/support method of access.
  */
-public interface EmployeeClockInOutService extends RemoteService {
+public interface TimeClockService extends RemoteService {
 	
-	EmployeeDto clockIn(BarcodeDto barcode);
+	EmployeeDto clockIn(Barcode barcode);
 	
 	void clockOut(EmployeeDto employeeDto);
 	
 	SortedSet<EmployeeDto> getClockedInEmployees();
 	
-	void cancelClockIn(BarcodeDto barcode);
+	void cancelClockIn(Barcode barcode);
 	
 	SortedSet<ActivityDto> getActivities();
 	
@@ -38,4 +40,11 @@ public interface EmployeeClockInOutService extends RemoteService {
 	 */
 	Date getEndOfLastPayPeriodFromServer();
 	
+	/**
+	 * @param start The first day of the pay period.
+	 * @param end The last day of the pay period.
+	 * @param shift The work shift of employees to generate pay period reports for. 0 = all shifts
+	 * @return The data needed to generate a pay period report for each employee.
+	 */
+	List<PayPeriodReportData> getPayPeriodReportDataFromDatabase(Date start, Date end, Integer shift);
 }

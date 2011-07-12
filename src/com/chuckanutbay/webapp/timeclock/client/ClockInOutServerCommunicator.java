@@ -14,9 +14,9 @@ public interface ClockInOutServerCommunicator {
 	
 	/**
 	 * Request that the server clock in the employee with the matching barcode number.
-	 * @param barcode The {@link BarcodeDto} of the employee requesting a clock in.
+	 * @param barcode The {@link Barcode} of the employee requesting a clock in.
 	 */
-	public void clockInOnDatabase(BarcodeDto barcode);
+	public void clockInOnDatabase(Barcode barcode);
 	
 	/**
 	 * Request that the server clock out an employee.
@@ -30,10 +30,10 @@ public interface ClockInOutServerCommunicator {
 	public void getActivitiesFromDatabase();
 	
 	/**
-	 * Request that the server cancel the clock in of an an {@link employeeDto} with matching {@link BarcodeDto}.
-	 * @param barcode The {@link BarcodeDto} of the employee requesting cancelation.
+	 * Request that the server cancel the clock in of an an {@link employeeDto} with matching {@link Barcode}.
+	 * @param barcode The {@link Barcode} of the employee requesting cancelation.
 	 */
-	public void cancelClockInOnDatabase(BarcodeDto barcode);
+	public void cancelClockInOnDatabase(Barcode barcode);
 	
 	/**
 	 * When the server returns a successful clock in.

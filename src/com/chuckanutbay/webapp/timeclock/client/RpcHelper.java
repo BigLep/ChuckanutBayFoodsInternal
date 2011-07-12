@@ -1,13 +1,15 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
 import java.util.Date;
+import java.util.List;
 import java.util.SortedSet;
 
-import com.chuckanutbay.webapp.common.client.EmployeeClockInOutServiceAsync;
+import com.chuckanutbay.webapp.common.client.TimeClockServiceAsync;
 import com.chuckanutbay.webapp.common.client.ServiceUtils;
 import com.chuckanutbay.webapp.common.client.ServiceUtils.DefaultAsyncCallback;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
+import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -15,7 +17,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  */
 public class RpcHelper {
-	public static final EmployeeClockInOutServiceAsync employeeClockInOutService = ServiceUtils.createEmployeeClockInOutService();
+	public static final TimeClockServiceAsync timeClockService = ServiceUtils.createTimeClockService();
 	
 	public static AsyncCallback<EmployeeDto> createClockInCallback(final ClockInOutServerCommunicator caller) {
 		return new DefaultAsyncCallback<EmployeeDto>() {
@@ -76,6 +78,15 @@ public class RpcHelper {
 			@Override
 			public void onSuccess(Date date) {
 				caller.onSuccessfulGetEndOfLastPayPeriod(date);
+			}
+		};
+	}
+	
+	public static AsyncCallback<List<PayPeriodReportData>> createGetPayPeriodReportDataCallback(final TimeClockReportHandler caller) {
+		return new DefaultAsyncCallback<List<PayPeriodReportData>>() {
+			@Override
+			public void onSuccess(List<PayPeriodReportData> reportData) {
+				caller.onSuccessfulGetPayPeriodReportData(reportData);
 			}
 		};
 	}

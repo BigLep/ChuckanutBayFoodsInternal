@@ -18,7 +18,7 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 	public String lastName;
 	public int minsWorkedThisWeek;
 	public List<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages;
-	public BarcodeDto barcodeNumber;
+	public Barcode barcodeNumber;
 	
 	/**
 	 * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
@@ -40,7 +40,7 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 			String lastName,
 			int minsWorkedThisWeek,
 			List<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages,
-			BarcodeDto barcode) {
+			Barcode barcode) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -93,11 +93,11 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 		this.employeeWorkIntervalPercentages = employeeWorkIntervalPercentages;
 	}
 
-	public BarcodeDto getBarcodeNumber() {
+	public Barcode getBarcodeNumber() {
 		return barcodeNumber;
 	}
 
-	public void setBarcodeNumber(BarcodeDto barcodeNumber) {
+	public void setBarcodeNumber(Barcode barcodeNumber) {
 		this.barcodeNumber = barcodeNumber;
 	}
 	

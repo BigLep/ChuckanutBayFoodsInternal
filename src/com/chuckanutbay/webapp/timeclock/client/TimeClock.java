@@ -7,7 +7,7 @@ import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createClockInCa
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createClockOutCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetActivitiesCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetClockedInEmployeesCallback;
-import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.employeeClockInOutService;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.timeClockService;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.ENTER_KEY_CODE;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.MIN_IN_MILLISECONDS;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.NINE_KEY_CODE;
@@ -20,7 +20,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
-import com.chuckanutbay.webapp.common.shared.BarcodeDto;
+import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -205,10 +205,10 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	
 	/**
 	 * Checks if any of the {@link clockedInEmployees} have a matching barcode number.
-	 * @param barcode {@link BarcodeDto} to check for equivalency with.
+	 * @param barcode {@link Barcode} to check for equivalency with.
 	 * @return Returns true if there is an employee with a matching barcode number.
 	 */
-	public boolean employeeIsClockedIn(BarcodeDto barcode) {
+	public boolean employeeIsClockedIn(Barcode barcode) {
 		if (findMatchingClockedInEmployee(barcode) == null) {
 			return false;
 		}
@@ -217,7 +217,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	
 	/**
 	 * Checks if any of the {@link clockedInEmployees} are matching based on barcode number.
-	 * @param barcode {@link BarcodeDto} to check for equivalency with.
+	 * @param barcode {@link Barcode} to check for equivalency with.
 	 * @return Returns true if there is an employee with a matching barcode number.
 	 */
 	public boolean employeeIsClockedIn(EmployeeDto employee) {
@@ -225,10 +225,10 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 	
 	/**
-	 * @param barcode The {@link BarcodeDto} to check for a match with.
+	 * @param barcode The {@link Barcode} to check for a match with.
 	 * @return The matching {@link EmployeeDto}, or null if no matches.
 	 */
-	private EmployeeDto findMatchingClockedInEmployee(BarcodeDto barcode) {
+	private EmployeeDto findMatchingClockedInEmployee(Barcode barcode) {
 		for (EmployeeDto employeeToCheck : clockedInEmployees) {
 			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employeeToCheck.getFirstName() + " " + employeeToCheck.getLastName() + "'s barcode (" + employeeToCheck.getBarcodeNumber().getBarcodeNumber() + ")");
 			if (employeeToCheck.getBarcodeNumber().equals(barcode)) {
@@ -241,7 +241,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	
 
 	@Override
-	public void onScan(BarcodeDto barcode) {
+	public void onScan(Barcode barcode) {
 		GWT.log("The following barcode just got scanned: " + barcode.getBarcodeNumber());
 		if (employeeIsClockedIn(barcode)) {
 			onClockOutScan(findMatchingClockedInEmployee(barcode));
@@ -251,7 +251,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 
 	@Override
-	public void onClockInScan(BarcodeDto barcode) {
+	public void onClockInScan(Barcode barcode) {
 		clockInOnDatabase(barcode);
 	}
 
@@ -265,7 +265,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 
 	@Override
-	public void onClockInError(BarcodeDto barcode) {
+	public void onClockInError(Barcode barcode) {
 		GWT.log("Clock in error with barcode: " + barcode.getBarcodeNumber().toString());
 		confirmationPanelContainer.clear();
 		clockedInEmployees.remove(findMatchingClockedInEmployee(barcode));
@@ -286,19 +286,19 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	@Override
 	public void getClcockedInEmployeesFromDatabase() {
 		GWT.log("Requesting clocked in employees from server");
-		employeeClockInOutService.getClockedInEmployees(createGetClockedInEmployeesCallback(this));
+		timeClockService.getClockedInEmployees(createGetClockedInEmployeesCallback(this));
 	}
 
 	@Override
-	public void clockInOnDatabase(BarcodeDto barcode) {
+	public void clockInOnDatabase(Barcode barcode) {
 		GWT.log("Requesting that the server clock-in employee with barcode number: " + barcode.barcodeNumber);
-		employeeClockInOutService.clockIn(barcode, createClockInCallback(this));
+		timeClockService.clockIn(barcode, createClockInCallback(this));
 	}
 
 	@Override
 	public void clockOutOnDatabase(EmployeeDto employee) {
 		GWT.log("Requesting that the server clock-out employee: " + employee.firstName + " " + employee.lastName);
-		employeeClockInOutService.clockOut(employee, createClockOutCallback(this));
+		timeClockService.clockOut(employee, createClockOutCallback(this));
 		clockOutDialogBox.hide();
 		mainPanel.setFocus(true);
 	}
@@ -306,13 +306,13 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	@Override
 	public void getActivitiesFromDatabase() {
 		GWT.log("Requesting activities from server");
-		employeeClockInOutService.getActivities(createGetActivitiesCallback(this));
+		timeClockService.getActivities(createGetActivitiesCallback(this));
 	}
 
 	@Override
-	public void cancelClockInOnDatabase(BarcodeDto barcode) {
+	public void cancelClockInOnDatabase(Barcode barcode) {
 		GWT.log("Requesting cancellation of clock in from Server for barcode number: " + barcode.barcodeNumber);
-		employeeClockInOutService.cancelClockIn(barcode, createCancelClockInCallback(this));
+		timeClockService.cancelClockIn(barcode, createCancelClockInCallback(this));
 	}
 
 	@Override
