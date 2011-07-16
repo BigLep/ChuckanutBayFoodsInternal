@@ -38,6 +38,7 @@ public class TimeClockServiceImplTest {
 	
 	@Rule 
 	public final DatabaseResource databaseResource = new DatabaseResource();
+
 	/**
 	 *  @see TimeClockServiceImpl#clockOut(EmployeeDto employeeDto)
 	 */
@@ -60,18 +61,18 @@ public class TimeClockServiceImplTest {
 		activity.setName("Packaging");
 		activityDao.makePersistent(activity);
 		
-		EmployeeDto employee1Dto = DtoUtils.toEmployeeDto(employee1);
-		EmployeeWorkIntervalActivityPercentageDto percentageDto = new EmployeeWorkIntervalActivityPercentageDto();
-		percentageDto.setActivity(DtoUtils.toActivityDto(activity));
-		percentageDto.setPercentage(30);
-		List<EmployeeWorkIntervalActivityPercentageDto> percentages = newArrayList(percentageDto);
-		employee1Dto.setEmployeeWorkIntervalPercentages(percentages);
-		
 		Employee employee2 = new Employee();
 		employee2.setBarcodeNumber(234567890);
 		employee2.setFirstName("Bill");
 		employee2.setLastName("Gates");
 		employeeDao.makePersistent(employee2);
+		
+		EmployeeDto employee1Dto = DtoUtils.toEmployeeDto(employee2);
+		EmployeeWorkIntervalActivityPercentageDto percentageDto = new EmployeeWorkIntervalActivityPercentageDto();
+		percentageDto.setActivity(DtoUtils.toActivityDto(activity));
+		percentageDto.setPercentage(30);
+		List<EmployeeWorkIntervalActivityPercentageDto> percentages = newArrayList(percentageDto);
+		employee1Dto.setEmployeeWorkIntervalPercentages(percentages);
 		
 		EmployeeWorkInterval employee1WorkInterval1 = new EmployeeWorkInterval();
 		employee1WorkInterval1.setEmployee(employee1);
@@ -95,6 +96,7 @@ public class TimeClockServiceImplTest {
 		employee2WorkInterval2.setStartDateTime(new Date());
 		intervalDao.makePersistent(employee2WorkInterval2);
 		
+		/**
 		EmployeeWorkIntervalActivityPercentage percentage1 = new EmployeeWorkIntervalActivityPercentage();
 		percentage1.setActivity(activity);
 		percentage1.setPercentage(10);
@@ -112,14 +114,15 @@ public class TimeClockServiceImplTest {
 		Set<EmployeeWorkIntervalActivityPercentage> percentages3 = new HashSet<EmployeeWorkIntervalActivityPercentage>();
 		percentages3.add(percentage3);
 		employee2WorkInterval1.setEmployeeWorkIntervalActivityPercentages(percentages3);
+		*/
 		
-		assertEquals(newArrayList(employee2WorkInterval2, employee1WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
+		assertEquals(newArrayList(employee1WorkInterval2, employee2WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
 		
 		//Cancel 1 Open interval
 		server.clockOut(employee1Dto);
 		System.out.println("successful sign out");
-		assertEquals(3, percentageDao.findAll().size());
-		assertEquals(newArrayList(employee2WorkInterval1), intervalDao.findOpenEmployeeWorkIntervals());
+		assertEquals(1, percentageDao.findAll().size());
+		assertEquals(newArrayList(employee1WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
 		assertEquals(4, intervalDao.findAll().size());
 	}
 	/**

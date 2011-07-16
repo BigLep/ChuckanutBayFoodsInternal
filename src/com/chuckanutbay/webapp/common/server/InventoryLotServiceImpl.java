@@ -1,5 +1,7 @@
 package com.chuckanutbay.webapp.common.server;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import com.chuckanutbay.webapp.common.client.InventoryLotService;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 
 public class InventoryLotServiceImpl extends RemoteServiceServlet implements InventoryLotService {
 
@@ -26,6 +29,24 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 	public void setInUseIngredientLots(List<InventoryLotDto> ingredientLotDtos) {
 		List<InventoryLot> inventoryLots = Lists.transform(ingredientLotDtos, DtoUtils.fromInventoryLotDto);
 		InventoryLotDao dao = new InventoryLotHibernateDao();
+		List<InventoryLot> modifiedInventoryLots = newArrayList();
+		for (InventoryLot inventoryLot : inventoryLots) {
+			for (InventoryLot checkedIn : dao.findUnused()) {
+				if (checkedIn.getId() == inventoryLot.getId() && checkedIn.getStartUseDatetime() != inventoryLot.getStartUseDatetime()) {
+					modifiedInventoryLots.add(inventoryLot);
+					break;
+				}
+			}
+		}
+		for (InventoryLot modifiedInventoryLot : modifiedInventoryLots) {
+			for (InventoryLot inUse : dao.findInUse()) {
+				if (inUse.getInventoryItem().getId().equals(modifiedInventoryLot.getInventoryItem().getId())) {
+					inUse.setEndUseDatetime(new Date());
+					dao.makePersistent(inUse);
+					break;
+				}
+			}
+		}
 		dao.makePersistent(inventoryLots);
 	}
 
