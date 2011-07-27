@@ -30,7 +30,7 @@ public class HibernateUtil {
 	 */
 	public static final String CONFIG_KEY_HIBERNATE_CONFIG_TYPE = "hibernateConfigType";
 	private static final String CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_PROD = "prod";
-	private static final String CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_LOCALHOST = "localhost";
+	static final String CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_LOCALHOST = "localhost";
 	public static final String CONFIG_VALUE_HIBERNATE_CONFIG_TYPE_UNIT_TEST = "unit-test";
 
 	private static final Configuration configuration;

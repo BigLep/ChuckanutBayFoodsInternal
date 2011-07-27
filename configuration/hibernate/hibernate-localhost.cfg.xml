@@ -12,7 +12,7 @@
 			MySql JDBC settings: http://dev.mysql.com/doc/refman/5.1/en/connector-j-reference-configuration-properties.html
 		-->
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql://webserver.local:8889/chuckanut_bay_internal</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:8889/chuckanut_bay_internal</property>
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.connection.password">root</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
