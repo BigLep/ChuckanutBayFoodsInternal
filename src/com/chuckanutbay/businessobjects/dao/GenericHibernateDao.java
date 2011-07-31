@@ -61,8 +61,8 @@ public abstract class GenericHibernateDao<T, ID extends Serializable> implements
 
 	@Override
 	public T makePersistent(T entity) {
-		getSession().merge(entity);
-		//getSession().saveOrUpdate(entity);
+		//getSession().merge(entity);
+		getSession().saveOrUpdate(entity);
 		return entity;
 	}
 

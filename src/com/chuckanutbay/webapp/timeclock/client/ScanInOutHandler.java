@@ -1,6 +1,5 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
-import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 
 /**
@@ -13,13 +12,13 @@ public interface ScanInOutHandler {
 	 * Handles a scan event.
 	 * @param barcode The {@link Barcode} of the scan.
 	 */
-	public void onScan(Barcode barcode);
+	public void onScan(Integer barcode);
 	
 	/**
 	 * Handles a clock in scan event.
 	 * @param barcode The {@link Barcode} of the scan in.
 	 */
-	public void onClockInScan(Barcode barcode);
+	public void onClockInScan(Integer barcode);
 	
 	/**
 	 * Handles a clock out scan event.

@@ -15,6 +15,6 @@ public class InventoryItemServiceImpl extends RemoteServiceServlet implements In
 	@Override
 	public List<InventoryItemDto> getInventoryItems() {
 		InventoryItemDao dao = new InventoryItemHibernateDao();
-		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryItemDto);
+		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryItemDtoFunction);
 	}
 }

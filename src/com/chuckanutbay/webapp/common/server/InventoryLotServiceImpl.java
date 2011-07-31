@@ -20,14 +20,14 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 
 	@Override
 	public void setUnusedIngredientLots(final List<InventoryLotDto> ingreditentLotDtos) {
-		List<InventoryLot> inventoryLots = Lists.transform(ingreditentLotDtos, DtoUtils.fromInventoryLotDto);
+		List<InventoryLot> inventoryLots = Lists.transform(ingreditentLotDtos, DtoUtils.fromInventoryLotDtoFunction);
 		InventoryLotDao dao = new InventoryLotHibernateDao();
 		dao.makePersistent(inventoryLots);
 	}
 
 	@Override
 	public void setInUseIngredientLots(List<InventoryLotDto> ingredientLotDtos) {
-		List<InventoryLot> inventoryLots = Lists.transform(ingredientLotDtos, DtoUtils.fromInventoryLotDto);
+		List<InventoryLot> inventoryLots = Lists.transform(ingredientLotDtos, DtoUtils.fromInventoryLotDtoFunction);
 		InventoryLotDao dao = new InventoryLotHibernateDao();
 		List<InventoryLot> modifiedInventoryLots = newArrayList();
 		for (InventoryLot inventoryLot : inventoryLots) {
@@ -52,7 +52,7 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 
 	@Override
 	public void setUsedUpInventoryLots(List<InventoryLotDto> usedUpIngredients) {
-		List<InventoryLot> inventoryLots = Lists.transform(usedUpIngredients, DtoUtils.fromInventoryLotDto);
+		List<InventoryLot> inventoryLots = Lists.transform(usedUpIngredients, DtoUtils.fromInventoryLotDtoFunction);
 		InventoryLotDao dao = new InventoryLotHibernateDao();
 		dao.makePersistent(inventoryLots);
 	}
@@ -60,31 +60,31 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 	@Override
 	public List<InventoryLotDto> getUnusedIngredientLots() {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findUnused(), DtoUtils.toInventoryLotDto);
+		return DtoUtils.transform(dao.findUnused(), DtoUtils.toInventoryLotDtoFunction);
 	}
 
 	@Override
 	public List<InventoryLotDto> getInUseIngredientLots() {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findInUse(), DtoUtils.toInventoryLotDto);
+		return DtoUtils.transform(dao.findInUse(), DtoUtils.toInventoryLotDtoFunction);
 	}
 
 	@Override
 	public List<InventoryLotDto> getDateMatchInUseIngredients(Date date) {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findInUseOnDate(date), DtoUtils.toInventoryLotDto);
+		return DtoUtils.transform(dao.findInUseOnDate(date), DtoUtils.toInventoryLotDtoFunction);
 	}
 
 	@Override
 	public List<InventoryLotDto> getLotCodeMatchIngredients(String lotCode) {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findLotCodeMatch(lotCode), DtoUtils.toInventoryLotDto);
+		return DtoUtils.transform(dao.findLotCodeMatch(lotCode), DtoUtils.toInventoryLotDtoFunction);
 	}
 
 	@Override
 	public List<InventoryLotDto> getFullIngredientHistory() {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryLotDto);
+		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryLotDtoFunction);
 	}
 
 }

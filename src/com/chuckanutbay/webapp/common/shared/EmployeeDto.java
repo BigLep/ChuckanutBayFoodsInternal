@@ -6,19 +6,20 @@ import java.util.List;
 import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.documentation.Terminology;
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 
 /**
  * {@link Terminology#DTO} for {@link Employee}.
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
-public class EmployeeDto implements Serializable, Comparable<Object> {
+public class EmployeeDto implements Serializable, Comparable<EmployeeDto> {
 	private static final long serialVersionUID = 1L;
 	public Integer id;
 	public String firstName;
 	public String lastName;
 	public int minsWorkedThisWeek;
 	public List<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages;
-	public Barcode barcodeNumber;
+	public Integer barcodeNumber;
 	
 	/**
 	 * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
@@ -40,13 +41,13 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 			String lastName,
 			int minsWorkedThisWeek,
 			List<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages,
-			Barcode barcode) {
+			Integer barcodeNumber) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.minsWorkedThisWeek = minsWorkedThisWeek;
 		this.employeeWorkIntervalPercentages = employeeWorkIntervalPercentages;
-		this.barcodeNumber = barcode;
+		this.barcodeNumber = barcodeNumber;
 	}
 
 	/*####################################
@@ -93,17 +94,17 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 		this.employeeWorkIntervalPercentages = employeeWorkIntervalPercentages;
 	}
 
-	public Barcode getBarcodeNumber() {
+	public Integer getBarcodeNumber() {
 		return barcodeNumber;
 	}
 
-	public void setBarcodeNumber(Barcode barcodeNumber) {
+	public void setBarcodeNumber(Integer barcodeNumber) {
 		this.barcodeNumber = barcodeNumber;
 	}
 	
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(super.hashCode(), barcodeNumber);
+		return Objects.hashCode(barcodeNumber);
 	}
 
 	@Override
@@ -114,13 +115,21 @@ public class EmployeeDto implements Serializable, Comparable<Object> {
 		}
 		return false;
 	}
+	
+	
 
 	@Override
-	public int compareTo(Object o) {
-		if (o instanceof EmployeeDto) {
-			EmployeeDto that = (EmployeeDto)o;
-			return (this.getLastName().compareTo(that.getLastName()));
-		}
-		return 0;
+	public String toString() {
+		return Objects.toStringHelper(this)
+			.add("barcodeNumber", barcodeNumber)
+			.toString();
+	}
+
+	@Override
+	public int compareTo(EmployeeDto that) {
+		return ComparisonChain.start()
+			.compare(this.lastName, that.lastName)
+			.compare(this.firstName, that.firstName)
+			.result();
 	}
 }

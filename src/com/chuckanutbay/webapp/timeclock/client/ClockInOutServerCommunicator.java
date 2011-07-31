@@ -1,9 +1,9 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
-import java.util.Set;
 import java.util.SortedSet;
 
-import com.chuckanutbay.webapp.common.shared.*;
+import com.chuckanutbay.webapp.common.shared.ActivityDto;
+import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 
 public interface ClockInOutServerCommunicator {
 	
@@ -16,7 +16,7 @@ public interface ClockInOutServerCommunicator {
 	 * Request that the server clock in the employee with the matching barcode number.
 	 * @param barcode The {@link Barcode} of the employee requesting a clock in.
 	 */
-	public void clockInOnDatabase(Barcode barcode);
+	public void clockInOnDatabase(Integer barcode);
 	
 	/**
 	 * Request that the server clock out an employee.
@@ -33,7 +33,7 @@ public interface ClockInOutServerCommunicator {
 	 * Request that the server cancel the clock in of an an {@link employeeDto} with matching {@link Barcode}.
 	 * @param barcode The {@link Barcode} of the employee requesting cancelation.
 	 */
-	public void cancelClockInOnDatabase(Barcode barcode);
+	public void cancelClockInOnDatabase(Integer barcode);
 	
 	/**
 	 * When the server returns a successful clock in.

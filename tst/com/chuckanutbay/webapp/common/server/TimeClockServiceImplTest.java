@@ -27,7 +27,6 @@ import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalActivityPercenta
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalHibernateDao;
 import com.chuckanutbay.util.testing.DatabaseResource;
-import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
 
@@ -67,9 +66,9 @@ public class TimeClockServiceImplTest {
 		employee2.setLastName("Gates");
 		employeeDao.makePersistent(employee2);
 		
-		EmployeeDto employee1Dto = DtoUtils.toEmployeeDto(employee2);
+		EmployeeDto employee1Dto = DtoUtils.toEmployeeDtoFunction.apply(employee1);
 		EmployeeWorkIntervalActivityPercentageDto percentageDto = new EmployeeWorkIntervalActivityPercentageDto();
-		percentageDto.setActivity(DtoUtils.toActivityDto(activity));
+		percentageDto.setActivity(DtoUtils.toActivityDtoFunction.apply(activity));
 		percentageDto.setPercentage(30);
 		List<EmployeeWorkIntervalActivityPercentageDto> percentages = newArrayList(percentageDto);
 		employee1Dto.setEmployeeWorkIntervalPercentages(percentages);
@@ -122,7 +121,7 @@ public class TimeClockServiceImplTest {
 		server.clockOut(employee1Dto);
 		System.out.println("successful sign out");
 		assertEquals(1, percentageDao.findAll().size());
-		assertEquals(newArrayList(employee1WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
+		assertEquals(newArrayList(employee2WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
 		assertEquals(4, intervalDao.findAll().size());
 	}
 	/**
@@ -218,7 +217,7 @@ public class TimeClockServiceImplTest {
 		assertEquals(newArrayList(employee2WorkInterval2, employee1WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
 		
 		//Cancel 1 Open interval
-		server.cancelClockIn(new Barcode(123456789));
+		server.cancelClockIn(123456789);
 		System.out.println("successful clock in cancel");
 		assertEquals(newArrayList(employee2WorkInterval1), intervalDao.findOpenEmployeeWorkIntervals());
 		assertEquals(3, intervalDao.findAll().size());
@@ -238,7 +237,7 @@ public class TimeClockServiceImplTest {
 		TimeClockServiceImpl server = new TimeClockServiceImpl();
 		
 		// Empty database
-		assertEquals(null, server.clockIn(new Barcode(234567890)));
+		assertEquals(null, server.clockIn(234567890));
 		assertEquals(newArrayList(), intervalDao.findOpenEmployeeWorkIntervals());
 		
 		// A 1 closed interval earlier and 1 since Sunday for each employee
@@ -344,7 +343,7 @@ public class TimeClockServiceImplTest {
 			System.out.println("There is an interval on the database with " + interval.getEmployeeWorkIntervalActivityPercentages().size() + " percentages");
 		}
 		
-		EmployeeDto clockedInEmployee = server.clockIn(new Barcode(234567890));
+		EmployeeDto clockedInEmployee = server.clockIn(234567890);
 		assertEquals(3, clockedInEmployee.getMinsWorkedThisWeek());
 		assertEquals("Bill", clockedInEmployee.getFirstName());
 		assertEquals(1, intervalDao.findOpenEmployeeWorkIntervals().size());
@@ -371,14 +370,14 @@ public class TimeClockServiceImplTest {
 		employee1.setFirstName("Steve");
 		employee1.setLastName("Jobs");
 		employeeDao.makePersistent(employee1);
-		EmployeeDto employee1Dto = DtoUtils.toEmployeeDto(employee1);
+		EmployeeDto employee1Dto = DtoUtils.toEmployeeDtoFunction.apply(employee1);
 		
 		Employee employee2 = new Employee();
 		employee2.setBarcodeNumber(234567890);
 		employee2.setFirstName("Bill");
 		employee2.setLastName("Gates");
 		employeeDao.makePersistent(employee2);
-		EmployeeDto employee2Dto = DtoUtils.toEmployeeDto(employee2);
+		EmployeeDto employee2Dto = DtoUtils.toEmployeeDtoFunction.apply(employee2);
 		
 		EmployeeWorkInterval employee1WorkInterval1 = new EmployeeWorkInterval();
 		employee1WorkInterval1.setEmployee(employee1);

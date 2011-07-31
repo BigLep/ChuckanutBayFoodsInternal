@@ -11,7 +11,6 @@ import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.documentation.Technology;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
-import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalDto;
@@ -36,73 +35,94 @@ public class DtoUtils {
 		return Lists.newArrayList(Collections2.transform(fromCollection, function));
 	}
 	
-	public static EmployeeDto toEmployeeDto(Employee input) {
-		EmployeeDto output = new EmployeeDto();
-		output.setId(input.getId());
-		output.setFirstName(input.getFirstName());
-		output.setLastName(input.getLastName());
-		output.setBarcodeNumber(new Barcode(input.getBarcodeNumber()));
-		return output;
-	}
+	public static final Function<Activity,ActivityDto> toActivityDtoFunction = new Function<Activity, ActivityDto>() {
+		@Override
+		public ActivityDto apply(Activity input) {
+			ActivityDto output = new ActivityDto();
+			output.setId(input.getId());
+			output.setName(input.getName());
+			return output;
+		}
+	};
 	
-	public static Employee fromEmployeeDto(EmployeeDto input) {
-		Employee output = new Employee();
-		output.setId(input.getId());
-		output.setBarcodeNumber(input.getBarcodeNumber().getBarcodeNumber());
-		output.setFirstName(input.getFirstName());
-		output.setLastName(input.getLastName());
-		return output;
-	}
-	
-	public static ActivityDto toActivityDto(Activity input) {
-		ActivityDto output = new ActivityDto();
-		output.setId(input.getId());
-		output.setName(input.getName());
-		return output;
-	}
-	
-	public static Activity fromActivityDto(ActivityDto input) {
-		Activity output = new Activity();
-		output.setId(input.getId());
-		output.setName(input.getName());
-		return output;
-	}
-	
-	public static EmployeeWorkInterval fromEmployeeWorkIntervalDto(EmployeeWorkIntervalDto input) {
-		EmployeeWorkInterval output = new EmployeeWorkInterval();
-		output.setStartDateTime(input.getStartDateTime());
-		output.setEndDateTime(input.getEndDateTime());
-		return output;
-	}
-	
-	public static EmployeeWorkIntervalDto toEmployeeWorkIntervalDto(EmployeeWorkInterval input) {
-		EmployeeWorkIntervalDto output = new EmployeeWorkIntervalDto();
-		output.setStartDateTime(input.getStartDateTime());
-		output.setEndDateTime(input.getEndDateTime());
-		return output;
-	}
-	
-	public static EmployeeWorkIntervalActivityPercentageDto toEmployeeWorkIntervalActivityPercentageDto(EmployeeWorkIntervalActivityPercentage input) {
-		EmployeeWorkIntervalActivityPercentageDto output = new EmployeeWorkIntervalActivityPercentageDto();
-		output.setActivity(toActivityDto(input.getActivity()));
-		output.setPercentage(input.getPercentage());
-		return output;
-	}
-	
-	public static EmployeeWorkIntervalActivityPercentage fromEmployeeWorkIntervalActivityPercentageDto(EmployeeWorkIntervalActivityPercentageDto input) {
-		EmployeeWorkIntervalActivityPercentage output = new EmployeeWorkIntervalActivityPercentage();
-		output.setActivity(fromActivityDto(input.getActivity()));
-		output.setPercentage(input.getPercentage());
-		return output;
-	}
+	public static final Function<ActivityDto, Activity> fromActivityDtoFunction = new Function<ActivityDto, Activity>() {
 
-	public static final Function<InventoryLot, InventoryLotDto> toInventoryLotDto = new Function<InventoryLot, InventoryLotDto>() {
+		@Override
+		public Activity apply(ActivityDto input) {
+			Activity output = new Activity();
+			output.setId(input.getId());
+			output.setName(input.getName());
+			return output;
+		}
+		
+	};
+	
+	public static final Function<Employee,EmployeeDto> toEmployeeDtoFunction = new Function<Employee, EmployeeDto>() {
+		@Override
+		public EmployeeDto apply(Employee input) {
+			EmployeeDto output = new EmployeeDto();
+			output.setId(input.getId());
+			output.setFirstName(input.getFirstName());
+			output.setLastName(input.getLastName());
+			output.setBarcodeNumber(input.getBarcodeNumber());
+			return output;
+		}
+	};
+	
+	public static final Function<EmployeeDto, Employee> fromEmployeeDtoFunction = new Function<EmployeeDto, Employee>() {
+
+		@Override
+		public Employee apply(EmployeeDto input) {
+			Employee output = new Employee();
+			output.setId(input.getId());
+			output.setBarcodeNumber(input.getBarcodeNumber());
+			output.setFirstName(input.getFirstName());
+			output.setLastName(input.getLastName());
+			return output;
+		}
+		
+	};
+	
+	public static final Function<EmployeeWorkInterval,EmployeeWorkIntervalDto> toEmployeeWorkIntervalDtoFunction = new Function<EmployeeWorkInterval, EmployeeWorkIntervalDto>() {
+		@Override
+		public EmployeeWorkIntervalDto apply(EmployeeWorkInterval input) {
+			EmployeeWorkIntervalDto output = new EmployeeWorkIntervalDto();
+			output.setStartDateTime(input.getStartDateTime());
+			output.setEndDateTime(input.getEndDateTime());
+			return output;
+		}
+	};
+	
+	public static final Function<EmployeeWorkIntervalActivityPercentage, EmployeeWorkIntervalActivityPercentageDto> toEmployeeWorkIntervalActivityPercentageDtoFunction = new Function<EmployeeWorkIntervalActivityPercentage, EmployeeWorkIntervalActivityPercentageDto>() {
+		@Override
+		public EmployeeWorkIntervalActivityPercentageDto apply(EmployeeWorkIntervalActivityPercentage input) {
+			EmployeeWorkIntervalActivityPercentageDto output = new EmployeeWorkIntervalActivityPercentageDto();
+			output.setActivity(toActivityDtoFunction.apply(input.getActivity()));
+			output.setPercentage(input.getPercentage());
+			return output;
+		}
+	};
+	
+	public static final Function<EmployeeWorkIntervalActivityPercentageDto, EmployeeWorkIntervalActivityPercentage> fromEmployeeWorkIntervalActivityPercentageDtoFunction = new Function<EmployeeWorkIntervalActivityPercentageDto, EmployeeWorkIntervalActivityPercentage>() {
+
+		@Override
+		public EmployeeWorkIntervalActivityPercentage apply(
+				EmployeeWorkIntervalActivityPercentageDto input) {
+			EmployeeWorkIntervalActivityPercentage output = new EmployeeWorkIntervalActivityPercentage();
+			output.setActivity(fromActivityDtoFunction.apply(input.getActivity()));
+			output.setPercentage(input.getPercentage());
+			return output;
+		}
+		
+	};
+
+	public static final Function<InventoryLot, InventoryLotDto> toInventoryLotDtoFunction = new Function<InventoryLot, InventoryLotDto>() {
 		@Override
 		public InventoryLotDto apply(InventoryLot input) {
 			InventoryLotDto output = new InventoryLotDto();
 			output.setId(input.getId());
 			output.setCode(input.getCode());
-			output.setInventoryItem(DtoUtils.toInventoryItemDto.apply(input.getInventoryItem()));
+			output.setInventoryItem(DtoUtils.toInventoryItemDtoFunction.apply(input.getInventoryItem()));
 			output.setReceivedDatetime(input.getReceivedDatetime());
 			output.setStartUseDatetime(input.getStartUseDatetime());
 			output.setEndUseDatetime(input.getEndUseDatetime());
@@ -110,13 +130,13 @@ public class DtoUtils {
 		}
 	};
 
-	public static final Function<InventoryLotDto, InventoryLot> fromInventoryLotDto = new Function<InventoryLotDto, InventoryLot>() {
+	public static final Function<InventoryLotDto, InventoryLot> fromInventoryLotDtoFunction = new Function<InventoryLotDto, InventoryLot>() {
 		@Override
 		public InventoryLot apply(InventoryLotDto input) {
 			InventoryLot output = new InventoryLot();
 			output.setId(input.getId());
 			output.setCode(input.getCode());
-			output.setInventoryItem(DtoUtils.fromInventoryItemDto.apply(input.getInventoryItem()));
+			output.setInventoryItem(DtoUtils.fromInventoryItemDtoFunction.apply(input.getInventoryItem()));
 			output.setQuantity(1);
 			output.setReceivedDatetime(input.getReceivedDatetime());
 			output.setStartUseDatetime(input.getStartUseDatetime());
@@ -125,53 +145,18 @@ public class DtoUtils {
 		}
 	};
 
-	public static final Function<InventoryItem, InventoryItemDto> toInventoryItemDto = new Function<InventoryItem, InventoryItemDto>() {
+	public static final Function<InventoryItem, InventoryItemDto> toInventoryItemDtoFunction = new Function<InventoryItem, InventoryItemDto>() {
 		@Override
 		public InventoryItemDto apply(InventoryItem input) {
 			return new InventoryItemDto(input.getId(), input.getDescription());
 		}
 	};
 
-	public static final Function<InventoryItemDto, InventoryItem> fromInventoryItemDto = new Function<InventoryItemDto, InventoryItem>() {
+	public static final Function<InventoryItemDto, InventoryItem> fromInventoryItemDtoFunction = new Function<InventoryItemDto, InventoryItem>() {
 		@Override
 		public InventoryItem apply(InventoryItemDto input) {
 			return new InventoryItem(input.getId(), input.getDescription());
 		}
 	};
 	
-	public static final Function<Activity, ActivityDto> toActivityDto = new Function<Activity, ActivityDto>() {
-		@Override
-		public ActivityDto apply(Activity input) {
-			return toActivityDto(input);
-		}
-	};
-
-	public static final Function<Employee, EmployeeDto> toEmployeeDto = new Function<Employee, EmployeeDto>() {
-
-		@Override
-		public EmployeeDto apply(Employee input) {
-			return toEmployeeDto(input);
-		}
-		
-	};
-	
-	public static final Function<EmployeeWorkIntervalActivityPercentageDto, EmployeeWorkIntervalActivityPercentage> fromEmployeeWorkIntervalActivityPercentageDto = new Function<EmployeeWorkIntervalActivityPercentageDto, EmployeeWorkIntervalActivityPercentage>() {
-
-		@Override
-		public EmployeeWorkIntervalActivityPercentage apply(
-				EmployeeWorkIntervalActivityPercentageDto input) {
-			return fromEmployeeWorkIntervalActivityPercentageDto(input);
-		}
-		
-	};
-	
-	public static final Function<EmployeeWorkIntervalActivityPercentage, EmployeeWorkIntervalActivityPercentageDto> toEmployeeWorkIntervalActivityPercentageDto = new Function<EmployeeWorkIntervalActivityPercentage, EmployeeWorkIntervalActivityPercentageDto>() {
-
-		@Override
-		public EmployeeWorkIntervalActivityPercentageDto apply(
-				EmployeeWorkIntervalActivityPercentage input) {
-			return toEmployeeWorkIntervalActivityPercentageDto(input);
-		}
-		
-	};
 }

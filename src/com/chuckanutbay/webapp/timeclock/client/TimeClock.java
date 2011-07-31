@@ -20,7 +20,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
-import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -205,10 +204,10 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	
 	/**
 	 * Checks if any of the {@link clockedInEmployees} have a matching barcode number.
-	 * @param barcode {@link Barcode} to check for equivalency with.
+	 * @param barcode barcode number to check for equivalency with.
 	 * @return Returns true if there is an employee with a matching barcode number.
 	 */
-	public boolean employeeIsClockedIn(Barcode barcode) {
+	public boolean employeeIsClockedIn(Integer barcode) {
 		if (findMatchingClockedInEmployee(barcode) == null) {
 			return false;
 		}
@@ -217,7 +216,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	
 	/**
 	 * Checks if any of the {@link clockedInEmployees} are matching based on barcode number.
-	 * @param barcode {@link Barcode} to check for equivalency with.
+	 * @param employee {@link EmployeeDto} to check for equivalency with.
 	 * @return Returns true if there is an employee with a matching barcode number.
 	 */
 	public boolean employeeIsClockedIn(EmployeeDto employee) {
@@ -225,12 +224,12 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 	
 	/**
-	 * @param barcode The {@link Barcode} to check for a match with.
+	 * @param barcode The barcode to check for a match with.
 	 * @return The matching {@link EmployeeDto}, or null if no matches.
 	 */
-	private EmployeeDto findMatchingClockedInEmployee(Barcode barcode) {
+	private EmployeeDto findMatchingClockedInEmployee(Integer barcode) {
 		for (EmployeeDto employeeToCheck : clockedInEmployees) {
-			GWT.log("Checking if the scanned barcode (" + barcode.getBarcodeNumber() + ") matches " + employeeToCheck.getFirstName() + " " + employeeToCheck.getLastName() + "'s barcode (" + employeeToCheck.getBarcodeNumber().getBarcodeNumber() + ")");
+			GWT.log("Checking if the scanned barcode (" + barcode + ") matches " + employeeToCheck.getFirstName() + " " + employeeToCheck.getLastName() + "'s barcode (" + employeeToCheck.getBarcodeNumber() + ")");
 			if (employeeToCheck.getBarcodeNumber().equals(barcode)) {
 				GWT.log("Found that " + employeeToCheck.getFirstName() + " " + employeeToCheck.getLastName() + "'s barcode matches the scanned code");
 				return employeeToCheck;
@@ -241,8 +240,8 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	
 
 	@Override
-	public void onScan(Barcode barcode) {
-		GWT.log("The following barcode just got scanned: " + barcode.getBarcodeNumber());
+	public void onScan(Integer barcode) {
+		GWT.log("The following barcode just got scanned: " + barcode);
 		if (employeeIsClockedIn(barcode)) {
 			onClockOutScan(findMatchingClockedInEmployee(barcode));
 		} else {
@@ -251,7 +250,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 
 	@Override
-	public void onClockInScan(Barcode barcode) {
+	public void onClockInScan(Integer barcode) {
 		clockInOnDatabase(barcode);
 	}
 
@@ -265,8 +264,8 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 
 	@Override
-	public void onClockInError(Barcode barcode) {
-		GWT.log("Clock in error with barcode: " + barcode.getBarcodeNumber().toString());
+	public void onClockInError(Integer barcode) {
+		GWT.log("Clock in error with barcode: " + barcode);
 		confirmationPanelContainer.clear();
 		clockedInEmployees.remove(findMatchingClockedInEmployee(barcode));
 		updateEmployeeTables();
@@ -290,8 +289,8 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 
 	@Override
-	public void clockInOnDatabase(Barcode barcode) {
-		GWT.log("Requesting that the server clock-in employee with barcode number: " + barcode.barcodeNumber);
+	public void clockInOnDatabase(Integer barcode) {
+		GWT.log("Requesting that the server clock-in employee with barcode number: " + barcode);
 		timeClockService.clockIn(barcode, createClockInCallback(this));
 	}
 
@@ -310,8 +309,8 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 
 	@Override
-	public void cancelClockInOnDatabase(Barcode barcode) {
-		GWT.log("Requesting cancellation of clock in from Server for barcode number: " + barcode.barcodeNumber);
+	public void cancelClockInOnDatabase(Integer barcode) {
+		GWT.log("Requesting cancellation of clock in from Server for barcode number: " + barcode);
 		timeClockService.cancelClockIn(barcode, createCancelClockInCallback(this));
 	}
 

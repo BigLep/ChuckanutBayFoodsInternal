@@ -5,16 +5,15 @@ import java.util.List;
 import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
-import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface TimeClockServiceAsync {
 
-	void cancelClockIn(Barcode barcode, AsyncCallback<Void> callback);
+	void cancelClockIn(Integer barcode, AsyncCallback<Void> callback);
 
-	void clockIn(Barcode barcode, AsyncCallback<EmployeeDto> callback);
+	void clockIn(Integer barcode, AsyncCallback<EmployeeDto> callback);
 
 	void clockOut(EmployeeDto employeeDto, AsyncCallback<Void> callback);
 

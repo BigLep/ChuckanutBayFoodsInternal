@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
-import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
 import com.google.gwt.core.client.GWT;
@@ -20,13 +19,13 @@ import com.google.gwt.user.client.rpc.RemoteService;
  */
 public interface TimeClockService extends RemoteService {
 	
-	EmployeeDto clockIn(Barcode barcode);
+	EmployeeDto clockIn(Integer barcode);
 	
 	void clockOut(EmployeeDto employeeDto);
 	
 	SortedSet<EmployeeDto> getClockedInEmployees();
 	
-	void cancelClockIn(Barcode barcode);
+	void cancelClockIn(Integer barcode);
 	
 	SortedSet<ActivityDto> getActivities();
 	

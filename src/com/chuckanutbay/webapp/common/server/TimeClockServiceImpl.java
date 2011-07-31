@@ -26,7 +26,6 @@ import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalHibernateDao;
 import com.chuckanutbay.webapp.common.client.TimeClockService;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
-import com.chuckanutbay.webapp.common.shared.Barcode;
 import com.chuckanutbay.webapp.common.shared.DayReportData;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
@@ -40,12 +39,12 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 	private static final long serialVersionUID = 1L;
 	
 	@Override
-	public EmployeeDto clockIn(Barcode barcode) {
+	public EmployeeDto clockIn(Integer barcode) {
 		EmployeeDao employeeDao = new EmployeeHibernateDao();
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
 		
 		//Find employee from barcode
-		Employee employee = employeeDao.findEmployeeWithBarcodeNumber(barcode.getBarcodeNumber());
+		Employee employee = employeeDao.findEmployeeWithBarcodeNumber(barcode);
 		if (employee == null) {
 			System.out.println("No Employees had the barcode number");
 			return null;
@@ -69,12 +68,12 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
 		EmployeeWorkIntervalActivityPercentageDao percentageDao = new EmployeeWorkIntervalActivityPercentageHibernateDao();
 				
-		EmployeeWorkInterval interval = intervalDao.findOpenEmployeeWorkInterval(DtoUtils.fromEmployeeDto(employeeDto));
+		EmployeeWorkInterval interval = intervalDao.findOpenEmployeeWorkInterval(DtoUtils.fromEmployeeDtoFunction.apply(employeeDto));
 		interval.setEndDateTime(new Date());
 		intervalDao.makePersistent(interval);
 		System.out.println("Persisted Interval");
 		
-		List<EmployeeWorkIntervalActivityPercentage> percentages = DtoUtils.transform(employeeDto.getEmployeeWorkIntervalPercentages(), DtoUtils.fromEmployeeWorkIntervalActivityPercentageDto);
+		List<EmployeeWorkIntervalActivityPercentage> percentages = DtoUtils.transform(employeeDto.getEmployeeWorkIntervalPercentages(), DtoUtils.fromEmployeeWorkIntervalActivityPercentageDtoFunction);
 		for (EmployeeWorkIntervalActivityPercentage percentage : percentages) {
 			percentage.setEmployeeWorkInterval(interval);
 			System.out.println("Percentage: ActivityId(" + percentage.getActivity().getId() + ") IntervalId(" + percentage.getEmployeeWorkInterval().getId() + ") Percentage(" + percentage.getPercentage() + ") of " + percentages.size());
@@ -94,9 +93,9 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 	}
 
 	@Override
-	public void cancelClockIn(Barcode barcode) {
+	public void cancelClockIn(Integer barcode) {
 		EmployeeDao employeeDao = new EmployeeHibernateDao();
-		Employee employee = employeeDao.findEmployeeWithBarcodeNumber(barcode.getBarcodeNumber());
+		Employee employee = employeeDao.findEmployeeWithBarcodeNumber(barcode);
 		
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
 		EmployeeWorkInterval interval = intervalDao.findOpenEmployeeWorkInterval(employee);
@@ -107,7 +106,7 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 	@Override
 	public SortedSet<ActivityDto> getActivities() {
 		ActivityDao dao = new ActivityHibernateDao();
-		return new TreeSet<ActivityDto>(DtoUtils.transform(dao.findAll(), DtoUtils.toActivityDto));
+		return new TreeSet<ActivityDto>(DtoUtils.transform(dao.findAll(), DtoUtils.toActivityDtoFunction));
 	}
 	
 	@SuppressWarnings("unused")
@@ -119,7 +118,7 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 		lastSunday = lastSunday.minusDays(lastSunday.getDayOfWeek());
 		
 		//Do an incomplete conversion form Employee to EmployeeDto
-		EmployeeDto employeeDto = DtoUtils.toEmployeeDto(employee);
+		EmployeeDto employeeDto = DtoUtils.toEmployeeDtoFunction.apply(employee);
 		 
 		employeeDto.setMinsWorkedThisWeek(0);
 		EmployeeWorkInterval mostRecentlyClosedInterval = null;
@@ -159,7 +158,7 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 		if (mostRecentlyClosedInterval == null) {
 			percentageDtos = new ArrayList<EmployeeWorkIntervalActivityPercentageDto>();
 		} else {
-			percentageDtos = DtoUtils.transform(mostRecentlyClosedInterval.getEmployeeWorkIntervalActivityPercentages(), DtoUtils.toEmployeeWorkIntervalActivityPercentageDto);
+			percentageDtos = DtoUtils.transform(mostRecentlyClosedInterval.getEmployeeWorkIntervalActivityPercentages(), DtoUtils.toEmployeeWorkIntervalActivityPercentageDtoFunction);
 		}
 		employeeDto.setEmployeeWorkIntervalPercentages(percentageDtos);
 		return employeeDto;
@@ -252,7 +251,7 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 							double intervalHours = getDifference(interval.getStartDateTime(), interval.getEndDateTime());
 							week.addHours(intervalHours);
 							day.addHours(intervalHours);
-							EmployeeWorkIntervalDto intervalDto = DtoUtils.toEmployeeWorkIntervalDto(interval);
+							EmployeeWorkIntervalDto intervalDto = DtoUtils.toEmployeeWorkIntervalDtoFunction.apply(interval);
 							intervalDto.addHours(intervalHours);
 							day.addInterval(intervalDto);
 						}
