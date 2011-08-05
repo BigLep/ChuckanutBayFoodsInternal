@@ -27,6 +27,7 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 
 	@Override
 	public void setInUseIngredientLots(List<InventoryLotDto> ingredientLotDtos) {
+		// TODO: figure out how to attach objects back to the Hibernate session
 		List<InventoryLot> inventoryLots = Lists.transform(ingredientLotDtos, DtoUtils.fromInventoryLotDtoFunction);
 		InventoryLotDao dao = new InventoryLotHibernateDao();
 		List<InventoryLot> modifiedInventoryLots = newArrayList();
@@ -42,12 +43,12 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 			for (InventoryLot inUse : dao.findInUse()) {
 				if (inUse.getInventoryItem().getId().equals(modifiedInventoryLot.getInventoryItem().getId())) {
 					inUse.setEndUseDatetime(new Date());
-					dao.makePersistent(inUse);
+					//dao.makePersistent(inUse);
 					break;
 				}
 			}
 		}
-		dao.makePersistent(inventoryLots);
+		//dao.makePersistent(inventoryLots);
 	}
 
 	@Override

@@ -1,14 +1,14 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
-import java.util.Date;
 import java.util.List;
 import java.util.SortedSet;
 
-import com.chuckanutbay.webapp.common.client.TimeClockServiceAsync;
 import com.chuckanutbay.webapp.common.client.ServiceUtils;
 import com.chuckanutbay.webapp.common.client.ServiceUtils.DefaultAsyncCallback;
+import com.chuckanutbay.webapp.common.client.TimeClockServiceAsync;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
+import com.chuckanutbay.webapp.common.shared.IntervalDto;
 import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -64,20 +64,11 @@ public class RpcHelper {
 		};
 	}
 	
-	public static AsyncCallback<Date> createGetStartOfLastPayPeriodCallback(final TimeClockReportHandler caller) {
-		return new DefaultAsyncCallback<Date>() {
+	public static AsyncCallback<IntervalDto> createGetLastPayPeriodIntervalCallback(final TimeClockReportHandler caller) {
+		return new DefaultAsyncCallback<IntervalDto>() {
 			@Override
-			public void onSuccess(Date date) {
-				caller.onSuccessfulGetStartOfLastPayPeriod(date);
-			}
-		};
-	}
-	
-	public static AsyncCallback<Date> createGetEndOfLastPayPeriodCallback(final TimeClockReportHandler caller) {
-		return new DefaultAsyncCallback<Date>() {
-			@Override
-			public void onSuccess(Date date) {
-				caller.onSuccessfulGetEndOfLastPayPeriod(date);
+			public void onSuccess(IntervalDto interval) {
+				caller.onSuccessfulGetLastPayPeriodInterval(interval);
 			}
 		};
 	}

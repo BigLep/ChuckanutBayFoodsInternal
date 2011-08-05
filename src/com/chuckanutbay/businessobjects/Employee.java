@@ -18,6 +18,31 @@ import com.google.common.base.Objects;
 @Entity
 @Table(name = "employees")
 public class Employee {
+	
+	public Employee() {
+		
+	}
+	
+	public Employee(Integer id, String firstName, String lastName,
+			Integer barcodeNumber) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.barcodeNumber = barcodeNumber;
+	}
+
+	public Employee(Integer id, String firstName, String lastName,
+			Integer barcodeNumber, Integer shift,
+			Set<EmployeeWorkInterval> employeeWorkIntervals) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.barcodeNumber = barcodeNumber;
+		this.shift = shift;
+		this.employeeWorkIntervals = employeeWorkIntervals;
+	}
+
+
 
 	private Integer id;
 	private String firstName;

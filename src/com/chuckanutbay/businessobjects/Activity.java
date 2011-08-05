@@ -23,6 +23,22 @@ public class Activity {
 	private String name;
 	private Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages;
 
+	public Activity() {}
+	
+	public Activity(String name) {
+		this.name = name;
+	}
+	
+	public Activity(
+			Integer id,
+			String name,
+			Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.employeeWorkIntervalActivityPercentages = employeeWorkIntervalActivityPercentages;
+	}
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)

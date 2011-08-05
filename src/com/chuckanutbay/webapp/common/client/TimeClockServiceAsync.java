@@ -6,6 +6,7 @@ import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
+import com.chuckanutbay.webapp.common.shared.IntervalDto;
 import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -21,9 +22,7 @@ public interface TimeClockServiceAsync {
 
 	void getClockedInEmployees(AsyncCallback<SortedSet<EmployeeDto>> callback);
 
-	void getEndOfLastPayPeriodFromServer(AsyncCallback<Date> callback);
-
-	void getStartOfLastPayPeriodFromServer(AsyncCallback<Date> callback);
+	void getLastPayPeriodIntervalFromServer(Date date, AsyncCallback<IntervalDto> callback);
 
 	void getPayPeriodReportDataFromDatabase(Date start, Date end,
 			Integer shift, AsyncCallback<List<PayPeriodReportData>> callback);

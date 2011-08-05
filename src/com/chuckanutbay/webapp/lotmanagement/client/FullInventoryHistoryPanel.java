@@ -89,7 +89,7 @@ public class FullInventoryHistoryPanel extends LotCodeManagerPanel implements Cl
 		viewFullIngredientHistoryFlexTable.setText(0,1,"Ingredient Type");
 		viewFullIngredientHistoryFlexTable.setText(0,2,"Quantity");
 		viewFullIngredientHistoryFlexTable.setText(0,3,"Checked-In Date");
-		viewFullIngredientHistoryFlexTable.setText(0,3,"In-Use Date");
+		viewFullIngredientHistoryFlexTable.setText(0,4,"In-Use Date");
 		viewFullIngredientHistoryFlexTable.setText(0,5,"Used-Up Date");
 		viewFullIngredientHistoryFlexTable.getRowFormatter().addStyleName(0, "FlexTableHeader");
 		viewFullIngredientHistoryFlexTable.addStyleName("FlexTable");

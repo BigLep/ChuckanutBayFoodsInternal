@@ -30,6 +30,7 @@ import com.chuckanutbay.webapp.common.shared.DayReportData;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalDto;
+import com.chuckanutbay.webapp.common.shared.IntervalDto;
 import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
 import com.chuckanutbay.webapp.common.shared.WeekReportData;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -165,29 +166,20 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 	}
 
 	@Override
-	public Date getStartOfLastPayPeriodFromServer() {
-		DateTime startOfPayPeriod = new DateTime();
-		DateTime today = new DateTime();
-		if(today.getDayOfMonth() > 15) {
-			startOfPayPeriod = startOfPayPeriod.withDayOfMonth(1);
+	public IntervalDto getLastPayPeriodIntervalFromServer(Date date) {
+		DateTime startOfPayPeriod;
+		DateTime endOfPayPeriod;
+		DateTime dateTime = new DateTime(date);
+		if(dateTime.getDayOfMonth() > 15) {
+			startOfPayPeriod = dateTime.withDayOfMonth(1);
+			endOfPayPeriod = dateTime.withDayOfMonth(15);
 		} else {
-			startOfPayPeriod = startOfPayPeriod.minusMonths(1);
+			startOfPayPeriod = dateTime.minusMonths(1);
 			startOfPayPeriod = startOfPayPeriod.withDayOfMonth(16);
-		}
-		return startOfPayPeriod.toDate();
-	}
-
-	@Override
-	public Date getEndOfLastPayPeriodFromServer() {
-		DateTime endOfPayPeriod = new DateTime();
-		DateTime today = new DateTime();
-		if(today.getDayOfMonth() > 15) {
-			endOfPayPeriod = endOfPayPeriod.withDayOfMonth(15);
-		} else {
-			endOfPayPeriod = endOfPayPeriod.minusMonths(1);
+			endOfPayPeriod = dateTime.minusMonths(1);
 			endOfPayPeriod = endOfPayPeriod.dayOfMonth().withMaximumValue();
 		}
-		return endOfPayPeriod.toDate();
+		return new IntervalDto(startOfPayPeriod.toDate(), endOfPayPeriod.toDate());
 	}
 
 	@Override

@@ -29,6 +29,30 @@ public class EmployeeWorkInterval {
 	private Date endDateTime;
 	private Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages;
 	
+	public EmployeeWorkInterval() {}
+	
+	public EmployeeWorkInterval(Employee employee, Date startDateTime,
+			Date endDateTime) {
+		super();
+		this.employee = employee;
+		this.startDateTime = startDateTime;
+		this.endDateTime = endDateTime;
+	}
+	
+	public EmployeeWorkInterval(
+			Integer id,
+			Employee employee,
+			Date startDateTime,
+			Date endDateTime,
+			Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages) {
+		super();
+		this.id = id;
+		this.employee = employee;
+		this.startDateTime = startDateTime;
+		this.endDateTime = endDateTime;
+		this.employeeWorkIntervalActivityPercentages = employeeWorkIntervalActivityPercentages;
+	}
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)

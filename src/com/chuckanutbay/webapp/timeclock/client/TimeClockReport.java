@@ -1,7 +1,6 @@
 package com.chuckanutbay.webapp.timeclock.client;
-import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetEndOfLastPayPeriodCallback;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetLastPayPeriodIntervalCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetPayPeriodReportDataCallback;
-import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetStartOfLastPayPeriodCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.timeClockService;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -11,6 +10,7 @@ import java.util.List;
 import com.chuckanutbay.webapp.common.client.IconUtil;
 import com.chuckanutbay.webapp.common.shared.DayReportData;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalDto;
+import com.chuckanutbay.webapp.common.shared.IntervalDto;
 import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
 import com.chuckanutbay.webapp.common.shared.WeekReportData;
 import com.google.gwt.core.client.EntryPoint;
@@ -70,8 +70,7 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 		endDateBox.setFormat(new DateBox.DefaultFormat(shortDayOfMonth));
 		startDateBox.setWidth("75px");
 		endDateBox.setWidth("75px");
-		getStartOfLastPayPeriodFromServer();
-		getEndOfLastPayPeriodFromServer();
+		getLastPayPeriodIntervalFromServer();
 		
 		//Setup shiftListBox
 		shiftListBoxLabel.setStyleName("widgetLabel");
@@ -184,27 +183,16 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 	}
 
 	@Override
-	public void getStartOfLastPayPeriodFromServer() {
+	public void getLastPayPeriodIntervalFromServer() {
 		GWT.log("Requesting Start of Pay Period");
-		timeClockService.getStartOfLastPayPeriodFromServer(createGetStartOfLastPayPeriodCallback(this));
+		timeClockService.getLastPayPeriodIntervalFromServer(new Date(), createGetLastPayPeriodIntervalCallback(this));
 	}
 
 	@Override
-	public void getEndOfLastPayPeriodFromServer() {
-		GWT.log("Requesting End of Pay Period");
-		timeClockService.getEndOfLastPayPeriodFromServer(createGetEndOfLastPayPeriodCallback(this));
-	}
-
-	@Override
-	public void onSuccessfulGetStartOfLastPayPeriod(Date date) {
-		GWT.log("Got Start of Pay Period");
-		startDateBox.setValue(date);
-	}
-
-	@Override
-	public void onSuccessfulGetEndOfLastPayPeriod(Date date) {
-		GWT.log("Got End of Pay Period");
-		endDateBox.setValue(date);
+	public void onSuccessfulGetLastPayPeriodInterval(IntervalDto interval) {
+		GWT.log("Got Pay Period Interval");
+		startDateBox.setValue(interval.getStart());
+		endDateBox.setValue(interval.getEnd());
 	}
 	
 	@Override

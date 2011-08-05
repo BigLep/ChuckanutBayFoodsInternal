@@ -6,6 +6,7 @@ import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
+import com.chuckanutbay.webapp.common.shared.IntervalDto;
 import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -30,14 +31,9 @@ public interface TimeClockService extends RemoteService {
 	SortedSet<ActivityDto> getActivities();
 	
 	/**
-	 * Finds the day that the most recently completed pay period started on.
+	 * Finds the start and end of the most recently completed pay period.
 	 */
-	Date getStartOfLastPayPeriodFromServer();
-	
-	/**
-	 * Finds the day that the most recently completed pay period ended on.
-	 */
-	Date getEndOfLastPayPeriodFromServer();
+	IntervalDto getLastPayPeriodIntervalFromServer(Date date);
 	
 	/**
 	 * @param start The first day of the pay period.
