@@ -23,6 +23,6 @@ public class DatabaseResource extends ExternalResource {
 	protected void after() {
 		HibernateUtil.closeSession();
 		SchemaExport schemaExport = new SchemaExport(HibernateUtil.getConfiguration());
-		schemaExport.drop(false, true);
+		schemaExport.drop(true, true);
 	}
 }
