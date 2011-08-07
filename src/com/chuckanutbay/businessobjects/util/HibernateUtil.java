@@ -93,9 +93,17 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * Closes the current {@link Session}.
+	 * Closes the current {@link Session} after first committing any open transactions.
+	 * If the transaction doesn't get closed, then you will get table locks due to the open transactions.
 	 */
 	public static void closeSession() {
+		if (getSession().getTransaction().isActive()) {
+			try {
+				commitTransaction();
+			} catch (HibernateException e) {
+				rollbackTransaction();
+			}
+		}
 		getSession().close();
 	}
 

@@ -2,9 +2,14 @@ package com.chuckanutbay.businessobjects.dao;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Date;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -21,6 +26,14 @@ public class InventoryLotHibernateDaoTest {
 	public final DatabaseResource databaseResource = new DatabaseResource();
 	
 	private final InventoryLotDao dao = new InventoryLotHibernateDao();
+	
+	@Before
+	@After
+	@BeforeClass
+	@AfterClass
+	public void setUp() {
+		
+	}
 	
 	/**
 	 * @see InventoryLotHibernateDao#findInUse()
@@ -47,6 +60,13 @@ public class InventoryLotHibernateDaoTest {
 		// 1 used lot.
 		inventoryLot.setStartUseDatetime(new Date());
 		assertEquals(newArrayList(), dao.findUnused());
+		
+		
+	}
+	
+	@Test
+	public void testTest() {
+		assertFalse(true);
 	}
 
 }

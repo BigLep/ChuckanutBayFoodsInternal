@@ -18,7 +18,11 @@
         <property name="connection.url">jdbc:hsqldb:mem:testdb</property>  
         -->
         <property name="connection.driver_class">org.h2.Driver</property>
-        <property name="connection.url">jdbc:h2:mem:testdb</property>
+        <!-- 
+        	Useful url addtions from http://www.h2database.com/html/features.html#database_url:
+        	;TRACE_LEVEL_SYSTEM_OUT=3 
+        -->
+        <property name="connection.url">jdbc:h2:mem:testdb;MODE=MYSQL</property>
         <property name="connection.username">sa</property>
         <property name="connection.password"></property>
 

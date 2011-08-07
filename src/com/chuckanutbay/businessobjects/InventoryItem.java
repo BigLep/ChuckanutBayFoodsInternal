@@ -45,7 +45,7 @@ public class InventoryItem implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false, length = 10)
+	@Column(name = "id", unique = true, nullable = false)
 	public String getId() {
 		return this.id;
 	}
