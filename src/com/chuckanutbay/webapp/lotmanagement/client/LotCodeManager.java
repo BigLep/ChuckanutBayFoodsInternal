@@ -1,4 +1,4 @@
-package com.chuckanutbay.webapp.lotmanagement.client;
+ package com.chuckanutbay.webapp.lotmanagement.client;
 import static com.chuckanutbay.webapp.common.client.IconUtil.CANCEL;
 import static com.chuckanutbay.webapp.common.client.IconUtil.CHECKMARK;
 import static com.chuckanutbay.webapp.common.client.IconUtil.DATABASE;

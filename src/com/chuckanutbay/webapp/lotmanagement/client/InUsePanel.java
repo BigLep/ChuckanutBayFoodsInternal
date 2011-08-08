@@ -2,10 +2,11 @@ package com.chuckanutbay.webapp.lotmanagement.client;
 
 import static com.chuckanutbay.webapp.common.client.IconUtil.WARNING;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -28,7 +29,8 @@ public class InUsePanel extends LotCodeManagerPanel {
 	private final DateBox dateBox = new DateBox();
 	private final FlexTable inUseIngredientFlexTable = new FlexTable();
 	private DialogBox dialogBox;
-	private final ArrayList<InventoryLotDto> inUseIngredientList = newArrayList();
+	private final List<InventoryLotDto> inUseIngredientList = newArrayList();
+	private final List<InventoryLotDto> modifiedIngredients = newArrayList();
 	private final RpcHelper rpcHelper = new RpcHelper();
 
 	public InUsePanel() {
@@ -81,6 +83,7 @@ public class InUsePanel extends LotCodeManagerPanel {
 					@Override
 					public void onClick(ClickEvent event) {
 						inUseIngredientList.get(rowToMark).setStartUseDatetime(dateBox.getValue());
+						modifiedIngredients.add(inUseIngredientList.get(rowToMark));
 						inUseIngredientFlexTable.clearCell((rowToMark + 1), 5);
 						inUseIngredientFlexTable.setText((rowToMark + 1),4,DATE_FORMAT.format(inUseIngredientList.get(rowToMark).getStartUseDatetime()));
 					}
@@ -104,6 +107,6 @@ public class InUsePanel extends LotCodeManagerPanel {
 
 	@Override
 	void updateDB() {
-		rpcHelper.dbSetInUseIngredients(inUseIngredientList);
+		rpcHelper.dbSetInUseIngredients(modifiedIngredients);
 	}
 }

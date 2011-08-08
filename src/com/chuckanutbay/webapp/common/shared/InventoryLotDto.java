@@ -12,6 +12,10 @@ import com.chuckanutbay.documentation.Terminology;
  */
 public class InventoryLotDto implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String code;
 	private InventoryItemDto inventoryItem;

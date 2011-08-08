@@ -5,14 +5,14 @@ import static com.chuckanutbay.webapp.common.client.IconUtil.DELETE;
 import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
 import static com.chuckanutbay.webapp.common.client.IconUtil.newImage;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -51,7 +51,7 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 		setUpPanel();
 		//Get QBItems List from Database
 		rpcHelper.dbGetQBItems(inventoryItemList, this);
-		log("set qbItemList = to get items");
+		GWT.log("set qbItemList = to get items");
 	}
 	
 	@Override
@@ -225,7 +225,7 @@ public class CheckedInPanel extends LotCodeManagerPanel implements ClickHandler,
 	@Override
 	void updateDB() {
 		rpcHelper.dbSetCheckedInIngredients(checkedInIngredientList);
-		log("updateDB (checked in)");
+		GWT.log("updateDB (checked in)");
 	}
 	
 }

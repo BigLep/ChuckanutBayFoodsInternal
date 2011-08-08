@@ -24,6 +24,7 @@ public abstract class GenericHibernateDao<T, ID extends Serializable> implements
 
 	private final Class<T> persistentClass;
 
+	@SuppressWarnings("unchecked")
 	public GenericHibernateDao() {
 		this.persistentClass = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
@@ -61,8 +62,6 @@ public abstract class GenericHibernateDao<T, ID extends Serializable> implements
 
 	@Override
 	public T makePersistent(T entity) {
-		// TODO: figure out why this works in certain cases
-		// getSession().merge(entity);
 		getSession().saveOrUpdate(entity);
 		return entity;
 	}

@@ -45,7 +45,6 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	private VerticalPanel column1Panel = new VerticalPanel();
 	private SimplePanel column2Panel = new SimplePanel();
 	private FlexTable employeeTable1 = new FlexTable();
-	private SimplePanel column3Panel = new SimplePanel();
 	private FlexTable employeeTable2 = new FlexTable();
 	private RootPanel rootPanel = RootPanel.get("TimeClock");
 	private SimplePanel confirmationPanelContainer = new SimplePanel();
@@ -141,40 +140,31 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 		column1Panel.setSpacing(20);
 		
 		//Setup column2Panel and column3Panel
-		column2Panel.setPixelSize(350, 660);
+		column2Panel.setPixelSize(720, 660);
 		column2Panel.setStyleName("columnPanel");
 			VerticalPanel verticalPanel1 = new VerticalPanel();
-			verticalPanel1.setWidth("376px");
+			verticalPanel1.setWidth("720px");
 				SimplePanel heading = new SimplePanel();
 				heading.add(new Label("Clocked-In"));
 				heading.setStyleName("employeeFlexTableHeader");
 			verticalPanel1.add(heading);
-				SimplePanel flexTablePanel1 = new SimplePanel();
-				flexTablePanel1.setStyleName("employeeFlexTable");
-				flexTablePanel1.add(employeeTable1);
-			verticalPanel1.add(flexTablePanel1);
+					SimplePanel flexTablePanel1 = new SimplePanel();
+					flexTablePanel1.setStyleName("employeeFlexTable");
+					flexTablePanel1.add(employeeTable1);
+					SimplePanel flexTablePanel2 = new SimplePanel();
+					flexTablePanel2.setStyleName("employeeFlexTable");
+					flexTablePanel2.add(employeeTable2);
+				HorizontalPanel hPanel = new HorizontalPanel();
+				hPanel.add(flexTablePanel1);
+				hPanel.add(flexTablePanel2);
+			verticalPanel1.add(hPanel);
 		column2Panel.add(verticalPanel1);
-		
-		column3Panel.setPixelSize(350, 660);
-		column3Panel.setStyleName("columnPanel");
-			VerticalPanel verticalPanel2 = new VerticalPanel();
-			verticalPanel2.setWidth("376px");
-				SimplePanel heading2 = new SimplePanel();
-				heading2.add(new Label("Clocked-In"));
-				heading2.setStyleName("employeeFlexTableHeader");
-			verticalPanel2.add(heading2);
-				SimplePanel flexTablePanel2 = new SimplePanel();
-				flexTablePanel2.setStyleName("employeeFlexTable");
-				flexTablePanel2.add(employeeTable2);
-			verticalPanel2.add(flexTablePanel2);
-		column3Panel.add(verticalPanel2);
 		
 		//Setup columnLayoutPanel
 		backgroundPanel.setStyleName("backgroundPanel");
 		backgroundPanel.setPixelSize(1280, 740);
 		backgroundPanel.add(column1Panel);
 		backgroundPanel.add(column2Panel);
-		backgroundPanel.add(column3Panel);
 		
 		//Setup mainPanel
 		mainPanel.add(backgroundPanel);

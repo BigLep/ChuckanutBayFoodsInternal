@@ -1,7 +1,5 @@
 package com.chuckanutbay.webapp.common.server;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import java.util.Date;
 import java.util.List;
 
@@ -26,36 +24,27 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 	}
 
 	@Override
-	public void setInUseIngredientLots(List<InventoryLotDto> ingredientLotDtos) {
-		// TODO: figure out how to attach objects back to the Hibernate session
-		List<InventoryLot> inventoryLots = Lists.transform(ingredientLotDtos, DtoUtils.fromInventoryLotDtoFunction);
+	public void setInUseIngredientLots(List<InventoryLotDto> modifiedIngredientLotDtos) {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		List<InventoryLot> modifiedInventoryLots = newArrayList();
-		for (InventoryLot inventoryLot : inventoryLots) {
-			for (InventoryLot checkedIn : dao.findUnused()) {
-				if (checkedIn.getId() == inventoryLot.getId() && checkedIn.getStartUseDatetime() != inventoryLot.getStartUseDatetime()) {
-					modifiedInventoryLots.add(inventoryLot);
-					break;
-				}
-			}
-		}
-		for (InventoryLot modifiedInventoryLot : modifiedInventoryLots) {
+		for (InventoryLotDto inventoryLotDto : modifiedIngredientLotDtos) {
+			InventoryLot inventoryLot = dao.findById(inventoryLotDto.getId());
+			inventoryLot.setStartUseDatetime(inventoryLotDto.getStartUseDatetime());
 			for (InventoryLot inUse : dao.findInUse()) {
-				if (inUse.getInventoryItem().getId().equals(modifiedInventoryLot.getInventoryItem().getId())) {
+				if (inUse.getInventoryItem().getId().equals(inventoryLotDto.getInventoryItem().getId()) && inUse.getId() != inventoryLotDto.getId()) {
 					inUse.setEndUseDatetime(new Date());
-					//dao.makePersistent(inUse);
 					break;
 				}
 			}
 		}
-		//dao.makePersistent(inventoryLots);
 	}
 
 	@Override
 	public void setUsedUpInventoryLots(List<InventoryLotDto> usedUpIngredients) {
-		List<InventoryLot> inventoryLots = Lists.transform(usedUpIngredients, DtoUtils.fromInventoryLotDtoFunction);
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		dao.makePersistent(inventoryLots);
+		for (InventoryLotDto inventoryLotDto : usedUpIngredients) {
+			InventoryLot inventoryLot = dao.findById(inventoryLotDto.getId());
+			inventoryLot.setEndUseDatetime(inventoryLotDto.getEndUseDatetime());
+		}
 	}
 
 	@Override

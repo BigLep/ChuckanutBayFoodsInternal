@@ -24,8 +24,6 @@ import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
 import com.chuckanutbay.businessobjects.dao.ActivityDao;
 import com.chuckanutbay.businessobjects.dao.ActivityHibernateDao;
-import com.chuckanutbay.businessobjects.dao.EmployeeDao;
-import com.chuckanutbay.businessobjects.dao.EmployeeHibernateDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalActivityPercentageDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalActivityPercentageHibernateDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalDao;
@@ -46,6 +44,7 @@ public class TimeClockServiceImplTest {
 	/**
 	 *  @see TimeClockServiceImpl#clockOut(EmployeeDto employeeDto)
 	 */
+	@SuppressWarnings("unused")
 	@Test
 	public void testClockOut() {
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
@@ -124,6 +123,7 @@ public class TimeClockServiceImplTest {
 	/**
 	 * @see TimeClockServiceImpl#cancelClockIn(Barcode barcode)
 	 */
+	@SuppressWarnings("unused")
 	@Test
 	public void testCancelClockIn() {
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
@@ -138,11 +138,11 @@ public class TimeClockServiceImplTest {
 		EmployeeWorkInterval employee2WorkInterval1 = oneEmployeeWorkInterval(employee2, new Date(), new Date());
 		EmployeeWorkInterval employee2WorkInterval2 = oneEmployeeWorkInterval(employee2, new Date(), null);
 		
-		assertEquals(newArrayList(employee2WorkInterval2, employee1WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
+		assertEquals(newArrayList(employee1WorkInterval2, employee2WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
 		
 		//Cancel 1 Open interval
 		server.cancelClockIn(1234);
-		assertEquals(newArrayList(employee2WorkInterval1), intervalDao.findOpenEmployeeWorkIntervals());
+		assertEquals(newArrayList(employee2WorkInterval2), intervalDao.findOpenEmployeeWorkIntervals());
 		assertSize(intervalDao.findAll(), 3);
 	}
 	
@@ -197,11 +197,9 @@ public class TimeClockServiceImplTest {
 	 * @see TimeClockServiceImpl#getClockedInEmployees()
 	 */
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void testGetClockedInEmployees() {
-		EmployeeDao employeeDao = new EmployeeHibernateDao();
-		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
-		ActivityDao activityDao = new ActivityHibernateDao();
 		EmployeeWorkIntervalActivityPercentageDao percentageDao = new EmployeeWorkIntervalActivityPercentageHibernateDao();
 		TimeClockServiceImpl server = new TimeClockServiceImpl();
 		

@@ -14,6 +14,7 @@ import com.chuckanutbay.documentation.Technology;
  */
 public class EmployeeHibernateDao extends GenericHibernateDao<Employee,Integer> implements EmployeeDao {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Employee findEmployeeWithBarcodeNumber(Integer barcodeNumber) {
 		// http://stackoverflow.com/questions/870029/hibernate-order-by-association
@@ -27,6 +28,7 @@ public class EmployeeHibernateDao extends GenericHibernateDao<Employee,Integer> 
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Employee> findEmployeesByShift(Integer shift) {
 		Criteria crit = getCriteria();

@@ -109,8 +109,7 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 		ActivityDao dao = new ActivityHibernateDao();
 		return new TreeSet<ActivityDto>(DtoUtils.transform(dao.findAll(), DtoUtils.toActivityDtoFunction));
 	}
-	
-	@SuppressWarnings("unused")
+
 	private static EmployeeDto completeToEmployeeDto(Employee employee) {
 		EmployeeWorkIntervalDao dao = new EmployeeWorkIntervalHibernateDao();
 		

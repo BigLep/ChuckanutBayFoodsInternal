@@ -16,9 +16,13 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
@@ -35,6 +39,7 @@ public class ClockOutDialogBox extends DialogBox {
 	private ClockInOutServerCommunicator serverCommunicator;
 	private EmployeeDto employee;
 	private FlexTable flexTable;
+	private FocusPanel focusPanel = new FocusPanel();
 	private int xPosition;
 	private int yPosition;
 	private List<EmployeeWorkIntervalActivityPercentageDto> actvityPercentages = new ArrayList<EmployeeWorkIntervalActivityPercentageDto>();
@@ -79,7 +84,30 @@ public class ClockOutDialogBox extends DialogBox {
 		SimplePanel mainPanel = new SimplePanel();
 		mainPanel.setPixelSize(this.width, height);
 		mainPanel.add(flexTable);
-		this.setWidget(mainPanel);
+		focusPanel.add(mainPanel);
+		this.setWidget(focusPanel);
+		focusPanel.addKeyDownHandler(new KeyDownHandler() {
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				GWT.log("ASCII code: " + event.getNativeKeyCode());
+				final int ENTER = 13;
+				if (event.getNativeKeyCode() == ENTER) {
+					clockOutButton.click();
+				}
+			}
+		});
+	}
+	
+	@Override
+	public void show() {
+		super.show();
+		Timer timer = new Timer() {
+			@Override
+			public void run() {
+				focusPanel.setFocus(true);
+			}
+		};
+		timer.schedule(100);
 	}
 
 	private void setupDialogBox() {
@@ -129,6 +157,7 @@ public class ClockOutDialogBox extends DialogBox {
 					percentageDto.setPercentage(selectedInteger);
 					GWT.log("ClockOutDialogBox: Changed " + percentageDto.getActivity().getName() + " percentage to " + selectedInteger);
 					updateTotalPercentageListBox();
+					focusPanel.setFocus(true);
 				}
 			});
 			listBox.setItemSelected(activityPercentage.getPercentage()/20, true);
@@ -196,8 +225,6 @@ public class ClockOutDialogBox extends DialogBox {
 			totalListBox.addItem(totalPercentage + "%");
 		}
 		clockOutButton.setEnabled(totalPercentage == 100);
-		GWT.log("ClockOutDialogBox: 456789012" +
-				"Updated");
 	}
 	
 	/**

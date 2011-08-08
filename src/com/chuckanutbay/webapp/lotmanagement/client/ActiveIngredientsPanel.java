@@ -1,14 +1,13 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -23,7 +22,6 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 	private final Label dateToSearchLabel = new Label("Today's Date:");
 	private final TextBox dateBox = new TextBox();
 	private final FlexTable activeIngredientsFlexTable = new FlexTable();
-	private DialogBox dialogBox;
 	private final List<InventoryLotDto> activeIngredientList = newArrayList();
 	private final RpcHelper rpcHelper = new RpcHelper();
 	
@@ -42,7 +40,7 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 			//Set Up dateToSearchPanel
 			dateToSearchPanel.setStyleName("headerPanel");
 			//Set Up activeIngredientsFlexTable
-			setupactiveIngredientsFlexTableHeader();
+			setupActiveIngredientsFlexTableHeader();
 		//Add components to dateToSearchPanel
 		dateToSearchPanel.add(dateToSearchLabel);
 		dateToSearchPanel.add(dateBox);
@@ -51,10 +49,10 @@ public class ActiveIngredientsPanel extends LotCodeManagerPanel {
 		activeIngredientsPanel.add(dateToSearchPanel);
 		activeIngredientsPanel.add(activeIngredientsFlexTable);
 		//Create Dialog Box
-		dialogBox = new LotCodeManagerDialogBox(this, "View Active Ingredients", false, true);
+		new LotCodeManagerDialogBox(this, "View Active Ingredients", false, true);
 	}
 
-	private void setupactiveIngredientsFlexTableHeader() {
+	private void setupActiveIngredientsFlexTableHeader() {
 		activeIngredientsFlexTable.setText(0,0,"Lot Code");
 		activeIngredientsFlexTable.setText(0,1,"Ingredient Type");
 		activeIngredientsFlexTable.setText(0,2,"Quantity");

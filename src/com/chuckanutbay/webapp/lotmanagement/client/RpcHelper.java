@@ -1,17 +1,15 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
-
 import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.webapp.common.client.InventoryItemServiceAsync;
 import com.chuckanutbay.webapp.common.client.InventoryLotServiceAsync;
-import com.chuckanutbay.webapp.common.client.ServiceUtils.*;
 import com.chuckanutbay.webapp.common.client.ServiceUtils;
+import com.chuckanutbay.webapp.common.client.ServiceUtils.DefaultAsyncCallback;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class RpcHelper {
@@ -36,7 +34,7 @@ public class RpcHelper {
 		return new DefaultAsyncCallback<List<InventoryItemDto>>() {
 			@Override
 			public void onSuccess(List<InventoryItemDto> dbQBItemList) {
-				log("success on server");
+				GWT.log("success on server");
 				// TODO: This null check, clear, addAll sequence can be put into a utility method in the base module: CollectionUtils.replace(Collection<T> c, Collection<T> replacements)
 				if (inventoryItemList != null) {
 					inventoryItemList.clear();
@@ -44,7 +42,7 @@ public class RpcHelper {
 				inventoryItemList.addAll(dbQBItemList);
 				// TODO: put this null and size check into a utility method within the base module: CollectionUtils.isEmpty(Collection c)
 				if(inventoryItemList != null && inventoryItemList.size() > 0) {
-					log("A good return is coming");
+					GWT.log("A good return is coming");
 				}
 				senderObject.populateFlexTable();
 			}
@@ -55,13 +53,13 @@ public class RpcHelper {
 		return new DefaultAsyncCallback<List<InventoryLotDto>>() {
 			@Override
 			public void onSuccess(List<InventoryLotDto> dbItemInInventoryList) {
-				log("success on server");
+				GWT.log("success on server");
 				if (inventoryLotList != null) {
 					inventoryLotList.clear();
 				}
 				inventoryLotList.addAll(dbItemInInventoryList);
 				if(inventoryLotList != null && inventoryLotList.size() > 0) {
-					log("A good return is coming");
+					GWT.log("A good return is coming");
 				}
 				senderObject.populateFlexTable();
 			}

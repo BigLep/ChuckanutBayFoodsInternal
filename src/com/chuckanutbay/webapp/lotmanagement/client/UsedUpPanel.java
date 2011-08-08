@@ -2,14 +2,14 @@ package com.chuckanutbay.webapp.lotmanagement.client;
 
 import static com.chuckanutbay.webapp.common.client.IconUtil.CANCEL;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.log;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -31,6 +31,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 	private DialogBox dialogBox;
 	private final FlexTable usedUpIngredientFlexTable = new FlexTable();
 	private final List<InventoryLotDto> usedUpIngredientList = newArrayList();
+	private final List<InventoryLotDto> modifiedIngredientList = newArrayList();
 	private final RpcHelper rpcHelper = new RpcHelper();
 	
 	public UsedUpPanel() {
@@ -40,7 +41,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 	
 	@Override
 	public void setUpPanel() {
-		log("starting set up");
+		GWT.log("starting set up");
 		//Set Up Components
 			//Set Up dateBox
 			dateBox.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
@@ -71,7 +72,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 	
 	@Override
 	public void populateFlexTable() {
-		log("populating");
+		GWT.log("populating");
 		if(usedUpIngredientList.isEmpty()) {
 			Window.alert("There are no Ingredients to mark");
 		}
@@ -86,6 +87,7 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 			        @Override
 					public void onClick(ClickEvent event) {
 			        	usedUpIngredientList.get(rowToMark).setEndUseDatetime(dateBox.getValue());
+			        	modifiedIngredientList.add(usedUpIngredientList.get(rowToMark));
 			        	usedUpIngredientFlexTable.clearCell((rowToMark + 1), 6);
 						usedUpIngredientFlexTable.setText((rowToMark + 1),5,DATE_FORMAT.format(usedUpIngredientList.get(rowToMark).getEndUseDatetime()));
 			        }
@@ -110,6 +112,6 @@ public class UsedUpPanel extends LotCodeManagerPanel {
 
 	@Override
 	void updateDB() {
-		rpcHelper.dbSetUsedUpIngredients(usedUpIngredientList);
+		rpcHelper.dbSetUsedUpIngredients(modifiedIngredientList);
 	}
 }

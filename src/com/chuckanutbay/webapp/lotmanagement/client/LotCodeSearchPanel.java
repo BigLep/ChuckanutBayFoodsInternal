@@ -2,7 +2,7 @@ package com.chuckanutbay.webapp.lotmanagement.client;
 import static com.chuckanutbay.webapp.common.client.IconUtil.SEARCH;
 import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
-import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.newArrayList;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.ArrayList;
 

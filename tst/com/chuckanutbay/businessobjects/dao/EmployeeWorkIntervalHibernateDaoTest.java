@@ -31,6 +31,7 @@ public class EmployeeWorkIntervalHibernateDaoTest {
 	/**
 	 * @see EmployeeWorkIntervalDao#findEmployeeWorkIntervalsBetweenDates(Date date, Employee employee)
 	 */
+	@SuppressWarnings("unused")
 	@Test
 	public void testFindEmployeeWorkIntervalsSinceDate() {
 		
@@ -60,6 +61,7 @@ public class EmployeeWorkIntervalHibernateDaoTest {
 	 * @see EmployeeWorkIntervalDao#findOpenEmployeeWorkIntervals()
 	 */
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void testFindOpenEmployeeWorkIntervals() {
 		// Empty database
@@ -85,6 +87,7 @@ public class EmployeeWorkIntervalHibernateDaoTest {
 	 * @see EmployeeWorkIntervalDao#findOpenEmployeeWorkInterval(Employee employee)
 	 */
 
+	@SuppressWarnings("unused")
 	@Test
 	public void testFindOpenEmployeeWorkInterval() {
 		

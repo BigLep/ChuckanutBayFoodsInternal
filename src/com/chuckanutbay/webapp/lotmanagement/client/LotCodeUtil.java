@@ -1,19 +1,13 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import com.chuckanutbay.documentation.ReferenceSource.EffectiveJava;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.FocusWidget;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 // FIXME: add javadocs
@@ -40,15 +34,6 @@ public class LotCodeUtil {
 
     public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("MMM d, yyyy");
 
-
-    /**
-     * @see EffectiveJava#Static_factories_instead_of_constructors
-     * @param <T>
-     * @return new {@link ArrayList}.
-     */
-    public static <T> ArrayList<T> newArrayList() {
-    	return new ArrayList<T>();
-    }
     
     public static void addMouseOverHandler(MouseOverHandler handler, FocusWidget... widgets) {
 		for (FocusWidget widget : widgets) {

@@ -10,6 +10,10 @@ import com.chuckanutbay.documentation.Terminology;
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
 public class InventoryItemDto implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String description;
 

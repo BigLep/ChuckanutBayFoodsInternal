@@ -26,6 +26,10 @@ import com.google.common.base.Objects;
 @Table(name = "inventory_lots")
 public class InventoryLot implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private InventoryItem inventoryItem;
 	private String code;

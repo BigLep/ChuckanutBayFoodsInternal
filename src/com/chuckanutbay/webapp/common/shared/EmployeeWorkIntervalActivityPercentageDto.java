@@ -10,6 +10,10 @@ import com.chuckanutbay.documentation.Terminology;
  * @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
  */
 public class EmployeeWorkIntervalActivityPercentageDto implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public ActivityDto activity;
 	public Integer percentage;
 	

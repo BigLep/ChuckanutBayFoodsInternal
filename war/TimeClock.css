@@ -116,26 +116,15 @@
 	text-align: right;
 	text-shadow: 1px 1px 2px #aaa;
 }
+
 .clockOutDialogBoxButton {
-	background: red;
-	border-radius: 7px;
-	color: White;
-	font-size: 24px;
+	font-size: 20px;
 	font-family: Tahoma, Geneva;
-	font-weight: bold;
-	text-align: center;
-	text-shadow: 1px 1px 2px #aaa;
 }
 
 .clockOutDialogBoxButton[Disabled] {
-	background: darkred;
-	border-radius: 7px;
-	color: lightgrey;
-	font-size: 24px;
+	font-size: 20px;
 	font-family: Tahoma, Geneva;
-	font-weight: bold;
-	text-align: center;
-	text-shadow: 1px 1px 2px #aaa;
 }
 
 .clockOutDialogBoxFlexTable {
