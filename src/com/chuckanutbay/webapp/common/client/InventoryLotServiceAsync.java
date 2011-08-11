@@ -8,22 +8,22 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface InventoryLotServiceAsync {
 
-	void getUnusedIngredientLots(AsyncCallback<List<InventoryLotDto>> callback);
+	void getUnusedInventoryLots(AsyncCallback<List<InventoryLotDto>> callback);
 
-	void getDateMatchInUseIngredients(Date date,
+	void getDateMatchInUseInventory(Date date,
 			AsyncCallback<List<InventoryLotDto>> callback);
 
-	void getFullIngredientHistory(AsyncCallback<List<InventoryLotDto>> callback);
+	void getFullInventoryHistory(AsyncCallback<List<InventoryLotDto>> callback);
 
-	void getInUseIngredientLots(AsyncCallback<List<InventoryLotDto>> callback);
+	void getInUseInventoryLots(AsyncCallback<List<InventoryLotDto>> callback);
 
-	void getLotCodeMatchIngredients(String lotCode,
+	void getLotCodeMatchInventory(String lotCode,
 			AsyncCallback<List<InventoryLotDto>> callback);
 
-	void setInUseIngredientLots(List<InventoryLotDto> inventoryLotDtos,
+	void setInUseInventoryLots(List<InventoryLotDto> inventoryLotDtos,
 			AsyncCallback<Void> callback);
 
-	void setUnusedIngredientLots(List<InventoryLotDto> inventoryLotDtos,
+	void setUnusedInventoryLots(List<InventoryLotDto> inventoryLotDtos,
 			AsyncCallback<Void> callback);
 
 	void setUsedUpInventoryLots(List<InventoryLotDto> inventoryLotDtos,

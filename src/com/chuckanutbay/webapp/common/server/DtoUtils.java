@@ -123,6 +123,7 @@ public class DtoUtils {
 			output.setId(input.getId());
 			output.setCode(input.getCode());
 			output.setInventoryItem(DtoUtils.toInventoryItemDtoFunction.apply(input.getInventoryItem()));
+			output.setQuantity(input.getQuantity());
 			output.setReceivedDatetime(input.getReceivedDatetime());
 			output.setStartUseDatetime(input.getStartUseDatetime());
 			output.setEndUseDatetime(input.getEndUseDatetime());
@@ -137,7 +138,7 @@ public class DtoUtils {
 			output.setId(input.getId());
 			output.setCode(input.getCode());
 			output.setInventoryItem(DtoUtils.fromInventoryItemDtoFunction.apply(input.getInventoryItem()));
-			output.setQuantity(1);
+			output.setQuantity(input.getQuantity());
 			output.setReceivedDatetime(input.getReceivedDatetime());
 			output.setStartUseDatetime(input.getStartUseDatetime());
 			output.setEndUseDatetime(input.getEndUseDatetime());

@@ -2,15 +2,12 @@ package com.chuckanutbay.businessobjects;
 
 // Generated Oct 20, 2010 1:24:33 PM by Hibernate Tools 3.4.0.Beta1
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -48,7 +45,6 @@ public class InventoryItem implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public String getId() {
 		return this.id;
@@ -58,7 +54,7 @@ public class InventoryItem implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "description", nullable = false, length = 65535)
+	@Column(name = "description", nullable = false, length = 1024)
 	public String getDescription() {
 		return this.description;
 	}

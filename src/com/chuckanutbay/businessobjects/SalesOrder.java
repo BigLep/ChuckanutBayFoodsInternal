@@ -25,7 +25,7 @@ public class SalesOrder {
 	private String addressLineOne;
 	private String addressLineTwo;
 	private String addressLineThree;
-	private Integer orderClosed;
+	private boolean orderClosed;
 	private Set<SalesOrderLineItem> salesOrderLineItems;
 	
 	@Id
@@ -88,17 +88,11 @@ public class SalesOrder {
 	}
 	
 	@Column(name = "order_closed", nullable = false, length = 1)
-	public Integer getOrderClosed() {
+	public boolean getOrderClosed() {
 		return orderClosed;
 	}
-	public void setOrderClosed(Integer orderClosed) {
-		this.orderClosed = orderClosed;
-	}
-	public boolean getOrderClosedBoolean() {
-		return (orderClosed == 0) ? false : true;
-	}
 	public void setOrderClosed(boolean orderClosed) {
-		this.orderClosed = orderClosed ? 1 : 0;
+		this.orderClosed = orderClosed;
 	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "salesOrder")

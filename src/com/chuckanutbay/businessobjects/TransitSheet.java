@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
 public class TransitSheet {
 	private Integer id;
 	private SalesOrderLineItem salesOrderLineItem;
-	private QuickbooksItem qbItem;
+	private QuickbooksItem quickbooksItem;
 	private Date bakedDateTime;
 	private Integer crew;
 	private Integer cakes;
@@ -49,11 +49,11 @@ public class TransitSheet {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "qb_item_id", nullable = false)
-	public QuickbooksItem getQbItem() {
-		return qbItem;
+	public QuickbooksItem getQuickbooksItem() {
+		return quickbooksItem;
 	}
-	public void setQbItem(QuickbooksItem qbItem) {
-		this.qbItem = qbItem;
+	public void setQuickbooksItem(QuickbooksItem quickbooksItem) {
+		this.quickbooksItem = quickbooksItem;
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)

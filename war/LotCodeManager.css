@@ -2,7 +2,7 @@
 .FlexTable {
   border: 1px solid silver;
   padding: 2px;
-  width: 825px;
+  width: 925px;
   border-radius: 5px;
 }
 
@@ -11,7 +11,7 @@
   text-align: center;
   color: white;
   font-weight: bold;
-  width: 825px;
+  width: 925px;
 }
 
 .roundedCorners button {
@@ -55,7 +55,7 @@ width: 80px;
 }
 
 .headerPanel {
-  width: 825px;
+  width: 925px;
 	padding: 4px;
 	border: 1px solid Silver;
 	spacing: 5px;

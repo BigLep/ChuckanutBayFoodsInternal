@@ -14,6 +14,11 @@ import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
 import com.chuckanutbay.businessobjects.EmployeeWorkIntervalActivityPercentage;
 import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
+import com.chuckanutbay.businessobjects.PackagingTransaction;
+import com.chuckanutbay.businessobjects.QuickbooksItem;
+import com.chuckanutbay.businessobjects.SalesOrder;
+import com.chuckanutbay.businessobjects.SalesOrderLineItem;
+import com.chuckanutbay.businessobjects.TransitSheet;
 import com.chuckanutbay.documentation.ReferenceSource.EffectiveJava;
 import com.chuckanutbay.util.ObjectUtilsExtensions;
 import com.chuckanutbay.util.SystemUtilsExtensions;
@@ -47,6 +52,11 @@ public class HibernateUtil {
 			.addAnnotatedClass(Activity.class)
 			.addAnnotatedClass(InventoryItem.class)
 			.addAnnotatedClass(InventoryLot.class)
+			.addAnnotatedClass(PackagingTransaction.class)
+			.addAnnotatedClass(QuickbooksItem.class)
+			.addAnnotatedClass(SalesOrder.class)
+			.addAnnotatedClass(SalesOrderLineItem.class)
+			.addAnnotatedClass(TransitSheet.class)
 			.configure(configFilePath);
 	}
 

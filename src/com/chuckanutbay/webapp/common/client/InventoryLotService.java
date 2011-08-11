@@ -17,25 +17,25 @@ public interface InventoryLotService extends RemoteService {
 	 * @return {@link InventoryLotDto}s that have been entered in but not started to be used.
 	 */
 	// FIXME: can we rename to getUnused
-	List<InventoryLotDto> getUnusedIngredientLots();
+	List<InventoryLotDto> getUnusedInventoryLots();
 
 	/**
 	 * @param inventoryLotDtos {@link InventoryLotDto}s that should be checked in.
 	 */
 	// FIXME: can we rename to setAsUnused?
-	void setUnusedIngredientLots(List<InventoryLotDto> inventoryLotDtos);
+	void setUnusedInventoryLots(List<InventoryLotDto> inventoryLotDtos);
 
 	/**
 	 * @return {@link InventoryLotDto}s that are currently active.
 	 */
 	// FIXME: rename to getInUse
-	List<InventoryLotDto> getInUseIngredientLots();
+	List<InventoryLotDto> getInUseInventoryLots();
 
 	/**
 	 * @param inventoryLotDtos {@link InventoryLotDto}s that should be marked as in use.
 	 */
 	// FIXME: can we rename to setAsInUse
-	void setInUseIngredientLots(List<InventoryLotDto> inventoryLotDtos);
+	void setInUseInventoryLots(List<InventoryLotDto> inventoryLotDtos);
 
 	/**
 	 * @param inventoryLotDtos {@link InventoryLotDto}s that should be marked as used up.
@@ -45,13 +45,13 @@ public interface InventoryLotService extends RemoteService {
 
 	// FIXME: rename to getInUseOnDate ?
 	// TODO: add javadocs
-	List<InventoryLotDto> getDateMatchInUseIngredients(Date date);
+	List<InventoryLotDto> getDateMatchInUseInventory(Date date);
 
 	// FIXME: rename to getByLotCode?
 	// TODO: add javadocs
-	List<InventoryLotDto> getLotCodeMatchIngredients(String lotCode);
+	List<InventoryLotDto> getLotCodeMatchInventory(String lotCode);
 
 	// FIXME: rename to getAll ?
 	// TODO: add javadocs
-	List<InventoryLotDto> getFullIngredientHistory();
+	List<InventoryLotDto> getFullInventoryHistory();
 }

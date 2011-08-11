@@ -23,6 +23,11 @@ public class InventoryLotDto implements Serializable {
 	private Date receivedDatetime;
 	private Date startUseDatetime;
 	private Date endUseDatetime;
+	private InventoryLotStickerColor inventoryLotStickerColor;
+	
+	public static enum InventoryLotStickerColor {
+		blue, green
+	}
 
 	/**
 	 *  @see "http://code.google.com/webtoolkit/doc/latest/tutorial/RPC.html#serialize"
@@ -44,6 +49,7 @@ public class InventoryLotDto implements Serializable {
 		this.receivedDatetime = e.getReceivedDatetime();
 		this.startUseDatetime = e.getStartUseDatetime();
 		this.endUseDatetime = e.getEndUseDatetime();
+		this.inventoryLotStickerColor = e.getInventoryLotStickerColor();
 	}
 
 	public void setReceivedDatetime(Date receivedDatetime) {
@@ -100,5 +106,13 @@ public class InventoryLotDto implements Serializable {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public InventoryLotStickerColor getInventoryLotStickerColor() {
+		return inventoryLotStickerColor;
+	}
+
+	public void setInventoryLotStickerColor(InventoryLotStickerColor inventoryLotStickerColor) {
+		this.inventoryLotStickerColor = inventoryLotStickerColor;
 	}
 }

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class SalesOrderLineItem {
 	private Integer id;
 	private SalesOrder salesOrder;
-	private QuickbooksItem qbItem;
+	private QuickbooksItem quickbooksItem;
 	private Integer cases;
 	private Double amount;
 	private Set<TransitSheet> transitSheets;
@@ -45,11 +45,11 @@ public class SalesOrderLineItem {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "qb_item_id", nullable = false)
-	public QuickbooksItem getQbItem() {
-		return qbItem;
+	public QuickbooksItem getQuickbooksItem() {
+		return quickbooksItem;
 	}
-	public void setQbItem(QuickbooksItem qbItem) {
-		this.qbItem = qbItem;
+	public void setQuickbooksItem(QuickbooksItem quickbooksItem) {
+		this.quickbooksItem = quickbooksItem;
 	}
 	
 	@Column(name = "cases", nullable = false, length = 10)
