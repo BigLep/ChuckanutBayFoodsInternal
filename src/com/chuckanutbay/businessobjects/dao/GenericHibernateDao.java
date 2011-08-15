@@ -79,6 +79,19 @@ public abstract class GenericHibernateDao<T, ID extends Serializable> implements
 	public void makeTransient(T entity) {
 		getSession().delete(entity);
 	}
+	
+	@Override
+	public void makeTransient(List<T> entities) {
+		for (T entity : entities) {
+			getSession().delete(entity);
+		}
+	}
+	
+	@Override
+	public T refresh(T entity) {
+		getSession().refresh(entity);
+		return entity;
+	}
 
 	public void flush() {
 		getSession().flush();

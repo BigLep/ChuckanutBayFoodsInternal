@@ -14,6 +14,7 @@ import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
 import com.chuckanutbay.businessobjects.EmployeeWorkIntervalActivityPercentage;
 import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
+import com.chuckanutbay.businessobjects.InventoryLotStickerColor;
 import com.chuckanutbay.businessobjects.PackagingTransaction;
 import com.chuckanutbay.businessobjects.QuickbooksItem;
 import com.chuckanutbay.businessobjects.SalesOrder;
@@ -52,6 +53,7 @@ public class HibernateUtil {
 			.addAnnotatedClass(Activity.class)
 			.addAnnotatedClass(InventoryItem.class)
 			.addAnnotatedClass(InventoryLot.class)
+			.addAnnotatedClass(InventoryLotStickerColor.class)
 			.addAnnotatedClass(PackagingTransaction.class)
 			.addAnnotatedClass(QuickbooksItem.class)
 			.addAnnotatedClass(SalesOrder.class)

@@ -25,6 +25,11 @@ public class IconUtil {
 	public static final String WHITE_LOGO = "icons/white_logo.png";
 	public static final String WHITE_LOGO_NO_ISLAND = "icons/white_logo_no_island.png";
 	public static final String LOGO = "icons/chuckanutbayfoodslogo1.jpg";
+	public static final String ORANGE = "icons/orange.png";
+	public static final String YELLOW = "icons/yellow.png";
+	public static final String GREEN = "icons/green.png";
+	public static final String BLUE = "icons/blue.png";
+	public static final String PURPLE = "icons/purple.png";
 	
 	public static Image newImage(String image) {
 		return new Image(image);

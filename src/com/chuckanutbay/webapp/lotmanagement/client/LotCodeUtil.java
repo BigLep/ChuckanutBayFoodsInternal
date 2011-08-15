@@ -3,9 +3,12 @@ package com.chuckanutbay.webapp.lotmanagement.client;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import com.chuckanutbay.webapp.common.client.IconUtil;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
+import com.chuckanutbay.webapp.common.shared.InventoryLotStickerColorDto;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.DateCell;
+import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutHandler;
@@ -31,6 +34,7 @@ public class LotCodeUtil {
 	
 	public static final InventoryLotHeader[] IN_USE_HEADERS = {
 		InventoryLotHeader.CheckBox,
+		InventoryLotHeader.Color, 
 		InventoryLotHeader.LotCode, 
 		InventoryLotHeader.Description, 
 		InventoryLotHeader.Qty, 
@@ -40,6 +44,7 @@ public class LotCodeUtil {
 	
 	public static final InventoryLotHeader[] USED_UP_HEADERS = {
 		InventoryLotHeader.CheckBox,
+		InventoryLotHeader.Color, 
 		InventoryLotHeader.LotCode, 
 		InventoryLotHeader.Description, 
 		InventoryLotHeader.Qty, 
@@ -49,6 +54,7 @@ public class LotCodeUtil {
 	};
 	
 	public static final InventoryLotHeader[] ACTIVE_INVENTORY_HEADERS = {
+		InventoryLotHeader.Color, 
 		InventoryLotHeader.LotCode, 
 		InventoryLotHeader.Description, 
 		InventoryLotHeader.Qty, 
@@ -57,6 +63,7 @@ public class LotCodeUtil {
 	};
 	
 	public static final InventoryLotHeader[] CHECKED_IN_PANEL_HEADERS = {
+		InventoryLotHeader.Color, 
 		InventoryLotHeader.LotCode, 
 		InventoryLotHeader.Description, 
 		InventoryLotHeader.Qty, 
@@ -65,6 +72,7 @@ public class LotCodeUtil {
 	};
 	
 	public static final InventoryLotHeader[] DEFAULT_HEADERS = {
+		InventoryLotHeader.Color, 
 		InventoryLotHeader.LotCode, 
 		InventoryLotHeader.Description, 
 		InventoryLotHeader.Qty, 
@@ -74,7 +82,7 @@ public class LotCodeUtil {
 	};
 	
 	public static enum InventoryLotHeader {
-		LotCode, Description, Qty, CheckedInDate, InUseDate, UsedUpDate, CheckBox, RemoveCheckBox
+		LotCode, Description, Qty, CheckedInDate, InUseDate, UsedUpDate, CheckBox, RemoveCheckBox, Color
 	}
 	
 	/**
@@ -164,6 +172,13 @@ public class LotCodeUtil {
     	    		return object.getEndUseDatetime();
     	    	}
     	    };
+    	case Color:
+    		return new Column<InventoryLotDto, String>(new ImageCell()) {
+    	    	@Override
+    	    	public String getValue(InventoryLotDto object) {
+    	    		return toImageUrl(object.getInventoryLotStickerColor());
+    	    	}
+    	    };
     	case RemoveCheckBox:
     	case CheckBox:
     		return new Column<InventoryLotDto, Boolean>(new CheckboxCell(true, false)) {
@@ -185,6 +200,7 @@ public class LotCodeUtil {
     	case InUseDate: return "In-Use Date";
     	case UsedUpDate: return "Used-Up Date";
     	case RemoveCheckBox: return "Remove";
+    	case Color: return "Color";
     	}
 		return "";
     }
@@ -203,5 +219,21 @@ public class LotCodeUtil {
 		} else {
 			return lotCode;
 		}
+    }
+    
+    public static String toImageUrl(InventoryLotStickerColorDto stickerColor) {
+    	if (stickerColor.getName().equals("Orange")) {
+    		return IconUtil.ORANGE;
+    	} else if (stickerColor.getName().equals("Yellow")) {
+    		return IconUtil.YELLOW;
+    	} else if (stickerColor.getName().equals("Green")) {
+    		return IconUtil.GREEN;
+    	} else if (stickerColor.getName().equals("Blue")) {
+    		return IconUtil.BLUE;
+    	} else if (stickerColor.getName().equals("Purple")) {
+    		return IconUtil.PURPLE;
+    	} else {
+        	return null;
+    	}
     }
 }

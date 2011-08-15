@@ -27,4 +27,8 @@ public interface GenericDao<T, ID extends Serializable> {
     List<T> makePersistent(List<T> entities);
 
     void makeTransient(T entity);
+    
+    void makeTransient(List<T> entities);
+    
+    T refresh(T entity);
 }

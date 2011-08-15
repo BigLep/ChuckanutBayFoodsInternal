@@ -19,13 +19,13 @@ public class ActiveInventoryPanel extends LotCodeManagerDialogBox {
 	private final TextBox dateBox = new TextBox();
 	
 	public ActiveInventoryPanel() {
-		super (ACTIVE_INVENTORY_ITEMS_TITLE, false, true);
-		createInventoryLotService().getInUseInventoryLots(createInventoryLotServiceCallback(this));
+		super (ACTIVE_INVENTORY_ITEMS_TITLE, false, false);
+		createInventoryLotService().getInUse(createInventoryLotServiceCallback(this));
 		center();
 	}
 
 	@Override
-	public void updateDB() {
+	public void onSave() {
 		// Nothing to Update
 	}
 

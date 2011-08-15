@@ -8,25 +8,28 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface InventoryLotServiceAsync {
 
-	void getUnusedInventoryLots(AsyncCallback<List<InventoryLotDto>> callback);
+	void getUnused(AsyncCallback<List<InventoryLotDto>> callback);
 
-	void getDateMatchInUseInventory(Date date,
+	void getInUseOnDate(Date date,
 			AsyncCallback<List<InventoryLotDto>> callback);
 
-	void getFullInventoryHistory(AsyncCallback<List<InventoryLotDto>> callback);
+	void getAll(AsyncCallback<List<InventoryLotDto>> callback);
 
-	void getInUseInventoryLots(AsyncCallback<List<InventoryLotDto>> callback);
+	void getInUse(AsyncCallback<List<InventoryLotDto>> callback);
 
-	void getLotCodeMatchInventory(String lotCode,
+	void getByLotCode(String lotCode,
 			AsyncCallback<List<InventoryLotDto>> callback);
 
-	void setInUseInventoryLots(List<InventoryLotDto> inventoryLotDtos,
+	void setAsInUse(List<InventoryLotDto> inventoryLotDtos,
 			AsyncCallback<Void> callback);
 
-	void setUnusedInventoryLots(List<InventoryLotDto> inventoryLotDtos,
+	void setAsUnused(InventoryLotDto inventoryLotDto,
+			AsyncCallback<InventoryLotDto> callback);
+
+	void setAsUsedUp(List<InventoryLotDto> inventoryLotDtos,
 			AsyncCallback<Void> callback);
 
-	void setUsedUpInventoryLots(List<InventoryLotDto> inventoryLotDtos,
+	void removeUnused(List<InventoryLotDto> inventoryLotDtos,
 			AsyncCallback<Void> callback);
 
 }

@@ -11,6 +11,12 @@ import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalActivityPercenta
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalActivityPercentageHibernateDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalDao;
 import com.chuckanutbay.businessobjects.dao.EmployeeWorkIntervalHibernateDao;
+import com.chuckanutbay.businessobjects.dao.InventoryItemDao;
+import com.chuckanutbay.businessobjects.dao.InventoryItemHibernateDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotHibernateDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotStickerColorDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotStickerColorHibernateDao;
 import com.google.gwt.dev.util.collect.HashSet;
 
 /**
@@ -75,5 +81,26 @@ public class BusinessObjects {
 		ActivityDao dao = new ActivityHibernateDao();
 		dao.makePersistent(activity);
 		return activity;
+	}
+	
+	public static InventoryItem oneInventoryItem(String id, String description) {
+		InventoryItem inventoryItem = new InventoryItem(id, description);
+		InventoryItemDao dao = new InventoryItemHibernateDao();
+		dao.makePersistent(inventoryItem);
+		return inventoryItem;
+	}
+	
+	public static InventoryLotStickerColor oneInventoryLotStickerColor(String name) {
+		InventoryLotStickerColor color = new InventoryLotStickerColor(name);
+		InventoryLotStickerColorDao dao = new InventoryLotStickerColorHibernateDao();
+		dao.makePersistent(color);
+		return color;
+	}
+	
+	public static InventoryLot oneInventoryLot(InventoryLotStickerColor color, InventoryItem inventoryItem, String code, Integer qty, Date checkedIn, Date inUse, Date usedUp) {
+		InventoryLot lot = new InventoryLot(color, inventoryItem, code, qty, checkedIn, inUse, usedUp);
+		InventoryLotDao dao = new InventoryLotHibernateDao();
+		dao.makePersistent(lot);
+		return lot;
 	}
 }

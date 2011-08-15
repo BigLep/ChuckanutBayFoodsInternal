@@ -23,16 +23,16 @@ public class InUsePanel extends LotCodeManagerDialogBox implements SelectionChan
 	private final DateBox dateBox = new DateBox();
 
 	public InUsePanel() {
-		super (IN_USE_TITLE, true, true);
-		createInventoryLotService().getUnusedInventoryLots(createInventoryLotServiceCallback(this));
+		super (IN_USE_TITLE, true, false);
+		createInventoryLotService().getUnused(createInventoryLotServiceCallback(this));
 		center();
 		addSelectionChangeHandler(this);
 	}
 
 	@Override
-	void updateDB() {
+	protected void onSave() {
 		MultiSelectionModel<InventoryLotDto> model = (MultiSelectionModel<InventoryLotDto>) getSelectionModel();
-		createInventoryLotService().setInUseInventoryLots(newArrayList(model.getSelectedSet()), VOID_CALLBACK);
+		createInventoryLotService().setAsInUse(newArrayList(model.getSelectedSet()), VOID_CALLBACK);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class InUsePanel extends LotCodeManagerDialogBox implements SelectionChan
 	@Override
 	public void onSelectionChange(SelectionChangeEvent event) {
 		MultiSelectionModel<InventoryLotDto> model = (MultiSelectionModel<InventoryLotDto>) getSelectionModel();
-		for (InventoryLotDto dto : cellTableData) {
+		for (InventoryLotDto dto : getCellTableData()) {
 			dto.setStartUseDatetime(null);
 		}
 		for (InventoryLotDto dto : model.getSelectedSet()) {

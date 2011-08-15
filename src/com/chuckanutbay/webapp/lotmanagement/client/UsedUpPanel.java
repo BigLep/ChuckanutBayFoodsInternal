@@ -23,8 +23,8 @@ public class UsedUpPanel extends LotCodeManagerDialogBox implements SelectionCha
 	private final DateBox dateBox = new DateBox();
 	
 	public UsedUpPanel() {
-		super(USED_UP_TITLE, true, true);
-		createInventoryLotService().getInUseInventoryLots(createInventoryLotServiceCallback(this));
+		super(USED_UP_TITLE, true, false);
+		createInventoryLotService().getInUse(createInventoryLotServiceCallback(this));
 		center();
 		addSelectionChangeHandler(this);
 	}
@@ -38,9 +38,9 @@ public class UsedUpPanel extends LotCodeManagerDialogBox implements SelectionCha
 	}
 	
 	@Override
-	void updateDB() {
+	protected void onSave() {
 		MultiSelectionModel<InventoryLotDto> model = (MultiSelectionModel<InventoryLotDto>) getSelectionModel();
-		createInventoryLotService().setUsedUpInventoryLots(newArrayList(model.getSelectedSet()), VOID_CALLBACK);
+		createInventoryLotService().setAsUsedUp(newArrayList(model.getSelectedSet()), VOID_CALLBACK);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class UsedUpPanel extends LotCodeManagerDialogBox implements SelectionCha
 	@Override
 	public void onSelectionChange(SelectionChangeEvent event) {
 		MultiSelectionModel<InventoryLotDto> model = (MultiSelectionModel<InventoryLotDto>) getSelectionModel();
-		for (InventoryLotDto dto : cellTableData) {
+		for (InventoryLotDto dto : getCellTableData()) {
 			dto.setEndUseDatetime(null);
 		}
 		for (InventoryLotDto dto : model.getSelectedSet()) {

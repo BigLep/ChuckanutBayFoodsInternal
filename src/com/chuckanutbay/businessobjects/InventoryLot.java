@@ -31,6 +31,7 @@ public class InventoryLot implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
+	private InventoryLotStickerColor inventoryLotStickerColor;
 	private InventoryItem inventoryItem;
 	private String code;
 	private int quantity;
@@ -51,16 +52,15 @@ public class InventoryLot implements java.io.Serializable {
 		this.lastModifiedDatetime = lastModifiedDatetime;
 	}
 
-	public InventoryLot(InventoryItem inventoryItem, String code, int quantity,
-			Date receivedDatetime, Date startUseDatetime, Date endUseDatetime,
-			Date lastModifiedDatetime) {
+	public InventoryLot(InventoryLotStickerColor inventoryLotStickerColor, InventoryItem inventoryItem, String code, int quantity,
+			Date receivedDatetime, Date startUseDatetime, Date endUseDatetime) {
+		this.inventoryLotStickerColor = inventoryLotStickerColor;
 		this.inventoryItem = inventoryItem;
 		this.code = code;
 		this.quantity = quantity;
 		this.receivedDatetime = receivedDatetime;
 		this.startUseDatetime = startUseDatetime;
 		this.endUseDatetime = endUseDatetime;
-		this.lastModifiedDatetime = lastModifiedDatetime;
 	}
 
 	@Id
@@ -73,8 +73,18 @@ public class InventoryLot implements java.io.Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "inventory_lot_sticker_color_id", nullable = false)
+	public InventoryLotStickerColor getInventoryLotStickerColor() {
+		return inventoryLotStickerColor;
+	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	public void setInventoryLotStickerColor(InventoryLotStickerColor inventoryLotStickerColor) {
+		this.inventoryLotStickerColor = inventoryLotStickerColor;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "inventory_item_id", nullable = false)
 	public InventoryItem getInventoryItem() {
 		return this.inventoryItem;

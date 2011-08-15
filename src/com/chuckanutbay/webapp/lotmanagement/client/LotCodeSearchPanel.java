@@ -22,7 +22,7 @@ public class LotCodeSearchPanel extends LotCodeManagerDialogBox {
 	Button searchButton = createButtonWithIcon(SEARCH, "Search");
 	
 	public LotCodeSearchPanel() {
-		super (LOT_CODE_SEARCH_TITLE, false, true);
+		super (LOT_CODE_SEARCH_TITLE, false, false);
 		center();
     	codeTextBox.selectAll();
 	}
@@ -32,13 +32,8 @@ public class LotCodeSearchPanel extends LotCodeManagerDialogBox {
 		if (lotCode == null) {
 	    	codeTextBox.selectAll();
 	    } else { 
-	    	createInventoryLotService().getLotCodeMatchInventory(lotCode, createInventoryLotServiceCallback(this));
+	    	createInventoryLotService().getByLotCode(lotCode, createInventoryLotServiceCallback(this));
 		}
-	}
-	
-	@Override
-	void updateDB() {
-		//Nothing to update
 	}
 
 	@Override

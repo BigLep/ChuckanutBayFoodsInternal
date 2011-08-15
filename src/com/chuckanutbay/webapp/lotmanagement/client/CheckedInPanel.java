@@ -10,15 +10,17 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.CHECKED_I
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.CHECK_IN_TITLE;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.validateAndFormatLotCode;
-import static com.chuckanutbay.webapp.lotmanagement.client.RpcHelper.VOID_CALLBACK;
 import static com.chuckanutbay.webapp.lotmanagement.client.RpcHelper.createInventoryItemServiceCallback;
 import static com.google.common.collect.Lists.newArrayList;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.chuckanutbay.webapp.common.client.ServiceUtils.DefaultAsyncCallback;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,11 +45,11 @@ public class CheckedInPanel extends LotCodeManagerDialogBox implements ClickHand
 		private final DateBox dateBox = new DateBox();
 		private final Button addIngredientButton = createButtonWithIcon(ADD, "Add");
 		private List<InventoryItemDto> inventoryItems;
-		private List<InventoryLotDto> newInventoryLots = newArrayList();
+		private InventoryItemDto selectedItem;
 	
 	
 	public CheckedInPanel() {
-		super(CHECK_IN_TITLE, true, true);
+		super(CHECK_IN_TITLE, true, false);
 		createInventoryItemService().getInventoryItems(createInventoryItemServiceCallback(this));
 		center();
 		addSelectionChangeHandler(this);
@@ -73,15 +75,27 @@ public class CheckedInPanel extends LotCodeManagerDialogBox implements ClickHand
 		    }
 			
 			if(ingredientListBox.getItemCount() > 0) {
+				for (InventoryItemDto inventoryItem : inventoryItems) {
+					if (inventoryItem.getId().equals(ingredientCodeTextBox.getText())) {
+						selectedItem = inventoryItem;
+						break;
+					}
+				}
 				InventoryLotDto newLot = new InventoryLotDto(
-						lotCodeTextBox.getText().toUpperCase().trim(), 
-						new InventoryItemDto(
-							ingredientCodeTextBox.getText(), 
-							ingredientListBox.getItemText(ingredientListBox.getSelectedIndex())), 
+						lotCodeTextBox.getText().toUpperCase().trim(),
+						selectedItem,
 						Integer.parseInt(ingredientQuantityTextBox.getText()), 
-						dateBox.getValue());
-				addCellTableRow(newLot);
-				newInventoryLots.add(newLot);
+						dateBox.getValue()
+				);
+				createInventoryLotService().setAsUnused(newLot, new DefaultAsyncCallback<InventoryLotDto>() {
+					@Override
+					public void onSuccess(InventoryLotDto inventoryLot) {
+						GWT.log("success on server");
+						if(inventoryLot != null) {
+							addCellTableRow(inventoryLot);
+						}
+					}
+				});
 			}
 		}
 	}
@@ -118,8 +132,9 @@ public class CheckedInPanel extends LotCodeManagerDialogBox implements ClickHand
 	}
 
 	@Override
-	void updateDB() {
-		createInventoryLotService().setUnusedInventoryLots(newInventoryLots, VOID_CALLBACK);
+	protected void onCancel() {
+		ArrayList<InventoryLotDto> tableData = newArrayList(getCellTableData());
+		createInventoryLotService().removeUnused(tableData, RpcHelper.VOID_CALLBACK);
 	}
 
 	@Override
@@ -171,8 +186,7 @@ public class CheckedInPanel extends LotCodeManagerDialogBox implements ClickHand
 	public void onSelectionChange(SelectionChangeEvent event) {
 		InventoryLotDto dto = ((SingleSelectionModel<InventoryLotDto>) getSelectionModel()).getSelectedObject();
 		removeCellTableRow(dto);
-		newInventoryLots.remove(dto);
-		cellTable.redraw();
+		createInventoryLotService().removeUnused(newArrayList(dto), RpcHelper.VOID_CALLBACK);
 	}
 }
 

@@ -1,7 +1,6 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
 
-import static com.chuckanutbay.webapp.common.client.CollectionsUtils.isEmpty;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newHorizontalPanel;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newVerticalPanel;
 import static com.chuckanutbay.webapp.common.client.IconUtil.CANCEL;
@@ -20,16 +19,18 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
@@ -39,17 +40,19 @@ public abstract class LotCodeManagerDialogBox extends DialogBox implements Click
 	private boolean isSaveable;
 	private boolean isPrintable;
 	protected CellPanel bodyPanel;
+	protected SimplePanel simplePanel;
 	protected CellPanel headerPanel;
 	protected CellTable<InventoryLotDto> cellTable;
-	private ScrollPanel scrollPanel;
+	protected SimplePager pager;
+	private ListDataProvider<InventoryLotDto> cellTableDataProvider;
 	private final HorizontalPanel buttonPanel = newHorizontalPanel();
 	private final Button cancelButton = createButtonWithIcon(CANCEL, "Cancel");
 	private final Button saveButton = createButtonWithIcon(SAVE, "Save");
 	private final Button printButton = createButtonWithIcon(PRINT, "Print"); 
 	private VerticalPanel dialogBoxMainPanel;
-	private static int SCROLL_PANEL_WIDTH = 950;
-	private static int SCROLL_PANEL_HEIGHT = 400;
-	protected List<InventoryLotDto> cellTableData;
+	private static int PANEL_WIDTH = 950;
+	private static int PANEL_HEIGHT = 760;
+	private static int ROWS_PER_PAGE = 20;
 	
 	public LotCodeManagerDialogBox() {
 		this.setGlassEnabled(true);
@@ -67,12 +70,20 @@ public abstract class LotCodeManagerDialogBox extends DialogBox implements Click
 	@Override
 	public void center() {
 		setupHeader(getHeaderWidgets());
-		cellTable = getCellTable();
-		setupBodyPanel(headerPanel, cellTable);
-		setupScrollPanel();
+		setupCellTable();
+		setupBodyPanel(headerPanel, cellTable, pager);
 		setupButtonPanel();
 		setupDialogBoxMainPanel();
 		super.center();
+	}
+	
+	private void setupCellTable() {
+		cellTable = getCellTable();
+		cellTable.setPageSize(ROWS_PER_PAGE);
+		cellTableDataProvider = new ListDataProvider<InventoryLotDto>();
+		cellTableDataProvider.addDataDisplay(cellTable);
+		pager = new SimplePager();
+		pager.setDisplay(cellTable);
 	}
 	
 	private void setupButtonPanel() {
@@ -88,11 +99,7 @@ public abstract class LotCodeManagerDialogBox extends DialogBox implements Click
 		buttonPanel.setSpacing(5);
 	}
 	private void printDialogBox() {
-		this.clear();
-		this.setWidget(bodyPanel);
-		Window.print();
-		this.clear();
-		setupDialogBoxMainPanel();
+		Window.alert("Sorry but the printing feature is not active yet!");
 	}
 
 	protected static CellTable<InventoryLotDto> newMultiSelectionCellTable(InventoryLotHeader...headers) {
@@ -131,58 +138,54 @@ public abstract class LotCodeManagerDialogBox extends DialogBox implements Click
 	private void setupBodyPanel(Widget...widgets) {
 		bodyPanel = newVerticalPanel(widgets);
 		bodyPanel.setSpacing(5);
-	}
-	
-	private void setupScrollPanel() {
-		scrollPanel = new ScrollPanel(bodyPanel);
-		scrollPanel.setPixelSize(SCROLL_PANEL_WIDTH, SCROLL_PANEL_HEIGHT);
-		scrollPanel.setAlwaysShowScrollBars(true);
+		bodyPanel.setCellHorizontalAlignment(pager, HasHorizontalAlignment.ALIGN_CENTER);
+		simplePanel = new SimplePanel(bodyPanel);
+		simplePanel.setPixelSize(PANEL_WIDTH, PANEL_HEIGHT);
 	}
 	
 	private void setupDialogBoxMainPanel() {
-		dialogBoxMainPanel = newVerticalPanel(scrollPanel, buttonPanel);
+		dialogBoxMainPanel = newVerticalPanel(simplePanel, buttonPanel);
 		dialogBoxMainPanel.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_RIGHT);
 		this.setWidget(dialogBoxMainPanel);
 	}
 	
 	public void populateCellTable(List<InventoryLotDto> inventoryLots) {
-		cellTableData = inventoryLots;
-		cellTable.setRowData(inventoryLots);
+		cellTableDataProvider.setList(inventoryLots);
 	}
 	
 	protected void addCellTableRow(InventoryLotDto...lots) {
-		if(isEmpty(cellTableData)) {
-			cellTableData = newArrayList(lots);
-		} else {
-			cellTableData.addAll(newArrayList(lots));
-		}
-		populateCellTable(cellTableData);
+		cellTableDataProvider.getList().addAll(newArrayList(lots));
 	}
 	
 	protected void removeCellTableRow(InventoryLotDto...lots) {
-		if(!isEmpty(cellTableData)) {
-			cellTableData.removeAll(newArrayList(lots));
-		}
-		populateCellTable(cellTableData);
+		cellTableDataProvider.getList().removeAll(newArrayList(lots));
+	}
+	
+	protected List<InventoryLotDto> getCellTableData() {
+		return cellTableDataProvider.getList();
 	}
 	
 	abstract Widget[] getHeaderWidgets();
 	
-	abstract void updateDB();
+	protected void onSave() {}
+	
+	protected void onCancel() {}
 	
 	abstract CellTable<InventoryLotDto> getCellTable();
 	
 	@Override
 	public void onClick(ClickEvent event) {
 		if (event.getSource() == saveButton) {
-			this.updateDB();
-			this.clear();
-			this.hide();
+			onSave();
+			clear();
+			hide();
 		} else if (event.getSource() == cancelButton) {
-			this.clear();
-			this.hide();
+			onCancel();
+			clear();
+			hide();
 		} else if (event.getSource() == printButton) {
 			printDialogBox();
 		}
 	}
 }
+

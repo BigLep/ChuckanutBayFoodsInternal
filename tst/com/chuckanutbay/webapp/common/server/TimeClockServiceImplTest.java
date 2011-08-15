@@ -34,7 +34,7 @@ import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercent
 import com.chuckanutbay.webapp.common.shared.IntervalDto;
 
 /**
- * @see EmployeeWorkIntervalHibernateDao
+ * @see TimeClockServiceImpl
  */
 public class TimeClockServiceImplTest {
 	

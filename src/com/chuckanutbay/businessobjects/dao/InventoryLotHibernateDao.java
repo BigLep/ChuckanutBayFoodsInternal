@@ -8,6 +8,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.documentation.Technology;
 
@@ -59,6 +60,30 @@ public class InventoryLotHibernateDao extends GenericHibernateDao<InventoryLot,I
 		return crit.createCriteria("inventoryItem")
 			.addOrder(Order.asc("description"))
 			.list();
+	}
+
+	@Override
+	public InventoryLot findActiveMatch(String code, InventoryItem item) {
+		List<InventoryLot> mathes = findByCriteriaDefaultSort(
+				Restrictions.eq("code", code),
+				Restrictions.eq("inventoryItem", item),
+				Restrictions.isNull("endUseDatetime")
+			);
+		if (!mathes.isEmpty()) {
+			return mathes.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<InventoryLot> findByInventoryItem(InventoryItem item) {
+		return getCriteria()
+				.add(Restrictions.eq("inventoryItem", item))
+				.addOrder(Order.desc("receivedDatetime"))
+				.addOrder(Order.desc("id"))
+				.list();
 	}
 
 }

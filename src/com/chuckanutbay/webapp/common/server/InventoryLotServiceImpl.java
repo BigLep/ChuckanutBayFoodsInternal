@@ -1,14 +1,20 @@
 package com.chuckanutbay.webapp.common.server;
 
+import static com.chuckanutbay.webapp.common.server.DtoUtils.fromInventoryLotDtoFunction;
+import static com.chuckanutbay.webapp.common.server.DtoUtils.toInventoryLotDtoFunction;
+import static com.chuckanutbay.webapp.common.server.DtoUtils.transform;
+
 import java.util.Date;
 import java.util.List;
 
 import com.chuckanutbay.businessobjects.InventoryLot;
+import com.chuckanutbay.businessobjects.InventoryLotStickerColor;
 import com.chuckanutbay.businessobjects.dao.InventoryLotDao;
 import com.chuckanutbay.businessobjects.dao.InventoryLotHibernateDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotStickerColorDao;
+import com.chuckanutbay.businessobjects.dao.InventoryLotStickerColorHibernateDao;
 import com.chuckanutbay.webapp.common.client.InventoryLotService;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
-import com.google.common.collect.Lists;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 
@@ -16,15 +22,9 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public void setUnusedInventoryLots(final List<InventoryLotDto> ingreditentLotDtos) {
-		List<InventoryLot> inventoryLots = Lists.transform(ingreditentLotDtos, DtoUtils.fromInventoryLotDtoFunction);
-		InventoryLotDao dao = new InventoryLotHibernateDao();
-		dao.makePersistent(inventoryLots);
-	}
 
 	@Override
-	public void setInUseInventoryLots(List<InventoryLotDto> modifiedIngredientLotDtos) {
+	public void setAsInUse(List<InventoryLotDto> modifiedIngredientLotDtos) {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
 		for (InventoryLotDto inventoryLotDto : modifiedIngredientLotDtos) {
 			InventoryLot inventoryLot = dao.findById(inventoryLotDto.getId());
@@ -39,7 +39,7 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 	}
 
 	@Override
-	public void setUsedUpInventoryLots(List<InventoryLotDto> usedUpIngredients) {
+	public void setAsUsedUp(List<InventoryLotDto> usedUpIngredients) {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
 		for (InventoryLotDto inventoryLotDto : usedUpIngredients) {
 			InventoryLot inventoryLot = dao.findById(inventoryLotDto.getId());
@@ -48,33 +48,67 @@ public class InventoryLotServiceImpl extends RemoteServiceServlet implements Inv
 	}
 
 	@Override
-	public List<InventoryLotDto> getUnusedInventoryLots() {
+	public List<InventoryLotDto> getUnused() {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findUnused(), DtoUtils.toInventoryLotDtoFunction);
+		return transform(dao.findUnused(), DtoUtils.toInventoryLotDtoFunction);
 	}
 
 	@Override
-	public List<InventoryLotDto> getInUseInventoryLots() {
+	public List<InventoryLotDto> getInUse() {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findInUse(), DtoUtils.toInventoryLotDtoFunction);
+		return transform(dao.findInUse(), DtoUtils.toInventoryLotDtoFunction);
 	}
 
 	@Override
-	public List<InventoryLotDto> getDateMatchInUseInventory(Date date) {
+	public List<InventoryLotDto> getInUseOnDate(Date date) {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findInUseOnDate(date), DtoUtils.toInventoryLotDtoFunction);
+		return transform(dao.findInUseOnDate(date), DtoUtils.toInventoryLotDtoFunction);
 	}
 
 	@Override
-	public List<InventoryLotDto> getLotCodeMatchInventory(String lotCode) {
+	public List<InventoryLotDto> getByLotCode(String lotCode) {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findLotCodeMatch(lotCode), DtoUtils.toInventoryLotDtoFunction);
+		return transform(dao.findLotCodeMatch(lotCode), DtoUtils.toInventoryLotDtoFunction);
 	}
 
 	@Override
-	public List<InventoryLotDto> getFullInventoryHistory() {
+	public List<InventoryLotDto> getAll() {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
-		return DtoUtils.transform(dao.findAll(), DtoUtils.toInventoryLotDtoFunction);
+		return transform(dao.findAll(), DtoUtils.toInventoryLotDtoFunction);
+	}
+	
+	private static InventoryLotStickerColor getStickerColor(InventoryLot inventoryLot) {
+		InventoryLotDao inventoryLotDao = new InventoryLotHibernateDao();
+		InventoryLotStickerColorDao stickerColorDao = new InventoryLotStickerColorHibernateDao();
+		InventoryLot match = inventoryLotDao.findActiveMatch(inventoryLot.getCode(), inventoryLot.getInventoryItem());
+		if(match != null) {
+			return match.getInventoryLotStickerColor();
+		} else {
+			List<InventoryLot> matches = inventoryLotDao.findByInventoryItem(inventoryLot.getInventoryItem());
+			if (matches.isEmpty()) {
+				return stickerColorDao.findFirstColor();
+			} else {
+				InventoryLot lot = matches.get(0);
+				InventoryLotStickerColor color = lot.getInventoryLotStickerColor();
+				stickerColorDao.refresh(color);
+				return stickerColorDao.findNextColor(color);
+			}
+		}
+	}
+
+	@Override
+	public InventoryLotDto setAsUnused(InventoryLotDto inventoryLotDto) {
+		InventoryLotDao inventoryLotDao = new InventoryLotHibernateDao();
+		InventoryLot inventoryLot = DtoUtils.fromInventoryLotDtoFunction.apply(inventoryLotDto);
+		inventoryLot.setInventoryLotStickerColor(getStickerColor(inventoryLot));
+		inventoryLotDao.makePersistent(inventoryLot);
+		return toInventoryLotDtoFunction.apply(inventoryLot);
+	}
+
+	@Override
+	public void removeUnused(List<InventoryLotDto> inventoryLotDtos) {
+		InventoryLotDao inventoryLotDao = new InventoryLotHibernateDao();
+		inventoryLotDao.makeTransient(transform(inventoryLotDtos, fromInventoryLotDtoFunction));
 	}
 
 }

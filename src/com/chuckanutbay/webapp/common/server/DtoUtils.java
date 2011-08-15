@@ -9,6 +9,9 @@ import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
 import com.chuckanutbay.businessobjects.EmployeeWorkIntervalActivityPercentage;
 import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
+import com.chuckanutbay.businessobjects.InventoryLotStickerColor;
+import com.chuckanutbay.businessobjects.dao.InventoryItemDao;
+import com.chuckanutbay.businessobjects.dao.InventoryItemHibernateDao;
 import com.chuckanutbay.documentation.Technology;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
@@ -16,6 +19,7 @@ import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercent
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalDto;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
+import com.chuckanutbay.webapp.common.shared.InventoryLotStickerColorDto;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -121,6 +125,7 @@ public class DtoUtils {
 		public InventoryLotDto apply(InventoryLot input) {
 			InventoryLotDto output = new InventoryLotDto();
 			output.setId(input.getId());
+			output.setInventoryLotStickerColor(DtoUtils.toInventoryLotStickerColorDtoFunction.apply(input.getInventoryLotStickerColor()));
 			output.setCode(input.getCode());
 			output.setInventoryItem(DtoUtils.toInventoryItemDtoFunction.apply(input.getInventoryItem()));
 			output.setQuantity(input.getQuantity());
@@ -136,14 +141,40 @@ public class DtoUtils {
 		public InventoryLot apply(InventoryLotDto input) {
 			InventoryLot output = new InventoryLot();
 			output.setId(input.getId());
+			if (input.getInventoryLotStickerColor() != null) {
+				output.setInventoryLotStickerColor(DtoUtils.fromInventoryLotStickerColorDtoFunction.apply(input.getInventoryLotStickerColor()));
+			}
 			output.setCode(input.getCode());
-			output.setInventoryItem(DtoUtils.fromInventoryItemDtoFunction.apply(input.getInventoryItem()));
+			InventoryItemDao itemDao = new InventoryItemHibernateDao();
+			output.setInventoryItem(itemDao.findById(input.getInventoryItem().getId()));
 			output.setQuantity(input.getQuantity());
 			output.setReceivedDatetime(input.getReceivedDatetime());
 			output.setStartUseDatetime(input.getStartUseDatetime());
 			output.setEndUseDatetime(input.getEndUseDatetime());
 			return output;
 		}
+	};
+	
+	public static final Function<InventoryLotStickerColor, InventoryLotStickerColorDto> toInventoryLotStickerColorDtoFunction = new Function<InventoryLotStickerColor, InventoryLotStickerColorDto>() {
+		@Override
+		public InventoryLotStickerColorDto apply(InventoryLotStickerColor input) {
+			InventoryLotStickerColorDto output = new InventoryLotStickerColorDto();
+			output.setId(input.getId());
+			output.setName(input.getName());
+			return output;
+		}
+	};
+	
+	public static final Function<InventoryLotStickerColorDto, InventoryLotStickerColor> fromInventoryLotStickerColorDtoFunction = new Function<InventoryLotStickerColorDto, InventoryLotStickerColor>() {
+
+		@Override
+		public InventoryLotStickerColor apply(InventoryLotStickerColorDto input) {
+			InventoryLotStickerColor output = new InventoryLotStickerColor();
+			output.setId(input.getId());
+			output.setName(input.getName());
+			return output;
+		}
+		
 	};
 
 	public static final Function<InventoryItem, InventoryItemDto> toInventoryItemDtoFunction = new Function<InventoryItem, InventoryItemDto>() {

@@ -25,14 +25,9 @@ public class DateSearchPanel extends LotCodeManagerDialogBox {
 	private final Button searchButton = new Button();
 	
 	public DateSearchPanel() {
-		super (DATE_SEARCH_TITLE, false, true);
-		createInventoryLotService().getInUseInventoryLots(createInventoryLotServiceCallback(this));
+		super (DATE_SEARCH_TITLE, false, false);
+		createInventoryLotService().getInUse(createInventoryLotServiceCallback(this));
 		center();
-	}
-
-	@Override
-	void updateDB() {
-		// No update necessary
 	}
 
 	@Override
@@ -49,7 +44,7 @@ public class DateSearchPanel extends LotCodeManagerDialogBox {
 				if (dateBox.getValue() == null) {
 					Window.alert("Please enter a date");
 				} else {
-					createInventoryLotService().getDateMatchInUseInventory(dateBox.getValue(), createInventoryLotServiceCallback(DateSearchPanel.this));
+					createInventoryLotService().getInUseOnDate(dateBox.getValue(), createInventoryLotServiceCallback(DateSearchPanel.this));
 				}
 			}
 		});

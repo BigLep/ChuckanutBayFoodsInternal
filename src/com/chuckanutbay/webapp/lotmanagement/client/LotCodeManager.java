@@ -95,6 +95,7 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 		setSpacing(5, markInventoryButtonsHPanel, queryButtonsHPanel, viewFullInventoryHistoryHPanel, buttonsPanel, mainPanel);
 		//Add mainPanel to rootPanel
 		RootPanel.get("LotCodeManager").add(mainPanel);
+		lotCodeManagerDialogBox = new ActiveInventoryPanel();
 		GWT.log("Finnished Starting UP");
 	} 
 	

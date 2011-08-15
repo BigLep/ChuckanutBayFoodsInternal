@@ -16,42 +16,54 @@ public interface InventoryLotService extends RemoteService {
 	/**
 	 * @return {@link InventoryLotDto}s that have been entered in but not started to be used.
 	 */
-	// FIXME: can we rename to getUnused
-	List<InventoryLotDto> getUnusedInventoryLots();
-
-	/**
-	 * @param inventoryLotDtos {@link InventoryLotDto}s that should be checked in.
-	 */
-	// FIXME: can we rename to setAsUnused?
-	void setUnusedInventoryLots(List<InventoryLotDto> inventoryLotDtos);
+	List<InventoryLotDto> getUnused();
 
 	/**
 	 * @return {@link InventoryLotDto}s that are currently active.
 	 */
-	// FIXME: rename to getInUse
-	List<InventoryLotDto> getInUseInventoryLots();
+	List<InventoryLotDto> getInUse();
 
 	/**
 	 * @param inventoryLotDtos {@link InventoryLotDto}s that should be marked as in use.
 	 */
-	// FIXME: can we rename to setAsInUse
-	void setInUseInventoryLots(List<InventoryLotDto> inventoryLotDtos);
+	void setAsInUse(List<InventoryLotDto> inventoryLotDtos);
 
 	/**
 	 * @param inventoryLotDtos {@link InventoryLotDto}s that should be marked as used up.
 	 */
-	// FIXME: can we rename to setAsUsedUp
-	void setUsedUpInventoryLots(List<InventoryLotDto> inventoryLotDtos);
+	void setAsUsedUp(List<InventoryLotDto> inventoryLotDtos);
 
-	// FIXME: rename to getInUseOnDate ?
-	// TODO: add javadocs
-	List<InventoryLotDto> getDateMatchInUseInventory(Date date);
+	/**
+	 * 
+	 * @param date
+	 * @return {@link InventoryLotDto}s with the inUseDate before the inputed date and usedUpDate after inputed date or null.
+	 */
+	List<InventoryLotDto> getInUseOnDate(Date date);
 
-	// FIXME: rename to getByLotCode?
-	// TODO: add javadocs
-	List<InventoryLotDto> getLotCodeMatchInventory(String lotCode);
+	/**
+	 * 
+	 * @param lotCode
+	 * @return {@link InventoryLotDto}s with the inputed lotCode.
+	 */
+	List<InventoryLotDto> getByLotCode(String lotCode);
 
-	// FIXME: rename to getAll ?
-	// TODO: add javadocs
-	List<InventoryLotDto> getFullInventoryHistory();
+	/**
+	 * 
+	 * @return all {@link InventoryLotDto}s.
+	 */
+	List<InventoryLotDto> getAll();
+	
+	/**
+	 * Takes an incomplete {@link InventoryLotDto}, persists it to database, and returns a completed one.
+	 * @param lotCode
+	 * @param selectedItem
+	 * @return 
+	 */
+	InventoryLotDto setAsUnused(InventoryLotDto inventoryLotDto);
+	
+	/**
+	 * Removes {@link InventoryLotDto}s from the database
+	 * @param inventoryLotDto
+	 */
+	void removeUnused(List<InventoryLotDto> inventoryLotDtos);
 }

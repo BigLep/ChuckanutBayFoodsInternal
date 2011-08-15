@@ -11,14 +11,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class FullInventoryHistoryPanel extends LotCodeManagerDialogBox {
 
 	public FullInventoryHistoryPanel() { 
-		super (FULL_INVENTORY_HISTORY_TITLE, false, true);
-		createInventoryLotService().getFullInventoryHistory(createInventoryLotServiceCallback(this));
+		super (FULL_INVENTORY_HISTORY_TITLE, false, false);
+		createInventoryLotService().getAll(createInventoryLotServiceCallback(this));
 		center();
-	}
-	
-	@Override
-	void updateDB() {
-		// Nothing to Update
 	}
 
 	@Override
