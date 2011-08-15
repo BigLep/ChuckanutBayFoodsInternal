@@ -1,10 +1,12 @@
 package com.chuckanutbay.webapp.common.server;
 
+import static com.chuckanutbay.webapp.common.server.DtoUtils.fromEmployeeDtoFunction;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -113,26 +115,33 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 	private static EmployeeDto completeToEmployeeDto(Employee employee) {
 		EmployeeWorkIntervalDao dao = new EmployeeWorkIntervalHibernateDao();
 		
-		//Find last Sunday at the start of the day
-		DateMidnight lastSunday = new DateMidnight();
-		lastSunday = lastSunday.minusDays(lastSunday.getDayOfWeek());
-		
 		//Do an incomplete conversion form Employee to EmployeeDto
 		EmployeeDto employeeDto = DtoUtils.toEmployeeDtoFunction.apply(employee);
 		 
+		calculateMinutesWorkedThisWeek(employeeDto);
+		
+		//Set the percentages to be what they were for the most recently closed interval
+		
+		Set<EmployeeWorkIntervalActivityPercentage> lastEnteredPercentages = dao.findLastEnteredPercentages(employee);
+		List<EmployeeWorkIntervalActivityPercentageDto> percentageDtos;
+		if (lastEnteredPercentages == null) {
+			percentageDtos = new ArrayList<EmployeeWorkIntervalActivityPercentageDto>();
+		} else {
+			percentageDtos = DtoUtils.transform(lastEnteredPercentages, DtoUtils.toEmployeeWorkIntervalActivityPercentageDtoFunction);
+		}
+		employeeDto.setEmployeeWorkIntervalPercentages(percentageDtos);
+		return employeeDto;
+	}
+
+	private static void calculateMinutesWorkedThisWeek(EmployeeDto employeeDto) {
+		EmployeeWorkIntervalDao dao = new EmployeeWorkIntervalHibernateDao();
+		
+		//Find last Sunday at the start of the day
+		DateTime lastSunday = new DateMidnight().minusDays(new DateMidnight().getDayOfWeek()).toDateTime();
+		
 		employeeDto.setMinsWorkedThisWeek(0);
-		EmployeeWorkInterval mostRecentlyClosedInterval = null;
-		List<EmployeeWorkInterval> employeeWorkIntervals = dao.findEmployeeWorkIntervalsBetweenDates(employee, lastSunday.toDateTime(), new DateTime());
+		List<EmployeeWorkInterval> employeeWorkIntervals = dao.findEmployeeWorkIntervalsBetweenDates(fromEmployeeDtoFunction.apply(employeeDto), lastSunday, new DateTime());
 		for (EmployeeWorkInterval interval : employeeWorkIntervals) {
-			
-			//Determine if the interval is the most recently closed
-			if (interval.getEndDateTime() != null) {
-				if (mostRecentlyClosedInterval == null) {
-					mostRecentlyClosedInterval = interval;
-				} else if (new DateTime(mostRecentlyClosedInterval.getStartDateTime()).getMillis() < new DateTime(interval.getStartDateTime()).getMillis()) {
-					mostRecentlyClosedInterval = interval;
-				}
-			}
 			
 			//If the interval isn't closed then use the current time to determine the number of minutes worked. Otherwise use the difference between start and end time.
 			if (interval.getEndDateTime() == null) {
@@ -152,16 +161,6 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 				System.out.println("Minutes worked after update: " + employeeDto.getMinsWorkedThisWeek());
 			}
 		}
-		
-		//Set the percentages to be what they were for the most recently closed interval
-		List<EmployeeWorkIntervalActivityPercentageDto> percentageDtos;
-		if (mostRecentlyClosedInterval == null) {
-			percentageDtos = new ArrayList<EmployeeWorkIntervalActivityPercentageDto>();
-		} else {
-			percentageDtos = DtoUtils.transform(mostRecentlyClosedInterval.getEmployeeWorkIntervalActivityPercentages(), DtoUtils.toEmployeeWorkIntervalActivityPercentageDtoFunction);
-		}
-		employeeDto.setEmployeeWorkIntervalPercentages(percentageDtos);
-		return employeeDto;
 	}
 
 	@Override
@@ -268,5 +267,14 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 	private double getDifference(Date start, Date end) {
 		Period period = new Period(new DateTime(start), new DateTime(end));
 		return new Double(period.getHours()) + new Double(period.getMinutes())/60;
+	}
+
+	@Override
+	public SortedSet<EmployeeDto> updateMinutesWorkedInCurrentWeek(
+			SortedSet<EmployeeDto> employees) {
+		for (EmployeeDto employeeDto : employees) {
+			calculateMinutesWorkedThisWeek(employeeDto);
+		}
+		return employees;
 	}
 }

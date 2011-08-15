@@ -81,4 +81,13 @@ public class RpcHelper {
 			}
 		};
 	}
+	
+	public static AsyncCallback<SortedSet<EmployeeDto>> createUpdateMinutesWorkedInCurrentWeekCallback(final ClockInOutServerCommunicator caller) {
+		return new DefaultAsyncCallback<SortedSet<EmployeeDto>>() {
+			@Override
+			public void onSuccess(SortedSet<EmployeeDto> updatedEmployees) {
+				caller.onSuccessfulUpdateMinutesWorkedInCurrentWeek(updatedEmployees);
+			}
+		};
+	}
 }

@@ -1,6 +1,7 @@
 package com.chuckanutbay.businessobjects.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
+import com.chuckanutbay.businessobjects.EmployeeWorkIntervalActivityPercentage;
 import com.chuckanutbay.documentation.Technology;
 
 /**
@@ -61,5 +63,21 @@ public class EmployeeWorkIntervalHibernateDao extends GenericHibernateDao<Employ
 		return crit
 			.addOrder(Order.asc("startDateTime"))
 			.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Set<EmployeeWorkIntervalActivityPercentage> findLastEnteredPercentages(
+			Employee employee) {
+		List<EmployeeWorkInterval> intervals = getCriteria()
+				.add(Restrictions.isNotNull("endDateTime"))
+				.add(Restrictions.eq("employee", employee))
+				.addOrder(Order.desc("endDateTime"))
+				.list();
+		if (!intervals.isEmpty()) {
+			return intervals.get(0).getEmployeeWorkIntervalActivityPercentages();
+		} else {
+			return null;
+		}
 	}
 }

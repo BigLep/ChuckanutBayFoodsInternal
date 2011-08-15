@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -40,7 +40,7 @@ public abstract class LotCodeManagerDialogBox extends DialogBox implements Click
 	private boolean isSaveable;
 	private boolean isPrintable;
 	protected CellPanel bodyPanel;
-	protected SimplePanel simplePanel;
+	protected ScrollPanel scrollPanel;
 	protected CellPanel headerPanel;
 	protected CellTable<InventoryLotDto> cellTable;
 	protected SimplePager pager;
@@ -139,12 +139,13 @@ public abstract class LotCodeManagerDialogBox extends DialogBox implements Click
 		bodyPanel = newVerticalPanel(widgets);
 		bodyPanel.setSpacing(5);
 		bodyPanel.setCellHorizontalAlignment(pager, HasHorizontalAlignment.ALIGN_CENTER);
-		simplePanel = new SimplePanel(bodyPanel);
-		simplePanel.setPixelSize(PANEL_WIDTH, PANEL_HEIGHT);
+		scrollPanel = new ScrollPanel(bodyPanel);
+		scrollPanel.setPixelSize(PANEL_WIDTH, PANEL_HEIGHT);
+		scrollPanel.setAlwaysShowScrollBars(false);
 	}
 	
 	private void setupDialogBoxMainPanel() {
-		dialogBoxMainPanel = newVerticalPanel(simplePanel, buttonPanel);
+		dialogBoxMainPanel = newVerticalPanel(scrollPanel, buttonPanel);
 		dialogBoxMainPanel.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_RIGHT);
 		this.setWidget(dialogBoxMainPanel);
 	}

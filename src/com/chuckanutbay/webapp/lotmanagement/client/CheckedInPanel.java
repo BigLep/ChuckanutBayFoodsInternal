@@ -13,7 +13,6 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.validateA
 import static com.chuckanutbay.webapp.lotmanagement.client.RpcHelper.createInventoryItemServiceCallback;
 import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -133,8 +132,9 @@ public class CheckedInPanel extends LotCodeManagerDialogBox implements ClickHand
 
 	@Override
 	protected void onCancel() {
-		ArrayList<InventoryLotDto> tableData = newArrayList(getCellTableData());
+		List<InventoryLotDto> tableData = newArrayList(getCellTableData());
 		createInventoryLotService().removeUnused(tableData, RpcHelper.VOID_CALLBACK);
+		// I get a Serialization RPC error if I make this one line: createInventoryLotService().removeUnused(newArrayList(getCellTableData()), RpcHelper.VOID_CALLBACK);
 	}
 
 	@Override

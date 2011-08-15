@@ -7,6 +7,7 @@ import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createClockInCa
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createClockOutCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetActivitiesCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetClockedInEmployeesCallback;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createUpdateMinutesWorkedInCurrentWeekCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.timeClockService;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.ENTER_KEY_CODE;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.MIN_IN_MILLISECONDS;
@@ -60,10 +61,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	private Timer timer = new Timer() {
 		@Override
 		public void run() {
-			for(EmployeeDto employee : clockedInEmployees) {
-				addOneMinuteWorked(employee);
-			}
-			updateEmployeeTables();
+			updateMinutesWorkedInCurrentWeek(clockedInEmployees);
 		}
 	};
 	private Timer employeeSignInConfirmationTimer = new Timer() {
@@ -363,6 +361,28 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 			onScan(barcodeFormulation.getBarcode());
 			barcodeFormulation = new BarcodeFormulation();
 		}
+	}
+
+	@Override
+	public void updateMinutesWorkedInCurrentWeek(
+			SortedSet<EmployeeDto> employees) {
+		GWT.log("Requesting employees be updated");
+		timeClockService.updateMinutesWorkedInCurrentWeek(employees, createUpdateMinutesWorkedInCurrentWeekCallback(this));
+	}
+
+	@Override
+	public void onSuccessfulUpdateMinutesWorkedInCurrentWeek(
+			SortedSet<EmployeeDto> updatedEmployees) {
+		GWT.log("Successful update employees from Server");
+		for (EmployeeDto clockedInEmployee : clockedInEmployees) {
+			for (EmployeeDto updatedEmployee : updatedEmployees) {
+				if (updatedEmployee.equals(clockedInEmployee)) {
+					clockedInEmployee.setMinsWorkedThisWeek(updatedEmployee.getMinsWorkedThisWeek());
+					break;
+				}
+			}
+		}
+		updateEmployeeTables();
 	}
 
 }

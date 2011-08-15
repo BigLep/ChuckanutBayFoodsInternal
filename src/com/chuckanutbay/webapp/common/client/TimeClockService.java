@@ -15,7 +15,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
  * Since this {@link RemoteService} is defined within a base module,
  * doing {@link GWT#create(Class)} within a sub-module will yield an instance with a path relative to that base module.
  * In order to get an instances with a path that is not relative to the sub-module,
- * use {@link ServiceUtils#createEmployeeService()}.
+ * use {@link ServiceUtils#createTimeClockService()}.
  * This is the preferred/support method of access.
  */
 public interface TimeClockService extends RemoteService {
@@ -29,6 +29,8 @@ public interface TimeClockService extends RemoteService {
 	void cancelClockIn(Integer barcode);
 	
 	SortedSet<ActivityDto> getActivities();
+	
+	SortedSet<EmployeeDto> updateMinutesWorkedInCurrentWeek(SortedSet<EmployeeDto> employees);
 	
 	/**
 	 * Finds the start and end of the most recently completed pay period.

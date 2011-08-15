@@ -128,8 +128,8 @@ public class EmployeeDto implements Serializable, Comparable<EmployeeDto> {
 	@Override
 	public int compareTo(EmployeeDto that) {
 		return ComparisonChain.start()
-			.compare(this.lastName, that.lastName)
 			.compare(this.firstName, that.firstName)
+			.compare(this.lastName, that.lastName)
 			.result();
 	}
 }

@@ -36,6 +36,12 @@ public interface ClockInOutServerCommunicator {
 	public void cancelClockInOnDatabase(Integer barcode);
 	
 	/**
+	 * Update the number of minutes worked in the current week for the given {@link EmployeeDto}s
+	 * @param employees {@link EmployeeDto}s to update.
+	 */
+	public void updateMinutesWorkedInCurrentWeek(SortedSet<EmployeeDto> employees);
+	
+	/**
 	 * When the server returns a successful clock in.
 	 * @param employee The {@link EmployeeDto} sent from the server.
 	 */
@@ -62,4 +68,10 @@ public interface ClockInOutServerCommunicator {
 	 * @param activities The {@link activities} sent from the server.
 	 */
 	public void onSuccessfulGetActivities(SortedSet<ActivityDto> activities);
+	
+	/**
+	 * When the server successfully updates the number of minutes worked in the current week for the given {@link EmployeeDto}s
+	 * @param employees The updated {@link EmployeeDto}s.
+	 */
+	public void onSuccessfulUpdateMinutesWorkedInCurrentWeek(SortedSet<EmployeeDto> employees);
 }
