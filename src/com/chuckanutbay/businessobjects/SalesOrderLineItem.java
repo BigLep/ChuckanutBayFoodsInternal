@@ -22,7 +22,7 @@ public class SalesOrderLineItem {
 	private QuickbooksItem quickbooksItem;
 	private Integer cases;
 	private Double amount;
-	private Set<TransitSheet> transitSheets;
+	private Set<TrayLabel> trayLabels;
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -69,10 +69,10 @@ public class SalesOrderLineItem {
 	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "salesOrderLineItem")
-	public Set<TransitSheet> getTransitSheets() {
-		return transitSheets;
+	public Set<TrayLabel> getTrayLabels() {
+		return trayLabels;
 	}
-	public void setTransitSheets(Set<TransitSheet> transitSheets) {
-		this.transitSheets = transitSheets;
+	public void setTrayLabels(Set<TrayLabel> trayLabels) {
+		this.trayLabels = trayLabels;
 	}
 }

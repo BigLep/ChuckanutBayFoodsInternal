@@ -31,13 +31,19 @@ public class EmployeeWorkIntervalHibernateDao extends GenericHibernateDao<Employ
 		);
 }
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public EmployeeWorkInterval findOpenEmployeeWorkInterval(Employee employee) {
 		logger.debug("Searching for intervals belonging to " + employee.getFirstName());
-		return (EmployeeWorkInterval)getCriteria()
+		List<EmployeeWorkInterval> intervals = getCriteria()
 			.add(Restrictions.eq("employee", employee))
 			.add(Restrictions.isNull("endDateTime"))
-			.uniqueResult();
+			.list();
+		if(!intervals.isEmpty()) {
+			return intervals.get(0);
+		} else {
+			return null;
+		}
 	}
 	
 	

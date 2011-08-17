@@ -37,8 +37,8 @@
 		<dependency org="log4j" name="log4j" rev="1.2.14" conf="runtime->master;test->master;gwt-debug-mode->master"/>
 		
 		<!-- http://stackoverflow.com/questions/520902/trouble-getting-hibernate-core-and-hibernate-annotations-using-apache-ivy-but-it -->
-		<dependency org="org.hibernate" name="hibernate-core" rev="3.6.5.Final" conf="compile->master,runtime,optional"/>
-		<dependency org="org.hibernate" name="hibernate-c3p0" rev="3.6.5.Final" conf="runtime->default"/>
+		<dependency org="org.hibernate" name="hibernate-core" rev="3.6.6.Final" conf="compile->master,runtime,optional"/>
+		<dependency org="org.hibernate" name="hibernate-c3p0" rev="3.6.6.Final" conf="runtime->default"/>
 		<dependency org="org.hibernate" name="hibernate-validator" rev="4.2.0.Final" conf="runtime->default;gwt-debug-mode->default"/>
 		<dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="runtime->default"/>
 		<dependency org="c3p0" name="c3p0" rev="0.9.1.2" conf="runtime->default"/>

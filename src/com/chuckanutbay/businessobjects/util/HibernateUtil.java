@@ -17,9 +17,10 @@ import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.businessobjects.InventoryLotStickerColor;
 import com.chuckanutbay.businessobjects.PackagingTransaction;
 import com.chuckanutbay.businessobjects.QuickbooksItem;
+import com.chuckanutbay.businessobjects.QuickbooksSubItem;
 import com.chuckanutbay.businessobjects.SalesOrder;
 import com.chuckanutbay.businessobjects.SalesOrderLineItem;
-import com.chuckanutbay.businessobjects.TransitSheet;
+import com.chuckanutbay.businessobjects.TrayLabel;
 import com.chuckanutbay.documentation.ReferenceSource.EffectiveJava;
 import com.chuckanutbay.util.ObjectUtilsExtensions;
 import com.chuckanutbay.util.SystemUtilsExtensions;
@@ -56,9 +57,10 @@ public class HibernateUtil {
 			.addAnnotatedClass(InventoryLotStickerColor.class)
 			.addAnnotatedClass(PackagingTransaction.class)
 			.addAnnotatedClass(QuickbooksItem.class)
+			.addAnnotatedClass(QuickbooksSubItem.class)
 			.addAnnotatedClass(SalesOrder.class)
 			.addAnnotatedClass(SalesOrderLineItem.class)
-			.addAnnotatedClass(TransitSheet.class)
+			.addAnnotatedClass(TrayLabel.class)
 			.configure(configFilePath);
 	}
 

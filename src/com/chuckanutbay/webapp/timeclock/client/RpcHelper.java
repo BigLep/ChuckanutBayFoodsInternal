@@ -5,6 +5,7 @@ import java.util.SortedSet;
 
 import com.chuckanutbay.webapp.common.client.ServiceUtils;
 import com.chuckanutbay.webapp.common.client.ServiceUtils.DefaultAsyncCallback;
+import com.chuckanutbay.webapp.common.client.ServiceUtils.VoidAsyncCallback;
 import com.chuckanutbay.webapp.common.client.TimeClockServiceAsync;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
@@ -29,21 +30,11 @@ public class RpcHelper {
 	}
 	
 	public static AsyncCallback<Void> createClockOutCallback(final ClockInOutServerCommunicator caller) {
-		return new DefaultAsyncCallback<Void>() {
-			@Override
-			public void onSuccess(Void result) {
-				caller.onSuccessfulClockOut();
-			}
-		};
+		return new VoidAsyncCallback<Void>();
 	}
 	
 	public static AsyncCallback<Void> createCancelClockInCallback(final ClockInOutServerCommunicator caller) {
-		return new DefaultAsyncCallback<Void>() {
-			@Override
-			public void onSuccess(Void result) {
-				caller.onSuccessfulCancelClockIn();
-			}
-		};
+		return new VoidAsyncCallback<Void>();
 	}
 	
 	public static AsyncCallback<SortedSet<EmployeeDto>> createGetClockedInEmployeesCallback(final ClockInOutServerCommunicator caller) {

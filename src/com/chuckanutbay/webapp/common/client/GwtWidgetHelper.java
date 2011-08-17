@@ -3,6 +3,7 @@ package com.chuckanutbay.webapp.common.client;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -20,6 +21,13 @@ public class GwtWidgetHelper {
 			vPanel.add(widget);
 		}
 		return vPanel;
+	}
+	public static SimplePanel newSimplePanel(Widget...widgets) {
+		SimplePanel simplePanel = new SimplePanel();
+		for (Widget widget : widgets) {
+			simplePanel.add(widget);
+		}
+		return simplePanel;
 	}
 	public static FlexTable newFlexTable(String...strings) {
 		FlexTable ft = new FlexTable();

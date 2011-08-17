@@ -1,11 +1,11 @@
 package com.chuckanutbay.businessobjects.dao;
 
-import com.chuckanutbay.businessobjects.TransitSheet;
+import com.chuckanutbay.businessobjects.TrayLabel;
 import com.chuckanutbay.documentation.Terminology;
 
 /**
- * {@link Terminology#DAO} for {@link TransitSheet}.
+ * {@link Terminology#DAO} for {@link TrayLabel}.
  */
-public interface TransitSheetDao extends GenericDao<TransitSheet, Integer>{
+public interface TransitSheetDao extends GenericDao<TrayLabel, Integer>{
 
 }

@@ -26,6 +26,10 @@
 		<filter-name>HibernateFilter</filter-name>
 		<url-pattern>/common/TimeClockService</url-pattern>
 	</filter-mapping>
+		<filter-mapping>
+		<filter-name>HibernateFilter</filter-name>
+		<url-pattern>/common/TrayLabelService</url-pattern>
+	</filter-mapping>
 	
 	<!-- Servlets -->
 	 
@@ -57,6 +61,16 @@
 	<servlet-mapping>
 		<servlet-name>TimeClockService</servlet-name>
 		<url-pattern>/common/TimeClockService</url-pattern>
+	</servlet-mapping>
+	
+		<servlet>
+	<servlet-name>TrayLabelService</servlet-name>
+		<servlet-class>com.chuckanutbay.webapp.common.server.TrayLabelServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>TrayLabelService</servlet-name>
+		<url-pattern>/common/TrayLabelService</url-pattern>
 	</servlet-mapping>
 	
 	<!-- Default page to serve -->

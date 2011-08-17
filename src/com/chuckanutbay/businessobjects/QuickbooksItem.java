@@ -7,17 +7,23 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "quickbooks_items")
+@SecondaryTable(name = "quickbooks_item_supplements",
+		pkJoinColumns = {@PrimaryKeyJoinColumn(name="id", referencedColumnName="id")} )
 public class QuickbooksItem {
 	private String id;
 	private String description;
-	private String upc;
-	private double unitWeightOz;
+	private boolean isAllergen;
+	private String instructions;
+	private String flavor;
+	private String size;
 	private Set<SalesOrderLineItem> salesOrderLineItems;
-	private Set<TransitSheet> transitSheets;
+	private Set<QuickbooksSubItem> subItems;
 	
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
@@ -36,20 +42,36 @@ public class QuickbooksItem {
 		this.description = description;
 	}
 	
-	@Column(name = "upc", nullable = false, length = 16)
-	public String getUpc() {
-		return upc;
+	@Column(table = "quickbooks_item_supplements", name = "is_allergen", nullable = false, length = 1)
+	public boolean isAllergen() {
+		return isAllergen;
 	}
-	public void setUpc(String upc) {
-		this.upc = upc;
+	public void setAllergen(boolean isAllergen) {
+		this.isAllergen = isAllergen;
 	}
 	
-	@Column(name = "unit_weight_oz", nullable = false, length = 6)
-	public double getUnitWeightOz() {
-		return unitWeightOz;
+	@Column(table = "quickbooks_item_supplements", name = "unique_instructions", nullable = true, length = 255)
+	public String getInstructions() {
+		return instructions;
 	}
-	public void setUnitWeightOz(double unitWeightOz) {
-		this.unitWeightOz = unitWeightOz;
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
+	}
+	
+	@Column(table = "quickbooks_item_supplements", name = "product_type", nullable = true)
+	public String getFlavor() {
+		return flavor;
+	}
+	public void setFlavor(String flavor) {
+		this.flavor = flavor;
+	}
+	
+	@Column(table = "quickbooks_item_supplements", name = "size", nullable = true)
+	public String getSize() {
+		return size;
+	}
+	public void setSize(String size) {
+		this.size = size;
 	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quickbooksItem")
@@ -61,11 +83,11 @@ public class QuickbooksItem {
 	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quickbooksItem")
-	public Set<TransitSheet> getTransitSheets() {
-		return transitSheets;
+	public Set<QuickbooksSubItem> getSubItems() {
+		return subItems;
 	}
-	public void setTransitSheets(Set<TransitSheet> transitSheets) {
-		this.transitSheets = transitSheets;
+	public void setSubItems(Set<QuickbooksSubItem> subItems) {
+		this.subItems = subItems;
 	}
 	
 	

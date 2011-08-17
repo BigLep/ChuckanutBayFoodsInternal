@@ -141,6 +141,7 @@
 			<arg value="com.chuckanutbay.webapp.dashboard.Dashboard"/>
 			<arg value="com.chuckanutbay.webapp.timeclock.TimeClock"/>
 			<arg value="com.chuckanutbay.webapp.timeclock.TimeClockReport"/>
+			<arg value="com.chuckanutbay.webapp.traylabelgenerator.TrayLabelGenerator"/>
 			<!-- add any other modules here -->
 		</java>
 	</target>
@@ -159,6 +160,7 @@
 				<exclude name="timeclock/**"/>
 				<exclude name="dashboard/**"/>
 				<exclude name="timeclockreport/**"/>
+				<exclude name="traylabelgenerator/**"/>
 				<!-- add other files to exclude here -->
 			</fileset>
 		</copy>

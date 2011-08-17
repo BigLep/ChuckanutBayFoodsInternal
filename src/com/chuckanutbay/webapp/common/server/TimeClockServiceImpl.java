@@ -54,16 +54,20 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 		}
 		System.out.println("The employee with the barcode number is: " + employee.getFirstName());
 		
-		//Start a new employee work interval
-		EmployeeWorkInterval newInterval = new EmployeeWorkInterval();
-		newInterval.setEmployee(employee);
-		newInterval.setStartDateTime(new Date());
-		intervalDao.makePersistent(newInterval);
-		
-		System.out.println("The new interval was persisted");
-		
-		//Return a complete EmployeeDto
-		return completeToEmployeeDto(employee);
+		if (intervalDao.findOpenEmployeeWorkInterval(employee) == null) {
+			//Start a new employee work interval
+			EmployeeWorkInterval newInterval = new EmployeeWorkInterval();
+			newInterval.setEmployee(employee);
+			newInterval.setStartDateTime(new Date());
+			intervalDao.makePersistent(newInterval);
+			
+			System.out.println("The new interval was persisted");
+			
+			//Return a complete EmployeeDto
+			return completeToEmployeeDto(employee);
+		} else {
+			return null;
+		}
 	}
 
 	@Override

@@ -28,6 +28,11 @@ public class ServiceUtils {
 		((ServiceDefTarget)service).setServiceEntryPoint("/common/TimeClockService");
 		return service;
 	}
+	public static TrayLabelServiceAsync createTrayLabelService() {
+		TrayLabelServiceAsync service = GWT.create(TrayLabelService.class);
+		((ServiceDefTarget)service).setServiceEntryPoint("/common/TrayLabelService");
+		return service;
+	}
 	
 	/**
 	 * {@link AsyncCallback} that provides a default {@link AsyncCallback#onFailure(Throwable)} handler.
@@ -39,4 +44,18 @@ public class ServiceUtils {
 			Window.alert("System failed: " + caught);
 		}
 	}
+	
+	public static class VoidAsyncCallback<Void> implements AsyncCallback<Void> {
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert("System failed: " + caught);
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			//Do Nothing
+		}
+	}
+	
+	
 }

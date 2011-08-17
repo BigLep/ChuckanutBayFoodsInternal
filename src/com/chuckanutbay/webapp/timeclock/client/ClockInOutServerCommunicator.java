@@ -48,16 +48,6 @@ public interface ClockInOutServerCommunicator {
 	public void onSuccessfulClockIn(EmployeeDto employee);
 	
 	/**
-	 * When the server returns a successful clock out.
-	 */
-	public void onSuccessfulClockOut();
-	
-	/**
-	 * When the server returns a successful clock in.
-	 */
-	public void onSuccessfulCancelClockIn();
-	
-	/**
 	 * When the server successfully returns the {@link clockedInEmployees}.
 	 * @param clockedInEmployees The {@link EmployeeDto}s sent from the server.
 	 */

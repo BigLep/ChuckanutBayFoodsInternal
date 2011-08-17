@@ -318,18 +318,6 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	}
 
 	@Override
-	public void onSuccessfulClockOut() {
-		// Do nothing
-		GWT.log("Successful Clock Out from Server");
-	}
-
-	@Override
-	public void onSuccessfulCancelClockIn() {
-		// Do nothing
-		GWT.log("Successful Clock In cancellation from Server");
-	}
-
-	@Override
 	public void onSuccessfulGetClockedInEmployees(
 			SortedSet<EmployeeDto> clockedInEmployees) {
 		this.clockedInEmployees.clear();
