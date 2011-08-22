@@ -1,16 +1,16 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 import static com.chuckanutbay.webapp.common.client.IconUtil.SEARCH;
-import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
+import static com.chuckanutbay.webapp.common.client.IconUtil.newButtonWithIcon;
 import static com.chuckanutbay.webapp.common.client.ServiceUtils.createInventoryLotService;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DEFAULT_HEADERS;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.LOT_CODE_SEARCH_TITLE;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.validateAndFormatLotCode;
 import static com.chuckanutbay.webapp.lotmanagement.client.RpcHelper.createInventoryLotServiceCallback;
 
+import com.chuckanutbay.webapp.common.client.CbCellTable;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class LotCodeSearchPanel extends LotCodeManagerDialogBox {
 	Label codeToSearchLabel = new Label("Lot Code to Search:");
 	TextBox codeTextBox = new TextBox();
-	Button searchButton = createButtonWithIcon(SEARCH, "Search");
+	Button searchButton = newButtonWithIcon(SEARCH, "Search");
 	
 	public LotCodeSearchPanel() {
 		super (LOT_CODE_SEARCH_TITLE, false, false);
@@ -53,7 +53,7 @@ public class LotCodeSearchPanel extends LotCodeManagerDialogBox {
 	}
 
 	@Override
-	CellTable<InventoryLotDto> getCellTable() {
+	CbCellTable<InventoryLotDto> getCellTable() {
 		return newMultiSelectionCellTable(DEFAULT_HEADERS);
 	}
 }

@@ -9,7 +9,7 @@ import static com.chuckanutbay.webapp.common.client.IconUtil.DATE;
 import static com.chuckanutbay.webapp.common.client.IconUtil.LIST;
 import static com.chuckanutbay.webapp.common.client.IconUtil.SEARCH;
 import static com.chuckanutbay.webapp.common.client.IconUtil.WARNING;
-import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
+import static com.chuckanutbay.webapp.common.client.IconUtil.newButtonWithIcon;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.addClickHandler;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.addMouseOverAndOutHandlers;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.makePopupVisible;
@@ -53,13 +53,13 @@ final class LotCodeManager  implements ClickHandler, EntryPoint, MouseOverHandle
 	public void onModuleLoad() {
 		GWT.log("Starting UP");
 		//Set Up iconButtons
-		checkedInButton = createButtonWithIcon(CHECKMARK, "Checked-In");
-		inUseButton = createButtonWithIcon(WARNING, "In Use");
-		usedUpButton = createButtonWithIcon(CANCEL, "Used Up");
-		lotCodeSearch = createButtonWithIcon(SEARCH, "Lot Code Search");
-		dateSearch = createButtonWithIcon(DATE, "Date Search");
-		activeIngredientsButton = createButtonWithIcon(LIST, "Active Ingredients");
-		viewFullInventoryHistoryButton = createButtonWithIcon(DATABASE, "View Full Inventory History");
+		checkedInButton = newButtonWithIcon(CHECKMARK, "Checked-In");
+		inUseButton = newButtonWithIcon(WARNING, "In Use");
+		usedUpButton = newButtonWithIcon(CANCEL, "Used Up");
+		lotCodeSearch = newButtonWithIcon(SEARCH, "Lot Code Search");
+		dateSearch = newButtonWithIcon(DATE, "Date Search");
+		activeIngredientsButton = newButtonWithIcon(LIST, "Active Ingredients");
+		viewFullInventoryHistoryButton = newButtonWithIcon(DATABASE, "View Full Inventory History");
 		
 		//Add Handlers
 		addClickHandler(this, checkedInButton, inUseButton, usedUpButton, lotCodeSearch, dateSearch, activeIngredientsButton, viewFullInventoryHistoryButton);

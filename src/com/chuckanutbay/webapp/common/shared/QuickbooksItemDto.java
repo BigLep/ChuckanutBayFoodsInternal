@@ -2,6 +2,8 @@ package com.chuckanutbay.webapp.common.shared;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
+
 public class QuickbooksItemDto implements Serializable {
 
 	/**
@@ -13,7 +15,29 @@ public class QuickbooksItemDto implements Serializable {
 	private String flavor;
 	private String size;
 	private double cakesPerCase;
+	private double casesPerTray;
 	private boolean isAllergen;
+	
+	public QuickbooksItemDto(String id, String flavor, int cakesPerCase, int casesPerTray) {
+		this.id = id;
+		this.flavor = flavor;
+		this.cakesPerCase = cakesPerCase;
+		this.casesPerTray = casesPerTray;
+	}
+	public QuickbooksItemDto() {
+	}
+	public QuickbooksItemDto(String id, String instructions, String flavor,
+			String size, double cakesPerCase, double casesPerTray,
+			boolean isAllergen) {
+		super();
+		this.id = id;
+		this.instructions = instructions;
+		this.flavor = flavor;
+		this.size = size;
+		this.cakesPerCase = cakesPerCase;
+		this.casesPerTray = casesPerTray;
+		this.isAllergen = isAllergen;
+	}
 	public String getId() {
 		return id;
 	}
@@ -44,6 +68,12 @@ public class QuickbooksItemDto implements Serializable {
 	public void setCakesPerCase(double cakesPerCase) {
 		this.cakesPerCase = cakesPerCase;
 	}
+	public double getCasesPerTray() {
+		return casesPerTray;
+	}
+	public void setCasesPerTray(double casesPerTray) {
+		this.casesPerTray = casesPerTray;
+	}
 	public boolean isAllergen() {
 		return isAllergen;
 	}
@@ -51,5 +81,18 @@ public class QuickbooksItemDto implements Serializable {
 		this.isAllergen = isAllergen;
 	}
 	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(id);
+	}
+	
+	@Override
+	public boolean equals(Object object){
+		if (object instanceof QuickbooksItemDto) {
+			QuickbooksItemDto that = (QuickbooksItemDto)object;
+			return Objects.equal(this.id, that.id);
+		}
+		return false;
+	}
 	
 }

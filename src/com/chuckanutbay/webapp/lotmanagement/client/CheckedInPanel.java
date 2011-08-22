@@ -3,7 +3,7 @@ package com.chuckanutbay.webapp.lotmanagement.client;
 import static com.chuckanutbay.webapp.common.client.CollectionsUtils.isEmpty;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.populateFlexTableRow;
 import static com.chuckanutbay.webapp.common.client.IconUtil.ADD;
-import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
+import static com.chuckanutbay.webapp.common.client.IconUtil.newButtonWithIcon;
 import static com.chuckanutbay.webapp.common.client.ServiceUtils.createInventoryItemService;
 import static com.chuckanutbay.webapp.common.client.ServiceUtils.createInventoryLotService;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.CHECKED_IN_PANEL_HEADERS;
@@ -16,6 +16,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.chuckanutbay.webapp.common.client.CbCellTable;
 import com.chuckanutbay.webapp.common.client.ServiceUtils.DefaultAsyncCallback;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
@@ -24,7 +25,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -42,7 +42,7 @@ public class CheckedInPanel extends LotCodeManagerDialogBox implements ClickHand
 		private final TextBox ingredientCodeTextBox = new TextBox();
 		private final TextBox ingredientQuantityTextBox = new TextBox();
 		private final DateBox dateBox = new DateBox();
-		private final Button addIngredientButton = createButtonWithIcon(ADD, "Add");
+		private final Button addIngredientButton = newButtonWithIcon(ADD, "Add");
 		private List<InventoryItemDto> inventoryItems;
 		private InventoryItemDto selectedItem;
 	
@@ -178,7 +178,7 @@ public class CheckedInPanel extends LotCodeManagerDialogBox implements ClickHand
 	}
 
 	@Override
-	CellTable<InventoryLotDto> getCellTable() {
+	CbCellTable<InventoryLotDto> getCellTable() {
 		return newSingleSelectionCellTable(CHECKED_IN_PANEL_HEADERS);
 	}
 	

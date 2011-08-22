@@ -1,6 +1,8 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.chuckanutbay.webapp.common.client.IconUtil;
@@ -191,6 +193,14 @@ public class LotCodeUtil {
     	return null;
     }
     
+    public static List<Column<InventoryLotDto,?>> getHeaderColumns(final SelectionModel<InventoryLotDto> selectionModel, InventoryLotHeader...headers) {
+    	List<Column<InventoryLotDto,?>> headerColumns = new ArrayList<Column<InventoryLotDto,?>>();
+    	for (InventoryLotHeader header : headers) {
+    		headerColumns.add(getColumn(header, selectionModel));
+    	}
+    	return headerColumns;
+    }
+    
     public static String getHeaderString(InventoryLotHeader header) {
     	switch (header) {
     	case LotCode: return "Lot Code";
@@ -203,6 +213,14 @@ public class LotCodeUtil {
     	case Color: return "Color";
     	}
 		return "";
+    }
+    
+    public static List<String> getHeaderStrings(InventoryLotHeader...headers) {
+    	List<String> headerStrings = new ArrayList<String>();
+    	for (InventoryLotHeader header : headers) {
+    		headerStrings.add(getHeaderString(header));
+    	}
+    	return headerStrings;
     }
     
     /**

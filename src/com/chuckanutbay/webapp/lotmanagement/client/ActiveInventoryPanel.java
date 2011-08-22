@@ -8,8 +8,8 @@ import static com.chuckanutbay.webapp.lotmanagement.client.RpcHelper.createInven
 
 import java.util.Date;
 
+import com.chuckanutbay.webapp.common.client.CbCellTable;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -38,7 +38,7 @@ public class ActiveInventoryPanel extends LotCodeManagerDialogBox {
 	}
 
 	@Override
-	CellTable<InventoryLotDto> getCellTable() {
+	CbCellTable<InventoryLotDto> getCellTable() {
 		return newMultiSelectionCellTable(DEFAULT_HEADERS);
 	}
 }

@@ -11,5 +11,51 @@
 	font-family: Tahoma, Geneva;
 	font-weight: bold;
 	text-align: center;
-	text-shadow: 1px 1px 2px #aaa;
+	//text-shadow: 1px 1px 2px #aaa;
+}
+
+.inventoryLabel {
+	color: black;
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	//text-shadow: 1px 1px 2px #aaa;
+}
+
+.addInventoryPanel {
+	border: 1px solid #ccc;
+	padding: 4px;
+	
+}
+
+.center {
+	text-align: center;
+	font-size: 20px;
+	font-family: Tahoma, Geneva;
+}
+
+.roundedCorners button {
+	border: 1px solid silver;
+	background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgrey)); 
+	border-radius: 4px;
+	padding: 2px 4px;
+	cursor: pointer;
+	cursor: hand;
+	border: 1px outset #ccc;
+}
+
+.roundedCorners button:active {
+	border: 1px inset #ccc;
+}
+
+.roundedCorners button:hover {
+	border-color: #9cf #69e #69e #7af;
+}
+
+.openOrdersCellBrowser {
+	border: 2px solid grey;
+	font-size: 18px;
+	font-family: Tahoma, Geneva;
+	padding: 2px;
 }

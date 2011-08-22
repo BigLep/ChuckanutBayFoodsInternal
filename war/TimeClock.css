@@ -101,7 +101,7 @@
 .clockOutDialogBoxLabel {
 	color: Red;
 	padding: 5px 10px;
-	font-size: 24px;
+	font-size: 30px;
 	font-family: Tahoma, Geneva;
 	font-weight: bold;
 	text-align: right;
@@ -118,12 +118,12 @@
 }
 
 .clockOutDialogBoxButton {
-	font-size: 20px;
+	font-size: 24px;
 	font-family: Tahoma, Geneva;
 }
 
 .clockOutDialogBoxButton[Disabled] {
-	font-size: 20px;
+	font-size: 24px;
 	font-family: Tahoma, Geneva;
 }
 
@@ -133,4 +133,24 @@
 	padding: 0px;
 	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
 	border-radius: 5px;
+}
+
+.clockOutDialogBoxListBox {
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+}
+
+.clockOutDialogBoxListBox option {
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+}
+
+.clockOutDialogBoxTotalValueLabel {
+	color: Red;
+	padding: 5px 10px;
+	font-size: 36px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: left;
+	text-shadow: 1px 1px 2px #aaa;
 }

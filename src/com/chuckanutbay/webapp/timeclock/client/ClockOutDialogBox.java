@@ -43,7 +43,7 @@ public class ClockOutDialogBox extends DialogBox {
 	private int xPosition;
 	private int yPosition;
 	private List<EmployeeWorkIntervalActivityPercentageDto> actvityPercentages = new ArrayList<EmployeeWorkIntervalActivityPercentageDto>();
-	private ListBox totalListBox;
+	private Label totalLabel;
 	private Button clockOutButton;
 	private int width;
 	private int height;
@@ -166,12 +166,14 @@ public class ClockOutDialogBox extends DialogBox {
 		}
 		
 		//Setup total label and listbox.
-		Label label = new Label("Total");
+		Label label = new Label("Total:");
 		label.setStyleName("clockOutDialogBoxTotalLabel");
 		flexTable.setWidget(i, 0, label);
 		
-		totalListBox = new ListBox();
-		flexTable.setWidget(i, 1, totalListBox);
+		totalLabel = new Label();
+		totalLabel.setStyleName("clockOutDialogBoxTotalValueLabel");
+		flexTable.setWidget(i, 1, totalLabel);
+		flexTable.getColumnFormatter().setWidth(1, "150px");
 		i++;
 		
 		//Setup Clock-Out and Cancel buttons;
@@ -219,11 +221,7 @@ public class ClockOutDialogBox extends DialogBox {
 	 */
 	private void updateTotalPercentageListBox() {
 		Integer totalPercentage = calcTotalPercentage();
-		if (totalListBox.getItemCount() > 0) {
-			totalListBox.setItemText(0, totalPercentage + "%");
-		} else {
-			totalListBox.addItem(totalPercentage + "%");
-		}
+		totalLabel.setText(totalPercentage + "%");
 		clockOutButton.setEnabled(totalPercentage == 100);
 	}
 	

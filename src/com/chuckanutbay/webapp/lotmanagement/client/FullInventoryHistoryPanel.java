@@ -4,8 +4,8 @@ import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DEFAULT_H
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.FULL_INVENTORY_HISTORY_TITLE;
 import static com.chuckanutbay.webapp.lotmanagement.client.RpcHelper.createInventoryLotServiceCallback;
 
+import com.chuckanutbay.webapp.common.client.CbCellTable;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Widget;
 
 public class FullInventoryHistoryPanel extends LotCodeManagerDialogBox {
@@ -22,7 +22,7 @@ public class FullInventoryHistoryPanel extends LotCodeManagerDialogBox {
 	}
 
 	@Override
-	CellTable<InventoryLotDto> getCellTable() {
+	CbCellTable<InventoryLotDto> getCellTable() {
 		return newMultiSelectionCellTable(DEFAULT_HEADERS);
 	}
 }

@@ -10,8 +10,8 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Date;
 
+import com.chuckanutbay.webapp.common.client.CbCellTable;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -44,7 +44,7 @@ public class UsedUpPanel extends LotCodeManagerDialogBox implements SelectionCha
 	}
 
 	@Override
-	CellTable<InventoryLotDto> getCellTable() {
+	CbCellTable<InventoryLotDto> getCellTable() {
 		return newMultiSelectionCellTable(USED_UP_HEADERS);
 	}
 	

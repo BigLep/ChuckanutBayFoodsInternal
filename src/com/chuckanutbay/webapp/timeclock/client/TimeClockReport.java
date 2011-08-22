@@ -78,6 +78,7 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 		shiftListBox.addItem("1");
 		shiftListBox.addItem("2");
 		shiftListBox.addItem("3");
+		shiftListBox.addItem("Other");
 		
 		//Setup dateBoxAndShiftListBoxPanel
 		dateBoxAndShiftListBoxPanel.setWidth("550px");
@@ -112,6 +113,8 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 				} else {
 					if (shiftListBox.getItemText(shiftListBox.getSelectedIndex()).equals("All")){
 						shift = 0;
+					} else if (shiftListBox.getItemText(shiftListBox.getSelectedIndex()).equals("Other")){
+						shift = 4;
 					} else {
 						shift = Integer.parseInt(shiftListBox.getItemText(shiftListBox.getSelectedIndex()));
 					}

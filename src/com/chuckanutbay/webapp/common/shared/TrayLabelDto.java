@@ -2,6 +2,8 @@ package com.chuckanutbay.webapp.common.shared;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
+
 public class TrayLabelDto implements Serializable {
 
 	/**
@@ -11,44 +13,81 @@ public class TrayLabelDto implements Serializable {
 	private Integer id;
 	private SalesOrderLineItemDto salesOrderLineItemDto;
 	private String lotCode;
-	private double cakes;
-	private QuickbooksItemDto subItem;
+	private double cases;
+	private double maximumCases;
 	private String barcodeUrl;
+	
+	public TrayLabelDto() {
+		super();
+	}
+	
+	
+	public TrayLabelDto(Integer id,
+			SalesOrderLineItemDto salesOrderLineItemDto, String lotCode,
+			double cases) {
+		super();
+		this.id = id;
+		this.salesOrderLineItemDto = salesOrderLineItemDto;
+		this.lotCode = lotCode;
+		this.cases = cases;
+		this.maximumCases = cases;
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public TrayLabelDto setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 	public SalesOrderLineItemDto getSalesOrderLineItemDto() {
 		return salesOrderLineItemDto;
 	}
-	public void setSalesOrderLineItemDto(SalesOrderLineItemDto salesOrderLineItemDto) {
+	public TrayLabelDto setSalesOrderLineItemDto(SalesOrderLineItemDto salesOrderLineItemDto) {
 		this.salesOrderLineItemDto = salesOrderLineItemDto;
+		return this;
 	}
 	public String getLotCode() {
 		return lotCode;
 	}
-	public void setLotCode(String lotCode) {
+	public TrayLabelDto setLotCode(String lotCode) {
 		this.lotCode = lotCode;
+		return this;
 	}
-	public double getCakes() {
-		return cakes;
+	public double getCases() {
+		return cases;
 	}
-	public void setCakes(double cakes) {
-		this.cakes = cakes;
+	public TrayLabelDto setCases(double cases) {
+		this.cases = cases;
+		return this;
 	}
-	public QuickbooksItemDto getSubItem() {
-		return subItem;
+	public double getMaximumCases() {
+		return maximumCases;
 	}
-	public void setSubItem(QuickbooksItemDto subItem) {
-		this.subItem = subItem;
+	public TrayLabelDto setMaximumCases(double maximumCases) {
+		this.maximumCases = maximumCases;
+		return this;
 	}
 	public String getBarcodeUrl() {
 		return barcodeUrl;
 	}
-	public void setBarcodeUrl(String barcodeUrl) {
+	public TrayLabelDto setBarcodeUrl(String barcodeUrl) {
 		this.barcodeUrl = barcodeUrl;
+		return this;
 	}
-
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(salesOrderLineItemDto);
+	}
+	
+	@Override
+	public boolean equals(Object object){
+		if (object instanceof TrayLabelDto) {
+			TrayLabelDto that = (TrayLabelDto)object;
+			return Objects.equal(this.salesOrderLineItemDto, that.salesOrderLineItemDto);
+		}
+		return false;
+	}
 }

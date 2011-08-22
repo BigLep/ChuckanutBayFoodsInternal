@@ -1,7 +1,7 @@
 package com.chuckanutbay.webapp.timeclock.client;
 
 import static com.chuckanutbay.webapp.common.client.IconUtil.CANCEL;
-import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
+import static com.chuckanutbay.webapp.common.client.IconUtil.newButtonWithIcon;
 
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,7 +20,7 @@ public class ClockInConfirmationPanel extends SimplePanel implements ClickHandle
 	private ClockInOutErrorHandler errorHandler;
 	private EmployeeDto employee;
 	private VerticalPanel vPanel = new VerticalPanel();
-	private Button incorrectEmployeeButton = createButtonWithIcon(CANCEL, "Not Me");
+	private Button incorrectEmployeeButton = newButtonWithIcon(CANCEL, "Not Me");
 	private Label employeeWelcomeLabel = new Label();
 	
 	/**

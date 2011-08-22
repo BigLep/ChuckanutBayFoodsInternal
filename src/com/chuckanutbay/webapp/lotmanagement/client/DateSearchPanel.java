@@ -1,6 +1,6 @@
 package com.chuckanutbay.webapp.lotmanagement.client;
 import static com.chuckanutbay.webapp.common.client.IconUtil.SEARCH;
-import static com.chuckanutbay.webapp.common.client.IconUtil.createButtonWithIcon;
+import static com.chuckanutbay.webapp.common.client.IconUtil.addIcon;
 import static com.chuckanutbay.webapp.common.client.ServiceUtils.createInventoryLotService;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_FORMAT;
 import static com.chuckanutbay.webapp.lotmanagement.client.LotCodeUtil.DATE_SEARCH_TITLE;
@@ -9,10 +9,10 @@ import static com.chuckanutbay.webapp.lotmanagement.client.RpcHelper.createInven
 
 import java.util.Date;
 
+import com.chuckanutbay.webapp.common.client.CbCellTable;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
@@ -36,7 +36,7 @@ public class DateSearchPanel extends LotCodeManagerDialogBox {
 		dateBox.setValue(new Date(), true);
 		dateBox.setStyleName("dateBox");
 		//Set Up searchButton
-		createButtonWithIcon(searchButton, SEARCH, "Search");
+		addIcon(searchButton, SEARCH, "Search");
 		searchButton.setWidth("250px");
 		searchButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -52,7 +52,7 @@ public class DateSearchPanel extends LotCodeManagerDialogBox {
 	}
 
 	@Override
-	CellTable<InventoryLotDto> getCellTable() {
+	CbCellTable<InventoryLotDto> getCellTable() {
 		return newMultiSelectionCellTable(DEFAULT_HEADERS);
 	}
 }
