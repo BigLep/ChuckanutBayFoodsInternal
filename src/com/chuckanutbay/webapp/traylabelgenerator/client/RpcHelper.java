@@ -1,6 +1,7 @@
 package com.chuckanutbay.webapp.traylabelgenerator.client;
 
 import java.util.List;
+import java.util.Map;
 
 import com.chuckanutbay.webapp.common.client.ServiceUtils;
 import com.chuckanutbay.webapp.common.client.ServiceUtils.DefaultAsyncCallback;
@@ -32,10 +33,10 @@ public class RpcHelper {
 		};
 	}
 	
-	public static AsyncCallback<List<QuickbooksItemDto>> createGetQuickbooksItemsCallback(final TrayLabelServerCommunicator caller) {
-		return new DefaultAsyncCallback<List<QuickbooksItemDto>>() {
+	public static AsyncCallback<Map<String, QuickbooksItemDto>> createGetQuickbooksItemsCallback(final TrayLabelServerCommunicator caller) {
+		return new DefaultAsyncCallback<Map<String, QuickbooksItemDto>>() {
 			@Override
-			public void onSuccess(List<QuickbooksItemDto> result) {
+			public void onSuccess(Map<String, QuickbooksItemDto> result) {
 				caller.onSuccessfulGetQuickbooksItems(result);
 			}
 		};
@@ -51,8 +52,25 @@ public class RpcHelper {
 	}
 	
 	public static AsyncCallback<Void> createUpdateTrayLabelCallback(final TrayLabelServerCommunicator caller) {
-		return new VoidAsyncCallback<Void>();
+		return new DefaultAsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {
+				caller.onSuccessfulUpdateTrayLabel();
+			}
+		};
 	}
 	
+	public static AsyncCallback<Void> createSendTrayLabelsCallback(final TrayLabelServerCommunicator caller) {
+		return new DefaultAsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {
+				caller.onSuccessfulSendTrayLabelsToServer();
+			}
+		};
+	}
+	
+	public static AsyncCallback<Void> createVoidCallback() {
+		return new VoidAsyncCallback<Void>();
+	}
 	
 }

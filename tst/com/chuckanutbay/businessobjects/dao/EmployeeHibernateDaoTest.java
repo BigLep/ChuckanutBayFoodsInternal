@@ -13,7 +13,7 @@ import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.util.testing.DatabaseResource;
 
 /**
- * @see EmployeeWorkIntervalHibernateDao
+ * @see EmployeeHibernateDao
  */
 public class EmployeeHibernateDaoTest {
 	

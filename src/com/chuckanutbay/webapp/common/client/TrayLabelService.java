@@ -1,6 +1,8 @@
 package com.chuckanutbay.webapp.common.client;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.chuckanutbay.businessobjects.TrayLabel;
 import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
@@ -31,17 +33,16 @@ public interface TrayLabelService extends RemoteService {
 	List<TrayLabelDto> getTrayLabelHistroy();
 	
 	/**
-	 * 
+	 * Adds newTrayLabels to the database and prints them.
 	 * @param newTrayLabels
-	 * @return The same {@link TrayLabelDto}s passed to the method, but with barcodeUrls.
 	 */
-	List<TrayLabelDto> setTrayLabels(List<TrayLabelDto> newTrayLabels);
+	void setTrayLabels(List<TrayLabelDto> newTrayLabels);
 	
 	/**
 	 * 
 	 * @return All {@link QuickbooksItemDto}s in the database ending in -##.
 	 */
-	List<QuickbooksItemDto> getQuickbooksItems();
+	Map<String, QuickbooksItemDto> getQuickbooksItems();
 	
 	/**
 	 * 
@@ -55,4 +56,10 @@ public interface TrayLabelService extends RemoteService {
 	 * @param trayLabel
 	 */
 	void updateTrayLabel(TrayLabelDto trayLabel);
+	
+	/**
+	 * Prints the given {@link TrayLabels}
+	 * @param trayLabels
+	 */
+	void printTrayLabels(Set<TrayLabelDto> trayLabels);
 }

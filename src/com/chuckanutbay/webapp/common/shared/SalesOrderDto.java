@@ -23,6 +23,9 @@ public class SalesOrderDto implements Serializable {
 	}
 	public SalesOrderDto() {
 	}
+	public SalesOrderDto(String customerName) {
+		this.customerName = customerName;
+	}
 	public Integer getId() {
 		return id;
 	}

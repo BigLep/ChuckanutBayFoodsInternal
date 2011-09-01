@@ -24,6 +24,14 @@
 	<!-- Alternatively, could do ${ant.project.name} -->
 	<property name="war.name" value="ROOT"/>
 	
+	<property name="build.output.report.fonts.dir" value="${build.output.dir}/reportfonts"/>
+	
+	<target name="report-fonts">
+		<jar destfile="${build.output.report.fonts.dir}/reportfonts.jar"
+			basedir="/Applications/Jaspersoft iReport Designer.app/Contents/Resources/ireport/ireport/fonts"
+		/>
+	</target>	
+	
 	<target name="release" depends="war,javadoc"/>
 	
 	<target name="clean">

@@ -9,6 +9,7 @@
 /war/timeclockreport
 /war/timeclock
 /war/traylabelgenerator
+/war/reports/generatedreports
 /war/WEB-INF/classes
 /war/WEB-INF/deploy
 /war/WEB-INF/lib

@@ -2,6 +2,7 @@ package com.chuckanutbay.webapp.common.client;
 
 import static com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
 
@@ -23,13 +23,7 @@ public class CbCellTable<T> extends CellTable<T> {
 		super();
 		pager.setDisplay(this);
 		dataProvider.addDataDisplay(this);
-		this.setKeyboardSelectionPolicy(ENABLED);
-	}
-	
-	public CbCellTable(ProvidesKey<T> keyProvider) {
-		super(keyProvider);
-		pager.setDisplay(this);
-		dataProvider.addDataDisplay(this);
+		dataProvider.setList(new ArrayList<T>());
 		this.setKeyboardSelectionPolicy(ENABLED);
 	}
 
@@ -105,6 +99,17 @@ public class CbCellTable<T> extends CellTable<T> {
 		return this;
 	}
 	
+	/**
+	 * Removes any data currently in the table and then adds the parameter data.
+	 * @param data
+	 * @return
+	 */
+	public CbCellTable<T> replaceTableData(Collection<T> data) {
+		dataProvider.getList().clear();
+		dataProvider.getList().addAll(data);
+		return this;
+	}
+	
 	public CbCellTable<T> removeTableData(T...data) {
 		List<T> tableData = dataProvider.getList();
 		for (T row : data) {
@@ -115,4 +120,9 @@ public class CbCellTable<T> extends CellTable<T> {
 		return this;
 	}
 	
+	public CbCellTable<T> clearTableData() {
+		dataProvider.getList().clear();
+		return this;
+		
+	}
 }

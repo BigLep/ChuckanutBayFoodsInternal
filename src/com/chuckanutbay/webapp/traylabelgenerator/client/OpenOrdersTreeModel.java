@@ -3,13 +3,14 @@ package com.chuckanutbay.webapp.traylabelgenerator.client;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.CompositeCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.HasCell;
@@ -25,11 +26,19 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		
 		private final MultiSelectionModel<SalesOrderLineItemDto> selectionModel = new MultiSelectionModel<SalesOrderLineItemDto>();
 		private final DefaultSelectionEventManager<SalesOrderLineItemDto> selectionManager = DefaultSelectionEventManager.createCheckboxManager();
-		private final List<SalesOrderLineItemDto> data;
+		private List<SalesOrderLineItemDto> data;
 		private String currentFlavor;
+		private ListDataProvider<String> flavorDataProvider = new ListDataProvider<String>(new ArrayList<String>());
+		private ListDataProvider<SalesOrderDto> salesOrderDataProvider = new ListDataProvider<SalesOrderDto>(new ArrayList<SalesOrderDto>());
+		private ListDataProvider<SalesOrderLineItemDto> lineItemDataProvider = new ListDataProvider<SalesOrderLineItemDto>(new ArrayList<SalesOrderLineItemDto>());
+		private SalesOrderDto currentSalesOrder;
 		
-		public OpenOrdersTreeModel(final List<SalesOrderLineItemDto> lineItems) {
+		public OpenOrdersTreeModel(List<SalesOrderLineItemDto> lineItems) {
 			data = lineItems;
+		}
+		
+		public OpenOrdersTreeModel() {
+			this(new ArrayList<SalesOrderLineItemDto>());
 		}
 		
 		@Override
@@ -38,22 +47,7 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		        // LEVEL 0.
 		        // We passed null as the root value. Return the flavors.
 				
-				List<String> flavors = newArrayList();
-				for (SalesOrderLineItemDto lineItem : data) {
-					String flavor;
-					if (lineItem.getSubItemDto() == null) {
-						flavor = lineItem.getQuickbooksItemDto().getFlavor();
-					} else {
-						flavor = lineItem.getQuickbooksItemDto().getFlavor();
-					}
-					if (!flavors.contains(flavor)) {
-						flavors.add(flavor);
-					}
-				}
-
-		        // Create a data provider that contains the list of composers.
-		        ListDataProvider<String> dataProvider = new ListDataProvider<String>(flavors);
-
+				updateFlavorDataProvider();
 		        // Create a cell to display a composer.
 		        Cell<String> cell = new AbstractCell<String>() {
 					@Override
@@ -67,30 +61,14 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		        };
 
 		        // Return a node info that pairs the data provider and the cell.
-		        return new DefaultNodeInfo<String>(dataProvider, cell);
+		        return new DefaultNodeInfo<String>(flavorDataProvider, cell);
 		        
 		      } else if (value instanceof String) {
 		    	  // LEVEL 1.
 		    	  // We want the children of the flavor. Return the salesOrders.
 		    	  
 		    	  currentFlavor = (String) value;
-		    	  
-		    	  List<SalesOrderDto> salesOrders = newArrayList();
-		    	  
-		    	  for (SalesOrderLineItemDto lineItem : data) {
-		    		  SalesOrderDto salesOrder = lineItem.getSalesOrderDto();
-		    		  String flavor;
-		    		  if (lineItem.getSubItemDto() == null) {
-		    			  flavor = lineItem.getQuickbooksItemDto().getFlavor();
-		    		  } else {
-		    			  flavor = lineItem.getQuickbooksItemDto().getFlavor();
-		    		  }
-		    		  if(flavor.equals(value) && !salesOrders.contains(salesOrder)) {
-		    			  salesOrders.add(salesOrder);
-		    		  }
-		    	  }
-		    	  
-		    	  ListDataProvider<SalesOrderDto> dataProvider = new ListDataProvider<SalesOrderDto>(salesOrders);
+		    	  updateSalesOrderDataProvider();
 		    	  Cell<SalesOrderDto> cell = new AbstractCell<SalesOrderDto>() {
 		    		  @Override
 		    		  public void render(Context context, SalesOrderDto value, SafeHtmlBuilder sb) {
@@ -101,29 +79,18 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		    			  }
 		    		  }
 		    	  };
-		    	  return new DefaultNodeInfo<SalesOrderDto>(dataProvider, cell);
+		    	  return new DefaultNodeInfo<SalesOrderDto>(salesOrderDataProvider, cell);
 		    	  
 		      } else if (value instanceof SalesOrderDto) {
 		    	  // LEVEL 2 - LEAF.
 		    	  // We want the children of the salesOrderLineItem. Return the songs.
-		    	  List<SalesOrderLineItemDto> lineItems = newArrayList();
-		    	  
-		    	  for (SalesOrderLineItemDto lineItem : data) {
-		    		  String flavor;
-		    		  if (lineItem.getSubItemDto() == null) {
-		    			  flavor = lineItem.getQuickbooksItemDto().getFlavor();
-		    		  } else {
-		    			  flavor = lineItem.getQuickbooksItemDto().getFlavor();
-		    		  }
-		    		  if(lineItem.getSalesOrderDto().equals(value) && flavor.equals(currentFlavor)) {
-		    			  lineItems.add(lineItem);
-		    		  }
-		    	  }
-		    	  
-		    	  ListDataProvider<SalesOrderLineItemDto> dataProvider = new ListDataProvider<SalesOrderLineItemDto>(lineItems);
+		    	
+		    	  currentSalesOrder = (SalesOrderDto) value;
+		    	  updateLineItemDataProvider();
 		    	// Construct a composite cell that includes a checkbox.
 		    	  // Following form Gwt Showcase CellBrowser example.
-		    	    List<HasCell<SalesOrderLineItemDto, ?>> hasCells = new ArrayList<HasCell<SalesOrderLineItemDto, ?>>();
+		    	  /*  
+		    	  List<HasCell<SalesOrderLineItemDto, ?>> hasCells = new ArrayList<HasCell<SalesOrderLineItemDto, ?>>();
 		    	    hasCells.add(new HasCell<SalesOrderLineItemDto, Boolean>() {
 
 		    	      private CheckboxCell cell = new CheckboxCell(true, false);
@@ -141,6 +108,42 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		    	      @Override
 					public Boolean getValue(SalesOrderLineItemDto object) {
 		    	        return selectionModel.isSelected(object);
+		    	      }
+		    	    });
+		    	    */
+		    	  List<HasCell<SalesOrderLineItemDto, ?>> hasCells = new ArrayList<HasCell<SalesOrderLineItemDto, ?>>();
+		    	    hasCells.add(new HasCell<SalesOrderLineItemDto, String>() {
+
+		    	      private ButtonCell cell = new ButtonCell();
+
+		    	      @Override
+					public Cell<String> getCell() {
+		    	        return cell;
+		    	      }
+
+		    	      @Override
+					public FieldUpdater<SalesOrderLineItemDto, String> getFieldUpdater() {
+		    	        return new FieldUpdater<SalesOrderLineItemDto, String>() {
+		    				@Override
+		    				public void update(int index, SalesOrderLineItemDto object, String value) {
+		    					boolean isSelected = getSelectionModel().isSelected(object); 
+		    					if (isSelected) {
+		        		    		getSelectionModel().setSelected(object, false);
+		        		    	} else {
+		        		    		getSelectionModel().setSelected(object, true);
+		        		    	}
+		    				}
+		        		};
+		    	      }
+
+		    	      @Override
+					public String getValue(SalesOrderLineItemDto object) {
+		    	    	  boolean isSelected = getSelectionModel().isSelected(object); 
+		    	    	  if (isSelected) {
+		    	    		  return "Remove";
+		    	    	  } else {
+		    	    		  return "Add";
+		    	    	  }
 		    	      }
 		    	    });
 		    	    hasCells.add(new HasCell<SalesOrderLineItemDto, SalesOrderLineItemDto>() {
@@ -195,7 +198,7 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		    	      }
 		    	    };
 		    	  
-		    	  return new DefaultNodeInfo<SalesOrderLineItemDto>(dataProvider, cell, selectionModel, selectionManager, null);
+		    	  return new DefaultNodeInfo<SalesOrderLineItemDto>(lineItemDataProvider, cell, selectionModel, selectionManager, null);
 		      }
 			return null;
 		}
@@ -212,4 +215,65 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		public MultiSelectionModel<SalesOrderLineItemDto> getSelectionModel() {
 			return selectionModel;
 		}
+
+		public List<SalesOrderLineItemDto> getData() {
+			return data;
+		}
+		
+		public void setData(Collection<SalesOrderLineItemDto> data) {
+			this.data = newArrayList(data);
+			updateFlavorDataProvider();
+		}
+		
+		private void updateFlavorDataProvider() {
+			List<String> flavors = flavorDataProvider.getList();
+			flavors.clear();
+			for (SalesOrderLineItemDto lineItem : data) {
+				String flavor;
+				if (lineItem.getSubItemDto() == null) {
+					flavor = lineItem.getQuickbooksItemDto().getFlavor();
+				} else {
+					flavor = lineItem.getSubItemDto().getFlavor();
+				}
+				if (flavor != null && !flavors.contains(flavor)) {
+					flavors.add(flavor);
+				}
+			}
+		}
+		
+		private void updateSalesOrderDataProvider() {
+	    	  List<SalesOrderDto> salesOrders = salesOrderDataProvider.getList();
+	    	  salesOrders.clear();
+	    	  
+	    	  for (SalesOrderLineItemDto lineItem : data) {
+	    		  SalesOrderDto salesOrder = lineItem.getSalesOrderDto();
+	    		  String flavor;
+	    		  if (lineItem.getSubItemDto() == null) {
+	    			  flavor = lineItem.getQuickbooksItemDto().getFlavor();
+	    		  } else {
+	    			  flavor = lineItem.getSubItemDto().getFlavor();
+	    		  }
+	    		  if(flavor != null && flavor.equals(currentFlavor) && !salesOrders.contains(salesOrder)) {
+	    			  salesOrders.add(salesOrder);
+	    		  }
+	    	  }
+		}
+		
+		private void updateLineItemDataProvider() {
+			  List<SalesOrderLineItemDto> lineItems = lineItemDataProvider.getList();
+			  lineItems.clear();
+	    	  
+	    	  for (SalesOrderLineItemDto lineItem : data) {
+	    		  String flavor;
+	    		  if (lineItem.getSubItemDto() == null) {
+	    			  flavor = lineItem.getQuickbooksItemDto().getFlavor();
+	    		  } else {
+	    			  flavor = lineItem.getSubItemDto().getFlavor();
+	    		  }
+	    		  if(lineItem.getSalesOrderDto().equals(currentSalesOrder) && flavor != null && flavor.equals(currentFlavor)) {
+	    			  lineItems.add(lineItem);
+	    		  }
+	    	  }
+		}
+		
 	}

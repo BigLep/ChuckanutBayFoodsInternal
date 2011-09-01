@@ -1,5 +1,7 @@
 package com.chuckanutbay.businessobjects;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -17,6 +19,14 @@ import com.chuckanutbay.businessobjects.dao.InventoryLotDao;
 import com.chuckanutbay.businessobjects.dao.InventoryLotHibernateDao;
 import com.chuckanutbay.businessobjects.dao.InventoryLotStickerColorDao;
 import com.chuckanutbay.businessobjects.dao.InventoryLotStickerColorHibernateDao;
+import com.chuckanutbay.businessobjects.dao.QuickbooksItemDao;
+import com.chuckanutbay.businessobjects.dao.QuickbooksItemHibernateDao;
+import com.chuckanutbay.businessobjects.dao.QuickbooksSubItemHibernateDao;
+import com.chuckanutbay.businessobjects.dao.SalesOrderDao;
+import com.chuckanutbay.businessobjects.dao.SalesOrderHibernateDao;
+import com.chuckanutbay.businessobjects.dao.SalesOrderLineItemHibernateDao;
+import com.chuckanutbay.businessobjects.dao.TrayLabelDao;
+import com.chuckanutbay.businessobjects.dao.TrayLabelHibernateDao;
 import com.google.gwt.dev.util.collect.HashSet;
 
 /**
@@ -102,5 +112,79 @@ public class BusinessObjects {
 		InventoryLotDao dao = new InventoryLotHibernateDao();
 		dao.makePersistent(lot);
 		return lot;
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static QuickbooksItem oneQuickbooksItem(String id) {
+		QuickbooksItem qbItem = new QuickbooksItem();
+		qbItem.setId(id);
+		QuickbooksItemDao dao = new QuickbooksItemHibernateDao();
+		dao.makePersistent(qbItem);
+		return qbItem;
+	}
+	
+	public static QuickbooksItem oneQuickbooksItem(String id, String description, String size, String flavor, Double casesPerTray) {
+		QuickbooksItem qbItem = oneQuickbooksItem(id);
+		qbItem.setDescription(description);
+		qbItem.setSize(size);
+		qbItem.setFlavor(flavor);
+		qbItem.setCasesPerTray(casesPerTray);
+		return qbItem;
+		
+	}
+	
+	public static TrayLabel oneTrayLabel(double cases, String lotCode, SalesOrderLineItem salesOrderLineItem) {
+		TrayLabel trayLabel = new TrayLabel();
+		trayLabel.setCases(cases);
+		trayLabel.setLotCode(lotCode);
+		trayLabel.setSalesOrderLineItem(salesOrderLineItem);
+		TrayLabelDao dao = new TrayLabelHibernateDao();
+		dao.makePersistent(trayLabel);
+		return trayLabel;
+	}
+	
+	public static TrayLabel oneTrayLabel(double cases, String lotCode, SalesOrderLineItem salesOrderLineItem, QuickbooksItem subItem) {
+		TrayLabel trayLabel = oneTrayLabel(cases, lotCode, salesOrderLineItem);
+		trayLabel.setQuickbooksSubItem(subItem);
+		return trayLabel;
+	}
+	
+	public static SalesOrder oneSalesOrder(String customerName, boolean closed) {
+		SalesOrder salesOrder = new SalesOrder();
+		salesOrder.setCustomerName(customerName);
+		salesOrder.setOrderClosed(closed);
+		SalesOrderDao dao = new SalesOrderHibernateDao();
+		dao.makePersistent(salesOrder);
+		return salesOrder;
+	}
+	
+	public static SalesOrderLineItem oneSalesOrderLineItem(SalesOrder salesOrder, QuickbooksItem quickbooksItem, int cases) {
+		SalesOrderLineItem lineItem = new SalesOrderLineItem();
+		lineItem.setSalesOrder(salesOrder);
+		lineItem.setQuickbooksItem(quickbooksItem);
+		lineItem.setCases(cases);
+		new SalesOrderLineItemHibernateDao().makePersistent(lineItem);
+		return lineItem;
+	}
+	
+	public static QuickbooksSubItem oneSubItem(QuickbooksItem qbItem, QuickbooksItem qbSubItem, double cakesPerCase) {
+		QuickbooksSubItem subItem = new QuickbooksSubItem();
+		subItem.setQuickbooksItem(qbItem);
+		subItem.setSubItem(qbSubItem);
+		subItem.setCakesPerCase(cakesPerCase);
+		new QuickbooksSubItemHibernateDao().makePersistent(subItem);
+		return subItem;
+	}
+	
+	public static void addSubItems(QuickbooksItem qbItem, QuickbooksSubItem...subItems) {
+		qbItem.setSubItems(new HashSet<QuickbooksSubItem>(newArrayList(subItems)));
+	}
+	
+	public static void addLineItems(SalesOrder salesOrder, SalesOrderLineItem...lineItems) {
+		salesOrder.setSalesOrderLineItems(new HashSet<SalesOrderLineItem>(newArrayList(lineItems)));
 	}
 }

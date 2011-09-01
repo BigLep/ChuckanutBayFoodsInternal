@@ -16,6 +16,7 @@
 	<table-filter match-name="sales_orders" />
 	<table-filter match-name="sales_order_line_items" />
 	<table-filter match-name="tray_labels" />
+	<table-filter match-name="nutrition_labels" />
 	<table name="inventory_items" class="InventoryItem">
 	</table>
 	<table name="inventory_lots" class="InventoryLot">
@@ -41,5 +42,7 @@
 	<table name="sales_order_line_items" class="SalesOrderLineItem">
 	</table>
 	<table name="tray_labels" class="TrayLabel">
+	</table>
+	<table name="nutrition_labels" class="NutritionLabel">
 	</table>
 </hibernate-reverse-engineering>

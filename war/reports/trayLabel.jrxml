@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="trayLabel" language="javascript" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="59"/>
+	<style name="WhiteOnBlack" mode="Opaque" forecolor="#FFFFFF" backcolor="#000000" fill="Solid" isBlankWhenNull="true"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontName="Tahoma" fontSize="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="1.0" lineColor="#CCCCCC"/>
+	</style>
+	<style name="GreyBorder" mode="Transparent" isPdfEmbedded="true">
+		<pen lineWidth="1.0" lineColor="#CCCCCC"/>
+	</style>
+	<parameter name="TRAY_LABEL_IDS" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1, 2"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     quickbooks_items.`unique_instructions` AS quickbooks_items_unique_instructions,
+     quickbooks_item_supplements.`size` AS quickbooks_item_supplements_size,
+     quickbooks_item_supplements.`cases_per_tray` AS quickbooks_item_supplements_cases_per_tray,
+     tray_labels.`id` AS tray_labels_id,
+     tray_labels.`lot_code` AS tray_labels_lot_code,
+     tray_labels.`cases` AS tray_labels_cases,
+     tray_labels.`cakes_per_case` AS tray_labels_cakes_per_case,
+     tray_labels.`cases_per_tray` AS tray_labels_cases_per_tray,
+     sales_orders.`purchase_order` AS sales_orders_purchase_order,
+     sales_orders.`customer_name` AS sales_orders_customer_name,
+     sales_orders.`ship_date` AS sales_orders_ship_date,
+     sales_order_line_items.`cases` AS sales_order_line_items_cases,
+     nutrition_labels.`is_allergen` AS nutrition_labels_is_allergen,
+     nutrition_labels.`batter_amount` AS nutrition_labels_batter_amount,
+     nutrition_labels.`batter_type` AS nutrition_labels_batter_type,
+     nutrition_labels.`crust_amount` AS nutrition_labels_crust_amount,
+     nutrition_labels.`crust_type` AS nutrition_labels_crust_type,
+     nutrition_labels.`decoration_amount` AS nutrition_labels_decoration_amount,
+     nutrition_labels.`decoration_type` AS nutrition_labels_decoration_type,
+     quickbooks_item_supplements.`product_type` AS quickbooks_item_supplements_product_type,
+     quickbooks_items.`pack` AS quickbooks_items_pack,
+     quickbooks_items.`id` AS quickbooks_items_id,
+     quickbooks_items_A.`pack` AS quickbooks_items_A_pack,
+     quickbooks_items_A.`unique_instructions` AS quickbooks_items_A_unique_instructions,
+     quickbooks_item_supplements_A.`product_type` AS quickbooks_item_supplements_A_product_type,
+     quickbooks_item_supplements_A.`size` AS quickbooks_item_supplements_A_size,
+     quickbooks_item_supplements_A.`cases_per_tray` AS quickbooks_item_supplements_A_cases_per_tray,
+     quickbooks_items_B.`pack` AS quickbooks_items_B_pack,
+     quickbooks_items_B.`unique_instructions` AS quickbooks_items_B_unique_instructions,
+     quickbooks_item_supplements_B.`product_type` AS quickbooks_item_supplements_B_product_type,
+     quickbooks_item_supplements_B.`size` AS quickbooks_item_supplements_B_size,
+     quickbooks_item_supplements_B.`cases_per_tray` AS quickbooks_item_supplements_B_cases_per_tray,
+     nutrition_labels_A.`is_allergen` AS nutrition_labels_A_is_allergen,
+     nutrition_labels_A.`batter_amount` AS nutrition_labels_A_batter_amount,
+     nutrition_labels_A.`batter_type` AS nutrition_labels_A_batter_type,
+     nutrition_labels_A.`crust_amount` AS nutrition_labels_A_crust_amount,
+     nutrition_labels_A.`crust_type` AS nutrition_labels_A_crust_type,
+     nutrition_labels_A.`decoration_amount` AS nutrition_labels_A_decoration_amount,
+     nutrition_labels_A.`decoration_type` AS nutrition_labels_A_decoration_type,
+     nutrition_labels_B.`is_allergen` AS nutrition_labels_B_is_allergen,
+     nutrition_labels_B.`batter_amount` AS nutrition_labels_B_batter_amount,
+     nutrition_labels_B.`batter_type` AS nutrition_labels_B_batter_type,
+     nutrition_labels_B.`crust_amount` AS nutrition_labels_B_crust_amount,
+     nutrition_labels_B.`crust_type` AS nutrition_labels_B_crust_type,
+     nutrition_labels_B.`decoration_amount` AS nutrition_labels_B_decoration_amount,
+     nutrition_labels_B.`decoration_type` AS nutrition_labels_B_decoration_type,
+     tray_labels.`sub_item_id` AS quickbooks_items_A_id,
+     tray_labels.`qb_item_id` AS quickbooks_items_B_id,
+     sales_orders.`special_instructions` AS sales_orders_special_instructions
+FROM
+     `quickbooks_item_supplements` quickbooks_item_supplements LEFT OUTER JOIN `quickbooks_items` quickbooks_items ON quickbooks_item_supplements.`id` = quickbooks_items.`quickbooks_item_supplement_id`
+     LEFT OUTER JOIN `sales_order_line_items` sales_order_line_items ON quickbooks_items.`id` = sales_order_line_items.`qb_item_id`
+     LEFT OUTER JOIN `tray_labels` tray_labels ON sales_order_line_items.`id` = tray_labels.`line_item_id`
+     LEFT OUTER JOIN `sales_orders` sales_orders ON sales_order_line_items.`sales_order_id` = sales_orders.`id`
+     LEFT OUTER JOIN `quickbooks_items` quickbooks_items_A ON tray_labels.`sub_item_id` = quickbooks_items_A.`id`
+     LEFT OUTER JOIN `quickbooks_items` quickbooks_items_B ON tray_labels.`qb_item_id` = quickbooks_items_B.`id`
+     LEFT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements_B ON quickbooks_items_B.`quickbooks_item_supplement_id` = quickbooks_item_supplements_B.`id`
+     LEFT OUTER JOIN `nutrition_labels` nutrition_labels_B ON quickbooks_item_supplements_B.`nutrition_label_id` = nutrition_labels_B.`id`
+     LEFT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements_A ON quickbooks_items_A.`quickbooks_item_supplement_id` = quickbooks_item_supplements_A.`id`
+     LEFT OUTER JOIN `nutrition_labels` nutrition_labels_A ON quickbooks_item_supplements_A.`nutrition_label_id` = nutrition_labels_A.`id`
+     LEFT OUTER JOIN `nutrition_labels` nutrition_labels ON quickbooks_item_supplements.`nutrition_label_id` = nutrition_labels.`id`
+WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})
+]]>
+	</queryString>
+	<field name="quickbooks_items_unique_instructions" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_size" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_cases_per_tray" class="java.lang.Double"/>
+	<field name="tray_labels_id" class="java.lang.Integer"/>
+	<field name="tray_labels_lot_code" class="java.lang.String"/>
+	<field name="tray_labels_cases" class="java.lang.Double"/>
+	<field name="tray_labels_cakes_per_case" class="java.lang.Double"/>
+	<field name="tray_labels_cases_per_tray" class="java.lang.Double"/>
+	<field name="sales_orders_purchase_order" class="java.lang.String"/>
+	<field name="sales_orders_customer_name" class="java.lang.String"/>
+	<field name="sales_orders_ship_date" class="java.sql.Date"/>
+	<field name="sales_order_line_items_cases" class="java.lang.Integer"/>
+	<field name="nutrition_labels_is_allergen" class="java.lang.Boolean"/>
+	<field name="nutrition_labels_batter_amount" class="java.lang.String"/>
+	<field name="nutrition_labels_batter_type" class="java.lang.String"/>
+	<field name="nutrition_labels_crust_amount" class="java.lang.String"/>
+	<field name="nutrition_labels_crust_type" class="java.lang.String"/>
+	<field name="nutrition_labels_decoration_amount" class="java.lang.String"/>
+	<field name="nutrition_labels_decoration_type" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_product_type" class="java.lang.String"/>
+	<field name="quickbooks_items_pack" class="java.lang.Integer"/>
+	<field name="quickbooks_items_id" class="java.lang.String"/>
+	<field name="quickbooks_items_A_pack" class="java.lang.Integer"/>
+	<field name="quickbooks_items_A_unique_instructions" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_A_product_type" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_A_size" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_A_cases_per_tray" class="java.lang.Double"/>
+	<field name="quickbooks_items_B_pack" class="java.lang.Integer"/>
+	<field name="quickbooks_items_B_unique_instructions" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_B_product_type" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_B_size" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_B_cases_per_tray" class="java.lang.Double"/>
+	<field name="nutrition_labels_A_is_allergen" class="java.lang.Boolean"/>
+	<field name="nutrition_labels_A_batter_amount" class="java.lang.String"/>
+	<field name="nutrition_labels_A_batter_type" class="java.lang.String"/>
+	<field name="nutrition_labels_A_crust_amount" class="java.lang.String"/>
+	<field name="nutrition_labels_A_crust_type" class="java.lang.String"/>
+	<field name="nutrition_labels_A_decoration_amount" class="java.lang.String"/>
+	<field name="nutrition_labels_A_decoration_type" class="java.lang.String"/>
+	<field name="nutrition_labels_B_is_allergen" class="java.lang.Boolean"/>
+	<field name="nutrition_labels_B_batter_amount" class="java.lang.String"/>
+	<field name="nutrition_labels_B_batter_type" class="java.lang.String"/>
+	<field name="nutrition_labels_B_crust_amount" class="java.lang.String"/>
+	<field name="nutrition_labels_B_crust_type" class="java.lang.String"/>
+	<field name="nutrition_labels_B_decoration_amount" class="java.lang.String"/>
+	<field name="nutrition_labels_B_decoration_type" class="java.lang.String"/>
+	<field name="quickbooks_items_A_id" class="java.lang.String"/>
+	<field name="quickbooks_items_B_id" class="java.lang.String"/>
+	<field name="sales_orders_special_instructions" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="572" splitType="Stretch">
+			<frame>
+				<reportElement style="GreyBorder" x="438" y="492" width="314" height="80"/>
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Customer: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="100" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Cust. Instr: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="40" width="100" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Item Instr: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="60" width="100" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Decor. Lot: ]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement style="GreyBorder" x="0" y="0" width="314" height="80"/>
+				</rectangle>
+				<rectangle>
+					<reportElement style="GreyBorder" x="100" y="60" width="214" height="20"/>
+				</rectangle>
+				<textField>
+					<reportElement x="100" y="0" width="214" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_orders_customer_name}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="WhiteOnBlack" x="100" y="20" width="214" height="20">
+						<printWhenExpression><![CDATA[$F{sales_orders_special_instructions} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_orders_special_instructions}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="WhiteOnBlack" x="100" y="40" width="214" height="20">
+						<printWhenExpression><![CDATA[($F{quickbooks_items_B_id} != null) ? ($F{quickbooks_items_B_unique_instructions} != null)
+    : ($F{quickbooks_items_unique_instructions} != null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_B_id} != null) ? $F{quickbooks_items_B_unique_instructions}
+    : $F{quickbooks_items_unique_instructions}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="492" width="189" height="80"/>
+				<componentElement>
+					<reportElement x="0" y="0" width="189" height="52"/>
+					<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" moduleWidth="2.0" textPosition="bottom">
+						<jr:codeExpression><![CDATA["" + $F{tray_labels_id}]]></jr:codeExpression>
+					</jr:Code128>
+				</componentElement>
+				<staticText>
+					<reportElement style="WhiteOnBlack" x="24" y="52" width="140" height="28">
+						<printWhenExpression><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_is_allergen}
+    : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_is_allergen}
+        : $F{nutrition_labels_is_allergen}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font fontName="Tahoma" size="22" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ALLERGEN]]></text>
+				</staticText>
+				<break>
+					<reportElement x="0" y="79" width="100" height="1"/>
+				</break>
+			</frame>
+			<frame>
+				<reportElement style="GreyBorder" x="0" y="403" width="369" height="80"/>
+				<rectangle>
+					<reportElement style="GreyBorder" mode="Transparent" x="0" y="0" width="369" height="80"/>
+				</rectangle>
+				<textField>
+					<reportElement x="100" y="20" width="169" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_crust_type}
+    : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_crust_type}
+        : $F{nutrition_labels_crust_type}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Default" x="100" y="0" width="169" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Type]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Default" x="269" y="0" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Default" x="0" y="20" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Crust]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Default" x="0" y="40" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Batter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Default" x="0" y="60" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Decoration]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="100" y="40" width="169" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_batter_type}
+    : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_batter_type}
+        : $F{nutrition_labels_batter_type}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="60" width="169" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_decoration_type}
+    : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_decoration_type}
+        : $F{nutrition_labels_decoration_type}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="20" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_crust_amount}
+    : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_crust_amount}
+        : $F{nutrition_labels_crust_amount}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="40" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_batter_amount}
+    : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_batter_amount}
+        : $F{nutrition_labels_batter_amount}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="60" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_decoration_amount}
+    : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_decoration_amount}
+        : $F{nutrition_labels_decoration_amount}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<line>
+				<reportElement x="-1" y="487" width="753" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="397" width="753" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<frame>
+				<reportElement style="GreyBorder" x="189" y="492" width="249" height="80"/>
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Item Id: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="100" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Flavor: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="40" width="100" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Size: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="60" width="100" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[LotCode: ]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement style="GreyBorder" x="0" y="0" width="249" height="80"/>
+				</rectangle>
+				<textField>
+					<reportElement x="100" y="0" width="149" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{quickbooks_items_id}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="20" width="149" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{quickbooks_item_supplements_A_product_type} : $F{quickbooks_item_supplements_product_type}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="40" width="149" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{quickbooks_item_supplements_A_size} : $F{quickbooks_item_supplements_size}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="60" width="149" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{tray_labels_lot_code}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement style="GreyBorder" x="381" y="453" width="371" height="30">
+					<printWhenExpression><![CDATA[$F{quickbooks_items_B_id} == null]]></printWhenExpression>
+				</reportElement>
+				<rectangle>
+					<reportElement style="GreyBorder" x="0" y="0" width="371" height="30"/>
+				</rectangle>
+				<textField>
+					<reportElement x="0" y="0" width="370" height="30"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="20"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Cakes on this tray: " + $F{tray_labels_cases} * $F{tray_labels_cakes_per_case}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement style="GreyBorder" x="381" y="403" width="371" height="40">
+					<printWhenExpression><![CDATA[$F{quickbooks_items_B_id} == null]]></printWhenExpression>
+				</reportElement>
+				<staticText>
+					<reportElement x="0" y="0" width="57" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="57" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Order]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="57" y="0" width="115" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Cakes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="172" y="0" width="99" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Cases]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="271" y="0" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Trays]]></text>
+				</staticText>
+				<textField pattern="###0.##">
+					<reportElement x="172" y="20" width="99" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{sales_order_line_items_cases}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement style="GreyBorder" x="0" y="0" width="371" height="40">
+						<printWhenExpression><![CDATA[$F{quickbooks_items_B_id} == null]]></printWhenExpression>
+					</reportElement>
+				</rectangle>
+				<textField pattern="###0.##">
+					<reportElement x="57" y="20" width="115" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$F{sales_order_line_items_cases} * $F{tray_labels_cakes_per_case}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.##">
+					<reportElement x="271" y="20" width="99" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$F{sales_order_line_items_cases} / $F{tray_labels_cases_per_tray}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

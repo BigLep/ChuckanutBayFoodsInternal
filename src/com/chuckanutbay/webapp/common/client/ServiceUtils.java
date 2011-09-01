@@ -41,14 +41,18 @@ public class ServiceUtils {
 	public static abstract class DefaultAsyncCallback<T> implements AsyncCallback<T> {
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("System failed: " + caught);
+			if (!GWT.isProdMode()) {
+				Window.alert("System failed: " + caught);
+			}
 		}
 	}
 	
 	public static class VoidAsyncCallback<Void> implements AsyncCallback<Void> {
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("System failed: " + caught);
+			if (!GWT.isProdMode()) {
+				Window.alert("System failed: " + caught);
+			}
 		}
 
 		@Override

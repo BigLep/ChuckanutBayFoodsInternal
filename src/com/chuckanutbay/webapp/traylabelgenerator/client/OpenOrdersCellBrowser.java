@@ -1,5 +1,6 @@
 package com.chuckanutbay.webapp.traylabelgenerator.client;
 
+import java.util.Collection;
 import java.util.Set;
 
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
@@ -40,4 +41,15 @@ public class OpenOrdersCellBrowser extends CellBrowser {
 	public Set<SalesOrderLineItemDto> getSelectedLineItems() {
 		return viewModel.getSelectionModel().getSelectedSet();
 	}
+	
+	/**
+	 * Removes any data currently in the browser and then adds the parameter data.
+	 * @param data
+	 * @return
+	 */
+	public OpenOrdersCellBrowser replaceBrowserData(Collection<SalesOrderLineItemDto> data) {
+		viewModel.setData(data);
+		return this;
+	}
+	
 }

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "quickbooks_sub_items")
 public class QuickbooksSubItem {
 	private Integer id;
-	private double cakesPerCase;
+	private Double cakesPerCase;
 	private QuickbooksItem quickbooksItem;
 	private QuickbooksItem subItem;
 	
@@ -30,10 +30,10 @@ public class QuickbooksSubItem {
 	}
 	
 	@Column(name = "cakes_per_case", nullable = false)
-	public double getCakesPerCase() {
+	public Double getCakesPerCase() {
 		return cakesPerCase;
 	}
-	public void setCakesPerCase(double cakesPerCase) {
+	public void setCakesPerCase(Double cakesPerCase) {
 		this.cakesPerCase = cakesPerCase;
 	}
 	

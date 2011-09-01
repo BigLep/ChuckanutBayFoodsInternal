@@ -147,7 +147,11 @@ public class TrayLabelGeneratorUtil {
 
 				@Override
     	        public String getValue(TrayLabelDto object) {
-    	        	return SHORT_DECIMAL.format((object.getSalesOrderLineItemDto().getQuickbooksItemDto().getCakesPerCase() * object.getCases()));
+					if (object.getCakesPerCase() != 0.0) {
+						return SHORT_DECIMAL.format(object.getCakesPerCase() * object.getCases());
+					} else {
+						return "-";
+					}
     	        }
 				
     	    };
@@ -155,7 +159,12 @@ public class TrayLabelGeneratorUtil {
 
 				@Override
 				public void update(int index, TrayLabelDto object, String value) {
-					double cakesPerCase = object.getSalesOrderLineItemDto().getQuickbooksItemDto().getCakesPerCase();
+					double cakesPerCase;
+					if (object.getSalesOrderLineItemDto().getSubItemDto() == null) {//No sub item
+						cakesPerCase = object.getSalesOrderLineItemDto().getQuickbooksItemDto().getCakesPerCase();
+					} else {//has sub item
+						cakesPerCase = object.getSalesOrderLineItemDto().getSubItemDto().getCakesPerCase();
+					}
 					double maximumCakes = object.getMaximumCases() * cakesPerCase;
 					try {
 						double newCakesDouble = Double.parseDouble(value);
@@ -212,7 +221,12 @@ public class TrayLabelGeneratorUtil {
 
 				@Override
     	        public String getValue(TrayLabelDto object) {
-    	        	return SHORT_DECIMAL.format(object.getCases() / object.getSalesOrderLineItemDto().getQuickbooksItemDto().getCasesPerTray());
+					if (object.getCasesPerTray() != 0.0) {
+						return SHORT_DECIMAL.format(object.getCases() / object.getCasesPerTray());
+					} else {
+						return "-";
+					}
+    	        	
     	        }
 				
     	    };
@@ -220,7 +234,12 @@ public class TrayLabelGeneratorUtil {
 
 				@Override
 				public void update(int index, TrayLabelDto object, String value) {
-					double casesPerTray = object.getSalesOrderLineItemDto().getQuickbooksItemDto().getCasesPerTray();
+					double casesPerTray;
+					if (object.getSalesOrderLineItemDto().getSubItemDto() == null) {//No sub item
+						casesPerTray = object.getSalesOrderLineItemDto().getQuickbooksItemDto().getCasesPerTray();
+					} else {//has sub item
+						casesPerTray = object.getSalesOrderLineItemDto().getSubItemDto().getCasesPerTray();
+					}
 					double maximumTrays = object.getMaximumCases() / casesPerTray;
 					try {
 						double newTraysDouble = Double.parseDouble(value);
@@ -328,10 +347,24 @@ public class TrayLabelGeneratorUtil {
 	/**
 	 * 
 	 * @param lotCode
-	 * @return true if lotCode is in format #@###@# where # is a number and @ is an upper case letter.
+	 * @return true if lotCode is in proper format: crew (4A, 3B, 2C), day of year (<366), batch (A), year of decade (<10).
 	 */
 	public static boolean isValidLotCode(String lotCode) {
-		return lotCode.matches("[0-9][A-Z][0-9][0-9][0-9][A-Z][0-9]");
+		boolean isValid = false;
+		if (lotCode.matches("[0-9][A-Z][0-9][0-9][0-9][A-Z][0-9]")) {//Valid format
+			String crew = lotCode.substring(0,2);
+			if (crew.equals("4A") || crew.equals("3C") || crew.equals("2B")) {//Valid crew
+				int dayOfYear = Integer.parseInt(lotCode.substring(2,5));
+				if (dayOfYear <= 365) {//Valid day of year
+					if (lotCode.substring(5,6).equals("A")) {//Valid batch
+						if (Integer.parseInt(lotCode.substring(6,7)) < 10) {//Valid year of decade
+							isValid = true;
+						}
+					}
+				}
+			}
+		}
+		return isValid;
 	}
 	
 	public static List<TrayLabelDto> toTrayLabelDtos(Collection<SalesOrderLineItemDto> lineItems, String lotCode) {
@@ -343,24 +376,32 @@ public class TrayLabelGeneratorUtil {
 	}
 	
 	public static TrayLabelDto toTrayLabelDto(SalesOrderLineItemDto lineItem, String lotCode) {
+		
+		double casesPerTray;
+		double cakesPerCase;
+		if (lineItem.getSubItemDto() == null) {//No sub item
+			casesPerTray = lineItem.getQuickbooksItemDto().getCasesPerTray();
+			cakesPerCase = lineItem.getQuickbooksItemDto().getCakesPerCase();
+		} else {//has sub item
+			casesPerTray = lineItem.getSubItemDto().getCasesPerTray();
+			cakesPerCase = lineItem.getSubItemDto().getCakesPerCase();
+		}
+		
 		return new TrayLabelDto()
 			.setSalesOrderLineItemDto(lineItem)
 			.setCases(lineItem.getCases())
+			.setCasesPerTray(casesPerTray)
+			.setCakesPerCase(cakesPerCase)
 			.setMaximumCases(lineItem.getCases())
 			.setLotCode(lotCode);
 	}
 	
-	public static TrayLabelDto newInventoryTrayLabel(String id, String lotCode, List<QuickbooksItemDto> quickbooksItems) {
+	public static TrayLabelDto newInventoryTrayLabel(QuickbooksItemDto qbItem, String lotCode) {
 		SalesOrderDto salesOrder = new SalesOrderDto();
 		salesOrder.setCustomerName("INVENTORY");
 		SalesOrderLineItemDto lineItem = new SalesOrderLineItemDto();
 		lineItem.setSalesOrderDto(salesOrder);
-		for (QuickbooksItemDto qbItem : quickbooksItems) {
-			if (qbItem.getId().equals(id)) {
-				lineItem.setQuickbooksItemDto(qbItem);
-				break;
-			}
-		}
+		lineItem.setQuickbooksItemDto(qbItem);
 		return new TrayLabelDto().setSalesOrderLineItemDto(lineItem)
 				.setLotCode(lotCode)
 				.setCases(0)

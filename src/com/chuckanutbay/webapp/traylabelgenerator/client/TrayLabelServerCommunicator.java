@@ -1,6 +1,8 @@
 package com.chuckanutbay.webapp.traylabelgenerator.client;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
@@ -16,6 +18,8 @@ public interface TrayLabelServerCommunicator {
 	
 	public void getCurrentLotCodeFromServer();
 	
+	public void printTrayLabels(Set<TrayLabelDto> trayLabels);
+	
 	public void updateTrayLabel(TrayLabelDto trayLabel);
 	
 	public void sendTrayLabelsToServer(List<TrayLabelDto> newTrayLabels);
@@ -24,10 +28,12 @@ public interface TrayLabelServerCommunicator {
 	
 	public void onSuccessfulGetTrayLabelHistory(List<TrayLabelDto> trayLabels);
 	
-	public void onSuccessfulGetQuickbooksItems(List<QuickbooksItemDto> quickbookItems);
+	public void onSuccessfulGetQuickbooksItems(Map<String, QuickbooksItemDto> quickbooksItems);
 	
 	public void onSuccessfulGetCurrentLotCode(String lotCode);
 	
-	public void onSuccessfulSendTrayLabels(List<TrayLabelDto> trayLabels);
+	public void onSuccessfulUpdateTrayLabel();
+	
+	public void onSuccessfulSendTrayLabelsToServer();
 	
 }

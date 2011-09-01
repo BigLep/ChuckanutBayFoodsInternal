@@ -21,6 +21,7 @@ public class SalesOrder {
 	private Integer id;
 	private String purchaseOrder;
 	private String customerName;
+	private String specialInstructions;
 	private Date shipDate;
 	private String addressLineOne;
 	private String addressLineTwo;
@@ -54,6 +55,13 @@ public class SalesOrder {
 		this.customerName = customerName;
 	}
 	
+	@Column(name = "special_instructions", nullable = true, length = 255)
+	public String getSpecialInstructions() {
+		return specialInstructions;
+	}
+	public void setSpecialInstructions(String specialInstructions) {
+		this.specialInstructions = specialInstructions;
+	}
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ship_date", length = 19)
 	public Date getShipDate() {

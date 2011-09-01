@@ -14,9 +14,8 @@ public class QuickbooksItemDto implements Serializable {
 	private String instructions;
 	private String flavor;
 	private String size;
-	private double cakesPerCase;
-	private double casesPerTray;
-	private boolean isAllergen;
+	private double cakesPerCase = 0.0;
+	private double casesPerTray = 0.0;
 	
 	public QuickbooksItemDto(String id, String flavor, int cakesPerCase, int casesPerTray) {
 		this.id = id;
@@ -36,7 +35,13 @@ public class QuickbooksItemDto implements Serializable {
 		this.size = size;
 		this.cakesPerCase = cakesPerCase;
 		this.casesPerTray = casesPerTray;
-		this.isAllergen = isAllergen;
+	}
+	public QuickbooksItemDto(String id) {
+		this.id = id;
+	}
+	public QuickbooksItemDto(String id, double casesPerTray) {
+		this.id = id;
+		this.casesPerTray = casesPerTray;
 	}
 	public String getId() {
 		return id;
@@ -73,12 +78,6 @@ public class QuickbooksItemDto implements Serializable {
 	}
 	public void setCasesPerTray(double casesPerTray) {
 		this.casesPerTray = casesPerTray;
-	}
-	public boolean isAllergen() {
-		return isAllergen;
-	}
-	public void setAllergen(boolean isAllergen) {
-		this.isAllergen = isAllergen;
 	}
 	
 	@Override

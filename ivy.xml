@@ -15,6 +15,7 @@
 		<conf name="test" extends="compile" description="Dependencies necessary to run unit tests."/>
 		<conf name="hibernate-tools" transitive="false" description="Dependencies for running Hibernate tools."/>
 		<conf name="gwt-debug-mode" description="Dependencies that need to be in WEB-INF/lib because they don't get autoloaded correctly."/>
+		
 	</configurations>
 	<dependencies>
 		<!--
@@ -59,6 +60,13 @@
 		<dependency org="commons-logging" name="commons-logging-api" rev="1.1" conf="hibernate-tools->default"/>
 		<dependency org="org.hibernate" name="hibernate-core" rev="3.3.0.GA" conf="hibernate-tools->master,runtime,optional"/>
 		<dependency org="org.hibernate" name="hibernate-annotations" rev="3.3.0.ga" conf="hibernate-tools->master,runtime,optional"/>
+		
+		<dependency org="net.sf.jasperreports" name="jasperreports" rev="4.1.1" conf="build->default"/>
+		<!--
+		<dependency org="net.sf.barcode4j" name="barcode4j" rev="2.0"/>
+		<dependency org="org.mozilla" name="rhino" rev="1.7R3"/>
+        <dependency org="com.lowagie" name="itext" rev="2.0.7"/>
+        -->
 		
 		<!-- 
 		  Without this, log4j-1.2.16 is used.

@@ -14,12 +14,11 @@ public class TrayLabelDto implements Serializable {
 	private SalesOrderLineItemDto salesOrderLineItemDto;
 	private String lotCode;
 	private double cases;
+	private double cakesPerCase = 0.0;
+	private double casesPerTray = 0.0;
 	private double maximumCases;
-	private String barcodeUrl;
 	
-	public TrayLabelDto() {
-		super();
-	}
+	public TrayLabelDto() {}
 	
 	
 	public TrayLabelDto(Integer id,
@@ -62,18 +61,33 @@ public class TrayLabelDto implements Serializable {
 		this.cases = cases;
 		return this;
 	}
+	public double getCakesPerCase() {
+		return cakesPerCase;
+	}
+
+
+	public TrayLabelDto setCakesPerCase(double cakesPerCase) {
+		this.cakesPerCase = cakesPerCase;
+		return this;
+	}
+
+
+	public double getCasesPerTray() {
+		return casesPerTray;
+	}
+
+
+	public TrayLabelDto setCasesPerTray(double casesPerTray) {
+		this.casesPerTray = casesPerTray;
+		return this;
+	}
+
+
 	public double getMaximumCases() {
 		return maximumCases;
 	}
 	public TrayLabelDto setMaximumCases(double maximumCases) {
 		this.maximumCases = maximumCases;
-		return this;
-	}
-	public String getBarcodeUrl() {
-		return barcodeUrl;
-	}
-	public TrayLabelDto setBarcodeUrl(String barcodeUrl) {
-		this.barcodeUrl = barcodeUrl;
 		return this;
 	}
 	

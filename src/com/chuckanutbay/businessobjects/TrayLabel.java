@@ -17,10 +17,16 @@ import javax.persistence.Table;
 public class TrayLabel {
 	private Integer id;
 	private SalesOrderLineItem salesOrderLineItem;
+	private QuickbooksItem quickbooksItem;
 	private QuickbooksItem quickbooksSubItem;
 	private String lotCode;
-	private double cases;
+	private Double cases;
+	private Double cakesPerCase;
+	private Double casesPerTray;
 	private PackagingTransaction packagingTransactions;
+	
+	public TrayLabel() {
+	}
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -33,16 +39,26 @@ public class TrayLabel {
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "line_item_id", nullable = false)
+	@JoinColumn(name = "line_item_id", nullable = true)
 	public SalesOrderLineItem getSalesOrderLineItem() {
 		return salesOrderLineItem;
 	}
 	public void setSalesOrderLineItem(SalesOrderLineItem salesOrderLineItem) {
 		this.salesOrderLineItem = salesOrderLineItem;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "qb_item_id", nullable = true)
+	public QuickbooksItem getQuickbooksItem() {
+		return quickbooksItem;
+	}
+
+	public void setQuickbooksItem(QuickbooksItem quickbooksItem) {
+		this.quickbooksItem = quickbooksItem;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "sub_item_id", nullable = false)
+	@JoinColumn(name = "sub_item_id", nullable = true)
 	public QuickbooksItem getQuickbooksSubItem() {
 		return quickbooksSubItem;
 	}
@@ -59,13 +75,31 @@ public class TrayLabel {
 	}
 	
 	@Column(name = "cases", nullable = false)
-	public double getCases() {
+	public Double getCases() {
 		return cases;
 	}
-	public void setCases(double cases) {
+	public void setCases(Double cases) {
 		this.cases = cases;
 	}
 	
+	@Column(name = "cakes_per_case", nullable = true)
+	public Double getCakesPerCase() {
+		return cakesPerCase;
+	}
+
+	public void setCakesPerCase(Double cakesPerCase) {
+		this.cakesPerCase = cakesPerCase;
+	}
+	
+	@Column(name = "cases_per_tray", nullable = true)
+	public Double getCasesPerTray() {
+		return casesPerTray;
+	}
+
+	public void setCasesPerTray(Double casesPerTray) {
+		this.casesPerTray = casesPerTray;
+	}
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "trayLabel")
 	public PackagingTransaction getPackagingTransaction() {
 		return packagingTransactions;

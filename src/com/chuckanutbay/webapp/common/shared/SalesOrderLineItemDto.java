@@ -24,6 +24,24 @@ public class SalesOrderLineItemDto implements Serializable {
 	
 	public SalesOrderLineItemDto() {}
 	
+	public SalesOrderLineItemDto(String customerName, QuickbooksItemDto quickbooksItemDto, QuickbooksItemDto subItemDto) {
+		this.salesOrderDto = new SalesOrderDto(customerName);
+		this.quickbooksItemDto = quickbooksItemDto;
+		this.subItemDto = subItemDto;
+	}
+
+
+	public SalesOrderLineItemDto(Integer id, SalesOrderDto salesOrderDto,
+			QuickbooksItemDto quickbooksItemDto, QuickbooksItemDto subItemDto,
+			double cases) {
+		super();
+		this.id = id;
+		this.salesOrderDto = salesOrderDto;
+		this.quickbooksItemDto = quickbooksItemDto;
+		this.subItemDto = subItemDto;
+		this.cases = cases;
+	}
+
 	public Integer getId() {
 		return id;
 	}

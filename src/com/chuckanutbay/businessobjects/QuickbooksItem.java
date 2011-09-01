@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
@@ -18,12 +20,29 @@ import javax.persistence.Table;
 public class QuickbooksItem {
 	private String id;
 	private String description;
-	private boolean isAllergen;
 	private String instructions;
 	private String flavor;
 	private String size;
+	private Double casesPerTray;
+	private NutritionLabel nutritionLabel;
 	private Set<SalesOrderLineItem> salesOrderLineItems;
 	private Set<QuickbooksSubItem> subItems;
+	
+	public QuickbooksItem() {
+		super();
+	}
+
+	public QuickbooksItem(String id, String description,
+			String instructions, String flavor, String size,
+			Set<SalesOrderLineItem> salesOrderLineItems) {
+		super();
+		this.id = id;
+		this.description = description;
+		this.instructions = instructions;
+		this.flavor = flavor;
+		this.size = size;
+		this.salesOrderLineItems = salesOrderLineItems;
+	}
 	
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
@@ -42,15 +61,7 @@ public class QuickbooksItem {
 		this.description = description;
 	}
 	
-	@Column(table = "quickbooks_item_supplements", name = "is_allergen", nullable = false, length = 1)
-	public boolean isAllergen() {
-		return isAllergen;
-	}
-	public void setAllergen(boolean isAllergen) {
-		this.isAllergen = isAllergen;
-	}
-	
-	@Column(table = "quickbooks_item_supplements", name = "unique_instructions", nullable = true, length = 255)
+	@Column(name = "unique_instructions", nullable = true, length = 255)
 	public String getInstructions() {
 		return instructions;
 	}
@@ -74,6 +85,25 @@ public class QuickbooksItem {
 		this.size = size;
 	}
 	
+	@Column(table = "quickbooks_item_supplements", name = "cases_per_tray", nullable = true)
+	public Double getCasesPerTray() {
+		return casesPerTray;
+	}
+
+	public void setCasesPerTray(Double casesPerTray) {
+		this.casesPerTray = casesPerTray;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(table = "quickbooks_item_supplements", name = "nutrition_label_id", nullable = true)
+	public NutritionLabel getNutritionLabel() {
+		return nutritionLabel;
+	}
+
+	public void setNutritionLabel(NutritionLabel nutritionLabel) {
+		this.nutritionLabel = nutritionLabel;
+	}
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quickbooksItem")
 	public Set<SalesOrderLineItem> getSalesOrderLineItems() {
 		return salesOrderLineItems;
