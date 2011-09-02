@@ -18,6 +18,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -28,6 +30,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextArea;
 
 /**
  * A {@link DialogBox} that allows employees to enter the percentage of time that they worked on each activity before clocking out.
@@ -45,6 +48,7 @@ public class ClockOutDialogBox extends DialogBox {
 	private List<EmployeeWorkIntervalActivityPercentageDto> actvityPercentages = new ArrayList<EmployeeWorkIntervalActivityPercentageDto>();
 	private Label totalLabel;
 	private Button clockOutButton;
+	private TextArea commentBox;
 	private int width;
 	private int height;
 	
@@ -187,6 +191,10 @@ public class ClockOutDialogBox extends DialogBox {
 				for (EmployeeWorkIntervalActivityPercentageDto activityPercentage : employee.getEmployeeWorkIntervalPercentages()) {
 					GWT.log("ClockOutDialogBox:      " + activityPercentage.getActivity().getName() + " " + activityPercentage.getPercentage());
 				}
+				String comment = commentBox.getText();
+				if (comment != null && !comment.equals("") && !comment.equals("Enter comment (if needed)...")) {//Comment is good
+					employee.setComment(commentBox.getText());
+				}
 				serverCommunicator.clockOutOnDatabase(employee);
 			}
 		});
@@ -203,7 +211,28 @@ public class ClockOutDialogBox extends DialogBox {
 		});
 		flexTable.setWidget(i, 1, cancelButton);
 		flexTable.getCellFormatter().setAlignment(i, 1, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_MIDDLE);
+		i++;
+		
+		//Setup commentBox
+		commentBox = new TextArea();
+		commentBox.setVisibleLines(2);
+		commentBox.setText("Enter comment (if needed)...");
+		commentBox.setStyleName("commentBox");
+		commentBox.setWidth(width - 20 + "px");
+		commentBox.addMouseOverHandler(new MouseOverHandler() {
+
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				commentBox.selectAll();
+			}
+			
+		});
+		
+		flexTable.getFlexCellFormatter().setColSpan(i, 0, 2);
+		flexTable.setWidget(i, 0, commentBox);
+		
 		updateTotalPercentageListBox();
+		flexTable.getCellFormatter().setHorizontalAlignment(i, 0, HasHorizontalAlignment.ALIGN_CENTER);
 	}
 	
 	private void savePercentages() {

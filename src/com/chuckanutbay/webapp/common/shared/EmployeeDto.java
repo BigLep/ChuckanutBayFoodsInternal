@@ -18,6 +18,7 @@ public class EmployeeDto implements Serializable, Comparable<EmployeeDto> {
 	public String firstName;
 	public String lastName;
 	public int minsWorkedThisWeek;
+	public String comment;
 	public List<EmployeeWorkIntervalActivityPercentageDto> employeeWorkIntervalPercentages;
 	public Integer barcodeNumber;
 	
@@ -83,6 +84,14 @@ public class EmployeeDto implements Serializable, Comparable<EmployeeDto> {
 
 	public void setMinsWorkedThisWeek(int minsWorkedThisWeek) {
 		this.minsWorkedThisWeek = minsWorkedThisWeek;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public List<EmployeeWorkIntervalActivityPercentageDto> getEmployeeWorkIntervalPercentages() {

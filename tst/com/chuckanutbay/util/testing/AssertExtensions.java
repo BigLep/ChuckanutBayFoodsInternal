@@ -1,5 +1,6 @@
 package com.chuckanutbay.util.testing;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Date;
 
@@ -61,6 +62,13 @@ public class AssertExtensions {
 		}
 		if (dt.getMonthOfYear() != month) {
 			throw new AssertionError(date + " month of the year is not " + month);
+		}
+	}
+	
+	public static void assertFileExists(String filePath) {
+		File file = new File(filePath);
+		if (!file.exists())	{
+			throw new AssertionError(filePath + " doesn't exist");
 		}
 	}
 }

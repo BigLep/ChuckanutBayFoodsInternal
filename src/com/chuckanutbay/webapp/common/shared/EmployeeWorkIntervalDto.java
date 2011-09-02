@@ -8,6 +8,7 @@ public class EmployeeWorkIntervalDto implements Serializable {
 	public Date startDateTime;
 	public Date endDateTime;
 	public double hoursWorked;
+	public String comment;
 	
 	public EmployeeWorkIntervalDto(){}
 
@@ -37,5 +38,13 @@ public class EmployeeWorkIntervalDto implements Serializable {
 	
 	public void addHours(double hours) {
 		hoursWorked += hours;
+	}
+	
+	public String getComment() {
+		return comment;
+	}
+	
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

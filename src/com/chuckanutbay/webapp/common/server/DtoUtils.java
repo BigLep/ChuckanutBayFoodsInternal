@@ -114,6 +114,7 @@ public class DtoUtils {
 			EmployeeWorkIntervalDto output = new EmployeeWorkIntervalDto();
 			output.setStartDateTime(input.getStartDateTime());
 			output.setEndDateTime(input.getEndDateTime());
+			output.setComment(input.getComment());
 			return output;
 		}
 	};

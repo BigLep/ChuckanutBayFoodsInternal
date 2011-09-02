@@ -62,7 +62,7 @@ public class TimeClockReportPanel extends SimplePanel {
 		VerticalPanel textPanel = new VerticalPanel();
 		textPanel.setSpacing(5);
 		createLabelAndAddToPanel("Time Clock Report", "Title", textPanel);
-		createLabelAndAddToPanel(reportData.getName(), "Name", textPanel);
+		createLabelAndAddToPanel(reportData.getName() + " - " + reportData.getId() + " - Shift: " + reportData.getShift(), "Name", textPanel);
 		createLabelAndAddToPanel("Date: " + shortDate.format(reportData.getDate()), "Date", textPanel);
 		String payPeriodString = "Pay Period: " + shortDate.format(reportData.getPayPeriodStart()) + "-" + shortDate.format(reportData.getPayPeriodEnd());
 		createLabelAndAddToPanel(payPeriodString, "PayPeriod", textPanel);

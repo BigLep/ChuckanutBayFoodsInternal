@@ -108,10 +108,23 @@ public class TimeClockReportFlexTable extends FlexTable {
 						column++;
 						this.getRowFormatter().addStyleName(row, "timeClockReportFlexTableDataRow");
 						row++;
+						String comment = interval.getComment();
+						if (comment != null && !comment.equals("")) {
+							this.getFlexCellFormatter().setColSpan(row, 0, 6);
+							this.setText(row, 0, comment);
+							row++;
+						}
 					}
 					row--;
+					int extraRowsMoved = 0;
+					while (this.getFlexCellFormatter().getColSpan(row, 0) > 1) {
+						row--;
+						extraRowsMoved++;
+						
+					}
 					this.setText(row, 4, hourFormat.format(dayIntervals.getTotalHoursWorked()));
 					row++;
+					row = row + extraRowsMoved;
 				}
 			}
 		}

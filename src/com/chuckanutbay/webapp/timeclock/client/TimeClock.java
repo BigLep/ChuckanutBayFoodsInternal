@@ -245,7 +245,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	@Override
 	public void onClockOutScan(EmployeeDto employee) {
 		confirmationPanelContainer.clear();
-		clockOutDialogBox = new ClockOutDialogBox(employee, activities, this, this, 40, 310, 408, 360);
+		clockOutDialogBox = new ClockOutDialogBox(employee, activities, this, this, 40, 160, 408, 500);
 		clockOutDialogBox.show();
 		clockedInEmployees.remove(employee);
 		updateEmployeeTables();

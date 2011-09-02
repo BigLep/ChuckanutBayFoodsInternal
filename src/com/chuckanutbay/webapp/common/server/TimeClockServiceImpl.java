@@ -2,8 +2,10 @@ package com.chuckanutbay.webapp.common.server;
 
 import static com.chuckanutbay.webapp.common.server.DtoUtils.fromEmployeeDtoFunction;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Collections.sort;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -77,6 +79,7 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 				
 		EmployeeWorkInterval interval = intervalDao.findOpenEmployeeWorkInterval(DtoUtils.fromEmployeeDtoFunction.apply(employeeDto));
 		interval.setEndDateTime(new Date());
+		interval.setComment(employeeDto.getComment());
 		intervalDao.makePersistent(interval);
 		System.out.println("Persisted Interval");
 		
@@ -216,6 +219,8 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 			if (intervalDao.findEmployeeWorkIntervalsBetweenDates(employee, payPeriodStart.toDateTime(), payPeriodEnd.toDateTime()).size() != 0) {
 				PayPeriodReportData payPeriod = new PayPeriodReportData();
 				payPeriod.setName(employee.getFirstName() + " " + employee.getLastName());
+				payPeriod.setId(employee.getId());
+				payPeriod.setShift(employee.getShift());
 				payPeriod.setDate(new Date());
 				payPeriod.setPayPeriodStart(payPeriodStart.toDate());
 				payPeriod.setPayPeriodEnd(payPeriodEnd.minusDays(1).toDate());
@@ -261,6 +266,16 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 				reportData.add(payPeriod);
 			}
 		}
+		sort(reportData, new Comparator<PayPeriodReportData>() {
+
+			@Override
+			public int compare(PayPeriodReportData person1, PayPeriodReportData person2) {
+				String lastName1 = person1.getName().substring(person1.getName().indexOf(" "));
+				String lastName2 = person2.getName().substring(person2.getName().indexOf(" "));
+				return lastName1.compareTo(lastName2);
+			}
+			
+		});
 		return reportData;
 	}
 	

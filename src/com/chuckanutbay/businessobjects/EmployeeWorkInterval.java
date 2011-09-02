@@ -27,6 +27,7 @@ public class EmployeeWorkInterval {
 	private Employee employee;
 	private Date startDateTime;
 	private Date endDateTime;
+	private String comment;
 	private Set<EmployeeWorkIntervalActivityPercentage> employeeWorkIntervalActivityPercentages;
 	
 	public EmployeeWorkInterval() {}
@@ -90,6 +91,15 @@ public class EmployeeWorkInterval {
 		this.endDateTime = endDateTime;
 	}
 	
+	@Column(name = "comments", length = 1000, nullable = true)
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeWorkInterval")
 	public Set<EmployeeWorkIntervalActivityPercentage> getEmployeeWorkIntervalActivityPercentages() {
 		return employeeWorkIntervalActivityPercentages;
