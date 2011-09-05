@@ -15,7 +15,7 @@
 		<conf name="test" extends="compile" description="Dependencies necessary to run unit tests."/>
 		<conf name="hibernate-tools" transitive="false" description="Dependencies for running Hibernate tools."/>
 		<conf name="gwt-debug-mode" description="Dependencies that need to be in WEB-INF/lib because they don't get autoloaded correctly."/>
-		
+		<conf name="jasperreports" description="Dependencies for JasperReports."/>	
 	</configurations>
 	<dependencies>
 		<!--
@@ -61,12 +61,21 @@
 		<dependency org="org.hibernate" name="hibernate-core" rev="3.3.0.GA" conf="hibernate-tools->master,runtime,optional"/>
 		<dependency org="org.hibernate" name="hibernate-annotations" rev="3.3.0.ga" conf="hibernate-tools->master,runtime,optional"/>
 		
-		<dependency org="net.sf.jasperreports" name="jasperreports" rev="4.1.1" conf="build->default"/>
-		<!--
-		<dependency org="net.sf.barcode4j" name="barcode4j" rev="2.0"/>
-		<dependency org="org.mozilla" name="rhino" rev="1.7R3"/>
-        <dependency org="com.lowagie" name="itext" rev="2.0.7"/>
-        -->
+		<!-- 
+			Jasper Reports dependencies are a bit messed up.  
+			Ideally we would specify conf as "build->default,optional", but the optional dependencies don't resolve correctly.
+			This can be confirmed by looking at https://oss.sonatype.org/index.html#nexus-search;gav~net.sf.jasperreports~jasperreports~~~~kw,versionexpand,
+			and doing dependency resolution.  The following messagess are listed:
+			- commons-java "incomplete pom heirarchy"
+			- mondrian "incomplete pom heirarchy"
+			As a result, we have to do some manual dependency adding.
+			I found these dependencies by looking at: ~/.ivy2/cache/net.sf.jasperreports/jasperreports/ivy-4.1.1.xml
+			This is the ivy.xml file created from the Maven pom.xml.
+		-->
+		<dependency org="net.sf.jasperreports" name="jasperreports" rev="4.1.1" conf="build->default" />
+		<!--  These dependencies are needed so CompileReports can run. -->
+		<dependency org="net.sf.barcode4j" name="barcode4j" rev="2.0" conf="build->default"/>
+		<dependency org="rhino" name="js" rev="1.7R1" conf="build->default"/>
 		
 		<!-- 
 		  Without this, log4j-1.2.16 is used.

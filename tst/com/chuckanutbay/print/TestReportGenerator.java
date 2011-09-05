@@ -7,6 +7,8 @@ import static com.chuckanutbay.businessobjects.BusinessObjects.oneTrayLabel;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.JRException;
+
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -26,7 +28,7 @@ public class TestReportGenerator {
 	public final DatabaseResource databaseResource = new DatabaseResource();
 	
 	@Test
-	public void testGenerateReport() {
+	public void testGenerateReport() throws JRException {
 		
 		SalesOrderLineItem soli1 = BusinessObjects.oneSalesOrderLineItem(oneSalesOrder("Haggens", false), oneQuickbooksItem("1111-11"), 10);
 		TrayLabel tl1 = oneTrayLabel(5, "4A111A1", soli1);

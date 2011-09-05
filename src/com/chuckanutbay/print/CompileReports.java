@@ -11,7 +11,7 @@ public class CompileReports {
 				JasperCompileManager.compileReport("war/reports/" + reportName + ".jrxml");
 			}
 		} catch (JRException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 }
