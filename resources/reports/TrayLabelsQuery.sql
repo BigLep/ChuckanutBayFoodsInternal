@@ -1,6 +1,6 @@
 SELECT
      quickbooks_items.`unique_instructions` AS quickbooks_items_unique_instructions,
-     quickbooks_item_supplements.`size` AS quickbooks_item_supplements_size,
+     quickbooks_item_supplements.`short_name` AS quickbooks_item_supplements_product_type,
      quickbooks_item_supplements.`cases_per_tray` AS quickbooks_item_supplements_cases_per_tray,
      tray_labels.`id` AS tray_labels_id,
      tray_labels.`lot_code` AS tray_labels_lot_code,
@@ -8,7 +8,7 @@ SELECT
      tray_labels.`cakes_per_case` AS tray_labels_cakes_per_case,
      tray_labels.`cases_per_tray` AS tray_labels_cases_per_tray,
      sales_orders.`purchase_order` AS sales_orders_purchase_order,
-     sales_orders.`customer_name` AS sales_orders_customer_name,
+     sales_orders.`customer_short_name` AS sales_orders_customer_name,
      sales_orders.`ship_date` AS sales_orders_ship_date,
      sales_order_line_items.`cases` AS sales_order_line_items_cases,
      nutrition_labels.`is_allergen` AS nutrition_labels_is_allergen,
@@ -23,13 +23,11 @@ SELECT
      quickbooks_items.`id` AS quickbooks_items_id,
      quickbooks_items_A.`pack` AS quickbooks_items_A_pack,
      quickbooks_items_A.`unique_instructions` AS quickbooks_items_A_unique_instructions,
-     quickbooks_item_supplements_A.`product_type` AS quickbooks_item_supplements_A_product_type,
-     quickbooks_item_supplements_A.`size` AS quickbooks_item_supplements_A_size,
+     quickbooks_item_supplements_A.`short_name` AS quickbooks_item_supplements_A_product_type,
      quickbooks_item_supplements_A.`cases_per_tray` AS quickbooks_item_supplements_A_cases_per_tray,
      quickbooks_items_B.`pack` AS quickbooks_items_B_pack,
      quickbooks_items_B.`unique_instructions` AS quickbooks_items_B_unique_instructions,
-     quickbooks_item_supplements_B.`product_type` AS quickbooks_item_supplements_B_product_type,
-     quickbooks_item_supplements_B.`size` AS quickbooks_item_supplements_B_size,
+     quickbooks_item_supplements_B.`short_name` AS quickbooks_item_supplements_B_product_type,
      quickbooks_item_supplements_B.`cases_per_tray` AS quickbooks_item_supplements_B_cases_per_tray,
      nutrition_labels_A.`is_allergen` AS nutrition_labels_A_is_allergen,
      nutrition_labels_A.`batter_amount` AS nutrition_labels_A_batter_amount,
@@ -60,5 +58,4 @@ FROM
      LEFT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements_A ON quickbooks_items_A.`quickbooks_item_supplement_id` = quickbooks_item_supplements_A.`id`
      LEFT OUTER JOIN `nutrition_labels` nutrition_labels_A ON quickbooks_item_supplements_A.`nutrition_label_id` = nutrition_labels_A.`id`
      LEFT OUTER JOIN `nutrition_labels` nutrition_labels ON quickbooks_item_supplements.`nutrition_label_id` = nutrition_labels.`id`
-WHERE
-     $X{ IN ,`tray_labels`.`id`,TRAY_LABEL_IDS}
+WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})

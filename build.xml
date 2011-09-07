@@ -15,22 +15,18 @@
 	<property name="build.output.lib.dir" value="${build.output.dir}/lib"/>
 	<property name="build.output.war.dir" value="${build.output.private.dir}/war"/>
 	<property name="build.output.war.lib.dir" value="${build.output.war.dir}/WEB-INF/lib"/>
-	<property name="build.output.reports.dir" value="${build.output.dir}/reports"/>
+	<!-- property name="build.output.reports.dir" value="${build.output.dir}/reports"/-->
 	<property name="build.output.junit.dir" value="${build.output.reports.dir}/junit"/>
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="config.dir" value="${basedir}/configuration"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="resources.dir" value="${basedir}/resources"/>
 	<property name="tst.dir" value="${basedir}/tst"/>
 	<property name="war.dir" value="${basedir}/war"/>
 	<!-- Alternatively, could do ${ant.project.name} -->
 	<property name="war.name" value="ROOT"/>
 	
-	<property name="build.output.report.fonts.dir" value="${build.output.dir}/reportfonts"/>
-	
-	<target name="report-fonts">
-		<jar destfile="${build.output.report.fonts.dir}/reportfonts.jar"
-			basedir="/Applications/Jaspersoft iReport Designer.app/Contents/Resources/ireport/ireport/fonts"
-		/>
-	</target>	
+	<property name="build.output.report.fonts.dir" value="${build.output.dir}/reportfonts"/>	
 	
 	<target name="release" depends="war,javadoc"/>
 	
@@ -71,6 +67,7 @@
 			<fileset dir="${config.dir}/c3p0" />
 			<fileset dir="${config.dir}" includes="hibernate/**"/>
 			<fileset dir="${config.dir}/log4j" />
+			<fileset dir="${resources.dir}" />
 		</copy>
 	</target>
 	
@@ -154,11 +151,23 @@
 		</java>
 	</target>
 	
+	<!--
+		According to Mitch on 9/5/11, the fonts that Jasper ship with the best set of fonts
+		(e.g., is lacking Tahoma and doesn't handle bolds very well)
+		As a result, we grab the fonts from within iReport instead of declaring a dependency on net.sf.jasperreports-fonts.
+	-->
+	<target name="generate-report-fonts">
+		<jar destfile="${lib.dir}/reportfonts.jar"
+			basedir="/Applications/Jaspersoft iReport Designer.app/Contents/Resources/ireport/ireport/fonts"
+		/>
+	</target>
+	
 	<target name="setup-war-directory">
 		<ivyfileset setid="ivy.runtime.fileset.ref" conf="runtime"/>
 		<copy todir="${build.output.war.lib.dir}">
 			<resources refid="ivy.runtime.fileset.ref" />
 			<fileset dir="${build.output.lib.dir}" />
+			<fileset dir="${lib.dir}"/>
 			<flattenmapper/>
 		</copy>
 		<copy todir="${build.output.war.dir}">
@@ -169,6 +178,7 @@
 				<exclude name="dashboard/**"/>
 				<exclude name="timeclockreport/**"/>
 				<exclude name="traylabelgenerator/**"/>
+				<exclude name="fileTemplates/**"/>
 				<!-- add other files to exclude here -->
 			</fileset>
 		</copy>
@@ -199,6 +209,9 @@
 		<copy todir="${war.dir}/WEB-INF/lib">
 			<resources refid="ivy.gwt-debug-mode.fileset.ref" />
 			<flattenmapper/>
+		</copy>
+		<copy todir="${build.output.lib.dir}/WEB-INF/lib">
+			<fileset dir="${war.dir}/WEB-INF/lib"/>
 		</copy>
 	</target>
 

@@ -1,9 +1,11 @@
 /.classpath
+**/.DS_Store
 /.gwt
 /.project
 /.settings
 /build-output
 /configuration/hibernate/hibernate-prod.cfg.xml
+/resources/reports/*.jasper
 /war/dashboard
 /war/lotcodemanager
 /war/timeclockreport

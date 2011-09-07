@@ -3,11 +3,11 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="59"/>
-	<style name="WhiteOnBlack" mode="Opaque" forecolor="#FFFFFF" backcolor="#000000" fill="Solid" isBlankWhenNull="true"/>
+	<style name="WhiteOnBlack" mode="Opaque" forecolor="#FFFFFF" backcolor="#000000" fill="Solid" isBlankWhenNull="true" fontName="Tahoma"/>
 	<style name="Default" isDefault="true" isBlankWhenNull="true" fontName="Tahoma" fontSize="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false">
 		<pen lineWidth="1.0" lineColor="#CCCCCC"/>
 	</style>
-	<style name="GreyBorder" mode="Transparent" isPdfEmbedded="true">
+	<style name="GreyBorder" mode="Transparent" fontName="Tahoma" isPdfEmbedded="true">
 		<pen lineWidth="1.0" lineColor="#CCCCCC"/>
 	</style>
 	<parameter name="TRAY_LABEL_IDS" class="java.lang.String" isForPrompting="false">
@@ -16,7 +16,7 @@
 	<queryString>
 		<![CDATA[SELECT
      quickbooks_items.`unique_instructions` AS quickbooks_items_unique_instructions,
-     quickbooks_item_supplements.`size` AS quickbooks_item_supplements_size,
+     quickbooks_item_supplements.`short_name` AS quickbooks_item_supplements_product_type,
      quickbooks_item_supplements.`cases_per_tray` AS quickbooks_item_supplements_cases_per_tray,
      tray_labels.`id` AS tray_labels_id,
      tray_labels.`lot_code` AS tray_labels_lot_code,
@@ -24,7 +24,7 @@
      tray_labels.`cakes_per_case` AS tray_labels_cakes_per_case,
      tray_labels.`cases_per_tray` AS tray_labels_cases_per_tray,
      sales_orders.`purchase_order` AS sales_orders_purchase_order,
-     sales_orders.`customer_name` AS sales_orders_customer_name,
+     sales_orders.`customer_short_name` AS sales_orders_customer_name,
      sales_orders.`ship_date` AS sales_orders_ship_date,
      sales_order_line_items.`cases` AS sales_order_line_items_cases,
      nutrition_labels.`is_allergen` AS nutrition_labels_is_allergen,
@@ -39,13 +39,11 @@
      quickbooks_items.`id` AS quickbooks_items_id,
      quickbooks_items_A.`pack` AS quickbooks_items_A_pack,
      quickbooks_items_A.`unique_instructions` AS quickbooks_items_A_unique_instructions,
-     quickbooks_item_supplements_A.`product_type` AS quickbooks_item_supplements_A_product_type,
-     quickbooks_item_supplements_A.`size` AS quickbooks_item_supplements_A_size,
+     quickbooks_item_supplements_A.`short_name` AS quickbooks_item_supplements_A_product_type,
      quickbooks_item_supplements_A.`cases_per_tray` AS quickbooks_item_supplements_A_cases_per_tray,
      quickbooks_items_B.`pack` AS quickbooks_items_B_pack,
      quickbooks_items_B.`unique_instructions` AS quickbooks_items_B_unique_instructions,
-     quickbooks_item_supplements_B.`product_type` AS quickbooks_item_supplements_B_product_type,
-     quickbooks_item_supplements_B.`size` AS quickbooks_item_supplements_B_size,
+     quickbooks_item_supplements_B.`short_name` AS quickbooks_item_supplements_B_product_type,
      quickbooks_item_supplements_B.`cases_per_tray` AS quickbooks_item_supplements_B_cases_per_tray,
      nutrition_labels_A.`is_allergen` AS nutrition_labels_A_is_allergen,
      nutrition_labels_A.`batter_amount` AS nutrition_labels_A_batter_amount,
@@ -76,11 +74,10 @@ FROM
      LEFT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements_A ON quickbooks_items_A.`quickbooks_item_supplement_id` = quickbooks_item_supplements_A.`id`
      LEFT OUTER JOIN `nutrition_labels` nutrition_labels_A ON quickbooks_item_supplements_A.`nutrition_label_id` = nutrition_labels_A.`id`
      LEFT OUTER JOIN `nutrition_labels` nutrition_labels ON quickbooks_item_supplements.`nutrition_label_id` = nutrition_labels.`id`
-WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})
-]]>
+WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
 	</queryString>
 	<field name="quickbooks_items_unique_instructions" class="java.lang.String"/>
-	<field name="quickbooks_item_supplements_size" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_product_type" class="java.lang.String"/>
 	<field name="quickbooks_item_supplements_cases_per_tray" class="java.lang.Double"/>
 	<field name="tray_labels_id" class="java.lang.Integer"/>
 	<field name="tray_labels_lot_code" class="java.lang.String"/>
@@ -98,18 +95,15 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})
 	<field name="nutrition_labels_crust_type" class="java.lang.String"/>
 	<field name="nutrition_labels_decoration_amount" class="java.lang.String"/>
 	<field name="nutrition_labels_decoration_type" class="java.lang.String"/>
-	<field name="quickbooks_item_supplements_product_type" class="java.lang.String"/>
 	<field name="quickbooks_items_pack" class="java.lang.Integer"/>
 	<field name="quickbooks_items_id" class="java.lang.String"/>
 	<field name="quickbooks_items_A_pack" class="java.lang.Integer"/>
 	<field name="quickbooks_items_A_unique_instructions" class="java.lang.String"/>
 	<field name="quickbooks_item_supplements_A_product_type" class="java.lang.String"/>
-	<field name="quickbooks_item_supplements_A_size" class="java.lang.String"/>
 	<field name="quickbooks_item_supplements_A_cases_per_tray" class="java.lang.Double"/>
 	<field name="quickbooks_items_B_pack" class="java.lang.Integer"/>
 	<field name="quickbooks_items_B_unique_instructions" class="java.lang.String"/>
 	<field name="quickbooks_item_supplements_B_product_type" class="java.lang.String"/>
-	<field name="quickbooks_item_supplements_B_size" class="java.lang.String"/>
 	<field name="quickbooks_item_supplements_B_cases_per_tray" class="java.lang.Double"/>
 	<field name="nutrition_labels_A_is_allergen" class="java.lang.Boolean"/>
 	<field name="nutrition_labels_A_batter_amount" class="java.lang.String"/>
@@ -145,49 +139,39 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})
 			<frame>
 				<reportElement style="GreyBorder" x="438" y="492" width="314" height="80"/>
 				<staticText>
-					<reportElement x="0" y="0" width="100" height="20"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="14"/>
-					</textElement>
-					<text><![CDATA[Customer: ]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="20" width="100" height="20"/>
+					<reportElement x="0" y="40" width="100" height="20"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="14"/>
 					</textElement>
 					<text><![CDATA[Cust. Instr: ]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="40" width="100" height="20"/>
+					<reportElement x="0" y="60" width="100" height="20"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="14"/>
 					</textElement>
 					<text><![CDATA[Item Instr: ]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="60" width="100" height="20"/>
+					<reportElement x="0" y="0" width="100" height="40"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="14"/>
 					</textElement>
-					<text><![CDATA[Decor. Lot: ]]></text>
+					<text><![CDATA[Customer: ]]></text>
 				</staticText>
 				<rectangle>
 					<reportElement style="GreyBorder" x="0" y="0" width="314" height="80"/>
 				</rectangle>
-				<rectangle>
-					<reportElement style="GreyBorder" x="100" y="60" width="214" height="20"/>
-				</rectangle>
 				<textField>
-					<reportElement x="100" y="0" width="214" height="20"/>
+					<reportElement x="100" y="0" width="214" height="40"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="false"/>
+						<font size="24" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_orders_customer_name}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="WhiteOnBlack" x="100" y="20" width="214" height="20">
-						<printWhenExpression><![CDATA[$F{sales_orders_special_instructions} != null]]></printWhenExpression>
+					<reportElement style="WhiteOnBlack" x="99" y="40" width="214" height="20">
+						<printWhenExpression><![CDATA[$F{sales_orders_special_instructions} != null && !$F{sales_orders_special_instructions}.equals("")]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Tahoma" size="12" isBold="false"/>
@@ -195,9 +179,9 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_orders_special_instructions}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="WhiteOnBlack" x="100" y="40" width="214" height="20">
-						<printWhenExpression><![CDATA[($F{quickbooks_items_B_id} != null) ? ($F{quickbooks_items_B_unique_instructions} != null)
-    : ($F{quickbooks_items_unique_instructions} != null)]]></printWhenExpression>
+					<reportElement style="WhiteOnBlack" x="99" y="60" width="214" height="20">
+						<printWhenExpression><![CDATA[($F{quickbooks_items_B_id} != null && !$F{quickbooks_items_B_id}.equals("")) ? (($F{quickbooks_items_B_unique_instructions} != null && !$F{quickbooks_items_B_unique_instructions}.equals("")) ? true : false)
+    : (($F{quickbooks_items_unique_instructions} != null && !$F{quickbooks_items_unique_instructions}.equals("")) ? true : false)]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Tahoma" size="12" isBold="false"/>
@@ -301,27 +285,27 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_crust_amount}
+					<textFieldExpression class="java.lang.String"><![CDATA[(($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_crust_amount}
     : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_crust_amount}
-        : $F{nutrition_labels_crust_amount}]]></textFieldExpression>
+        : $F{nutrition_labels_crust_amount}) + " oz"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="269" y="40" width="100" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_batter_amount}
+					<textFieldExpression class="java.lang.String"><![CDATA[(($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_batter_amount}
     : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_batter_amount}
-        : $F{nutrition_labels_batter_amount}]]></textFieldExpression>
+        : $F{nutrition_labels_batter_amount}) + " oz"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="269" y="60" width="100" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_decoration_amount}
+					<textFieldExpression class="java.lang.String"><![CDATA[(($F{quickbooks_items_A_id} != null) ? $F{nutrition_labels_A_decoration_amount}
     : ($F{quickbooks_items_B_id} !=  null) ? $F{nutrition_labels_B_decoration_amount}
-        : $F{nutrition_labels_decoration_amount}]]></textFieldExpression>
+        : $F{nutrition_labels_decoration_amount}) + " (oz)"]]></textFieldExpression>
 				</textField>
 			</frame>
 			<line>
@@ -346,18 +330,11 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})
 					<text><![CDATA[Item Id: ]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="20" width="100" height="20"/>
+					<reportElement x="0" y="20" width="100" height="40"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="14"/>
 					</textElement>
-					<text><![CDATA[Flavor: ]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="40" width="100" height="20"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="14"/>
-					</textElement>
-					<text><![CDATA[Size: ]]></text>
+					<text><![CDATA[Item: ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="0" y="60" width="100" height="20"/>
@@ -377,18 +354,11 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{quickbooks_items_id}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="100" y="20" width="149" height="20"/>
+					<reportElement x="100" y="20" width="149" height="40"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="false"/>
+						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{quickbooks_item_supplements_A_product_type} : $F{quickbooks_item_supplements_product_type}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="100" y="40" width="149" height="20"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="false"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{quickbooks_item_supplements_A_size} : $F{quickbooks_item_supplements_size}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="100" y="60" width="149" height="20"/>
