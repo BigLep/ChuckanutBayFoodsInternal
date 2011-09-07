@@ -21,6 +21,7 @@ public class SalesOrder {
 	private Integer id;
 	private String purchaseOrder;
 	private String customerName;
+	private String customerShortName;
 	private String specialInstructions;
 	private Date shipDate;
 	private String addressLineOne;
@@ -54,7 +55,13 @@ public class SalesOrder {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	
+	@Column(name = "customer_short_name", nullable = false, length = 20)
+	public String getCustomerShortName() {
+		return customerShortName;
+	}
+	public void setCustomerShortName(String customerShortName) {
+		this.customerShortName = customerShortName;
+	}
 	@Column(name = "special_instructions", nullable = true, length = 255)
 	public String getSpecialInstructions() {
 		return specialInstructions;

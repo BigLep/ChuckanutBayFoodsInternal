@@ -1,21 +1,26 @@
 package com.chuckanutbay.businessobjects;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "nutrition_labels")
 public class NutritionLabel {
 	private Integer id;
-	private boolean isAllergen;
+	private Boolean isAllergen;
 	private String crustType;
 	private String crustAmount;
 	private String batterType;
 	private String batterAmount;
 	private String decorationType;
 	private String decorationAmount;
+	private Set<QuickbooksItemSupplement> quickbooksItemSupplements;
 	
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
@@ -27,10 +32,10 @@ public class NutritionLabel {
 	}
 	
 	@Column(name = "is_allergen", nullable = true, length = 1)
-	public boolean isAllergen() {
+	public Boolean isAllergen() {
 		return isAllergen;
 	}
-	public void setAllergen(boolean isAllergen) {
+	public void setAllergen(Boolean isAllergen) {
 		this.isAllergen = isAllergen;
 	}
 	
@@ -80,6 +85,15 @@ public class NutritionLabel {
 	}
 	public void setDecorationAmount(String decorationAmount) {
 		this.decorationAmount = decorationAmount;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "nutritionLabel")
+	public Set<QuickbooksItemSupplement> getQuickbooksItemSupplements() {
+		return quickbooksItemSupplements;
+	}
+	public void setQuickbooksItemSupplements(
+			Set<QuickbooksItemSupplement> quickbooksItemSupplements) {
+		this.quickbooksItemSupplements = quickbooksItemSupplements;
 	}
 	
 	

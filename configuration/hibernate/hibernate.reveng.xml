@@ -12,6 +12,7 @@
 	<table-filter match-name="employee_work_interval_activity_percentages" />
 	<table-filter match-name="packaging_transactions" />
 	<table-filter match-name="quickbooks_items" />
+	<table-filter match-name="quickbooks_item_supplements" />
 	<table-filter match-name="quickbooks_sub_items" />
 	<table-filter match-name="sales_orders" />
 	<table-filter match-name="sales_order_line_items" />
@@ -34,6 +35,8 @@
 	<table name="packaging_transactions" class="PackagingTransaction">
 	</table>
 	<table name="quickbooks_items" class="QuickbooksItem">
+	</table>
+	<table name="quickbooks_item_supplements" class="QuickbooksItemSupplement">
 	</table>
 	<table name="quickbooks_sub_items" class="QuickbooksSubItem">
 	</table>

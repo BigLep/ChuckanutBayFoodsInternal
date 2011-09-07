@@ -18,6 +18,7 @@ import com.chuckanutbay.businessobjects.InventoryLotStickerColor;
 import com.chuckanutbay.businessobjects.NutritionLabel;
 import com.chuckanutbay.businessobjects.PackagingTransaction;
 import com.chuckanutbay.businessobjects.QuickbooksItem;
+import com.chuckanutbay.businessobjects.QuickbooksItemSupplement;
 import com.chuckanutbay.businessobjects.QuickbooksSubItem;
 import com.chuckanutbay.businessobjects.SalesOrder;
 import com.chuckanutbay.businessobjects.SalesOrderLineItem;
@@ -59,6 +60,7 @@ public class HibernateUtil {
 			.addAnnotatedClass(NutritionLabel.class)
 			.addAnnotatedClass(PackagingTransaction.class)
 			.addAnnotatedClass(QuickbooksItem.class)
+			.addAnnotatedClass(QuickbooksItemSupplement.class)
 			.addAnnotatedClass(QuickbooksSubItem.class)
 			.addAnnotatedClass(SalesOrder.class)
 			.addAnnotatedClass(SalesOrderLineItem.class)

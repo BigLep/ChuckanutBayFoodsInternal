@@ -21,6 +21,8 @@ import com.chuckanutbay.businessobjects.dao.InventoryLotStickerColorDao;
 import com.chuckanutbay.businessobjects.dao.InventoryLotStickerColorHibernateDao;
 import com.chuckanutbay.businessobjects.dao.QuickbooksItemDao;
 import com.chuckanutbay.businessobjects.dao.QuickbooksItemHibernateDao;
+import com.chuckanutbay.businessobjects.dao.QuickbooksItemSupplementDao;
+import com.chuckanutbay.businessobjects.dao.QuickbooksItemSupplementHibernateDao;
 import com.chuckanutbay.businessobjects.dao.QuickbooksSubItemHibernateDao;
 import com.chuckanutbay.businessobjects.dao.SalesOrderDao;
 import com.chuckanutbay.businessobjects.dao.SalesOrderHibernateDao;
@@ -122,6 +124,7 @@ public class BusinessObjects {
 	public static QuickbooksItem oneQuickbooksItem(String id) {
 		QuickbooksItem qbItem = new QuickbooksItem();
 		qbItem.setId(id);
+		qbItem.setQuickbooksItemSupplement(oneQuickbooksItemSupplement(id));
 		QuickbooksItemDao dao = new QuickbooksItemHibernateDao();
 		dao.makePersistent(qbItem);
 		return qbItem;
@@ -135,6 +138,14 @@ public class BusinessObjects {
 		qbItem.setCasesPerTray(casesPerTray);
 		return qbItem;
 		
+	}
+	
+	public static QuickbooksItemSupplement oneQuickbooksItemSupplement(String id) {
+		QuickbooksItemSupplement qbItemSup = new QuickbooksItemSupplement();
+		qbItemSup.setId(id);
+		QuickbooksItemSupplementDao dao = new QuickbooksItemSupplementHibernateDao();
+		dao.makePersistent(qbItemSup);
+		return qbItemSup;
 	}
 	
 	public static TrayLabel oneTrayLabel(double cases, String lotCode, SalesOrderLineItem salesOrderLineItem) {

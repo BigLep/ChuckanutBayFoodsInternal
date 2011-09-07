@@ -11,4 +11,6 @@ import com.chuckanutbay.documentation.Terminology;
 public interface TrayLabelDao extends GenericDao<TrayLabel, Integer>{
 	
 	public List<TrayLabel> findBySalesOrderLineItemId(Integer id);
+
+	public List<TrayLabel> findFirst30();
 }

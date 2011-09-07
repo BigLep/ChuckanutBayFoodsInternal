@@ -7,6 +7,5 @@ import com.chuckanutbay.documentation.Terminology;
  * {@link Terminology#DAO} for {@link QuickbooksSubItem}.
  */
 public interface QuickbooksSubItemDao extends GenericDao<QuickbooksSubItem, Integer> {
-
 	
 }

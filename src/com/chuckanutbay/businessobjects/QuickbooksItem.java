@@ -2,29 +2,25 @@ package com.chuckanutbay.businessobjects;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "quickbooks_items")
-@SecondaryTable(name = "quickbooks_item_supplements",
-		pkJoinColumns = {@PrimaryKeyJoinColumn(name="id", referencedColumnName="id")} )
 public class QuickbooksItem {
 	private String id;
 	private String description;
 	private String instructions;
-	private String flavor;
-	private String size;
-	private Double casesPerTray;
-	private NutritionLabel nutritionLabel;
+	private Integer pack;
+	private QuickbooksItemSupplement quickbooksItemSupplement;
 	private Set<SalesOrderLineItem> salesOrderLineItems;
 	private Set<QuickbooksSubItem> subItems;
 	
@@ -39,8 +35,8 @@ public class QuickbooksItem {
 		this.id = id;
 		this.description = description;
 		this.instructions = instructions;
-		this.flavor = flavor;
-		this.size = size;
+		quickbooksItemSupplement.setFlavor(flavor);
+		quickbooksItemSupplement.setSize(size);
 		this.salesOrderLineItems = salesOrderLineItems;
 	}
 	
@@ -69,39 +65,96 @@ public class QuickbooksItem {
 		this.instructions = instructions;
 	}
 	
-	@Column(table = "quickbooks_item_supplements", name = "product_type", nullable = true)
+	@Transient
 	public String getFlavor() {
-		return flavor;
+		if (quickbooksItemSupplement != null) {
+			return quickbooksItemSupplement.getFlavor();
+		} else {
+			return null;
+		}
 	}
 	public void setFlavor(String flavor) {
-		this.flavor = flavor;
+		if (quickbooksItemSupplement != null) {
+			quickbooksItemSupplement.setFlavor(flavor);
+		}
 	}
 	
-	@Column(table = "quickbooks_item_supplements", name = "size", nullable = true)
+	@Transient
 	public String getSize() {
-		return size;
+		if (quickbooksItemSupplement != null) {
+			return quickbooksItemSupplement.getSize();
+		} else {
+			return null;
+		}
 	}
 	public void setSize(String size) {
-		this.size = size;
+		if (quickbooksItemSupplement != null) {
+			quickbooksItemSupplement.setSize(size);
+		}
 	}
 	
-	@Column(table = "quickbooks_item_supplements", name = "cases_per_tray", nullable = true)
+	@Transient
+	public String getShortName() {
+		if (quickbooksItemSupplement != null) {
+			return quickbooksItemSupplement.getShortName();
+		} else {
+			return null;
+		}
+	}
+	public void setShortName(String shortName) {
+		if (quickbooksItemSupplement != null) {
+			quickbooksItemSupplement.setShortName(shortName);
+		}
+	}
+	
+	@Transient
 	public Double getCasesPerTray() {
-		return casesPerTray;
+		if (quickbooksItemSupplement != null) {
+			return quickbooksItemSupplement.getCasesPerTray();
+		} else {
+			return null;
+		}
+	}
+	
+	public void setCasesPerTray(Double casesPerTray) {
+		if (quickbooksItemSupplement != null) {
+			quickbooksItemSupplement.setCasesPerTray(casesPerTray);
+		}
+	}
+	
+	@Column(name = "pack", nullable = true)
+	public Integer getPack() {
+		return pack;
 	}
 
-	public void setCasesPerTray(Double casesPerTray) {
-		this.casesPerTray = casesPerTray;
+	public void setPack(Integer pack) {
+		this.pack = pack;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(table = "quickbooks_item_supplements", name = "nutrition_label_id", nullable = true)
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="quickbooks_item_supplement_id")
+	public QuickbooksItemSupplement getQuickbooksItemSupplement() {
+		return quickbooksItemSupplement;
+	}
+
+	public void setQuickbooksItemSupplement(
+			QuickbooksItemSupplement quickbooksItemSupplement) {
+		this.quickbooksItemSupplement = quickbooksItemSupplement;
+	}
+	
+	@Transient
 	public NutritionLabel getNutritionLabel() {
-		return nutritionLabel;
+		if (quickbooksItemSupplement != null) {
+			return quickbooksItemSupplement.getNutritionLabel();
+		} else {
+			return null;
+		}
 	}
 
 	public void setNutritionLabel(NutritionLabel nutritionLabel) {
-		this.nutritionLabel = nutritionLabel;
+		if (quickbooksItemSupplement != null) {
+			quickbooksItemSupplement.setNutritionLabel(nutritionLabel);
+		}
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quickbooksItem")
