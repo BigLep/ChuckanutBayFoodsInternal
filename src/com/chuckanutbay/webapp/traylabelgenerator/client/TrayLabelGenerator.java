@@ -312,7 +312,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 
 	@Override
 	public void onSuccessfulUpdateTrayLabel() {
-		Window.Location.reload();
+		//Do Nothing 
 	}
 
 	@Override

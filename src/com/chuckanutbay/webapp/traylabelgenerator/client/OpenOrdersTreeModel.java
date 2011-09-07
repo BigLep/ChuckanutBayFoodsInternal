@@ -4,6 +4,8 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
@@ -87,30 +89,7 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		    	
 		    	  currentSalesOrder = (SalesOrderDto) value;
 		    	  updateLineItemDataProvider();
-		    	// Construct a composite cell that includes a checkbox.
-		    	  // Following form Gwt Showcase CellBrowser example.
-		    	  /*  
-		    	  List<HasCell<SalesOrderLineItemDto, ?>> hasCells = new ArrayList<HasCell<SalesOrderLineItemDto, ?>>();
-		    	    hasCells.add(new HasCell<SalesOrderLineItemDto, Boolean>() {
-
-		    	      private CheckboxCell cell = new CheckboxCell(true, false);
-
-		    	      @Override
-					public Cell<Boolean> getCell() {
-		    	        return cell;
-		    	      }
-
-		    	      @Override
-					public FieldUpdater<SalesOrderLineItemDto, Boolean> getFieldUpdater() {
-		    	        return null;
-		    	      }
-
-		    	      @Override
-					public Boolean getValue(SalesOrderLineItemDto object) {
-		    	        return selectionModel.isSelected(object);
-		    	      }
-		    	    });
-		    	    */
+		    	  
 		    	  List<HasCell<SalesOrderLineItemDto, ?>> hasCells = new ArrayList<HasCell<SalesOrderLineItemDto, ?>>();
 		    	    hasCells.add(new HasCell<SalesOrderLineItemDto, String>() {
 
@@ -152,7 +131,14 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 				    		  @Override
 				    		  public void render(Context context, SalesOrderLineItemDto value, SafeHtmlBuilder sb) {
 				    			  if (value != null) {
-				    				  sb.appendEscaped("Item: " + value.getQuickbooksItemDto().getId())
+				    				  String itemString;
+				    				  String shortName = value.getQuickbooksItemDto().getShortName();
+				    				  if (shortName != null && !shortName.equals("")) {
+				    					  itemString = shortName;
+				    				  } else {
+				    					  itemString = value.getQuickbooksItemDto().getId();
+				    				  }
+				    				  sb.appendEscaped("Item: " + itemString)
 				    				  .appendHtmlConstant("<br>")
 				    				  .appendEscaped("Cases: " + value.getCases());
 				    			  }
@@ -235,10 +221,18 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 				} else {
 					flavor = lineItem.getSubItemDto().getFlavor();
 				}
-				if (flavor != null && !flavors.contains(flavor)) {
+				if (flavor != null && !flavors.contains(flavor) && !flavor.equals("")) {//Flavor isn't null, already in the list, or blank
 					flavors.add(flavor);
 				}
 			}
+			Collections.sort(flavors, new Comparator<String>() {
+
+				@Override
+				public int compare(String string1, String string2) {
+					return string1.compareTo(string2);
+				}
+				
+			});
 		}
 		
 		private void updateSalesOrderDataProvider() {

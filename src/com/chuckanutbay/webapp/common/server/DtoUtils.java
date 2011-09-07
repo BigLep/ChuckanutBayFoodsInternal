@@ -256,6 +256,7 @@ public class DtoUtils {
 					qbItemDto.setInstructions(qbItem.getInstructions());
 					qbItemDto.setFlavor(subItem.getSubItem().getFlavor());
 					qbItemDto.setSize(subItem.getSubItem().getSize());
+					qbItemDto.setShortName(subItem.getSubItem().getShortName());
 					if (qbItem.getCasesPerTray() != null && subItem.getCakesPerCase() != null) {
 						qbItemDto.setCasesPerTray(qbItem.getCasesPerTray() * (getCakesPerCase(qbItem) / subItem.getCakesPerCase()));
 						qbItemDto.setCakesPerCase(subItem.getCakesPerCase());
@@ -267,6 +268,7 @@ public class DtoUtils {
 				qbItemDto.setId(qbItem.getId());
 				qbItemDto.setFlavor(qbItem.getFlavor());
 				qbItemDto.setSize(qbItem.getSize());
+				qbItemDto.setShortName(qbItem.getShortName());
 				qbItemDto.setInstructions(qbItem.getInstructions());
 				if (qbItem.getCasesPerTray() != null) {
 					qbItemDto.setCasesPerTray(qbItem.getCasesPerTray());
@@ -284,7 +286,11 @@ public class DtoUtils {
 		public SalesOrderDto apply(SalesOrder input) {
 			SalesOrderDto output = new SalesOrderDto();
 			output.setId(input.getId());
-			output.setCustomerName(input.getCustomerName());
+			if (input.getCustomerShortName() != null && input.getCustomerShortName().equals("")) {
+				output.setCustomerName(input.getCustomerShortName());
+			} else {
+				output.setCustomerName(input.getCustomerName());
+			}
 			output.setCustomerInstructions(input.getSpecialInstructions());
 			output.setShipdate(input.getShipDate());
 			return output;
@@ -310,16 +316,21 @@ public class DtoUtils {
 
 		@Override
 		public QuickbooksItemDto apply(QuickbooksItem input) {
-			QuickbooksItemDto output = new QuickbooksItemDto();
-			output.setId(input.getId());
-			output.setInstructions(input.getInstructions());
-			output.setFlavor(input.getFlavor());
-			output.setSize(input.getSize());
-			if (input.getCasesPerTray() != null) {
-				output.setCasesPerTray(input.getCasesPerTray());
+			if (input != null) {
+				QuickbooksItemDto output = new QuickbooksItemDto();
+				output.setId(input.getId());
+				output.setInstructions(input.getInstructions());
+				output.setFlavor(input.getFlavor());
+				output.setSize(input.getSize());
+				output.setShortName(input.getShortName());
+				if (input.getCasesPerTray() != null) {
+					output.setCasesPerTray(input.getCasesPerTray());
+				}
+				output.setCakesPerCase(getCakesPerCase(input));
+				return output;
+			} else {
+				return null;
 			}
-			output.setCakesPerCase(getCakesPerCase(input));
-			return output;
 		}
 		
 	};
@@ -333,6 +344,7 @@ public class DtoUtils {
 			output.setInstructions(input.getInstructions());
 			output.setFlavor(input.getFlavor());
 			output.setSize(input.getSize());
+			output.setShortName(input.getShortName());
 			output.setCasesPerTray(input.getCasesPerTray());
 			return output;
 		}
@@ -349,6 +361,7 @@ public class DtoUtils {
 			output.setInstructions(subItem.getInstructions());
 			output.setFlavor(subItem.getFlavor());
 			output.setSize(subItem.getSize());
+			output.setShortName(subItem.getShortName());
 			if (input.getCakesPerCase() != null && input.getCakesPerCase() != null && subItem.getCasesPerTray() != null) {
 				output.setCasesPerTray(subItem.getCasesPerTray() * (getCakesPerCase(subItem) / input.getCakesPerCase()));
 				output.setCakesPerCase(input.getCakesPerCase());
@@ -418,7 +431,20 @@ public class DtoUtils {
 				output.setQuickbooksSubItem(new QuickbooksItemHibernateDao().findById(subItemDto.getId()));
 			}
 			if (input.getSalesOrderDto().getCustomerName().equals("INVENTORY")) {//It is an inventory tray label
-				output.setQuickbooksItem(new QuickbooksItemHibernateDao().findById(input.getQuickbooksItemDto().getId()));
+				String id = input.getQuickbooksItemDto().getId();
+				int indexOfSpace = id.indexOf(" ");
+				if (indexOfSpace == -1) {//No sub items
+					output.setQuickbooksItem(new QuickbooksItemHibernateDao().findById(id));
+				} else {//Has a sub item
+					output.setQuickbooksItem(new QuickbooksItemHibernateDao().findById(id.substring(0, indexOfSpace)));
+					for (QuickbooksSubItem subItem : output.getQuickbooksItem().getSubItems()) {
+						if (subItem.getSubItem().getFlavor().equals(id.substring(indexOfSpace + 1))) {//Is the correct sub item
+							output.setQuickbooksSubItem(subItem.getSubItem());
+							break;
+						}
+					}
+				}
+				
 			} else {//It is a normal tray label
 				output.setSalesOrderLineItem(new SalesOrderLineItemHibernateDao().findById(input.getId()));
 			}

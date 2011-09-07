@@ -26,13 +26,13 @@ public class TrayLabelGeneratorUtil {
 	public static final NumberFormat SHORT_DECIMAL = NumberFormat.getFormat("#,##0.#");
 	
 	public static enum TrayLabelHeader {
-		Customer, ShipDate, ItemId, LotCode, Cases, Cakes, Trays, Print, SalesOrder, Delete
+		Customer, ShipDate, ItemId, LotCode, Cases, Cakes, Trays, Print, SalesOrder, Delete, Item
 	}
 	
 	public static final TrayLabelHeader[] NEW_TRAY_LABELS = {
 		TrayLabelHeader.Customer,
 		TrayLabelHeader.ShipDate,
-		TrayLabelHeader.ItemId,
+		TrayLabelHeader.Item,
 		TrayLabelHeader.LotCode,
 		TrayLabelHeader.Cakes,
 		TrayLabelHeader.Cases,
@@ -109,6 +109,24 @@ public class TrayLabelGeneratorUtil {
     	        		return "";
     	        	} else {
     	        		return itemId;
+    	        	}
+    	        }
+    	    };
+		case Item:
+			return new TextColumn<TrayLabelDto>() {
+    	        @Override
+    	        public String getValue(TrayLabelDto object) {
+    	        	String item;
+    	        	if (object.getSalesOrderLineItemDto().getSubItemDto() != null) {
+    	        		item = object.getSalesOrderLineItemDto().getSubItemDto().getShortName();
+    	        	} else {
+    	        		item = object.getSalesOrderLineItemDto().getQuickbooksItemDto().getShortName();
+    	        	} 
+    	        	
+    	        	if (item == null) {
+    	        		return object.getSalesOrderLineItemDto().getQuickbooksItemDto().getId();
+    	        	} else {
+    	        		return item;
     	        	}
     	        }
     	    };
@@ -333,6 +351,7 @@ public class TrayLabelGeneratorUtil {
 		case Customer: return "Cusotmer";
 		case ShipDate: return "Ship Date";
 		case ItemId: return "Item-Id";
+		case Item: return "Item";
 		case LotCode: return "Lot Code";
 		case Cases: return "Cases";
 		case Cakes: return "Cakes";
@@ -402,9 +421,12 @@ public class TrayLabelGeneratorUtil {
 		SalesOrderLineItemDto lineItem = new SalesOrderLineItemDto();
 		lineItem.setSalesOrderDto(salesOrder);
 		lineItem.setQuickbooksItemDto(qbItem);
-		return new TrayLabelDto().setSalesOrderLineItemDto(lineItem)
+		return new TrayLabelDto()
+				.setSalesOrderLineItemDto(lineItem)
 				.setLotCode(lotCode)
 				.setCases(0)
+				.setCakesPerCase(qbItem.getCakesPerCase())
+				.setCasesPerTray(qbItem.getCasesPerTray())
 				.setMaximumCases(1000000000);
 	}
 
