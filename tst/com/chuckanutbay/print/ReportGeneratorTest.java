@@ -35,6 +35,6 @@ public class ReportGeneratorTest {
 		Map<String, Object> parameters = newHashMap();
 		parameters.put("TRAY_LABEL_IDS", "1, 2");
 		
-		assertFileExists(ReportGenerator.generateReport(ReportUtil.TRAY_LABEL, parameters));
+		assertFileExists(new ReportGenerator().generateReport(ReportUtil.TRAY_LABEL, parameters));
 	}
 }

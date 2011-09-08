@@ -24,7 +24,7 @@
      tray_labels.`cakes_per_case` AS tray_labels_cakes_per_case,
      tray_labels.`cases_per_tray` AS tray_labels_cases_per_tray,
      sales_orders.`purchase_order` AS sales_orders_purchase_order,
-     sales_orders.`customer_short_name` AS sales_orders_customer_name,
+     sales_orders.`customer_name` AS sales_orders_customer_name,
      sales_orders.`ship_date` AS sales_orders_ship_date,
      sales_order_line_items.`cases` AS sales_order_line_items_cases,
      nutrition_labels.`is_allergen` AS nutrition_labels_is_allergen,

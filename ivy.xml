@@ -72,19 +72,19 @@
 			I found these dependencies by looking at: ~/.ivy2/cache/net.sf.jasperreports/jasperreports/ivy-4.1.1.xml
 			This is the ivy.xml file created from the Maven pom.xml.
 		-->
-		<dependency org="net.sf.jasperreports" name="jasperreports" rev="4.1.1" conf="build->default" />
+		<dependency org="net.sf.jasperreports" name="jasperreports" rev="4.1.1" conf="compile->default" />
 		<!--  These dependencies are needed so CompileReports can run. -->
-		<dependency org="net.sf.barcode4j" name="barcode4j" rev="2.0" conf="build->default"/>
-		<dependency org="rhino" name="js" rev="1.7R1" conf="build->default"/>
-		<dependency org="org.apache.xmlgraphics" name="batik-bridge" rev="1.7" conf="build->default"/>
-		<dependency org="org.apache.xmlgraphics" name="batik-gvt" rev="1.7" conf="build->default"/>
-		<dependency org="org.apache.xmlgraphics" name="batik-util" rev="1.7" conf="build->default"/>
-		<dependency org="org.apache.xmlgraphics" name="batik-svg-dom" rev="1.7" conf="build->default"/>
-		<dependency org="org.apache.xmlgraphics" name="batik-dom" rev="1.7" conf="build->default"/>
-		<dependency org="org.apache.xmlgraphics" name="batik-script" rev="1.7" conf="build->default"/>
-		<dependency org="org.apache.xmlgraphics" name="batik-css" rev="1.7" conf="build->default"/>
-		<dependency org="org.apache.xmlgraphics" name="batik-svggen" rev="1.7" conf="build->default"/>
-		<dependency org="org.apache.xmlgraphics" name="batik-awt-util" rev="1.7" conf="build->default"/>
+		<dependency org="net.sf.barcode4j" name="barcode4j" rev="2.0" conf="compile->default"/>
+		<dependency org="rhino" name="js" rev="1.7R1" conf="compile->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-bridge" rev="1.7" conf="compile->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-gvt" rev="1.7" conf="compile->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-util" rev="1.7" conf="compile->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-svg-dom" rev="1.7" conf="compile->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-dom" rev="1.7" conf="compile->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-script" rev="1.7" conf="compile->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-css" rev="1.7" conf="compile->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-svggen" rev="1.7" conf="compile->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-awt-util" rev="1.7" conf="compile->default"/>
 		
 		<!-- 
 		  Without this, log4j-1.2.16 is used.

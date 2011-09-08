@@ -1,7 +1,6 @@
 package com.chuckanutbay.webapp.common.server;
 
 import static com.chuckanutbay.print.Print.HP_WIRELESS_P1102W;
-import static com.chuckanutbay.print.ReportGenerator.generateReport;
 import static com.chuckanutbay.print.ReportUtil.TRAY_LABEL;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.fromTrayLabelDtoFunction;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.toQuickbooksItemDtos;
@@ -28,6 +27,7 @@ import com.chuckanutbay.businessobjects.dao.TrayLabelDao;
 import com.chuckanutbay.businessobjects.dao.TrayLabelHibernateDao;
 import com.chuckanutbay.businessobjects.util.HibernateUtil;
 import com.chuckanutbay.print.Print;
+import com.chuckanutbay.print.ReportGenerator;
 import com.chuckanutbay.webapp.common.client.TrayLabelService;
 import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
@@ -220,7 +220,7 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 		Map<String, Object> parameters = newHashMap();
 		parameters.put("TRAY_LABEL_IDS", ids);
 		timer.logTime("Setup Parameters");
-		String pdfFilePath = generateReport(TRAY_LABEL, parameters);
+		String pdfFilePath = new ReportGenerator().generateReport(TRAY_LABEL, parameters);
 		timer.logTime("Generated Report");
 		Print.print(pdfFilePath, HP_WIRELESS_P1102W);
 		timer.stop("Done Print:");

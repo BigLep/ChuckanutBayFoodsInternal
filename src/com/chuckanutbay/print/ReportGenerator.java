@@ -20,11 +20,11 @@ public class ReportGenerator {
 	
 	private static final File generatedReportsDir = Files.createTempDir();
 	
-	public static String generateReport(String report, Map<String, Object> parameters) {
+	public String generateReport(String report, Map<String, Object> parameters) {
 		try {
 			Timer timer = new Timer(Logger.getLogger(ReportGenerator.class.getName())).start("Generating Report:");
 			String pdfFilePath = new File(generatedReportsDir, report + new DateTime().getMillis() + ".pdf").getAbsolutePath();
-			InputStream reportStream = ClassLoader.getSystemClassLoader().getResourceAsStream("reports/" + report + ".jasper");
+			InputStream reportStream = getClass().getClassLoader().getResourceAsStream("reports/" + report + ".jasper");
 			timer.logTime("\tFound report file:");
 			
 			HibernateUtil.beginTransaction();

@@ -286,11 +286,7 @@ public class DtoUtils {
 		public SalesOrderDto apply(SalesOrder input) {
 			SalesOrderDto output = new SalesOrderDto();
 			output.setId(input.getId());
-			if (input.getCustomerShortName() != null && input.getCustomerShortName().equals("")) {
-				output.setCustomerName(input.getCustomerShortName());
-			} else {
-				output.setCustomerName(input.getCustomerName());
-			}
+			output.setCustomerName(input.getCustomerName());
 			output.setCustomerInstructions(input.getSpecialInstructions());
 			output.setShipdate(input.getShipDate());
 			return output;
