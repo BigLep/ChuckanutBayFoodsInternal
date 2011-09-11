@@ -5,8 +5,10 @@
 /.settings
 /build-output
 /configuration/hibernate/hibernate-prod.cfg.xml
+/logs
 /resources/reports/*.jasper
 /war/dashboard
+/war/logs
 /war/lotcodemanager
 /war/timeclockreport
 /war/timeclock
