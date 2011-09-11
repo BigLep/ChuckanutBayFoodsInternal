@@ -15,7 +15,7 @@
 	<property name="build.output.lib.dir" value="${build.output.dir}/lib"/>
 	<property name="build.output.war.dir" value="${build.output.private.dir}/war"/>
 	<property name="build.output.war.lib.dir" value="${build.output.war.dir}/WEB-INF/lib"/>
-	<!-- property name="build.output.reports.dir" value="${build.output.dir}/reports"/-->
+	<property name="build.output.reports.dir" value="${build.output.dir}/reports"/>
 	<property name="build.output.junit.dir" value="${build.output.reports.dir}/junit"/>
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="config.dir" value="${basedir}/configuration"/>
@@ -26,12 +26,12 @@
 	<!-- Alternatively, could do ${ant.project.name} -->
 	<property name="war.name" value="ROOT"/>
 	
-	<property name="build.output.report.fonts.dir" value="${build.output.dir}/reportfonts"/>	
 	
 	<target name="release" depends="war,javadoc"/>
 	
 	<target name="clean">
 		<delete dir="${build.output.dir}" />
+		<delete dir="${war.dir}/WEB-INF/lib" />
 	</target>
 	
 	<target name="ivy-build-classpath">
@@ -80,9 +80,10 @@
 	
 	<target name="tst-compile-classpath" depends="ivy-test-classpath">
 		<path id="tst.compile.classpath.ref">
-            <path refid="ivy.test.classpath.ref"/>
+			<path refid="ivy.build.classpath.ref"/>
+			<path refid="ivy.test.classpath.ref"/>
 			<pathelement location="${build.output.src.dir}"/>
-        </path>
+		</path>
 	</target>
 	
 	<target name="tst-compile" depends="src-compile,tst-compile-classpath">
@@ -127,6 +128,7 @@
 					<include name="**/*Test.java"/>
 				</fileset>
 			</batchtest>
+			<jvmarg value="-Xmx512M"/>
 		</junit>
 	</target>
 	
@@ -207,6 +209,7 @@
 		</copy>
 		<ivyfileset setid="ivy.gwt-debug-mode.fileset.ref" conf="gwt-debug-mode"/>
 		<copy todir="${war.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}"/>
 			<resources refid="ivy.gwt-debug-mode.fileset.ref" />
 			<flattenmapper/>
 		</copy>
