@@ -29,5 +29,12 @@ public class HibernateUtilTest {
 		s.save(e);
 		t.commit();
 	}
+	
+	/**
+	 * @see
+	 */
+	public void testGetTransaction() {
+		
+	}
 
 }

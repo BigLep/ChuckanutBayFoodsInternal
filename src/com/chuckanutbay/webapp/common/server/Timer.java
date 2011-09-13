@@ -1,16 +1,15 @@
 package com.chuckanutbay.webapp.common.server;
 
-import java.util.logging.Logger;
-
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.slf4j.Logger;
 
 public class Timer {
 	private DateTime startTime;
 	private Logger logger;
 	
-	public Timer(Logger logger) {
-		this.logger = logger;
+	public Timer(Logger logger2) {
+		this.logger = logger2;
 	}
 
 	public Timer start() {

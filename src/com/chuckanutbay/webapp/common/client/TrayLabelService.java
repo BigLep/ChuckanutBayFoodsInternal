@@ -1,11 +1,11 @@
 package com.chuckanutbay.webapp.common.client;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
+import com.chuckanutbay.businessobjects.QuickbooksItem;
 import com.chuckanutbay.businessobjects.TrayLabel;
-import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
+import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
 import com.google.gwt.core.client.GWT;
@@ -40,9 +40,16 @@ public interface TrayLabelService extends RemoteService {
 	
 	/**
 	 * 
-	 * @return All {@link QuickbooksItemDto}s in the database ending in -##.
+	 * @return All {@link QuickbooksItem} ids in the database ending in -##.
 	 */
-	Map<String, QuickbooksItemDto> getQuickbooksItems();
+	List<String> getQuickbooksItemIds();
+	
+	/**
+	 * Creates an {@link InventoryTrayLabelDto} for the given qbItem
+	 * @param qbItemId If the qbItem has any sub items, then the qbItemId should follow the format: 'qbItemId subItemFlavor' (e.g. '27039-6 NewYork')
+	 * @return
+	 */
+	InventoryTrayLabelDto getInventoryTrayLabelDto(String qbItemId);
 	
 	/**
 	 * 
@@ -51,7 +58,7 @@ public interface TrayLabelService extends RemoteService {
 	String getCurrentLotCode();
 	
 	/**
-	 * Updates the given {@link TrayLabelDto} on the database. If the {@link TrayLabelDto}'s {@link QuickbooksItemDto} is null then make the object
+	 * Updates the given {@link TrayLabelDto} on the database. If the {@link TrayLabelDto}'s lotcode is null then make the object
 	 * transient. Otherwise only the lotcode and cases values should change. 
 	 * @param trayLabel
 	 */

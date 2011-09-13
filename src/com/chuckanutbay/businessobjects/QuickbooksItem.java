@@ -122,6 +122,21 @@ public class QuickbooksItem {
 		}
 	}
 	
+	@Transient
+	public NutritionLabel getNutritionLabel() {
+		if (quickbooksItemSupplement != null) {
+			return quickbooksItemSupplement.getNutritionLabel();
+		} else {
+			return null;
+		}
+	}
+
+	public void setNutritionLabel(NutritionLabel nutritionLabel) {
+		if (quickbooksItemSupplement != null) {
+			quickbooksItemSupplement.setNutritionLabel(nutritionLabel);
+		}
+	}
+	
 	@Column(name = "pack", nullable = true)
 	public Integer getPack() {
 		return pack;
@@ -140,21 +155,6 @@ public class QuickbooksItem {
 	public void setQuickbooksItemSupplement(
 			QuickbooksItemSupplement quickbooksItemSupplement) {
 		this.quickbooksItemSupplement = quickbooksItemSupplement;
-	}
-	
-	@Transient
-	public NutritionLabel getNutritionLabel() {
-		if (quickbooksItemSupplement != null) {
-			return quickbooksItemSupplement.getNutritionLabel();
-		} else {
-			return null;
-		}
-	}
-
-	public void setNutritionLabel(NutritionLabel nutritionLabel) {
-		if (quickbooksItemSupplement != null) {
-			quickbooksItemSupplement.setNutritionLabel(nutritionLabel);
-		}
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quickbooksItem")

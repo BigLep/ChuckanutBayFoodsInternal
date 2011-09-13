@@ -15,6 +15,7 @@ import static com.chuckanutbay.webapp.common.client.IconUtil.EDIT_LARGE;
 import static com.chuckanutbay.webapp.common.client.IconUtil.LOGO;
 import static com.chuckanutbay.webapp.common.client.IconUtil.PRINT_LARGE;
 import static com.chuckanutbay.webapp.common.client.IconUtil.REFRESH_LARGE;
+import static com.chuckanutbay.webapp.traylabelgenerator.client.RpcHelper.createGetInventoryTrayLabelDtoCallback;
 import static com.chuckanutbay.webapp.traylabelgenerator.client.RpcHelper.createSendTrayLabelsCallback;
 import static com.chuckanutbay.webapp.traylabelgenerator.client.RpcHelper.createVoidCallback;
 import static com.chuckanutbay.webapp.traylabelgenerator.client.RpcHelper.trayLabelService;
@@ -22,12 +23,10 @@ import static com.chuckanutbay.webapp.traylabelgenerator.client.TrayLabelGenerat
 import static com.chuckanutbay.webapp.traylabelgenerator.client.TrayLabelGeneratorUtil.NEW_TRAY_LABELS;
 import static com.chuckanutbay.webapp.traylabelgenerator.client.TrayLabelGeneratorUtil.getColumns;
 import static com.chuckanutbay.webapp.traylabelgenerator.client.TrayLabelGeneratorUtil.getHeaderStrings;
-import static com.chuckanutbay.webapp.traylabelgenerator.client.TrayLabelGeneratorUtil.newInventoryTrayLabel;
-import static com.chuckanutbay.webapp.traylabelgenerator.client.TrayLabelGeneratorUtil.toTrayLabelDto;
+import static com.chuckanutbay.webapp.traylabelgenerator.client.TrayLabelGeneratorUtil.toOrderTrayLabelDto;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.chuckanutbay.webapp.common.client.CbCellTable;
@@ -35,7 +34,8 @@ import com.chuckanutbay.webapp.common.client.CbHorizontalPanel;
 import com.chuckanutbay.webapp.common.client.CbIconButton;
 import com.chuckanutbay.webapp.common.client.CbMultiWordSuggestOracle;
 import com.chuckanutbay.webapp.common.client.CbVerticalPanel;
-import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
+import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
+import com.chuckanutbay.webapp.common.shared.OrderTrayLabelDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
 import com.google.gwt.core.client.EntryPoint;
@@ -68,7 +68,6 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	private String currentLotCode;
 	private CbIconButton addInventoryButton;
 	private CbHorizontalPanel inventoryTrayLabelsPanel;
-	private Map<String, QuickbooksItemDto> quickbooksItems;
 	private CbMultiWordSuggestOracle suggestOracle;
 	private SuggestBox inventorySuggestBox;
 	private CbVerticalPanel editTrayLabelsPanel;
@@ -77,9 +76,8 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	@Override
 	public void onModuleLoad() {
 		getSalesOrderLineItemsFromServer();
-		getTrayLabelHistoryFromServer();
 		getCurrentLotCodeFromServer();
-		getQuickbooksItemsFromServer();
+		getQuickbooksItemIdsFromServer();
 		InitializeUi();
 	}
 
@@ -176,6 +174,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 			buttonsPanel.remove(0);
 			buttonsPanel.insert(editTrayLabelsButton, 0);
 		} else if (event.getSource() == editTrayLabelsButton) {
+			getTrayLabelHistoryFromServer();
 			mainPanel.replaceWidget(newTrayLabelPanel, editTrayLabelsPanel, H_ALIGN_CENTER);
 			buttonsPanel.remove(0);
 			buttonsPanel.insert(newTrayLabelsButton, 0);
@@ -188,7 +187,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 				sendTrayLabelsToServer(newArrayList(newTrayLabelsCellTable.getTableData()));
 			}
 		} else if (event.getSource() == addInventoryButton) {
-			newTrayLabelsCellTable.addTableData(newInventoryTrayLabel(quickbooksItems.get(inventorySuggestBox.getText()), currentLotCode));
+			//TODO:
 		}
 		
 	}
@@ -218,16 +217,14 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 		List<TrayLabelDto> tableData = newTrayLabelsCellTable.getTableData();
 		Set<SalesOrderLineItemDto> selectedLineItems = openOrdersCellBrowser.getSelectedLineItems();
 		for (SalesOrderLineItemDto selectedLineItem : selectedLineItems) {
-			TrayLabelDto convertedLineItem = toTrayLabelDto(selectedLineItem, currentLotCode);
+			OrderTrayLabelDto convertedLineItem = toOrderTrayLabelDto(selectedLineItem, currentLotCode);
 			if (!tableData.contains(convertedLineItem)) {
 				newTrayLabelsCellTable.addTableData(convertedLineItem);
 				return;
 			}
 		}
 		for (TrayLabelDto trayLabel : tableData) {
-			if (trayLabel.getSalesOrderLineItemDto().getSalesOrderDto() == null) {
-				//It is an inventory label; Do Nothing.
-			} else if (!selectedLineItems.contains(trayLabel)) {
+			if (trayLabel instanceof OrderTrayLabelDto && !selectedLineItems.contains(trayLabel)) {
 				newTrayLabelsCellTable.removeTableData(trayLabel);
 				return;
 			}
@@ -245,8 +242,8 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	}
 
 	@Override
-	public void getQuickbooksItemsFromServer() {
-		trayLabelService.getQuickbooksItems(RpcHelper.createGetQuickbooksItemsCallback(this));
+	public void getQuickbooksItemIdsFromServer() {
+		trayLabelService.getQuickbooksItemIds(RpcHelper.createGetQuickbooksItemIdsCallback(this));
 	}
 
 	@Override
@@ -263,7 +260,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	public void sendTrayLabelsToServer(List<TrayLabelDto> newTrayLabels) {
 		for (TrayLabelDto trayLabel : newTrayLabels) {
 			if (trayLabel.getCasesPerTray() == 0.0) {
-				Window.alert("Tell Dave: 'The cases per tray value is not right for " + trayLabel.getSalesOrderLineItemDto().getQuickbooksItemDto().getId() + "!'");
+				Window.alert("Tell Dave: 'The cases per tray value is not right for " + trayLabel.getQbItem().getId() + "!'");
 			}
 		}
 		trayLabelService.setTrayLabels(newTrayLabels, createSendTrayLabelsCallback(this));
@@ -272,6 +269,11 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	@Override
 	public void printTrayLabels(Set<TrayLabelDto> trayLabels) {
 		trayLabelService.printTrayLabels(trayLabels, createVoidCallback());
+	}
+	
+	@Override
+	public void getInventoryTrayLabelDto(String qbItemId) {
+		trayLabelService.getInventoryTrayLabelDto(qbItemId, createGetInventoryTrayLabelDtoCallback(this));
 	}
 	
 	@Override
@@ -287,13 +289,11 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	}
 
 	@Override
-	public void onSuccessfulGetQuickbooksItems(
-			Map<String, QuickbooksItemDto> quickbooksItems) {
-		this.quickbooksItems = quickbooksItems;
-		for (String qbId : quickbooksItems.keySet()) {
+	public void onSuccessfulGetQuickbooksItemIds(
+			List<String> quickbooksItems) {
+		for (String qbId : quickbooksItems) {
 			suggestOracle.add(qbId);
 		}
-		
 	}
 
 	@Override
@@ -318,6 +318,13 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	@Override
 	public void onSuccessfulSendTrayLabelsToServer() {
 		Window.Location.reload();
+	}
+
+	@Override
+	public void onSuccessfulGetInventoryTrayLabelDto(
+			InventoryTrayLabelDto result) {
+		result.setLotCode(currentLotCode);
+		newTrayLabelsCellTable.addTableData(result);
 	}
 
 }

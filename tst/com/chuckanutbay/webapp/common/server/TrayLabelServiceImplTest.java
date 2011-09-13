@@ -11,6 +11,7 @@ import static com.chuckanutbay.webapp.common.server.DtoUtils.toTrayLabelDtoFunct
 import static com.google.common.collect.Lists.newArrayList;
 import static junit.framework.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -24,7 +25,10 @@ import com.chuckanutbay.businessobjects.SalesOrderLineItem;
 import com.chuckanutbay.businessobjects.TrayLabel;
 import com.chuckanutbay.businessobjects.dao.QuickbooksItemHibernateDaoTest;
 import com.chuckanutbay.businessobjects.dao.TrayLabelHibernateDao;
+import com.chuckanutbay.businessobjects.util.HibernateUtil;
 import com.chuckanutbay.util.testing.DatabaseResource;
+import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
+import com.chuckanutbay.webapp.common.shared.OrderTrayLabelDto;
 import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
@@ -39,12 +43,11 @@ public class TrayLabelServiceImplTest {
 	public final DatabaseResource databaseResource = new DatabaseResource();
 
 	/**
-	 *  @see TrayLabelServiceImpl#getQuickbooksItems()
+	 *  @see TrayLabelServiceImpl#getQuickbooksItemIds()
 	 */
 	@Test
 	public void testGetQuickbooksItems() {
 		new QuickbooksItemHibernateDaoTest().testFindCaseItems();
-		new DtoUtilsTest().testToQuickbooksItemDtos();
 	}
 	
 	/**
@@ -61,7 +64,7 @@ public class TrayLabelServiceImplTest {
 	}
 	
 	/**
-	 *  @see TrayLabelServiceImpl#updateTrayLabel(com.chuckanutbay.webapp.common.shared.TrayLabelDto)
+	 *  @see TrayLabelServiceImpl#updateTrayLabel(com.chuckanutbay.webapp.common.shared.OrderTrayLabelDto)
 	 */
 	@Test
 	public void testUpdateTrayLabel() {
@@ -70,13 +73,13 @@ public class TrayLabelServiceImplTest {
 		SalesOrderLineItem soli1 = BusinessObjects.oneSalesOrderLineItem(oneSalesOrder("Haggens", false), oneQuickbooksItem("1111-11"), 10);
 		SalesOrderLineItem soli2 = BusinessObjects.oneSalesOrderLineItem(oneSalesOrder("Freds", true), oneQuickbooksItem("1112-12"), 20);
 		
-		TrayLabel tl1 = oneTrayLabel(5, "4A111A1", soli1);
-		TrayLabel tl2 = oneTrayLabel(5, "4A111A1", soli1);
-		TrayLabel tl3 = oneTrayLabel(5, "4A111A1", soli2);
-		TrayLabel tl4 = oneTrayLabel(5, "4A111A1", soli2);
+		TrayLabel tl1 = oneTrayLabel(5, 6, 1, "4A115A1", soli1);
+		TrayLabel tl2 = oneTrayLabel(5, 6, 1, "4A114A1", soli1);
+		TrayLabel tl3 = oneTrayLabel(5, 6, 1, "4A114A1", soli2);
+		TrayLabel tl4 = oneTrayLabel(5, 6, 1, "4A113A1", soli2);
 		
 		//Modify tl1 as a Dto
-		TrayLabelDto tlDto = toTrayLabelDtoFunction.apply(tl1);
+		OrderTrayLabelDto tlDto = (OrderTrayLabelDto) toTrayLabelDtoFunction.apply(tl1);
 		tlDto.setCases(4.0);
 		tlDto.setLotCode("4A222A2");
 		
@@ -85,7 +88,7 @@ public class TrayLabelServiceImplTest {
 		assertEquals(tl1.getCases(), 4.0);
 		assertEquals(tl1.getLotCode(), "4A222A2");
 		
-		tlDto.getSalesOrderLineItemDto().setQuickbooksItemDto(null);
+		tlDto.setLotCode(null);
 		
 		server.updateTrayLabel(tlDto);
 		
@@ -128,11 +131,11 @@ public class TrayLabelServiceImplTest {
 		addLineItems(so2, soli2, soli3);
 		addLineItems(so3, soli4);
 		
-		TrayLabel tl1 = oneTrayLabel(5, "4A111A1", soli1);
-		TrayLabel tl2 = oneTrayLabel(5, "4A111A1", soli1);
-		TrayLabel tl3 = oneTrayLabel(5, "4A111A1", soli2);
-		TrayLabel tl4 = oneTrayLabel(5, "4A111A1", soli2);
-		TrayLabel tl5 = oneTrayLabel(20, "4A111A1", soli3, qbItem1);
+		TrayLabel tl1 = oneTrayLabel(5, 6, 1, "4A115A1", soli1);
+		TrayLabel tl2 = oneTrayLabel(5, 6, 1, "4A114A1", soli1);
+		TrayLabel tl3 = oneTrayLabel(5, 6, 1, "4A114A1", soli2);
+		TrayLabel tl4 = oneTrayLabel(5, 6, 1, "4A113A1", soli2);
+		TrayLabel tl5 = oneTrayLabel(20, 1.5, 4, "4A112A1", soli3, qbItem1);
 		
 		
 		//soli2, soli3(x3 incomplete sub items) = 4 total
@@ -174,11 +177,11 @@ public class TrayLabelServiceImplTest {
 		addLineItems(so2, soli2, soli3);
 		addLineItems(so3, soli4);
 		
-		TrayLabel tl1 = oneTrayLabel(5, "4A115A1", soli1);
-		TrayLabel tl2 = oneTrayLabel(5, "4A114A1", soli1);
-		TrayLabel tl3 = oneTrayLabel(5, "4A114A1", soli2);
-		TrayLabel tl4 = oneTrayLabel(5, "4A113A1", soli2);
-		TrayLabel tl5 = oneTrayLabel(20, "4A112A1", soli3, qbItem1);
+		TrayLabel tl1 = oneTrayLabel(5, 6, 1, "4A115A1", soli1);
+		TrayLabel tl2 = oneTrayLabel(5, 6, 1, "4A114A1", soli1);
+		TrayLabel tl3 = oneTrayLabel(5, 6, 1, "4A114A1", soli2);
+		TrayLabel tl4 = oneTrayLabel(5, 6, 1, "4A113A1", soli2);
+		TrayLabel tl5 = oneTrayLabel(20, 1.5, 4, "4A112A1", soli3, qbItem1);
 		
 		List<TrayLabelDto> tlDtos = server.getTrayLabelHistroy();
 		assertEquals(1, tlDtos.get(0).getId().intValue());
@@ -223,11 +226,16 @@ public class TrayLabelServiceImplTest {
 		addLineItems(so2, soli2, soli3);
 		addLineItems(so3, soli4);
 		
-		TrayLabelDto tlDto1 = new TrayLabelDto(null, new SalesOrderLineItemDto(1, new SalesOrderDto("Haggens"), new QuickbooksItemDto("27001-6", new Double(1)), null, 10), "2B111A1", 5);
-		TrayLabelDto tlDto2 = new TrayLabelDto(null, new SalesOrderLineItemDto(null, new SalesOrderDto("INVENTORY"), new QuickbooksItemDto("27039-6", new Double(1)), new QuickbooksItemDto("27001-6", 4), 20), "2B111A1", 5);
+		TrayLabelDto tlDto1 = new OrderTrayLabelDto(null, new SalesOrderLineItemDto(1, new SalesOrderDto("Haggens"), new QuickbooksItemDto("27001-6", new Double(1)), null, 10), "2B111A1", 5, 6, 1);
+		TrayLabelDto tlDto2 = new InventoryTrayLabelDto(null, new QuickbooksItemDto("27039-6", new Double(1)), new QuickbooksItemDto("27001-6", 4), "2B111A1", 5, 1.5, 4);
 		
-		server.setTrayLabels(newArrayList(tlDto1, tlDto2));
+		server.setTrayLabels(new ArrayList<TrayLabelDto>(newArrayList(tlDto1, tlDto2)));
 		
+		/**I am not sure what happened to the last transaction 
+		 * but with out this new transaction there is a HibernateException 
+		 * that an active transaction is needed
+		 */
+		HibernateUtil.beginTransaction(); 
 		//tlDto1 x5 + tlDto1 x2
 		assertSize(new TrayLabelHibernateDao().findAll(), 7);
 	 }

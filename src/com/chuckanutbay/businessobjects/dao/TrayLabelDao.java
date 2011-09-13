@@ -11,6 +11,11 @@ import com.chuckanutbay.documentation.Terminology;
 public interface TrayLabelDao extends GenericDao<TrayLabel, Integer>{
 	
 	public List<TrayLabel> findBySalesOrderLineItemId(Integer id);
-
-	public List<TrayLabel> findFirst30();
+	
+	/**
+	 * Finds the most recently created {@link TrayLabel}s in the database
+	 * @param numberOfRecords The number of records to get from the database such that numberOfRecords == return.size()
+	 * @return
+	 */
+	public List<TrayLabel> findRecent(int numberOfRecords);
 }

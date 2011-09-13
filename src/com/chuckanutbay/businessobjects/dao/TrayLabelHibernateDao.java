@@ -24,10 +24,10 @@ public class TrayLabelHibernateDao extends GenericHibernateDao<TrayLabel,Integer
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<TrayLabel> findFirst30() {
+	public List<TrayLabel> findRecent(int numberOfRecords) {
 		return getCriteria()
-				.setMaxResults(30)
-				.addOrder(Order.desc("id"))
+				.setMaxResults(numberOfRecords)
+				.addOrder(Order.desc("creationDateTime"))
 				.list();
 	}
 	

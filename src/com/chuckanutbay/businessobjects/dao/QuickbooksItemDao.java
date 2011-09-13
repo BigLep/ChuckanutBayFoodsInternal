@@ -8,7 +8,7 @@ import com.chuckanutbay.documentation.Terminology;
 /**
  * {@link Terminology#DAO} for {@link QuickbooksItem}.
  */
-public interface QuickbooksItemDao extends GenericDao<QuickbooksItem, Integer> {
+public interface QuickbooksItemDao extends GenericDao<QuickbooksItem, String> {
 	
 	/**
 	 * 
@@ -16,11 +16,7 @@ public interface QuickbooksItemDao extends GenericDao<QuickbooksItem, Integer> {
 	 */
 	public List<QuickbooksItem> findCaseItems();
 	
-	/**
-	 * 
-	 * @param id
-	 * @return The {@link QuickbooksItem} with the given id
-	 */
-	public QuickbooksItem findById(String id);
+
+	public List<String> findAllIds();
 	
 }

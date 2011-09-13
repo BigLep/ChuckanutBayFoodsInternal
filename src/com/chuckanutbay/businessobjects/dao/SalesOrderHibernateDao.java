@@ -2,7 +2,6 @@ package com.chuckanutbay.businessobjects.dao;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
 import com.chuckanutbay.businessobjects.SalesOrder;
@@ -16,14 +15,9 @@ public class SalesOrderHibernateDao extends GenericHibernateDao<SalesOrder,Integ
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<SalesOrder> findAllOpen() {
-		Criteria crit = getCriteria();
-		crit.add(Restrictions.eq("orderClosed", false));
-		List<SalesOrder> salesOrders = crit.list();
-		return salesOrders;
-		/*
 		return getCriteria()
-				.add(Restrictions.eq("orderClosed", false))
-				.list();
-		*/
+			.add(Restrictions.eq("orderClosed", false))
+			//.setFetchMode("salesOrderLineItems", FetchMode.JOIN)
+			.list();
 	}
 }

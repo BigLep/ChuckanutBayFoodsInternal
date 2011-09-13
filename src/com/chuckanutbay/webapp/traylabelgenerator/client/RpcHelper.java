@@ -1,13 +1,12 @@
 package com.chuckanutbay.webapp.traylabelgenerator.client;
 
 import java.util.List;
-import java.util.Map;
 
 import com.chuckanutbay.webapp.common.client.ServiceUtils;
 import com.chuckanutbay.webapp.common.client.ServiceUtils.DefaultAsyncCallback;
 import com.chuckanutbay.webapp.common.client.ServiceUtils.VoidAsyncCallback;
 import com.chuckanutbay.webapp.common.client.TrayLabelServiceAsync;
-import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
+import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -33,11 +32,11 @@ public class RpcHelper {
 		};
 	}
 	
-	public static AsyncCallback<Map<String, QuickbooksItemDto>> createGetQuickbooksItemsCallback(final TrayLabelServerCommunicator caller) {
-		return new DefaultAsyncCallback<Map<String, QuickbooksItemDto>>() {
+	public static AsyncCallback<List<String>> createGetQuickbooksItemIdsCallback(final TrayLabelServerCommunicator caller) {
+		return new DefaultAsyncCallback<List<String>>() {
 			@Override
-			public void onSuccess(Map<String, QuickbooksItemDto> result) {
-				caller.onSuccessfulGetQuickbooksItems(result);
+			public void onSuccess(List<String> result) {
+				caller.onSuccessfulGetQuickbooksItemIds(result);
 			}
 		};
 	}
@@ -65,6 +64,15 @@ public class RpcHelper {
 			@Override
 			public void onSuccess(Void result) {
 				caller.onSuccessfulSendTrayLabelsToServer();
+			}
+		};
+	}
+	
+	public static AsyncCallback<InventoryTrayLabelDto> createGetInventoryTrayLabelDtoCallback(final TrayLabelServerCommunicator caller) {
+		return new DefaultAsyncCallback<InventoryTrayLabelDto>() {
+			@Override
+			public void onSuccess(InventoryTrayLabelDto result) {
+				caller.onSuccessfulGetInventoryTrayLabelDto(result);
 			}
 		};
 	}

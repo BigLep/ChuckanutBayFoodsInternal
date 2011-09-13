@@ -16,6 +16,7 @@ import javax.persistence.Table;
 public class QuickbooksSubItem {
 	private Integer id;
 	private Double cakesPerCase;
+	private Double casesPerTray;
 	private QuickbooksItem quickbooksItem;
 	private QuickbooksItem subItem;
 	
@@ -37,6 +38,13 @@ public class QuickbooksSubItem {
 		this.cakesPerCase = cakesPerCase;
 	}
 	
+	@Column(name = "cases_per_tray", nullable = false)
+	public Double getCasesPerTray() {
+		return casesPerTray;
+	}
+	public void setCasesPerTray(Double casesPerTray) {
+		this.casesPerTray = casesPerTray;
+	}
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "qb_item_id", nullable = false)
 	public QuickbooksItem getQuickbooksItem() {

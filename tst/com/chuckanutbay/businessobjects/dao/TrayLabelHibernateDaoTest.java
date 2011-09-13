@@ -37,10 +37,10 @@ public class TrayLabelHibernateDaoTest {
 		SalesOrderLineItem soli1 = BusinessObjects.oneSalesOrderLineItem(oneSalesOrder("Haggens", false), oneQuickbooksItem("1111-11"), 10);
 		SalesOrderLineItem soli2 = BusinessObjects.oneSalesOrderLineItem(oneSalesOrder("Freds", true), oneQuickbooksItem("1112-12"), 20);
 		
-		TrayLabel tl1 = oneTrayLabel(5, "4A111A1", soli1);
-		TrayLabel tl2 = oneTrayLabel(5, "4A111A1", soli1);
-		TrayLabel tl3 = oneTrayLabel(5, "4A111A1", soli2);
-		TrayLabel tl4 = oneTrayLabel(5, "4A111A1", soli2);
+		TrayLabel tl1 = oneTrayLabel(5, 1, 1, "4A111A1", soli1);
+		TrayLabel tl2 = oneTrayLabel(5, 1, 1, "4A111A1", soli1);
+		TrayLabel tl3 = oneTrayLabel(5, 1, 1, "4A111A1", soli2);
+		TrayLabel tl4 = oneTrayLabel(5, 1, 1, "4A111A1", soli2);
 		
 		
 		assertEquals(newArrayList(tl3, tl4), dao.findBySalesOrderLineItemId(2));

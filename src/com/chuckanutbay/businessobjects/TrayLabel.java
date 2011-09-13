@@ -2,6 +2,8 @@ package com.chuckanutbay.businessobjects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tray_labels")
@@ -23,6 +27,7 @@ public class TrayLabel {
 	private Double cases;
 	private Double cakesPerCase;
 	private Double casesPerTray;
+	private Date creationDateTime;
 	private PackagingTransaction packagingTransactions;
 	
 	public TrayLabel() {
@@ -98,6 +103,16 @@ public class TrayLabel {
 
 	public void setCasesPerTray(Double casesPerTray) {
 		this.casesPerTray = casesPerTray;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "creation_date_time")
+	public Date getCreationDateTime() {
+		return creationDateTime;
+	}
+
+	public void setCreationDateTime(Date creationDateTime) {
+		this.creationDateTime = creationDateTime;
 	}
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "trayLabel")

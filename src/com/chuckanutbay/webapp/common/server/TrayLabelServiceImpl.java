@@ -1,9 +1,11 @@
 package com.chuckanutbay.webapp.common.server;
 
+import static com.chuckanutbay.businessobjects.util.BusinessObjectsUtil.getCakesPerCase;
 import static com.chuckanutbay.print.Print.HP_WIRELESS_P1102W;
 import static com.chuckanutbay.print.ReportUtil.TRAY_LABEL;
+import static com.chuckanutbay.print.ReportUtil.getCompiledReportImportFilePath;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.fromTrayLabelDtoFunction;
-import static com.chuckanutbay.webapp.common.server.DtoUtils.toQuickbooksItemDtos;
+import static com.chuckanutbay.webapp.common.server.DtoUtils.toQuickbooksItemDtoFunction;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.toTrayLabelDtoFunction;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
@@ -13,11 +15,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.chuckanutbay.businessobjects.QuickbooksItem;
+import com.chuckanutbay.businessobjects.QuickbooksSubItem;
 import com.chuckanutbay.businessobjects.SalesOrder;
 import com.chuckanutbay.businessobjects.TrayLabel;
 import com.chuckanutbay.businessobjects.dao.QuickbooksItemDao;
@@ -28,8 +32,9 @@ import com.chuckanutbay.businessobjects.dao.TrayLabelHibernateDao;
 import com.chuckanutbay.businessobjects.util.HibernateUtil;
 import com.chuckanutbay.print.Print;
 import com.chuckanutbay.print.ReportGenerator;
+import com.chuckanutbay.webapp.common.client.CollectionsUtils;
 import com.chuckanutbay.webapp.common.client.TrayLabelService;
-import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
+import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -41,7 +46,7 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private final static Logger LOGGER = Logger.getLogger(TrayLabelServiceImpl.class.getName());
+	private final static Logger LOGGER = LoggerFactory.getLogger(TrayLabelServiceImpl.class.getName());
 
 	@Override
 	public List<SalesOrderLineItemDto> getSalesOrderLineItems() {
@@ -49,7 +54,7 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 		List<SalesOrderLineItemDto> lineItemDtos = newArrayList();
 		
 		List<SalesOrder> salesOrders = new SalesOrderHibernateDao().findAllOpen();
-		timer.logTime("Done query at:");
+		timer.logTime("DONE QUERY");
 			
 		for (SalesOrderLineItemDto lineItemDto : DtoUtils.toSalesOrderLineItemDtosFunction.apply(salesOrders)) {
 			double casesRemaining = lineItemDto.getCases();
@@ -70,15 +75,15 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 			}
 		}
 		
-		timer.stop("Method finished: ");
+		timer.stop("METHOD FINISHED");
 		return lineItemDtos;
 	}
 
 	@Override
 	public List<TrayLabelDto> getTrayLabelHistroy() {
 		Timer timer = new Timer(LOGGER).start();
-		List<TrayLabel> trayLabels = new TrayLabelHibernateDao().findFirst30();
-		timer.logTime("Done query at:");
+		List<TrayLabel> trayLabels = new TrayLabelHibernateDao().findRecent(30);
+		timer.logTime("DONE QUERY");
 		Collections.sort(trayLabels, new Comparator<TrayLabel>() {
 			@Override
 			public int compare(TrayLabel tl1, TrayLabel tl2) {
@@ -100,7 +105,7 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 		});
 		
 		List<TrayLabelDto> trayLabelDtos = DtoUtils.transform(trayLabels, toTrayLabelDtoFunction);
-		timer.stop("Method finished: ");
+		timer.stop("METHOD FINISHED");
 		return trayLabelDtos;
 		
 	}
@@ -121,29 +126,26 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		timer.logTime("Commited: ");
+		timer.logTime("DONE QUERY");
 		
 		print(formatForQuery(getIds(persistedTrayLabels)));
-		timer.stop("Method finished: ");
+		timer.stop("METHOD FINISHED");
 	}
 
 	@Override
-	public Map<String, QuickbooksItemDto> getQuickbooksItems() {
+	public List<String> getQuickbooksItemIds() {
 		Timer timer = new Timer(LOGGER).start();
 		QuickbooksItemDao dao = new QuickbooksItemHibernateDao();
-		List<QuickbooksItem> qbItems = dao.findCaseItems();
-		timer.logTime("Done query at:");;
-		
-		Map<String, QuickbooksItemDto> qbItemDtos = toQuickbooksItemDtos(qbItems);
-		timer.stop("Method finished: ");
-		return qbItemDtos;
+		List<String> qbItems = dao.findAllIds();
+		timer.stop("METHOD FINISHED");
+		return qbItems;
 	}
 	
 	@Override
 	public String getCurrentLotCode() {
 		Timer timer = new Timer(LOGGER).start();
 		String lotcode = getLotCode(new DateTime());
-		timer.stop("Method finished: ");
+		timer.stop("METHOD FINISHED");
 		return lotcode;
 	}
 	
@@ -166,13 +168,13 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 		Timer timer = new Timer(LOGGER).start();
 		TrayLabelDao dao = new TrayLabelHibernateDao();
 		TrayLabel tl = dao.findById(trayLabel.getId());
-		if (trayLabel.getSalesOrderLineItemDto().getQuickbooksItemDto() == null) {//The tray label is to be deleted
+		if (trayLabel.getLotCode() == null) {//The tray label is to be deleted
 			dao.makeTransient(tl);
 		} else {
 			tl.setCases(trayLabel.getCases());
 			tl.setLotCode(trayLabel.getLotCode());
 		}		
-		timer.stop("Method finished: ");
+		timer.stop("METHOD FINISHED");
 	}
 	
 	private DateTime getDateTime(String lotCode) {
@@ -208,7 +210,7 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 			trayLabels.addAll(fromTrayLabelDtoFunction.apply(dto));
 		}
 		print(formatForQuery(getIds(trayLabels)));
-		timer.stop("Method finished: ");
+		timer.stop("METHOD FINISHED");
 	}
 	
 	/**
@@ -219,11 +221,10 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 		Timer timer = new Timer(LOGGER).start("Print:");
 		Map<String, Object> parameters = newHashMap();
 		parameters.put("TRAY_LABEL_IDS", ids);
-		timer.logTime("Setup Parameters");
-		String pdfFilePath = new ReportGenerator().generateReport(TRAY_LABEL, parameters);
-		timer.logTime("Generated Report");
+		String pdfFilePath = new ReportGenerator().generateReport(getCompiledReportImportFilePath(TRAY_LABEL), parameters);
+		timer.logTime("GENERATED REPORT");
 		Print.print(pdfFilePath, HP_WIRELESS_P1102W);
-		timer.stop("Done Print:");
+		timer.stop("PRINTED REPORT");
 	}
 	
 	/**
@@ -232,8 +233,10 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 	 * @return 
 	 */
 	private String formatForQuery(List<String> ids) {
+		if (CollectionsUtils.isEmpty(ids)) {
+			return "";
+		}
 		String idsString = "";
-		System.out.println(idsString);
 		for (String id : ids) {
 			idsString = idsString + id + ", ";
 		}
@@ -247,6 +250,34 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 			strings.add("" + trayLabel.getId());
 		}
 		return strings;
+	}
+
+	@Override
+	public InventoryTrayLabelDto getInventoryTrayLabelDto(String qbItemId) {
+		Timer timer = new Timer(LOGGER).start();
+		InventoryTrayLabelDto trayLabel = new InventoryTrayLabelDto();
+		trayLabel.setCases(0.0);
+		if (qbItemId.indexOf(" ") == -1) {//No sub items
+			QuickbooksItem qbItem = new QuickbooksItemHibernateDao().findById(qbItemId);
+			trayLabel.setCasesPerTray(qbItem.getCasesPerTray());
+			trayLabel.setCakesPerCase(getCakesPerCase(qbItem));
+			trayLabel.setQbItem(DtoUtils.toQuickbooksItemDtoFunction.apply(qbItem));
+		} else {//Has sub item
+			String primaryId = qbItemId.substring(0, qbItemId.indexOf(" "));
+			String flavor = qbItemId.substring(qbItemId.indexOf(" "));
+			QuickbooksItem qbItem = new QuickbooksItemHibernateDao().findById(primaryId);
+			for (QuickbooksSubItem subItem : qbItem.getSubItems()) {
+				if (subItem.getSubItem().getFlavor().equals(flavor)) {
+					trayLabel.setQbSubItem(toQuickbooksItemDtoFunction.apply(subItem.getSubItem()));
+					trayLabel.setCakesPerCase(subItem.getCakesPerCase());
+					trayLabel.setCasesPerTray(subItem.getCasesPerTray());
+					break;
+				}
+			}
+			trayLabel.setQbItem(toQuickbooksItemDtoFunction.apply(qbItem));
+		}
+		timer.stop("METHOD FINISHED");
+		return trayLabel;
 	}
 
 

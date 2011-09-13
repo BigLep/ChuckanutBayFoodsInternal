@@ -2,13 +2,11 @@ package com.chuckanutbay.webapp.common.server;
 
 import static com.chuckanutbay.businessobjects.util.BusinessObjectsUtil.getCakesPerCase;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.chuckanutbay.businessobjects.Activity;
@@ -25,11 +23,11 @@ import com.chuckanutbay.businessobjects.SalesOrderLineItem;
 import com.chuckanutbay.businessobjects.TrayLabel;
 import com.chuckanutbay.businessobjects.dao.InventoryItemDao;
 import com.chuckanutbay.businessobjects.dao.InventoryItemHibernateDao;
+import com.chuckanutbay.businessobjects.dao.QuickbooksItemDao;
 import com.chuckanutbay.businessobjects.dao.QuickbooksItemHibernateDao;
 import com.chuckanutbay.businessobjects.dao.SalesOrderLineItemHibernateDao;
 import com.chuckanutbay.businessobjects.dao.TrayLabelHibernateDao;
 import com.chuckanutbay.documentation.Technology;
-import com.chuckanutbay.webapp.common.client.CollectionsUtils;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
@@ -37,6 +35,8 @@ import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalDto;
 import com.chuckanutbay.webapp.common.shared.InventoryItemDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotStickerColorDto;
+import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
+import com.chuckanutbay.webapp.common.shared.OrderTrayLabelDto;
 import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
@@ -217,7 +217,7 @@ public class DtoUtils {
 
 		@Override
 		public Set<SalesOrderLineItemDto> apply(List<SalesOrder> salesOrders) {
-			Set<SalesOrderLineItemDto> lineItems = new HashSet<SalesOrderLineItemDto>();
+			Set<SalesOrderLineItemDto> lineItems = newHashSet();
 			for (SalesOrder salesOrder : salesOrders) {
 				for (SalesOrderLineItem lineItem : salesOrder.getSalesOrderLineItems()) {
 					Set<QuickbooksSubItem> subItems = lineItem.getQuickbooksItem().getSubItems();
@@ -246,39 +246,7 @@ public class DtoUtils {
 		
 	};
 	
-	public static Map<String, QuickbooksItemDto> toQuickbooksItemDtos(List<QuickbooksItem> quickbooksItems) {
-		Map<String, QuickbooksItemDto> dtos = new HashMap<String, QuickbooksItemDto>();
-		for (QuickbooksItem qbItem : quickbooksItems) {
-			if (!CollectionsUtils.isEmpty(qbItem.getSubItems())) {
-				for (QuickbooksSubItem subItem : qbItem.getSubItems()) {
-					QuickbooksItemDto qbItemDto = new QuickbooksItemDto();
-					qbItemDto.setId(qbItem.getId() + " " + subItem.getSubItem().getFlavor());
-					qbItemDto.setInstructions(qbItem.getInstructions());
-					qbItemDto.setFlavor(subItem.getSubItem().getFlavor());
-					qbItemDto.setSize(subItem.getSubItem().getSize());
-					qbItemDto.setShortName(subItem.getSubItem().getShortName());
-					if (qbItem.getCasesPerTray() != null && subItem.getCakesPerCase() != null) {
-						qbItemDto.setCasesPerTray(qbItem.getCasesPerTray() * (getCakesPerCase(qbItem) / subItem.getCakesPerCase()));
-						qbItemDto.setCakesPerCase(subItem.getCakesPerCase());
-					}
-					dtos.put(qbItemDto.getId(), qbItemDto);
-				}
-			} else {
-				QuickbooksItemDto qbItemDto = new QuickbooksItemDto();
-				qbItemDto.setId(qbItem.getId());
-				qbItemDto.setFlavor(qbItem.getFlavor());
-				qbItemDto.setSize(qbItem.getSize());
-				qbItemDto.setShortName(qbItem.getShortName());
-				qbItemDto.setInstructions(qbItem.getInstructions());
-				if (qbItem.getCasesPerTray() != null) {
-					qbItemDto.setCasesPerTray(qbItem.getCasesPerTray());
-				}
-				qbItemDto.setCakesPerCase(getCakesPerCase(qbItem));
-				dtos.put(qbItemDto.getId(), qbItemDto);
-			}
-		}
-		return dtos;
-	}
+
 	
 	public static final Function<SalesOrder, SalesOrderDto> toSalesOrderDtoFunction = new Function<SalesOrder, SalesOrderDto>() {
 
@@ -312,21 +280,20 @@ public class DtoUtils {
 
 		@Override
 		public QuickbooksItemDto apply(QuickbooksItem input) {
-			if (input != null) {
-				QuickbooksItemDto output = new QuickbooksItemDto();
-				output.setId(input.getId());
-				output.setInstructions(input.getInstructions());
-				output.setFlavor(input.getFlavor());
-				output.setSize(input.getSize());
-				output.setShortName(input.getShortName());
-				if (input.getCasesPerTray() != null) {
-					output.setCasesPerTray(input.getCasesPerTray());
-				}
-				output.setCakesPerCase(getCakesPerCase(input));
-				return output;
-			} else {
+			if (input == null) {
 				return null;
 			}
+			QuickbooksItemDto output = new QuickbooksItemDto();
+			output.setId(input.getId());
+			output.setInstructions(input.getInstructions());
+			output.setFlavor(input.getFlavor());
+			output.setSize(input.getSize());
+			output.setShortName(input.getShortName());
+			if (input.getCasesPerTray() != null) {
+				output.setCasesPerTray(input.getCasesPerTray());
+			}
+			output.setCakesPerCase(getCakesPerCase(input));
+			return output;
 		}
 		
 	};
@@ -335,8 +302,10 @@ public class DtoUtils {
 
 		@Override
 		public QuickbooksItem apply(QuickbooksItemDto input) {
+			if (input.getId() != null) {
+				return new QuickbooksItemHibernateDao().findById(input.getId());
+			}
 			QuickbooksItem output = new QuickbooksItem();
-			output.setId(input.getId());
 			output.setInstructions(input.getInstructions());
 			output.setFlavor(input.getFlavor());
 			output.setSize(input.getSize());
@@ -371,22 +340,30 @@ public class DtoUtils {
 
 		@Override
 		public TrayLabelDto apply(TrayLabel input) {
-			TrayLabelDto output = new TrayLabelDto();
-			output.setId(input.getId());
+			
+			TrayLabelDto output;
 			if (input.getQuickbooksItem() != null) {//It is an Inventory Tray Label
-				output.setSalesOrderLineItemDto(new SalesOrderLineItemDto("INVENTORY", toQuickbooksItemDtoFunction.apply(input.getQuickbooksItem()), DtoUtils.toQuickbooksItemDtoFunction.apply(input.getQuickbooksSubItem())));
-			} else {//It is a normal Tray Label
-				output.setSalesOrderLineItemDto(toSalesOrderLineItemDtoFunction.apply(input.getSalesOrderLineItem()));
+				InventoryTrayLabelDto inventoryTrayLabel = new InventoryTrayLabelDto();
+				inventoryTrayLabel.setQbItem(toQuickbooksItemDtoFunction.apply(input.getQuickbooksItem()));
 				if (input.getQuickbooksSubItem() != null) {
-					output.getSalesOrderLineItemDto().setSubItemDto(toQuickbooksItemDtoFunction.apply(input.getQuickbooksSubItem()));
+					inventoryTrayLabel.setQbSubItem(toQuickbooksItemDtoFunction.apply(input.getQuickbooksSubItem()));
 				}
+				output = inventoryTrayLabel;
+			} else {//It is a normal Tray Label
+				OrderTrayLabelDto orderTrayLabel = new OrderTrayLabelDto();
+				orderTrayLabel.setMaximumCases(input.getCases());
+				orderTrayLabel.setSalesOrderLineItemDto(toSalesOrderLineItemDtoFunction.apply(input.getSalesOrderLineItem()));
+				if (input.getQuickbooksSubItem() != null) {
+					orderTrayLabel.getSalesOrderLineItemDto().setSubItemDto(toQuickbooksItemDtoFunction.apply(input.getQuickbooksSubItem()));
+				}
+				output = orderTrayLabel;
 			}
+			output.setId(input.getId());
 			output.setCases(input.getCases());
 			if (input.getCakesPerCase() != null && input.getCasesPerTray() != null) {
 				output.setCakesPerCase(input.getCakesPerCase());
 				output.setCasesPerTray(input.getCasesPerTray());
 			}
-			output.setMaximumCases(input.getCases());
 			output.setLotCode(input.getLotCode());
 			return output;
 		}
@@ -400,59 +377,42 @@ public class DtoUtils {
 			if (input.getId() != null) {//This Tray Label is already in the database
 				return newArrayList(new TrayLabelHibernateDao().findById(input.getId()));
 			} else {//It isn't in the database
-				SalesOrderLineItemDto lineItemDto = input.getSalesOrderLineItemDto();
 				List<TrayLabel> trayLabels = newArrayList();
-				double casesPerTray = getCasesPerTray(lineItemDto);
+				double casesPerTray = input.getCasesPerTray();
 				if (casesPerTray != 0.0) {
 					double remainder;
 					for (remainder = (input.getCases()/casesPerTray); remainder >= 1; remainder--) {
-						trayLabels.add(convert(lineItemDto, casesPerTray, input));
+						trayLabels.add(convert(casesPerTray, input));
 					}
 					if (remainder > 0) {
-						trayLabels.add(convert(lineItemDto, remainder*casesPerTray, input));
+						trayLabels.add(convert(remainder*casesPerTray, input));
 					}
 				}
 				return trayLabels;
 			}
 		}
 		
-		private TrayLabel convert(SalesOrderLineItemDto input, double cases, TrayLabelDto trayLabelDto) {
+		private TrayLabel convert(double cases, TrayLabelDto trayLabelDto) {
+			QuickbooksItemDao dao = new QuickbooksItemHibernateDao();
 			TrayLabel output = new TrayLabel();
 			output.setCases(cases);
 			output.setCakesPerCase(trayLabelDto.getCakesPerCase());
 			output.setCasesPerTray(trayLabelDto.getCasesPerTray());
 			output.setLotCode(trayLabelDto.getLotCode());
-			QuickbooksItemDto subItemDto = input.getSubItemDto();
+			QuickbooksItemDto subItemDto = trayLabelDto.getQbSubItem();
 			if (subItemDto != null) {
-				output.setQuickbooksSubItem(new QuickbooksItemHibernateDao().findById(subItemDto.getId()));
+				output.setQuickbooksSubItem(dao.findById(subItemDto.getId()));
 			}
-			if (input.getSalesOrderDto().getCustomerName().equals("INVENTORY")) {//It is an inventory tray label
-				String id = input.getQuickbooksItemDto().getId();
-				int indexOfSpace = id.indexOf(" ");
-				if (indexOfSpace == -1) {//No sub items
-					output.setQuickbooksItem(new QuickbooksItemHibernateDao().findById(id));
-				} else {//Has a sub item
-					output.setQuickbooksItem(new QuickbooksItemHibernateDao().findById(id.substring(0, indexOfSpace)));
-					for (QuickbooksSubItem subItem : output.getQuickbooksItem().getSubItems()) {
-						if (subItem.getSubItem().getFlavor().equals(id.substring(indexOfSpace + 1))) {//Is the correct sub item
-							output.setQuickbooksSubItem(subItem.getSubItem());
-							break;
-						}
-					}
+			if (trayLabelDto instanceof InventoryTrayLabelDto) {
+				InventoryTrayLabelDto inventoryTrayLabelDto = (InventoryTrayLabelDto)trayLabelDto;
+				output.setQuickbooksItem(dao.findById(inventoryTrayLabelDto.getQbItem().getId()));
+				if (inventoryTrayLabelDto.getQbSubItem() != null) {
+					output.setQuickbooksSubItem(dao.findById(inventoryTrayLabelDto.getQbSubItem().getId()));
 				}
-				
 			} else {//It is a normal tray label
-				output.setSalesOrderLineItem(new SalesOrderLineItemHibernateDao().findById(input.getId()));
+				output.setSalesOrderLineItem(new SalesOrderLineItemHibernateDao().findById(((OrderTrayLabelDto)trayLabelDto).getSalesOrderLineItemDto().getId()));
 			}
 			return output;
-		}
-		
-		private double getCasesPerTray(SalesOrderLineItemDto input) {
-			if (input.getSubItemDto() == null) {//No sub item
-				return input.getQuickbooksItemDto().getCasesPerTray();
-			} else {//has sub item
-				return input.getSubItemDto().getCasesPerTray();
-			}
 		}
 		
 	};

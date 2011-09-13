@@ -1,11 +1,11 @@
 package com.chuckanutbay.webapp.traylabelgenerator.client;
 
+import static com.chuckanutbay.webapp.common.client.GwtUtils.isNotNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
@@ -133,7 +133,7 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 				    			  if (value != null) {
 				    				  String itemString;
 				    				  String shortName = value.getQuickbooksItemDto().getShortName();
-				    				  if (shortName != null && !shortName.equals("")) {
+				    				  if (isNotNullOrEmpty(shortName)) {
 				    					  itemString = shortName;
 				    				  } else {
 				    					  itemString = value.getQuickbooksItemDto().getId();
@@ -221,18 +221,11 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 				} else {
 					flavor = lineItem.getSubItemDto().getFlavor();
 				}
-				if (flavor != null && !flavors.contains(flavor) && !flavor.equals("")) {//Flavor isn't null, already in the list, or blank
+				if (isNotNullOrEmpty(flavor) && !flavors.contains(flavor)) {//Flavor isn't null, already in the list, or blank
 					flavors.add(flavor);
 				}
 			}
-			Collections.sort(flavors, new Comparator<String>() {
-
-				@Override
-				public int compare(String string1, String string2) {
-					return string1.compareTo(string2);
-				}
-				
-			});
+			Collections.sort(flavors, String.CASE_INSENSITIVE_ORDER);
 		}
 		
 		private void updateSalesOrderDataProvider() {
@@ -247,7 +240,7 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 	    		  } else {
 	    			  flavor = lineItem.getSubItemDto().getFlavor();
 	    		  }
-	    		  if(flavor != null && flavor.equals(currentFlavor) && !salesOrders.contains(salesOrder)) {
+	    		  if(isNotNullOrEmpty(flavor) && flavor.equals(currentFlavor) && !salesOrders.contains(salesOrder)) {
 	    			  salesOrders.add(salesOrder);
 	    		  }
 	    	  }
@@ -264,7 +257,7 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 	    		  } else {
 	    			  flavor = lineItem.getSubItemDto().getFlavor();
 	    		  }
-	    		  if(lineItem.getSalesOrderDto().equals(currentSalesOrder) && flavor != null && flavor.equals(currentFlavor)) {
+	    		  if(lineItem.getSalesOrderDto().equals(currentSalesOrder) && isNotNullOrEmpty(flavor) && flavor.equals(currentFlavor)) {
 	    			  lineItems.add(lineItem);
 	    		  }
 	    	  }

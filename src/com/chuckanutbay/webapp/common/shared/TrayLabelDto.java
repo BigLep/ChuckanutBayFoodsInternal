@@ -1,50 +1,25 @@
 package com.chuckanutbay.webapp.common.shared;
 
-import java.io.Serializable;
-
 import com.google.common.base.Objects;
 
-public class TrayLabelDto implements Serializable {
-
+public abstract class TrayLabelDto {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private SalesOrderLineItemDto salesOrderLineItemDto;
-	private String lotCode;
-	private double cases;
-	private double cakesPerCase = 0.0;
-	private double casesPerTray = 0.0;
-	private double maximumCases;
+	protected Integer id;
+	protected String lotCode;
+	protected double cases;
+	protected double cakesPerCase = 0.0;
+	protected double casesPerTray = 0.0;
 	
 	public TrayLabelDto() {}
-	
-	
-	public TrayLabelDto(Integer id,
-			SalesOrderLineItemDto salesOrderLineItemDto, String lotCode,
-			double cases) {
-		super();
-		this.id = id;
-		this.salesOrderLineItemDto = salesOrderLineItemDto;
-		this.lotCode = lotCode;
-		this.cases = cases;
-		this.maximumCases = cases;
-	}
-
 
 	public Integer getId() {
 		return id;
 	}
 	public TrayLabelDto setId(Integer id) {
 		this.id = id;
-		return this;
-	}
-	public SalesOrderLineItemDto getSalesOrderLineItemDto() {
-		return salesOrderLineItemDto;
-	}
-	public TrayLabelDto setSalesOrderLineItemDto(SalesOrderLineItemDto salesOrderLineItemDto) {
-		this.salesOrderLineItemDto = salesOrderLineItemDto;
 		return this;
 	}
 	public String getLotCode() {
@@ -81,26 +56,25 @@ public class TrayLabelDto implements Serializable {
 		this.casesPerTray = casesPerTray;
 		return this;
 	}
+	
+	public abstract QuickbooksItemDto getQbItem();
+	
+	public abstract QuickbooksItemDto getQbSubItem();
+	
+	public abstract double getMaximumCases();
 
 
-	public double getMaximumCases() {
-		return maximumCases;
-	}
-	public TrayLabelDto setMaximumCases(double maximumCases) {
-		this.maximumCases = maximumCases;
-		return this;
-	}
 	
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(salesOrderLineItemDto);
+		return Objects.hashCode(id);
 	}
 	
 	@Override
 	public boolean equals(Object object){
 		if (object instanceof TrayLabelDto) {
 			TrayLabelDto that = (TrayLabelDto)object;
-			return Objects.equal(this.salesOrderLineItemDto, that.salesOrderLineItemDto);
+			return Objects.equal(this.id, that.id);
 		}
 		return false;
 	}

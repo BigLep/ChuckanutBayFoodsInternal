@@ -3,6 +3,7 @@ package com.chuckanutbay.businessobjects;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.chuckanutbay.businessobjects.dao.ActivityDao;
@@ -29,7 +30,6 @@ import com.chuckanutbay.businessobjects.dao.SalesOrderHibernateDao;
 import com.chuckanutbay.businessobjects.dao.SalesOrderLineItemHibernateDao;
 import com.chuckanutbay.businessobjects.dao.TrayLabelDao;
 import com.chuckanutbay.businessobjects.dao.TrayLabelHibernateDao;
-import com.google.gwt.dev.util.collect.HashSet;
 
 /**
  * Utility methods for creating business objects.
@@ -148,9 +148,11 @@ public class BusinessObjects {
 		return qbItemSup;
 	}
 	
-	public static TrayLabel oneTrayLabel(double cases, String lotCode, SalesOrderLineItem salesOrderLineItem) {
+	public static TrayLabel oneTrayLabel(double cases, double cakesPerCase, double casesPerTray, String lotCode, SalesOrderLineItem salesOrderLineItem) {
 		TrayLabel trayLabel = new TrayLabel();
 		trayLabel.setCases(cases);
+		trayLabel.setCakesPerCase(cakesPerCase);
+		trayLabel.setCasesPerTray(casesPerTray);
 		trayLabel.setLotCode(lotCode);
 		trayLabel.setSalesOrderLineItem(salesOrderLineItem);
 		TrayLabelDao dao = new TrayLabelHibernateDao();
@@ -158,8 +160,8 @@ public class BusinessObjects {
 		return trayLabel;
 	}
 	
-	public static TrayLabel oneTrayLabel(double cases, String lotCode, SalesOrderLineItem salesOrderLineItem, QuickbooksItem subItem) {
-		TrayLabel trayLabel = oneTrayLabel(cases, lotCode, salesOrderLineItem);
+	public static TrayLabel oneTrayLabel(double cases, double cakesPerCase, double casesPerTray, String lotCode, SalesOrderLineItem salesOrderLineItem, QuickbooksItem subItem) {
+		TrayLabel trayLabel = oneTrayLabel(cases, cakesPerCase, casesPerTray, lotCode, salesOrderLineItem);
 		trayLabel.setQuickbooksSubItem(subItem);
 		return trayLabel;
 	}
