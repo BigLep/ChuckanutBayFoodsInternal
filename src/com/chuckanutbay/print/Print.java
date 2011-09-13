@@ -2,7 +2,6 @@ package com.chuckanutbay.print;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.logging.Logger;
 
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -15,6 +14,8 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaSizeName;
 
+import org.slf4j.LoggerFactory;
+
 import com.chuckanutbay.webapp.common.server.Timer;
 
 public class Print {
@@ -22,7 +23,7 @@ public class Print {
 	public static final String HP_WIRELESS_P1102W = "HP Wireless P1102w";
 	
 	public static void print(String pdfFilePath, String printerName) {
-		Timer timer = new Timer(Logger.getLogger(Print.class.getName())).start("Creating print job:");
+		Timer timer = new Timer(LoggerFactory.getLogger(Print.class.getName())).start("Creating print job:");
 		DocFlavor flavor = DocFlavor.INPUT_STREAM.PDF; //Printing a PDF "flavored" file
 		
 		PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet(); //Print job Attributes

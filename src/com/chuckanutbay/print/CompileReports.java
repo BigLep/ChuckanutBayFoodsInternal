@@ -1,5 +1,9 @@
 package com.chuckanutbay.print;
 
+import static com.chuckanutbay.print.ReportUtil.REPORT_NAMES;
+import static com.chuckanutbay.print.ReportUtil.getCompiledReportExportFilePath;
+import static com.chuckanutbay.print.ReportUtil.getUncompiledReportFilePath;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,10 +20,9 @@ public class CompileReports {
 	
 	public static void main(String[] args) {
 		try {
-			for (String reportName : ReportUtil.getReportStrings()) {
-				JasperReport report = JasperCompileManager.compileReport("resources/reports/" + reportName + ".jrxml");
-				// TODO: log where writing the file.
-				ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(new File("resources/reports/" + reportName + ".jasper")));
+			for (String uncompiledReport : REPORT_NAMES) {
+				JasperReport report = JasperCompileManager.compileReport(getUncompiledReportFilePath(uncompiledReport));
+				ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(new File(getCompiledReportExportFilePath(uncompiledReport))));
 				outputStream.writeObject(report);
 				Closeables.closeQuietly(outputStream);
 			}
