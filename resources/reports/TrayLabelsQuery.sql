@@ -8,7 +8,7 @@ SELECT
      tray_labels.`cakes_per_case` AS tray_labels_cakes_per_case,
      tray_labels.`cases_per_tray` AS tray_labels_cases_per_tray,
      sales_orders.`purchase_order` AS sales_orders_purchase_order,
-     sales_orders.`customer_short_name` AS sales_orders_customer_name,
+     sales_orders.`customer_name` AS sales_orders_customer_name,
      sales_orders.`ship_date` AS sales_orders_ship_date,
      sales_order_line_items.`cases` AS sales_order_line_items_cases,
      nutrition_labels.`is_allergen` AS nutrition_labels_is_allergen,
@@ -47,9 +47,8 @@ SELECT
      tray_labels.`qb_item_id` AS quickbooks_items_B_id,
      sales_orders.`special_instructions` AS sales_orders_special_instructions
 FROM
-     `quickbooks_item_supplements` quickbooks_item_supplements LEFT OUTER JOIN `quickbooks_items` quickbooks_items ON quickbooks_item_supplements.`id` = quickbooks_items.`quickbooks_item_supplement_id`
-     LEFT OUTER JOIN `sales_order_line_items` sales_order_line_items ON quickbooks_items.`id` = sales_order_line_items.`qb_item_id`
-     LEFT OUTER JOIN `tray_labels` tray_labels ON sales_order_line_items.`id` = tray_labels.`line_item_id`
+    
+     `tray_labels` tray_labels LEFT OUTER JOIN `sales_order_line_items` sales_order_line_items ON sales_order_line_items.`id` = tray_labels.`line_item_id` LEFT OUTER JOIN `quickbooks_items` quickbooks_items ON quickbooks_items.`id` = sales_order_line_items.`qb_item_id` LEFT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements ON quickbooks_item_supplements.`id` = `quickbooks_items`.`quickbooks_item_supplement_id`
      LEFT OUTER JOIN `sales_orders` sales_orders ON sales_order_line_items.`sales_order_id` = sales_orders.`id`
      LEFT OUTER JOIN `quickbooks_items` quickbooks_items_A ON tray_labels.`sub_item_id` = quickbooks_items_A.`id`
      LEFT OUTER JOIN `quickbooks_items` quickbooks_items_B ON tray_labels.`qb_item_id` = quickbooks_items_B.`id`
