@@ -9,14 +9,8 @@ import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 public interface ScanInOutHandler {
 	
 	/**
-	 * Handles a scan event.
-	 * @param barcode The {@link Barcode} of the scan.
-	 */
-	public void onScan(Integer barcode);
-	
-	/**
 	 * Handles a clock in scan event.
-	 * @param barcode The {@link Barcode} of the scan in.
+	 * @param barcode The barcode of the scan in.
 	 */
 	public void onClockInScan(Integer barcode);
 	

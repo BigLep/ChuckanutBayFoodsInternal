@@ -9,17 +9,16 @@ import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetActivi
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetClockedInEmployeesCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createUpdateMinutesWorkedInCurrentWeekCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.timeClockService;
-import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.ENTER_KEY_CODE;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.MIN_IN_MILLISECONDS;
-import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.NINE_KEY_CODE;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.TEN_SECONDS_IN_MILLISECONDS;
-import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.ZERO_KEY_CODE;
 
 import java.util.Date;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.chuckanutbay.webapp.common.client.BarcodeFormulation;
+import com.chuckanutbay.webapp.common.client.ScanHandler;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.google.gwt.core.client.EntryPoint;
@@ -38,7 +37,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorHandler, ClockInOutServerCommunicator, KeyDownHandler {
+public class TimeClock implements EntryPoint, ScanHandler, ScanInOutHandler, ClockInOutErrorHandler, ClockInOutServerCommunicator, KeyDownHandler {
 	
 	//UI Components
 	private FocusPanel mainPanel = new FocusPanel();
@@ -57,7 +56,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	private SortedSet<ActivityDto> activities = new TreeSet<ActivityDto>();
 	
 	//Other Objects
-	BarcodeFormulation barcodeFormulation = new BarcodeFormulation();
+	BarcodeFormulation barcodeFormulation = new BarcodeFormulation().addScanHandler(this);
 	private Timer timer = new Timer() {
 		@Override
 		public void run() {
@@ -228,12 +227,17 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	
 
 	@Override
-	public void onScan(Integer barcode) {
+	public void onScan(String barcode) {
 		GWT.log("The following barcode just got scanned: " + barcode);
-		if (employeeIsClockedIn(barcode)) {
-			onClockOutScan(findMatchingClockedInEmployee(barcode));
-		} else {
-			onClockInScan(barcode);
+		try {
+			Integer barcodeNumber = Integer.decode(barcode);
+			if (employeeIsClockedIn(barcodeNumber)) {
+				onClockOutScan(findMatchingClockedInEmployee(barcodeNumber));
+			} else {
+				onClockInScan(barcodeNumber);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -342,13 +346,7 @@ public class TimeClock implements EntryPoint, ScanInOutHandler, ClockInOutErrorH
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
 		GWT.log("Key entered: " + event.getNativeKeyCode());
-		final int keyCode = event.getNativeKeyCode();
-		if (keyCode >= ZERO_KEY_CODE && keyCode <= NINE_KEY_CODE) {
-			barcodeFormulation.addCharacter(new Integer(keyCode).byteValue());
-		} else if (keyCode == ENTER_KEY_CODE) {
-			onScan(barcodeFormulation.getBarcode());
-			barcodeFormulation = new BarcodeFormulation();
-		}
+		barcodeFormulation.addCharacter(event.getNativeKeyCode());
 	}
 
 	@Override
