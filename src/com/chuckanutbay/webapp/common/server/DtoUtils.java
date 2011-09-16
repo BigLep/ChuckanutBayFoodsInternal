@@ -16,6 +16,7 @@ import com.chuckanutbay.businessobjects.EmployeeWorkIntervalActivityPercentage;
 import com.chuckanutbay.businessobjects.InventoryItem;
 import com.chuckanutbay.businessobjects.InventoryLot;
 import com.chuckanutbay.businessobjects.InventoryLotStickerColor;
+import com.chuckanutbay.businessobjects.PackagingTransaction;
 import com.chuckanutbay.businessobjects.QuickbooksItem;
 import com.chuckanutbay.businessobjects.QuickbooksSubItem;
 import com.chuckanutbay.businessobjects.SalesOrder;
@@ -37,6 +38,7 @@ import com.chuckanutbay.webapp.common.shared.InventoryLotDto;
 import com.chuckanutbay.webapp.common.shared.InventoryLotStickerColorDto;
 import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
 import com.chuckanutbay.webapp.common.shared.OrderTrayLabelDto;
+import com.chuckanutbay.webapp.common.shared.PackagingTransactionDto;
 import com.chuckanutbay.webapp.common.shared.QuickbooksItemDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
@@ -365,6 +367,7 @@ public class DtoUtils {
 				output.setCasesPerTray(input.getCasesPerTray());
 			}
 			output.setLotCode(input.getLotCode());
+			output.setPackagingTransactions(newHashSet(transform(input.getPackagingTransaction(), toPackagingTransactionDtoFunction)));
 			return output;
 		}
 		
@@ -416,4 +419,30 @@ public class DtoUtils {
 		}
 		
 	};
+	
+	public static final Function<PackagingTransactionDto, PackagingTransaction> fromPackagingTransactionDtoFunction = new Function<PackagingTransactionDto, PackagingTransaction>() {
+
+		@Override
+		public PackagingTransaction apply(PackagingTransactionDto input) {
+			PackagingTransaction output = new PackagingTransaction();
+			output.setId(input.getId());
+			output.setLabelBarcode(input.getBarcode());
+			output.setTrayLabel(new TrayLabelHibernateDao().findById(input.getTrayLabelDto().getId()));
+			return output;
+		}
+	
+	};
+	
+	public static final Function<PackagingTransaction, PackagingTransactionDto> toPackagingTransactionDtoFunction = new Function<PackagingTransaction, PackagingTransactionDto>() {
+
+		@Override
+		public PackagingTransactionDto apply(PackagingTransaction input) {
+			PackagingTransactionDto output = new PackagingTransactionDto();
+			output.setId(input.getId());
+			output.setBarcode(input.getLabelBarcode());
+			return output;
+		}
+	
+	};
+	
 }

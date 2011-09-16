@@ -1,7 +1,9 @@
 package com.chuckanutbay.webapp.common.client;
 
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -80,8 +82,26 @@ public class GwtWidgetHelper {
 		return image;
 	}
 	public static Label newLabel(String text, String style) {
-		Label label = new Label(text);
+		Label label = newLabel(text);
 		label.setStyleName(style);
 		return label;
+	}
+	public static Label newLabel(String text) {
+		Label label = new Label(text);
+		return label;
+	}
+	public static Label newLabel(Integer text) {
+		Label label = new Label("" + text);
+		return label;
+	}
+	public static FocusPanel newFocusPanel(KeyDownHandler keyDownHandler) {
+		FocusPanel focusPanel = new FocusPanel();
+		focusPanel.addKeyDownHandler(keyDownHandler);
+		return focusPanel;
+	}
+	public static FocusPanel newFocusPanel(KeyDownHandler keyDownHandler, Widget widget) {
+		FocusPanel focusPanel = newFocusPanel(keyDownHandler);
+		focusPanel.add(widget);
+		return focusPanel;
 	}
 }

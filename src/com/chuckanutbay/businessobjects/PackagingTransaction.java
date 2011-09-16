@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,7 +20,7 @@ import javax.persistence.TemporalType;
 public class PackagingTransaction {
 	private Integer id;
 	private TrayLabel trayLabel;
-	private Employee employee;
+	private String labelBarcode;
 	private Date dateTime;
 	
 	@Id
@@ -34,7 +33,7 @@ public class PackagingTransaction {
 		this.id = id;
 	}
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tray_label_id", nullable = false)
 	public TrayLabel getTrayLabel() {
 		return trayLabel;
@@ -42,14 +41,13 @@ public class PackagingTransaction {
 	public void setTrayLabel(TrayLabel trayLabel) {
 		this.trayLabel = trayLabel;
 	}
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "employee_id", nullable = false)
-	public Employee getEmployee() {
-		return employee;
+
+	@Column(name = "label_barcode", nullable = false)
+	public String getLabelBarcode() {
+		return labelBarcode;
 	}
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	public void setLabelBarcode(String labelBarcode) {
+		this.labelBarcode = labelBarcode;
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)

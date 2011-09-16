@@ -1,0 +1,52 @@
+.backgroundPanel {
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#dae5ed), color-stop(45%,#fcfcfc), color-stop(56%,#fcfcfc), color-stop(100%,#dae5ed)); /* Chrome,Safari4+ */
+    padding: 10px;
+}
+
+.title {
+	color: black;
+	font-size: 30px;
+	font-family: Tahoma, Geneva, Futura;
+	font-weight: bold;
+	text-align: center;
+	//text-shadow: 1px 1px 2px #aaa;
+}
+
+.barcodeLabelBold {
+	color: black;
+	font-size: 30px;
+	font-family: Tahoma, Geneva, Futura;
+	font-weight: bold;
+	text-align: left;
+}
+
+.welcomeLabel {
+	color: black;
+	font-size: 60px;
+	font-family: Tahoma, Geneva, Futura;
+	font-weight: bold;
+	text-align: center;
+}
+
+.barcodeLabel {
+	color: black;
+	font-size: 30px;
+	font-family: Tahoma, Geneva, Futura;
+	text-align: left;
+}
+
+.headerColumn {
+	padding: 10px;
+	color: black;
+	font-size: 40px;
+	font-family: Tahoma, Geneva, Futura;
+	font-weight: bold;
+	text-align: right;
+}
+
+.dataColumn {
+	color: black;
+	font-size: 40px;
+	font-family: Tahoma, Geneva, Futura;
+	text-align: center;
+}

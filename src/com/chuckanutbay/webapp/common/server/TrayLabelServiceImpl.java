@@ -4,6 +4,7 @@ import static com.chuckanutbay.businessobjects.util.BusinessObjectsUtil.getCakes
 import static com.chuckanutbay.print.Print.HP_WIRELESS_P1102W;
 import static com.chuckanutbay.print.ReportUtil.TRAY_LABEL;
 import static com.chuckanutbay.print.ReportUtil.getCompiledReportImportFilePath;
+import static com.chuckanutbay.webapp.common.server.DtoUtils.fromPackagingTransactionDtoFunction;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.fromTrayLabelDtoFunction;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.toQuickbooksItemDtoFunction;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.toTrayLabelDtoFunction;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.ObjectNotFoundException;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import com.chuckanutbay.businessobjects.QuickbooksItem;
 import com.chuckanutbay.businessobjects.QuickbooksSubItem;
 import com.chuckanutbay.businessobjects.SalesOrder;
 import com.chuckanutbay.businessobjects.TrayLabel;
+import com.chuckanutbay.businessobjects.dao.PackagingTransactionHibernateDao;
 import com.chuckanutbay.businessobjects.dao.QuickbooksItemDao;
 import com.chuckanutbay.businessobjects.dao.QuickbooksItemHibernateDao;
 import com.chuckanutbay.businessobjects.dao.SalesOrderHibernateDao;
@@ -35,6 +38,8 @@ import com.chuckanutbay.print.ReportGenerator;
 import com.chuckanutbay.webapp.common.client.CollectionsUtils;
 import com.chuckanutbay.webapp.common.client.TrayLabelService;
 import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
+import com.chuckanutbay.webapp.common.shared.PackagingTransactionDto;
+import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -278,6 +283,39 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 		}
 		timer.stop("METHOD FINISHED");
 		return trayLabel;
+	}
+
+	@Override
+	public List<String> getOpenOrderFlavors() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<SalesOrderDto> getOpenOrdersByFlavor(String flavor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<SalesOrderLineItemDto> getLineItemsByOpenOrderAndFlavor(
+			Integer openOrderId, String flavor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TrayLabelDto getTrayLabelDto(Integer id) {
+		try {
+			return toTrayLabelDtoFunction.apply(new TrayLabelHibernateDao().findById(id));
+		} catch (ObjectNotFoundException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public void persistPackagingTransaction(PackagingTransactionDto ptDto) {
+		new PackagingTransactionHibernateDao().makePersistent(fromPackagingTransactionDtoFunction.apply(ptDto));
 	}
 
 

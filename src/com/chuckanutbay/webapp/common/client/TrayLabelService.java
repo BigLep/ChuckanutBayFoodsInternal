@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Set;
 
 import com.chuckanutbay.businessobjects.QuickbooksItem;
+import com.chuckanutbay.businessobjects.SalesOrder;
 import com.chuckanutbay.businessobjects.TrayLabel;
 import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
+import com.chuckanutbay.webapp.common.shared.PackagingTransactionDto;
+import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
 import com.google.gwt.core.client.GWT;
@@ -69,4 +72,38 @@ public interface TrayLabelService extends RemoteService {
 	 * @param trayLabels
 	 */
 	void printTrayLabels(Set<TrayLabelDto> trayLabels);
+	
+	/**
+	 * 
+	 * @return The flavors ordered of all the open {@link SalesOrder}s.
+	 */
+	List<String> getOpenOrderFlavors();
+	
+	/**
+	 * 
+	 * @param flavor
+	 * @return The open {@link SalesOrderDto}'s that contain a product with the given flavor
+	 */
+	List<SalesOrderDto> getOpenOrdersByFlavor(String flavor);
+	
+	/**
+	 * 
+	 * @param openOrderId
+	 * @param flavor
+	 * @return The open {@link SalesOrderLineItemDto}s of the given flavor and {@link SalesOrder} id.
+	 */
+	List<SalesOrderLineItemDto> getLineItemsByOpenOrderAndFlavor(Integer openOrderId, String flavor);
+	
+	/**
+	 * Gets the {@link TrayLabelDto} with the given id
+	 * @param id
+	 * @return null if no {@link TrayLable}s are found.
+	 */
+	TrayLabelDto getTrayLabelDto(Integer id);
+	
+	/**
+	 * persists the given {@link PackagingTransactionDto} to the database.
+	 * @param ptDto
+	 */
+	void persistPackagingTransaction(PackagingTransactionDto ptDto);
 }
