@@ -46,7 +46,7 @@ public abstract class LotCodeManagerDialogBox extends DialogBox implements Click
 	private final Button printButton = newButtonWithIcon(PRINT, "Print"); 
 	private VerticalPanel dialogBoxMainPanel;
 	private static int PANEL_WIDTH = 950;
-	private static int PANEL_HEIGHT = 760;
+	private static int PANEL_HEIGHT = 700;
 	private static int ROWS_PER_PAGE = 20;
 	
 	public LotCodeManagerDialogBox() {
