@@ -15,5 +15,11 @@ public interface SalesOrderDao extends GenericDao<SalesOrder, Integer> {
 	 * @return
 	 */
 	public List<SalesOrder> findAllOpen();
+	
+	/**
+	 * Finds the flavors of all the products of the open {@link SalesOrder}s.
+	 * @return
+	 */
+	public List<String> findAllOpenOrderFlavors();
 
 }
