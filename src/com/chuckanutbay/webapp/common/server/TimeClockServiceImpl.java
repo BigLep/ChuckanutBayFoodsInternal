@@ -270,8 +270,8 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 
 			@Override
 			public int compare(PayPeriodReportData person1, PayPeriodReportData person2) {
-				String lastName1 = person1.getName().substring(person1.getName().indexOf(" "));
-				String lastName2 = person2.getName().substring(person2.getName().indexOf(" "));
+				String lastName1 = person1.getName().substring(person1.getName().lastIndexOf(" "));
+				String lastName2 = person2.getName().substring(person2.getName().lastIndexOf(" "));
 				return lastName1.compareTo(lastName2);
 			}
 			
