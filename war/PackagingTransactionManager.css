@@ -12,41 +12,25 @@
 	//text-shadow: 1px 1px 2px #aaa;
 }
 
-.barcodeLabelBold {
+.flexTableLabel {
 	color: black;
-	font-size: 30px;
+	font-size: 20px;
 	font-family: Tahoma, Geneva, Futura;
 	font-weight: bold;
 	text-align: left;
 }
 
-.welcomeLabel {
-	color: black;
-	font-size: 60px;
-	font-family: Tahoma, Geneva, Futura;
-	font-weight: bold;
-	text-align: center;
-}
-
-.barcodeLabel {
-	color: black;
-	font-size: 30px;
-	font-family: Tahoma, Geneva, Futura;
-	text-align: left;
-}
-
-.headerColumn {
+.flexTable {
 	padding: 10px;
-	color: black;
-	font-size: 40px;
-	font-family: Tahoma, Geneva, Futura;
-	font-weight: bold;
-	text-align: right;
+	border: 2px solid lightgray;
 }
 
-.dataColumn {
-	color: black;
-	font-size: 40px;
-	font-family: Tahoma, Geneva, Futura;
-	text-align: center;
+.greenBorder {
+	padding: 10px;
+	border: 2px solid green;
+}
+
+.redBorder {
+	padding: 10px;
+	border: 2px solid red;
 }

@@ -4,12 +4,14 @@ import static com.chuckanutbay.businessobjects.util.BusinessObjectsUtil.getCakes
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import com.chuckanutbay.businessobjects.Activity;
+import com.chuckanutbay.businessobjects.DamageCode;
 import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
 import com.chuckanutbay.businessobjects.EmployeeWorkIntervalActivityPercentage;
@@ -22,6 +24,8 @@ import com.chuckanutbay.businessobjects.QuickbooksSubItem;
 import com.chuckanutbay.businessobjects.SalesOrder;
 import com.chuckanutbay.businessobjects.SalesOrderLineItem;
 import com.chuckanutbay.businessobjects.TrayLabel;
+import com.chuckanutbay.businessobjects.dao.DamageCodeHibernateDao;
+import com.chuckanutbay.businessobjects.dao.EmployeeHibernateDao;
 import com.chuckanutbay.businessobjects.dao.InventoryItemDao;
 import com.chuckanutbay.businessobjects.dao.InventoryItemHibernateDao;
 import com.chuckanutbay.businessobjects.dao.QuickbooksItemDao;
@@ -30,6 +34,7 @@ import com.chuckanutbay.businessobjects.dao.SalesOrderLineItemHibernateDao;
 import com.chuckanutbay.businessobjects.dao.TrayLabelHibernateDao;
 import com.chuckanutbay.documentation.Technology;
 import com.chuckanutbay.webapp.common.shared.ActivityDto;
+import com.chuckanutbay.webapp.common.shared.DamageCodeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalActivityPercentageDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalDto;
@@ -289,6 +294,7 @@ public class DtoUtils {
 			output.setId(input.getId());
 			output.setInstructions(input.getInstructions());
 			output.setFlavor(input.getFlavor());
+			output.setBatterType(input.getBatterType());
 			output.setSize(input.getSize());
 			output.setShortName(input.getShortName());
 			if (input.getCasesPerTray() != null) {
@@ -327,6 +333,7 @@ public class DtoUtils {
 			output.setId(subItem.getId());
 			output.setInstructions(subItem.getInstructions());
 			output.setFlavor(subItem.getFlavor());
+			output.setBatterType(subItem.getBatterType());
 			output.setSize(subItem.getSize());
 			output.setShortName(subItem.getShortName());
 			if (input.getCakesPerCase() != null && input.getCakesPerCase() != null && subItem.getCasesPerTray() != null) {
@@ -398,7 +405,7 @@ public class DtoUtils {
 		private TrayLabel convert(double cases, TrayLabelDto trayLabelDto) {
 			QuickbooksItemDao dao = new QuickbooksItemHibernateDao();
 			TrayLabel output = new TrayLabel();
-			output.setCases(cases);
+			output.setCases(round(cases, 2));
 			output.setCakesPerCase(trayLabelDto.getCakesPerCase());
 			output.setCasesPerTray(trayLabelDto.getCasesPerTray());
 			output.setLotCode(trayLabelDto.getLotCode());
@@ -426,8 +433,18 @@ public class DtoUtils {
 		public PackagingTransaction apply(PackagingTransactionDto input) {
 			PackagingTransaction output = new PackagingTransaction();
 			output.setId(input.getId());
-			output.setLabelBarcode(input.getBarcode());
-			output.setTrayLabel(new TrayLabelHibernateDao().findById(input.getTrayLabelDto().getId()));
+			output.setEmployee(new EmployeeHibernateDao().findById(input.getEmployee().getId()));
+			output.setDate(input.getDate());
+			output.setTrayLabel(new TrayLabelHibernateDao().findById(input.getTrayLabelId()));
+			output.setStartLabel1(input.getStartLabel1());
+			output.setEndLabel1(input.getEndLabel1());
+			output.setStartLabel2(input.getStartLabel2());
+			output.setEndLabel2(input.getEndLabel2());
+			output.setTestWeight(input.getTestWeight());
+			output.setDamagedQty(input.getDamagedQty());
+			if (input.getDamageCode() != null) {
+				output.setDamageCode(new DamageCodeHibernateDao().findById(input.getDamageCode().getId()));
+			}
 			return output;
 		}
 	
@@ -439,10 +456,51 @@ public class DtoUtils {
 		public PackagingTransactionDto apply(PackagingTransaction input) {
 			PackagingTransactionDto output = new PackagingTransactionDto();
 			output.setId(input.getId());
-			output.setBarcode(input.getLabelBarcode());
+			output.setEmployee(toEmployeeDtoFunction.apply(input.getEmployee()));
+			output.setDate(input.getDate());
+			output.setTrayLabelId(input.getTrayLabel().getId());
+			output.setStartLabel1(input.getStartLabel1());
+			output.setEndLabel1(input.getEndLabel1());
+			output.setStartLabel2(input.getStartLabel2());
+			output.setEndLabel2(input.getEndLabel2());
+			output.setTestWeight(input.getTestWeight());
+			output.setDamagedQty(input.getDamagedQty());
+			output.setDamageCode(toDamageCodeDtoFunction.apply(input.getDamageCode()));
 			return output;
 		}
 	
 	};
+	
+	public static final Function<DamageCodeDto, DamageCode> fromDamageCodeDtoFunction = new Function<DamageCodeDto, DamageCode>() {
+
+		@Override
+		public DamageCode apply(DamageCodeDto input) {
+			DamageCode output = new DamageCode();
+			output.setId(input.getId());
+			output.setCode(input.getCode());
+			return output;
+		}
+		
+	};
+	
+	public static final Function<DamageCode, DamageCodeDto> toDamageCodeDtoFunction = new Function<DamageCode, DamageCodeDto>() {
+
+		@Override
+		public DamageCodeDto apply(DamageCode input) {
+			DamageCodeDto output = new DamageCodeDto();
+			output.setId(input.getId());
+			output.setCode(input.getCode());
+			return output;
+		}
+		
+	};
+	
+	public static Double round(Double input, int decimalPlaces) {
+		String formatString = "#.";
+		for (int i = 0; i < decimalPlaces; i++) {
+			formatString = formatString + "#";
+		}
+		return Double.valueOf(new DecimalFormat(formatString).format(input));
+	}
 	
 }

@@ -137,6 +137,15 @@ public class QuickbooksItem {
 		}
 	}
 	
+	@Transient
+	public String getBatterType() {
+		try {
+			return quickbooksItemSupplement.getNutritionLabel().getBatterType();
+		} catch (NullPointerException e) {
+			return null;
+		}
+	}
+	
 	@Column(name = "pack", nullable = true)
 	public Integer getPack() {
 		return pack;

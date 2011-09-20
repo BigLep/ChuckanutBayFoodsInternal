@@ -13,6 +13,7 @@ public class QuickbooksItemDto implements Serializable {
 	private String id;
 	private String instructions;
 	private String flavor;
+	private String batterType;
 	private String size;
 	private String shortName;
 	private double cakesPerCase = 0.0;
@@ -61,6 +62,12 @@ public class QuickbooksItemDto implements Serializable {
 	}
 	public void setFlavor(String flavor) {
 		this.flavor = flavor;
+	}
+	public String getBatterType() {
+		return batterType;
+	}
+	public void setBatterType(String batterType) {
+		this.batterType = batterType;
 	}
 	public String getSize() {
 		return size;

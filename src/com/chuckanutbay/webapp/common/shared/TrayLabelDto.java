@@ -1,8 +1,11 @@
 package com.chuckanutbay.webapp.common.shared;
 
+import java.io.Serializable;
+import java.util.Set;
+
 import com.google.common.base.Objects;
 
-public abstract class TrayLabelDto {
+public abstract class TrayLabelDto implements Serializable {
 	/**
 	 * 
 	 */
@@ -12,6 +15,7 @@ public abstract class TrayLabelDto {
 	protected double cases;
 	protected double cakesPerCase = 0.0;
 	protected double casesPerTray = 0.0;
+	protected Set<PackagingTransactionDto> packagingTransactions;
 	
 	public TrayLabelDto() {}
 
@@ -57,12 +61,20 @@ public abstract class TrayLabelDto {
 		return this;
 	}
 	
+	public Set<PackagingTransactionDto> getPackagingTransactions() {
+		return packagingTransactions;
+	}
+
+	public void setPackagingTransactions(
+			Set<PackagingTransactionDto> packagingTransactions) {
+		this.packagingTransactions = packagingTransactions;
+	}
+	
 	public abstract QuickbooksItemDto getQbItem();
 	
 	public abstract QuickbooksItemDto getQbSubItem();
 	
 	public abstract double getMaximumCases();
-
 
 	
 	@Override

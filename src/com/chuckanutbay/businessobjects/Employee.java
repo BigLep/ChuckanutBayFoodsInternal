@@ -50,6 +50,7 @@ public class Employee {
 	private Integer barcodeNumber;
 	private Integer shift;
 	private Set<EmployeeWorkInterval> employeeWorkIntervals = new HashSet<EmployeeWorkInterval>(0);
+	private Set<PackagingTransaction> packagingTransactions;
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -101,6 +102,15 @@ public class Employee {
 		this.employeeWorkIntervals = employeeWorkIntervals;
 	}
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+	public Set<PackagingTransaction> getPackagingTransactions() {
+		return packagingTransactions;
+	}
+
+	public void setPackagingTransactions(Set<PackagingTransaction> packagingTransactions) {
+		this.packagingTransactions = packagingTransactions;
+	}
+
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(super.hashCode(), barcodeNumber);

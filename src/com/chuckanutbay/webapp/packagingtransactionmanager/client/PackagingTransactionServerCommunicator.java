@@ -1,16 +1,22 @@
 package com.chuckanutbay.webapp.packagingtransactionmanager.client;
 
+import java.util.List;
+
+import com.chuckanutbay.webapp.common.shared.DamageCodeDto;
+import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.PackagingTransactionDto;
-import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
 
 public interface PackagingTransactionServerCommunicator {
 	
-	void getTrayLabelDtoFromServer(Integer id);
+	void getDamageCodeDtosFromDatabase();
 	
-	void persistPackagingTransactionDtoToServer(PackagingTransactionDto ptDto);
+	void getEmployeeDtosFromDatabase();
 	
-	void onSuccessfulGetTrayLabelDto(TrayLabelDto trayLabelDto);
+	void persistPackagingTransactionDtoToDatabase(PackagingTransactionDto packagingTransaction);
 	
-	void onSuccessfulPersistPackaginTransactionDto();
+	void onSuccessfulGetDamageCodeDtos(List<DamageCodeDto> damageCodes);
 	
+	void onSuccessfulGetEmployeeDtos(List<EmployeeDto> employees);
+	
+	void onSuccessfulPersistPackagingTransactionDto();
 }

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.chuckanutbay.businessobjects.Activity;
+import com.chuckanutbay.businessobjects.DamageCode;
 import com.chuckanutbay.businessobjects.Employee;
 import com.chuckanutbay.businessobjects.EmployeeWorkInterval;
 import com.chuckanutbay.businessobjects.EmployeeWorkIntervalActivityPercentage;
@@ -50,10 +51,11 @@ public class HibernateUtil {
 			".cfg.xml";
 		logger.info("Configuring Hibernate with configuration: " + configFilePath);
 		configuration = new Configuration()
+			.addAnnotatedClass(Activity.class)
+			.addAnnotatedClass(DamageCode.class)
 			.addAnnotatedClass(Employee.class)
 			.addAnnotatedClass(EmployeeWorkInterval.class)
 			.addAnnotatedClass(EmployeeWorkIntervalActivityPercentage.class)
-			.addAnnotatedClass(Activity.class)
 			.addAnnotatedClass(InventoryItem.class)
 			.addAnnotatedClass(InventoryLot.class)
 			.addAnnotatedClass(InventoryLotStickerColor.class)

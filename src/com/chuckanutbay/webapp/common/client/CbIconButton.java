@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.Image;
 
 /**
@@ -14,23 +15,27 @@ import com.google.gwt.user.client.ui.Image;
 public class CbIconButton extends Button {
 	private String text;
 	private String styleRules = "padding-left:3px; vertical-align:middle;";
+	private FocusWidgetLinker linker; 
 	
 	public CbIconButton(String imageResource, String text, ClickHandler handler, String...styleRules){
-		super();
-		setResource(imageResource);
-		setText(text);
+		this(imageResource, text, styleRules);
 		this.addClickHandler(handler);
+	}
+	
+	public CbIconButton(String imageResource, String text, String...styleRules){
+		this(imageResource, text);
 		setTextStyleRule(styleRules);
 	}
 	
 	public CbIconButton(String imageResource, String text){
-		super();
+		this();
 		setResource(imageResource);
 		setText(text);
 	}
  
 	public CbIconButton(){
 	 	super();
+		linker = new FocusWidgetLinker(this);
 	 }
 
 	public void setResource(String imageResource){
@@ -63,5 +68,10 @@ public class CbIconButton extends Button {
 			this.styleRules = this.styleRules.concat(" " + styleRule + ";");
 		}
 		setText(text);
+	}
+	
+	public CbIconButton setNextWidget(FocusWidget nextWidget) {
+		linker.setNextWidget(nextWidget);
+		return this;
 	}
 }

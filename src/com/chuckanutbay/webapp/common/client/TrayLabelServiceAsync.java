@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
-import com.chuckanutbay.webapp.common.shared.PackagingTransactionDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
@@ -42,8 +41,5 @@ public interface TrayLabelServiceAsync {
 			AsyncCallback<List<SalesOrderDto>> callback);
 
 	void getTrayLabelDto(Integer id, AsyncCallback<TrayLabelDto> callback);
-
-	void persistPackagingTransaction(PackagingTransactionDto ptDto,
-			AsyncCallback<Void> callback);
 
 }

@@ -33,6 +33,11 @@ public class ServiceUtils {
 		((ServiceDefTarget)service).setServiceEntryPoint("/common/TrayLabelService");
 		return service;
 	}
+	public static PackagingTransactionServiceAsync createPackagingTransactionService() {
+		PackagingTransactionServiceAsync service = GWT.create(PackagingTransactionService.class);
+		((ServiceDefTarget)service).setServiceEntryPoint("/common/PackagingTransactionService");
+		return service;
+	}
 	
 	/**
 	 * {@link AsyncCallback} that provides a default {@link AsyncCallback#onFailure(Throwable)} handler.

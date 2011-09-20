@@ -5,8 +5,11 @@ import static com.chuckanutbay.businessobjects.BusinessObjects.oneSalesOrder;
 import static com.chuckanutbay.businessobjects.BusinessObjects.oneTrayLabel;
 import static com.chuckanutbay.util.testing.AssertExtensions.assertEmpty;
 import static com.google.common.collect.Lists.newArrayList;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 
+import org.hibernate.ObjectNotFoundException;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -44,5 +47,17 @@ public class TrayLabelHibernateDaoTest {
 		
 		
 		assertEquals(newArrayList(tl3, tl4), dao.findBySalesOrderLineItemId(2));
+	}
+	
+	/**
+	 * @see GenericDao#findById(java.io.Serializable)
+	 */
+	@Test
+	public void testFindById() {
+		try {
+			assertNotNull(new TrayLabelHibernateDao().findById(111));
+		} catch (ObjectNotFoundException e) {
+			assertNull(null);
+		}
 	}
 }

@@ -52,7 +52,7 @@ public class InventoryTrayLabelDto extends TrayLabelDto implements Serializable 
 	@Override
 	public boolean equals(Object object){
 		if (object instanceof InventoryTrayLabelDto) {
-			OrderTrayLabelDto that = (OrderTrayLabelDto)object;
+			InventoryTrayLabelDto that = (InventoryTrayLabelDto)object;
 			return Objects.equal(this.id, that.id);
 		}
 		return false;

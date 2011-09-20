@@ -11,7 +11,7 @@
 		<pen lineWidth="1.0" lineColor="#CCCCCC"/>
 	</style>
 	<parameter name="TRAY_LABEL_IDS" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["1, 2"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["1, 1063"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -136,33 +136,12 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
 	<detail>
 		<band height="572" splitType="Stretch">
 			<frame>
-				<reportElement style="GreyBorder" x="438" y="492" width="314" height="80"/>
-				<staticText>
-					<reportElement x="0" y="40" width="100" height="20"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="14" isBold="false"/>
-					</textElement>
-					<text><![CDATA[Cust. Instr: ]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="60" width="100" height="20"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="14" isBold="false"/>
-					</textElement>
-					<text><![CDATA[Item Instr: ]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="0" width="100" height="40"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="14" isBold="false"/>
-					</textElement>
-					<text><![CDATA[Customer: ]]></text>
-				</staticText>
+				<reportElement style="GreyBorder" x="438" y="492" width="248" height="80"/>
 				<rectangle>
-					<reportElement style="GreyBorder" x="0" y="0" width="314" height="80"/>
+					<reportElement style="GreyBorder" x="0" y="0" width="248" height="80"/>
 				</rectangle>
 				<textField>
-					<reportElement x="100" y="0" width="214" height="40"/>
+					<reportElement x="0" y="0" width="247" height="40"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="24" isBold="true"/>
 					</textElement>
@@ -170,7 +149,7 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
     : "INVENTORY"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="WhiteOnBlack" x="99" y="40" width="214" height="20">
+					<reportElement style="WhiteOnBlack" x="0" y="40" width="247" height="20">
 						<printWhenExpression><![CDATA[$F{sales_orders_special_instructions} != null && !$F{sales_orders_special_instructions}.equals("")]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -179,7 +158,7 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_orders_special_instructions}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="WhiteOnBlack" x="99" y="60" width="214" height="20">
+					<reportElement style="WhiteOnBlack" x="0" y="60" width="247" height="20">
 						<printWhenExpression><![CDATA[($F{quickbooks_items_B_id} != null && !$F{quickbooks_items_B_id}.equals("")) ? (($F{quickbooks_items_B_unique_instructions} != null && !$F{quickbooks_items_B_unique_instructions}.equals("")) ? true : false)
     : (($F{quickbooks_items_unique_instructions} != null && !$F{quickbooks_items_unique_instructions}.equals("")) ? true : false)]]></printWhenExpression>
 					</reportElement>
@@ -321,47 +300,28 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
 				</graphicElement>
 			</line>
 			<frame>
-				<reportElement style="GreyBorder" x="189" y="492" width="249" height="80"/>
-				<staticText>
-					<reportElement x="0" y="40" width="100" height="20"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="14" isBold="false"/>
-					</textElement>
-					<text><![CDATA[Item Id: ]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="0" width="100" height="40"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="14" isBold="false"/>
-					</textElement>
-					<text><![CDATA[Item: ]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="60" width="100" height="20"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="14" isBold="false"/>
-					</textElement>
-					<text><![CDATA[LotCode: ]]></text>
-				</staticText>
+				<reportElement style="GreyBorder" x="245" y="492" width="193" height="80"/>
 				<rectangle>
-					<reportElement style="GreyBorder" x="0" y="0" width="249" height="80"/>
+					<reportElement style="GreyBorder" x="0" y="0" width="193" height="80"/>
 				</rectangle>
 				<textField>
-					<reportElement x="100" y="40" width="149" height="20"/>
+					<reportElement x="0" y="40" width="193" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{quickbooks_items_id}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_B_id} != null) ? $F{quickbooks_items_B_id} : $F{quickbooks_items_id}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="100" y="0" width="149" height="40"/>
+					<reportElement x="0" y="0" width="193" height="40"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="18" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{quickbooks_item_supplements_A_product_type} : $F{quickbooks_item_supplements_product_type}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{quickbooks_items_A_id} != null) ? $F{quickbooks_item_supplements_A_product_type} :
+    ($F{quickbooks_items_B_id} != null) ? $F{quickbooks_item_supplements_B_product_type} :
+        $F{quickbooks_item_supplements_product_type}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="100" y="60" width="149" height="20"/>
+					<reportElement x="0" y="60" width="193" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>

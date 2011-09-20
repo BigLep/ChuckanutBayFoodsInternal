@@ -36,4 +36,9 @@ public class EmployeeHibernateDao extends GenericHibernateDao<Employee,Integer> 
 		crit.addOrder(Order.asc("lastName"));
 		return crit.list();
 	}
+	
+	@Override
+	public List<Employee> findAll() {
+		return getCriteria().addOrder(Order.asc("firstName")).list();
+	}
 }

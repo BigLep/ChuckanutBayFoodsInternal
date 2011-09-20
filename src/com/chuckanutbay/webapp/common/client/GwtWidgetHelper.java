@@ -23,6 +23,8 @@ public class GwtWidgetHelper {
 	public static final HorizontalAlignmentConstant H_ALIGN_LEFT = HasHorizontalAlignment.ALIGN_LEFT;
 	public static final HorizontalAlignmentConstant H_ALIGN_CENTER = HasHorizontalAlignment.ALIGN_CENTER;
 	public static final HorizontalAlignmentConstant H_ALIGN_RIGHT = HasHorizontalAlignment.ALIGN_RIGHT;
+	public static final String[] largeButtonStyles = {"font-size: 40px", "font-family: tahoma, geneva, futura", "font-weight: bold", "padding: 4px"};
+	public static final String[] mediumButtonStyles = {"font-size: 20px", "font-family: tahoma, geneva, futura", "font-weight: bold", "padding: 4px"};
 			
 	public static HorizontalPanel newHorizontalPanel(Widget...widgets) {
 		HorizontalPanel hPanel = new HorizontalPanel();

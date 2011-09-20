@@ -122,6 +122,7 @@ public class CbCellTable<T> extends CellTable<T> {
 	
 	public CbCellTable<T> clearTableData() {
 		dataProvider.getList().clear();
+		this.redraw();
 		return this;
 		
 	}

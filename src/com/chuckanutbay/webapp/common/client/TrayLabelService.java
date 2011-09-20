@@ -7,7 +7,6 @@ import com.chuckanutbay.businessobjects.QuickbooksItem;
 import com.chuckanutbay.businessobjects.SalesOrder;
 import com.chuckanutbay.businessobjects.TrayLabel;
 import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
-import com.chuckanutbay.webapp.common.shared.PackagingTransactionDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
@@ -101,9 +100,4 @@ public interface TrayLabelService extends RemoteService {
 	 */
 	TrayLabelDto getTrayLabelDto(Integer id);
 	
-	/**
-	 * persists the given {@link PackagingTransactionDto} to the database.
-	 * @param ptDto
-	 */
-	void persistPackagingTransaction(PackagingTransactionDto ptDto);
 }

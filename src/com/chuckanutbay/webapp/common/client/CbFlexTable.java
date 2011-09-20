@@ -1,6 +1,7 @@
 package com.chuckanutbay.webapp.common.client;
 
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CbFlexTable extends FlexTable {
@@ -43,6 +44,11 @@ public class CbFlexTable extends FlexTable {
 	
 	public CbFlexTable setCellStyle(String style, int row, int column) {
 		super.getCellFormatter().addStyleName(row, column, style);
+		return this;
+	}
+	
+	public CbFlexTable setHorizontalAlignement(int row, int column, HorizontalAlignmentConstant align) {
+		super.getCellFormatter().setHorizontalAlignment(row, column, align);
 		return this;
 	}
 	
