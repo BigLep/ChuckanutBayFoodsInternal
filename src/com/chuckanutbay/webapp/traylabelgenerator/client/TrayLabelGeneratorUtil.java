@@ -276,7 +276,11 @@ public class TrayLabelGeneratorUtil {
 			return new TextColumn<TrayLabelDto>() {
     	        @Override
     	        public String getValue(TrayLabelDto object) {
-    	        	return "" + ((OrderTrayLabelDto) object).getSalesOrderLineItemDto().getSalesOrderDto().getId();
+    	        	if (object instanceof OrderTrayLabelDto) {
+    	        		return "" + ((OrderTrayLabelDto) object).getSalesOrderLineItemDto().getSalesOrderDto().getId();
+    	        	} else {
+    	        		return "";
+    	        	}
     	        }
     	    };
 		case Print:
@@ -373,7 +377,7 @@ public class TrayLabelGeneratorUtil {
 		boolean isValid = false;
 		if (lotCode.matches("[0-9][A-Z][0-9][0-9][0-9][A-Z][0-9]")) {//Valid format
 			String crew = lotCode.substring(0,2);
-			if (crew.equals("4A") || crew.equals("3C") || crew.equals("2B")) {//Valid crew
+			if (crew.equals("4A") || crew.equals("3B") || crew.equals("2C")) {//Valid crew
 				int dayOfYear = Integer.parseInt(lotCode.substring(2,5));
 				if (dayOfYear <= 365) {//Valid day of year
 					if (lotCode.substring(5,6).equals("A")) {//Valid batch

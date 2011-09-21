@@ -6,6 +6,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
@@ -17,20 +18,19 @@ import com.google.gwt.cell.client.CompositeCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 
-public class OpenOrdersTreeModel implements TreeViewModel {
+public class OpenOrdersTreeModel implements TreeViewModel, SalesOrderLineItemServerCommunicator {
 		
 		private final MultiSelectionModel<SalesOrderLineItemDto> selectionModel = new MultiSelectionModel<SalesOrderLineItemDto>();
 		private final DefaultSelectionEventManager<SalesOrderLineItemDto> selectionManager = DefaultSelectionEventManager.createCheckboxManager();
 		private List<SalesOrderLineItemDto> data;
-		private String currentFlavor;
-		private ListDataProvider<String> flavorDataProvider = new ListDataProvider<String>(new ArrayList<String>());
+		private String currentBatterType;
+		private ListDataProvider<String> batterDataProvider = new ListDataProvider<String>(new ArrayList<String>());
 		private ListDataProvider<SalesOrderDto> salesOrderDataProvider = new ListDataProvider<SalesOrderDto>(new ArrayList<SalesOrderDto>());
 		private ListDataProvider<SalesOrderLineItemDto> lineItemDataProvider = new ListDataProvider<SalesOrderLineItemDto>(new ArrayList<SalesOrderLineItemDto>());
 		private SalesOrderDto currentSalesOrder;
@@ -49,7 +49,7 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		        // LEVEL 0.
 		        // We passed null as the root value. Return the flavors.
 				
-				updateFlavorDataProvider();
+				updateBatterDataProvider();
 		        // Create a cell to display a composer.
 		        Cell<String> cell = new AbstractCell<String>() {
 					@Override
@@ -63,13 +63,13 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		        };
 
 		        // Return a node info that pairs the data provider and the cell.
-		        return new DefaultNodeInfo<String>(flavorDataProvider, cell);
+		        return new DefaultNodeInfo<String>(batterDataProvider, cell);
 		        
 		      } else if (value instanceof String) {
 		    	  // LEVEL 1.
 		    	  // We want the children of the flavor. Return the salesOrders.
 		    	  
-		    	  currentFlavor = (String) value;
+		    	  currentBatterType = (String) value;
 		    	  updateSalesOrderDataProvider();
 		    	  Cell<SalesOrderDto> cell = new AbstractCell<SalesOrderDto>() {
 		    		  @Override
@@ -77,7 +77,7 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		    			  if (value != null) {
 		    				  sb.appendEscaped(
 		    						  value.getCustomerName() + " " + 
-		    						  DateTimeFormat.getFormat("M/d").format(value.getShipdate()));
+		    						  value.getId());
 		    			  }
 		    		  }
 		    	  };
@@ -208,24 +208,19 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		
 		public void setData(Collection<SalesOrderLineItemDto> data) {
 			this.data = newArrayList(data);
-			updateFlavorDataProvider();
+			updateBatterDataProvider();
 		}
 		
-		private void updateFlavorDataProvider() {
-			List<String> flavors = flavorDataProvider.getList();
-			flavors.clear();
+		private void updateBatterDataProvider() {
+			List<String> batterTypes = batterDataProvider.getList();
+			batterTypes.clear();
 			for (SalesOrderLineItemDto lineItem : data) {
-				String flavor;
-				if (lineItem.getSubItemDto() == null) {
-					flavor = lineItem.getQuickbooksItemDto().getFlavor();
-				} else {
-					flavor = lineItem.getSubItemDto().getFlavor();
-				}
-				if (isNotNullOrEmpty(flavor) && !flavors.contains(flavor)) {//Flavor isn't null, already in the list, or blank
-					flavors.add(flavor);
+				String batterType = getBatterType(lineItem);
+				if (isNotNullOrEmpty(batterType) && !batterTypes.contains(batterType)) {//Flavor isn't null, already in the list, or blank
+					batterTypes.add(batterType);
 				}
 			}
-			Collections.sort(flavors, String.CASE_INSENSITIVE_ORDER);
+			Collections.sort(batterTypes, String.CASE_INSENSITIVE_ORDER);
 		}
 		
 		private void updateSalesOrderDataProvider() {
@@ -234,16 +229,25 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 	    	  
 	    	  for (SalesOrderLineItemDto lineItem : data) {
 	    		  SalesOrderDto salesOrder = lineItem.getSalesOrderDto();
-	    		  String flavor;
-	    		  if (lineItem.getSubItemDto() == null) {
-	    			  flavor = lineItem.getQuickbooksItemDto().getFlavor();
-	    		  } else {
-	    			  flavor = lineItem.getSubItemDto().getFlavor();
-	    		  }
-	    		  if(isNotNullOrEmpty(flavor) && flavor.equals(currentFlavor) && !salesOrders.contains(salesOrder)) {
+	    		  String batterType = getBatterType(lineItem);
+	    		  if(isNotNullOrEmpty(batterType) && batterType.equals(currentBatterType) && !salesOrders.contains(salesOrder)) {
 	    			  salesOrders.add(salesOrder);
 	    		  }
 	    	  }
+	    	  Collections.sort(salesOrders, new Comparator<SalesOrderDto>() {
+
+					@Override
+					public int compare(SalesOrderDto thing1,
+							SalesOrderDto thing2) {
+						int customerNameComparison = thing1.getCustomerName().compareTo(thing2.getCustomerName());
+						if (customerNameComparison != 0) {
+							return customerNameComparison;
+						} else {
+							return thing1.getId().compareTo(thing2.getId());
+						}
+					}
+					
+				});
 		}
 		
 		private void updateLineItemDataProvider() {
@@ -251,16 +255,56 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 			  lineItems.clear();
 	    	  
 	    	  for (SalesOrderLineItemDto lineItem : data) {
-	    		  String flavor;
-	    		  if (lineItem.getSubItemDto() == null) {
-	    			  flavor = lineItem.getQuickbooksItemDto().getFlavor();
-	    		  } else {
-	    			  flavor = lineItem.getSubItemDto().getFlavor();
-	    		  }
-	    		  if(lineItem.getSalesOrderDto().equals(currentSalesOrder) && isNotNullOrEmpty(flavor) && flavor.equals(currentFlavor)) {
+	    		  String batterType = getBatterType(lineItem);
+	    		  if(lineItem.getSalesOrderDto().equals(currentSalesOrder) && isNotNullOrEmpty(batterType) && batterType.equals(currentBatterType)) {
 	    			  lineItems.add(lineItem);
 	    		  }
 	    	  }
+		}
+		
+		private String getBatterType(SalesOrderLineItemDto lineItem) {
+			if (lineItem.getSubItemDto() == null) {
+				return lineItem.getQuickbooksItemDto().getBatterType();
+			} else {
+				return lineItem.getSubItemDto().getBatterType();
+			}
+		}
+
+		@Override
+		public void getOpenOrderFlavorsFromServer() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void getOpenOrdersFromServerByFlavor(String flavor) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void getLineItemsFromServerByOpenOrderAndFlavor(
+				Integer openOrderId, String flavor) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccessfulGetOpenOrderFlavors(List<String> result) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccessfulGetOpenOrders(List<SalesOrderDto> result) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccessfulGetLineItems(List<SalesOrderLineItemDto> result) {
+			// TODO Auto-generated method stub
+			
 		}
 		
 	}

@@ -7,6 +7,7 @@
 	<table-filter match-name="inventory_lots" />
 	<table-filter match-name="inventory_lot_sticker_colors" />
 	<table-filter match-name="activities" />
+	<table-filter match-name="damage_codes" />
 	<table-filter match-name="employees" />
 	<table-filter match-name="employee_work_intervals" />
 	<table-filter match-name="employee_work_interval_activity_percentages" />
@@ -25,6 +26,8 @@
 	<table name="inventory_lot_sticker_colors" class="InventoryLotStickerColor">
 	</table>
 	<table name="activities" class="Activity">
+	</table>
+	<table name="damage_codes" class="DamageCode">
 	</table>
 	<table name="employees" class="Employee">
 	</table>

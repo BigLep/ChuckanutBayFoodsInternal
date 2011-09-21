@@ -154,6 +154,7 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 	
 	public String getLotCode(DateTime dt) {
 		//LotCode format: crew (4A, 3B, 2C), day of year, A, year of decade
+		/* We just want 2C right now
 		String crew;
 		int hour = dt.getHourOfDay();
 		if (hour >= 5 && hour < 14) {
@@ -163,7 +164,8 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 		} else {
 			crew = "4A";
 		}
-		return crew + dt.getDayOfYear() + "A" + String.valueOf(dt.getYear()).substring(3, 4);
+		*/
+		return "2C" + dt.getDayOfYear() + "A" + String.valueOf(dt.getYear()).substring(3, 4);
 	}
 
 	@Override

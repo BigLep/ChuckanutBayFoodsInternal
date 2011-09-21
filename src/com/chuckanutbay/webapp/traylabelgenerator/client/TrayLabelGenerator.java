@@ -6,6 +6,7 @@ import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.H_ALIGN_RIGH
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.V_ALIGN_BOTTOM;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.V_ALIGN_MIDDLE;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.V_ALIGN_TOP;
+import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.largeButtonStyles;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newImage;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newLabel;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newSimplePanel;
@@ -58,7 +59,6 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	private CbIconButton printButton;
 	private CbHorizontalPanel buttonsPanel;
 	private CbVerticalPanel mainPanel;
-	private static final String[] buttonStyles = {"font-size: 40px", "font-family: tahoma, geneva, futura", "font-weight: bold", "padding: 4px"};
 	private static final String[] addInventoryButtonStyles = {"font-size: 20px", "font-family: tahoma, geneva, futura", "font-weight: bold", "padding: 1px"};
 	private CbVerticalPanel newTrayLabelPanel;
 	private static final int IPAD_HEIGHT_PX = 986;
@@ -101,10 +101,10 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	}
 
 	private void setupButtonsPanel() {
-		newTrayLabelsButton = new CbIconButton(ADD_LARGE, "New", this, buttonStyles);
-		editTrayLabelsButton = new CbIconButton(EDIT_LARGE, "Edit", this, buttonStyles);
-		refreshButton = new CbIconButton(REFRESH_LARGE, "Refresh", this, buttonStyles);
-		printButton = new CbIconButton(PRINT_LARGE, "Print", this, buttonStyles);
+		newTrayLabelsButton = new CbIconButton(ADD_LARGE, "New", this, largeButtonStyles);
+		editTrayLabelsButton = new CbIconButton(EDIT_LARGE, "Edit", this, largeButtonStyles);
+		refreshButton = new CbIconButton(REFRESH_LARGE, "Refresh", this, largeButtonStyles);
+		printButton = new CbIconButton(PRINT_LARGE, "Print", this, largeButtonStyles);
 		buttonsPanel = new CbHorizontalPanel()
 			.addWidget(editTrayLabelsButton, H_ALIGN_LEFT)
 			.addWidget(refreshButton, H_ALIGN_RIGHT)
@@ -134,7 +134,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 			.setStyle("openOrdersCellBrowser")
 			.setSelectionChangeHandler(this);
 		addInventoryButton = new CbIconButton(ADD, "Add", this, addInventoryButtonStyles);
-		suggestOracle = new CbMultiWordSuggestOracle(newArrayList("2201-12", "27001-6"));
+		suggestOracle = new CbMultiWordSuggestOracle(newArrayList(""));
 		inventorySuggestBox = new SuggestBox(suggestOracle);
 		inventoryTrayLabelsPanel = new CbHorizontalPanel()
 			.addWidget(newLabel("Inventory:", "inventoryLabel"))
@@ -154,7 +154,8 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 			.addWidget(newTrayLabelsCellTable, H_ALIGN_CENTER)
 			.addWidget(newTrayLabelsCellTable.getPager(), H_ALIGN_CENTER)
 			.setCellSpacing(5)
-			.setWidth(IPAD_WIDTH_PX);
+			.setWidth(IPAD_WIDTH_PX)
+			.setHeight(IPAD_HEIGHT_PX);
 	}
 	
 
@@ -185,9 +186,10 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 				printTrayLabels(((MultiSelectionModel<TrayLabelDto>) editTrayLabelsCellTable.getSelectionModel()).getSelectedSet());
 			} else {//It isn't edit mode
 				sendTrayLabelsToServer(newArrayList(newTrayLabelsCellTable.getTableData()));
+				newTrayLabelsCellTable.clearTableData();
 			}
 		} else if (event.getSource() == addInventoryButton) {
-			//TODO:
+			getInventoryTrayLabelDto(inventorySuggestBox.getText());
 		}
 		
 	}
@@ -291,9 +293,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	@Override
 	public void onSuccessfulGetQuickbooksItemIds(
 			List<String> quickbooksItems) {
-		for (String qbId : quickbooksItems) {
-			suggestOracle.add(qbId);
-		}
+		suggestOracle.addAll(quickbooksItems);
 	}
 
 	@Override
