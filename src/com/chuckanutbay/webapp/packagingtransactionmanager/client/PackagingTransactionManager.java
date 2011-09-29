@@ -112,6 +112,9 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 		damagedQtyTb
 		));
 		
+		//Set TextBox values
+		damagedQtyTb.setText("0");
+		
 		//Setup submitButton
 		submitButton.addFocusHandler(new FocusHandler() {
 			@Override
@@ -169,12 +172,22 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 						}
 					}
 				}
-				if (labels.size() < 2) { //There aren't enough labels
-					Window.alert("Please enter at least 2 Label Codes");
-					startLabelTb.setFocus(true);
-					return;
-				} else {
-					sort(labels, String.CASE_INSENSITIVE_ORDER);
+				sort(labels, String.CASE_INSENSITIVE_ORDER);
+				if (labels.size() == 0) {//It is probably a case where the new labels aren't being used
+					
+				} else if (labels.size() % 2 == 1) {//An odd number of labels were scanned. Probably a mistake
+					if (Window.confirm("You have scanned an odd number of label barcodes!")) {//It doesn't matter, move on!
+						ptDto.setStartLabel1(labels.get(0));
+						if (labels.size() == 3) {
+							ptDto.setEndLabel1(labels.get(1));
+							ptDto.setStartLabel2(labels.get(2));
+							
+						}
+					} else {//The user wants to fix the mistake
+						startLabelTb.setFocus(true);
+						return;
+					}
+				} else {//They scanned a pair or two of label barcodes. Yay!
 					ptDto.setStartLabel1(labels.get(0));
 					ptDto.setEndLabel1(labels.get(1));
 					if (labels.size() == 4) {//There are 2 pairs
@@ -284,7 +297,7 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 		startLabel2Tb.setText("");
 		endLabel2Tb.setText("");
 		testWeightTb.setText("");
-		damagedQtyTb.setText("");
+		damagedQtyTb.setText("0");
 		
 		trayLabelTb.setFocus(true);
 	}
