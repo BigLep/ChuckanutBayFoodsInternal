@@ -141,4 +141,10 @@ public class EmployeeDto implements Serializable, Comparable<EmployeeDto> {
 			.compare(this.lastName, that.lastName)
 			.result();
 	}
+	
+	public static EmployeeDto newBlankEmployeeDto(Integer barcode) {
+		EmployeeDto e = new EmployeeDto();
+		e.setBarcodeNumber(barcode);
+		return e;
+	}
 }

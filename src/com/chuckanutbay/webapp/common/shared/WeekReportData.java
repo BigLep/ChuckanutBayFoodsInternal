@@ -39,10 +39,19 @@ public class WeekReportData implements Serializable {
 	}
 	
 	public void addHours(double hours) {
-		hoursNormalPay += hours;
-		if ((hoursNormalPay + prePayPeriodHours) > 40) {
-			hoursOvertime = (hoursNormalPay + prePayPeriodHours + hoursOvertime) - 40;
-			hoursNormalPay = (40 - prePayPeriodHours);
+		double normalHoursRemaining;
+		if (prePayPeriodHours > 40) {
+			normalHoursRemaining = 0;
+		} else {
+			normalHoursRemaining = 40 - prePayPeriodHours;
+		}
+		double thisPayPeriodWeekHours = (hoursNormalPay + hoursOvertime + hours);
+		if (thisPayPeriodWeekHours > normalHoursRemaining) {
+			hoursNormalPay = normalHoursRemaining;
+			hoursOvertime = thisPayPeriodWeekHours - normalHoursRemaining;
+		} else {
+			hoursNormalPay = thisPayPeriodWeekHours;
+			hoursOvertime = 0;
 		}
 	}
 	

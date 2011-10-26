@@ -1,5 +1,7 @@
 package com.chuckanutbay.webapp.common.client;
 
+import static com.google.common.collect.Maps.newLinkedHashMap;
+
 import java.util.Map;
 
 import com.google.gwt.user.client.ui.FocusWidget;
@@ -11,6 +13,7 @@ public class CbListBox<T> extends ListBox {
 	
 	public CbListBox() {
 		super();
+		data = newLinkedHashMap();
 		linker = new FocusWidgetLinker(this);
 	}
 	
@@ -35,6 +38,12 @@ public class CbListBox<T> extends ListBox {
 		CbListBox<T> cbListBox = newCbListBox(data);
 		cbListBox.linker.setNextWidget(nextWidget);
 		return cbListBox;
+	}
+	
+	public CbListBox<T> addData(String key, T value) {
+		data.put(key, value);
+		updateListBoxItems();
+		return this;
 	}
 
 	public CbListBox<T> setData(Map<String, T> data) {

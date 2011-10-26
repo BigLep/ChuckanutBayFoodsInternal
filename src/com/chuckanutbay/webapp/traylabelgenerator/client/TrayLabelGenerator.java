@@ -40,12 +40,15 @@ import com.chuckanutbay.webapp.common.shared.OrderTrayLabelDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -65,9 +68,11 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	private static final int IPAD_WIDTH_PX = 788;
 	private OpenOrdersCellBrowser openOrdersCellBrowser;
 	private CbCellTable<TrayLabelDto> newTrayLabelsCellTable;
-	private String currentLotCode;
+	private String defaultLotCode;
 	private CbIconButton addInventoryButton;
 	private CbHorizontalPanel inventoryTrayLabelsPanel;
+	private CbHorizontalPanel defaultLotCodePanel;
+	private TextBox defaultLotCodeTextBox = new TextBox();
 	private CbMultiWordSuggestOracle suggestOracle;
 	private SuggestBox inventorySuggestBox;
 	private CbVerticalPanel editTrayLabelsPanel;
@@ -142,6 +147,19 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 			.addWidget(addInventoryButton)
 			.setCellSpacing(4)
 			.setStyle("addInventoryPanel");
+		defaultLotCodePanel = new CbHorizontalPanel()
+			.addWidget(newLabel("Default Lot Code:", "inventoryLabel"))
+			.addWidget(defaultLotCodeTextBox, V_ALIGN_MIDDLE)
+			.setCellSpacing(4)
+			.setStyle("addInventoryPanel");
+		defaultLotCodeTextBox.addChangeHandler(new ChangeHandler() {
+
+			@Override
+			public void onChange(ChangeEvent event) {
+				defaultLotCode = defaultLotCodeTextBox.getText();
+			}
+			
+		});
 		newTrayLabelsCellTable = new CbCellTable<TrayLabelDto>()
 			.setSize(700, 320)
 			.setVisibleRows(10);
@@ -149,7 +167,11 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 		newTrayLabelPanel = new CbVerticalPanel()
 			.addWidget(newLabel("Open Orders", "title"), H_ALIGN_CENTER)
 			.addWidget(openOrdersCellBrowser, H_ALIGN_CENTER)
-			.addWidget(inventoryTrayLabelsPanel, H_ALIGN_RIGHT)
+			.addWidget(new CbHorizontalPanel()
+				.addWidget(defaultLotCodePanel, H_ALIGN_RIGHT)
+				.addWidget(inventoryTrayLabelsPanel, H_ALIGN_RIGHT)
+				.setCellSpacing(10), 
+				H_ALIGN_CENTER)
 			.addWidget(newLabel("Tray Labels", "title"), H_ALIGN_CENTER)
 			.addWidget(newTrayLabelsCellTable, H_ALIGN_CENTER)
 			.addWidget(newTrayLabelsCellTable.getPager(), H_ALIGN_CENTER)
@@ -219,7 +241,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 		List<TrayLabelDto> tableData = newTrayLabelsCellTable.getTableData();
 		Set<SalesOrderLineItemDto> selectedLineItems = openOrdersCellBrowser.getSelectedLineItems();
 		for (SalesOrderLineItemDto selectedLineItem : selectedLineItems) {
-			OrderTrayLabelDto convertedLineItem = toOrderTrayLabelDto(selectedLineItem, currentLotCode);
+			OrderTrayLabelDto convertedLineItem = toOrderTrayLabelDto(selectedLineItem, defaultLotCode);
 			if (!tableData.contains(convertedLineItem)) {
 				newTrayLabelsCellTable.addTableData(convertedLineItem);
 				return;
@@ -298,7 +320,8 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 
 	@Override
 	public void onSuccessfulGetCurrentLotCode(String lotCode) {
-		currentLotCode = lotCode;
+		defaultLotCode = lotCode;
+		defaultLotCodeTextBox.setText(lotCode);
 		Timer waitTenMin = new Timer() {
 
 			@Override
@@ -323,7 +346,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	@Override
 	public void onSuccessfulGetInventoryTrayLabelDto(
 			InventoryTrayLabelDto result) {
-		result.setLotCode(currentLotCode);
+		result.setLotCode(defaultLotCode);
 		newTrayLabelsCellTable.addTableData(result);
 	}
 

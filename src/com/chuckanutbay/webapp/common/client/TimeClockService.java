@@ -44,4 +44,18 @@ public interface TimeClockService extends RemoteService {
 	 * @return The data needed to generate a pay period report for each employee.
 	 */
 	List<PayPeriodReportData> getPayPeriodReportDataFromDatabase(Date start, Date end, Integer shift);
+	
+	/**
+	 * @param start The first day of the pay period.
+	 * @param end The last day of the pay period.
+	 * @param employee The {@link EmployeeDto} to generate pay period report for.
+	 * @return The data needed to generate a pay period report for each employee.
+	 */
+	List<PayPeriodReportData> getPayPeriodReportDataFromDatabase(Date start, Date end, EmployeeDto employee);
+	
+	/**
+	 * 
+	 * @return all employees in the database
+	 */
+	List<EmployeeDto> getEmployees();
 }

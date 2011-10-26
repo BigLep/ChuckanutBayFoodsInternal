@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConst
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -105,5 +106,12 @@ public class GwtWidgetHelper {
 		FocusPanel focusPanel = newFocusPanel(keyDownHandler);
 		focusPanel.add(widget);
 		return focusPanel;
+	}
+	public static ListBox newListBox(String...items) {
+		ListBox lb = new ListBox();
+		for (String s : items) {
+			lb.addItem(s);
+		}
+		return lb;
 	}
 }

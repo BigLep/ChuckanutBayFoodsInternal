@@ -49,7 +49,7 @@ public class TimeClockReportPanel extends SimplePanel {
 
 	private void gernerateFlexTables() {
 		for (WeekReportData weekIntervalsDto : reportData.getWeekReportData()) {
-			if (weekIntervalsDto.getHoursNormalPay() > 0) {
+			if ((weekIntervalsDto.getHoursNormalPay() + weekIntervalsDto.getHoursOvertime()) > 0) {
 				TimeClockReportFlexTable flexTable = new TimeClockReportFlexTable(weekIntervalsDto);
 				mainPanel.add(flexTable);
 			}

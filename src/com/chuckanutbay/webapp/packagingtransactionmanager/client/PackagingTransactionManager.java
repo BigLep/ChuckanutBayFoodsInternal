@@ -38,6 +38,7 @@ import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -59,6 +60,7 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 	private CbTextBox damagedQtyTb = new CbTextBox(100);
 	private CbListBox<DamageCodeDto> damageCodeLb = newCbListBox();
 	private CbIconButton submitButton = new CbIconButton(ADD_LARGE, "Submit", largeButtonStyles);
+	private Label lastTrayLabel = GwtWidgetHelper.newLabel("", "lastTrayLabel");
 	
 	
 	@Override
@@ -235,6 +237,7 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 				CbVerticalPanel mainPanel = new CbVerticalPanel()
 					.addWidget(headerPanel)
 					.addWidget(flexTable, H_ALIGN_CENTER)
+					.addWidget(lastTrayLabel, H_ALIGN_LEFT)
 					.setWidth(PAGE_WIDTH_PX)
 					.setHeight(PAGE_HEIGHT_PX)
 					.setCellSpacing(10);
@@ -291,6 +294,7 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 	@Override
 	public void onSuccessfulPersistPackagingTransactionDto() {
 		makeBorderGreen();
+		lastTrayLabel.setText("You just entered Tray Label: " + trayLabelTb.getText());
 		trayLabelTb.setText("");
 		startLabelTb.setText("");
 		endLabelTb.setText("");
