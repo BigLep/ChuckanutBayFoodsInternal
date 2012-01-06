@@ -149,6 +149,7 @@
 			<arg value="com.chuckanutbay.webapp.timeclock.TimeClock"/>
 			<arg value="com.chuckanutbay.webapp.timeclock.TimeClockReport"/>
 			<arg value="com.chuckanutbay.webapp.traylabelgenerator.TrayLabelGenerator"/>
+			<arg value="com.chuckanutbay.webapp.traylabelgenerator.OldTrayLabelGenerator"/>
 			<arg value="com.chuckanutbay.webapp.packagingtransactionmanager.PackagingTransactionManager"/>
 			<!-- add any other modules here -->
 		</java>
@@ -181,6 +182,7 @@
 				<exclude name="dashboard/**"/>
 				<exclude name="timeclockreport/**"/>
 				<exclude name="traylabelgenerator/**"/>
+				<exclude name="oldtraylabelgenerator/**"/>
 				<exclude name="fileTemplates/**"/>
 				<exclude name="packagingtransactionmanager/**"/>
 				<!-- add other files to exclude here -->

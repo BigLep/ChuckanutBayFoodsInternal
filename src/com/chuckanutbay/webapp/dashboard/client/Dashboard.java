@@ -22,6 +22,7 @@ public class Dashboard implements EntryPoint, ClickHandler {
 	private final Button timeClockButton = new Button("Time Clock");
 	private final Button timeClockReportButton = new Button("Time Clock Report");
 	private final Button trayLabelGeneratorButton = new Button("Tray Label Generator");
+	private final Button oldTrayLabelGeneratorButton = new Button("Old Tray Label Generator");
 	private final Button packagingTransactionManagerButton = new Button("Packaging Transaction Manager");
 
 
@@ -32,7 +33,7 @@ public class Dashboard implements EntryPoint, ClickHandler {
 			.setCellSpacing(10)
 			.setStyle("mainPanel");
 		
-		for (Button button : newArrayList(lotCodeManagerButton, timeClockButton, timeClockReportButton, trayLabelGeneratorButton, packagingTransactionManagerButton)) {
+		for (Button button : newArrayList(lotCodeManagerButton, timeClockButton, timeClockReportButton, trayLabelGeneratorButton, oldTrayLabelGeneratorButton, packagingTransactionManagerButton)) {
 			button.setStyleName("dashboardButton");
 			button.addClickHandler(this);
 			mainPanel.addWidget(button, H_ALIGN_CENTER);
@@ -54,6 +55,8 @@ public class Dashboard implements EntryPoint, ClickHandler {
 			Window.open("TimeClockReport.html", "TimeClockReport", "");
 		} else if(sender == trayLabelGeneratorButton) {
 			Window.open("TrayLabelGenerator.html", "TrayLabelGenerator", "");
+		} else if(sender == oldTrayLabelGeneratorButton) {
+			Window.open("OldTrayLabelGenerator.html", "OldTrayLabelGenerator", "");
 		} else if(sender == packagingTransactionManagerButton) {
 			Window.open("PackagingTransactionManager.html", "PackagingTransactionManager", "");
 		}

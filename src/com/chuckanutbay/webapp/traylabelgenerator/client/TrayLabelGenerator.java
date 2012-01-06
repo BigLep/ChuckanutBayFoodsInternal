@@ -54,7 +54,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 
 public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTableUpdateHandler, Handler, TrayLabelServerCommunicator {
-	private RootPanel rootPanel = RootPanel.get("TrayLabelGenerator");
+	protected RootPanel rootPanel = getRootPanel();
 	private CbHorizontalPanel headerPanel;
 	private CbIconButton newTrayLabelsButton;
 	private CbIconButton editTrayLabelsButton;
@@ -66,7 +66,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	private CbVerticalPanel newTrayLabelPanel;
 	private static final int IPAD_HEIGHT_PX = 986;
 	private static final int IPAD_WIDTH_PX = 788;
-	private OpenOrdersCellBrowser openOrdersCellBrowser;
+	protected OpenOrdersCellBrowser openOrdersCellBrowser;
 	private CbCellTable<TrayLabelDto> newTrayLabelsCellTable;
 	private String defaultLotCode;
 	private CbIconButton addInventoryButton;
@@ -84,6 +84,10 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 		getCurrentLotCodeFromServer();
 		getQuickbooksItemIdsFromServer();
 		InitializeUi();
+	}
+
+	protected RootPanel getRootPanel() {
+		return RootPanel.get("TrayLabelGenerator");
 	}
 
 	private void InitializeUi() {
@@ -133,11 +137,7 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	}
 
 	private void setupNewTrayLabelPanel() {
-		openOrdersCellBrowser = new OpenOrdersCellBrowser(new OpenOrdersTreeModel())
-			.setColumnWidth(235)
-			.setSize(700, 260)
-			.setStyle("openOrdersCellBrowser")
-			.setSelectionChangeHandler(this);
+		setupOpenOrdersCellBrowser();
 		addInventoryButton = new CbIconButton(ADD, "Add", this, addInventoryButtonStyles);
 		suggestOracle = new CbMultiWordSuggestOracle(newArrayList(""));
 		inventorySuggestBox = new SuggestBox(suggestOracle);
@@ -181,6 +181,14 @@ public class TrayLabelGenerator implements EntryPoint, ClickHandler, TrayLabelTa
 	}
 	
 
+
+	protected void setupOpenOrdersCellBrowser() {
+		openOrdersCellBrowser = new OpenOrdersCellBrowser(new OpenOrdersTreeModel())
+		.setColumnWidth(300)
+		.setSize(700, 260)
+		.setStyle("openOrdersCellBrowser")
+		.setSelectionChangeHandler(this);
+	}
 
 	private void setupHeader() {
 		headerPanel = new CbHorizontalPanel()

@@ -19,33 +19,40 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.TreeViewModel;
 
-public class OpenOrdersTreeModel implements TreeViewModel {
-		
-		protected final MultiSelectionModel<SalesOrderLineItemDto> selectionModel = new MultiSelectionModel<SalesOrderLineItemDto>();
-		protected final DefaultSelectionEventManager<SalesOrderLineItemDto> selectionManager = DefaultSelectionEventManager.createCheckboxManager();
-		protected List<SalesOrderLineItemDto> data;
-		protected ListDataProvider<SalesOrderDto> salesOrderDataProvider = new ListDataProvider<SalesOrderDto>(new ArrayList<SalesOrderDto>());
-		protected ListDataProvider<SalesOrderLineItemDto> lineItemDataProvider = new ListDataProvider<SalesOrderLineItemDto>(new ArrayList<SalesOrderLineItemDto>());
-		protected SalesOrderDto currentSalesOrder;
-		
-		public OpenOrdersTreeModel(List<SalesOrderLineItemDto> lineItems) {
-			data = lineItems;
-		}
-		
-		public OpenOrdersTreeModel() {
-			this(new ArrayList<SalesOrderLineItemDto>());
-		}
+public class OldOpenOrdersTreeModel extends OpenOrdersTreeModel {
+	
+		private String currentBatterType;
+		private ListDataProvider<String> batterDataProvider = new ListDataProvider<String>(new ArrayList<String>());
 		
 		@Override
 		public <T> NodeInfo<?> getNodeInfo(T value) {
 			if (value == null) {
 		        // LEVEL 0.
-		        // We passed null as the root value. Return the salesOrders.
+		        // We passed null as the root value. Return the flavors.
+				
+				updateBatterDataProvider();
+		        // Create a cell to display a composer.
+		        Cell<String> cell = new AbstractCell<String>() {
+					@Override
+					public void render(
+							Context context,
+							String value, SafeHtmlBuilder sb) {
+						if (value != null) {
+							sb.appendEscaped(value);
+						}
+					}
+		        };
+
+		        // Return a node info that pairs the data provider and the cell.
+		        return new DefaultNodeInfo<String>(batterDataProvider, cell);
+		        
+		      } else if (value instanceof String) {
+		    	  // LEVEL 1.
+		    	  // We want the children of the flavor. Return the salesOrders.
+		    	  
+		    	  currentBatterType = (String) value;
 		    	  updateSalesOrderDataProvider();
 		    	  Cell<SalesOrderDto> cell = new AbstractCell<SalesOrderDto>() {
 		    		  @Override
@@ -116,9 +123,7 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 				    				  }
 				    				  sb.appendEscaped("Item: " + itemString)
 				    				  .appendHtmlConstant("<br>")
-				    				  .appendEscaped("Cases: " + value.getCases())
-				    				  .appendHtmlConstant("<br>")
-				    				  .appendEscaped("Batter: " + getBatterType(value));
+				    				  .appendEscaped("Cases: " + value.getCases());
 				    			  }
 				    		  }
 				    	  };
@@ -166,27 +171,17 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 		      }
 			return null;
 		}
-
-		@Override
-		public boolean isLeaf(Object value) {
-			// The leaf nodes are SalesOrderLineItemDtos
-			if (value instanceof SalesOrderLineItemDto) {
-				return true;
+		
+		private void updateBatterDataProvider() {
+			List<String> batterTypes = batterDataProvider.getList();
+			batterTypes.clear();
+			for (SalesOrderLineItemDto lineItem : data) {
+				String batterType = getBatterType(lineItem);
+				if (isNotNullOrEmpty(batterType) && !batterTypes.contains(batterType)) {//Flavor isn't null, already in the list, or blank
+					batterTypes.add(batterType);
+				}
 			}
-			return false;
-		}
-		
-		public MultiSelectionModel<SalesOrderLineItemDto> getSelectionModel() {
-			return selectionModel;
-		}
-
-		public List<SalesOrderLineItemDto> getData() {
-			return data;
-		}
-		
-		public void setData(Collection<SalesOrderLineItemDto> data) {
-			this.data = newArrayList(data);
-			updateSalesOrderDataProvider();
+			Collections.sort(batterTypes, String.CASE_INSENSITIVE_ORDER);
 		}
 		
 		protected void updateSalesOrderDataProvider() {
@@ -195,7 +190,8 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 	    	  
 	    	  for (SalesOrderLineItemDto lineItem : data) {
 	    		  SalesOrderDto salesOrder = lineItem.getSalesOrderDto();
-	    		  if(!salesOrders.contains(salesOrder)) {
+	    		  String batterType = getBatterType(lineItem);
+	    		  if(isNotNullOrEmpty(batterType) && batterType.equals(currentBatterType) && !salesOrders.contains(salesOrder)) {
 	    			  salesOrders.add(salesOrder);
 	    		  }
 	    	  }
@@ -204,11 +200,11 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 					@Override
 					public int compare(SalesOrderDto thing1,
 							SalesOrderDto thing2) {
-						int shipDateComparison = thing1.getShipdate().compareTo(thing2.getShipdate());
-						if (shipDateComparison != 0) {
-							return shipDateComparison;
+						int customerNameComparison = thing1.getCustomerName().compareTo(thing2.getCustomerName());
+						if (customerNameComparison != 0) {
+							return customerNameComparison;
 						} else {
-							return thing1.getCustomerName().compareTo(thing2.getCustomerName());
+							return thing1.getId().compareTo(thing2.getId());
 						}
 					}
 					
@@ -220,24 +216,17 @@ public class OpenOrdersTreeModel implements TreeViewModel {
 			  lineItems.clear();
 	    	  
 	    	  for (SalesOrderLineItemDto lineItem : data) {
-	    		  if(lineItem.getSalesOrderDto().equals(currentSalesOrder)) {
+	    		  String batterType = getBatterType(lineItem);
+	    		  if(lineItem.getSalesOrderDto().equals(currentSalesOrder) && isNotNullOrEmpty(batterType) && batterType.equals(currentBatterType)) {
 	    			  lineItems.add(lineItem);
 	    		  }
 	    	  }
 		}
 		
-		protected String getBatterType(SalesOrderLineItemDto lineItem) {
-			String batterType;
-			if (lineItem.getSubItemDto() == null) {
-				batterType = lineItem.getQuickbooksItemDto().getBatterType();
-			} else {
-				batterType = lineItem.getSubItemDto().getBatterType();
-			}
-			if (batterType == null) {
-				return "";
-			} else {
-				return batterType;
-			}
+		public void setData(Collection<SalesOrderLineItemDto> data) {
+			super.data = newArrayList(data);
+			updateBatterDataProvider();
 		}
+
 		
 	}
