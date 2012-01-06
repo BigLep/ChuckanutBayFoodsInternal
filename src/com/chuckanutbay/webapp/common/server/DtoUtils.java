@@ -487,10 +487,14 @@ public class DtoUtils {
 
 		@Override
 		public DamageCodeDto apply(DamageCode input) {
-			DamageCodeDto output = new DamageCodeDto();
-			output.setId(input.getId());
-			output.setCode(input.getCode());
-			return output;
+			if (input == null) {
+				return null;
+			} else {
+				DamageCodeDto output = new DamageCodeDto();
+				output.setId(input.getId());
+				output.setCode(input.getCode());
+				return output;
+			}
 		}
 		
 	};
