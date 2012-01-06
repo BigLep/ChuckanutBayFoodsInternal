@@ -255,10 +255,6 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 				}
 				
 				while (d < new Period(sundayBeforePayPeriodStart, payPeriodEnd, PeriodType.days()).getDays()) {
-					if ((d+1) % 7 == 0) {
-						week = new WeekReportData();
-						payPeriod.addInterval(week);
-					} 
 					for (EmployeeWorkInterval interval : findIntervalsHelper(employee, sundayBeforePayPeriodStart, d)) {
 						if (interval.getEndDateTime() != null) {
 							double intervalHours = getDifference(interval.getStartDateTime(), interval.getEndDateTime());
@@ -269,9 +265,13 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 							day.addInterval(intervalDto);
 						}
 					}
+					d++;
+					if (d % 7 == 0) {
+						week = new WeekReportData();
+						payPeriod.addInterval(week);
+					} 
 					day = new DayReportData();
 					week.addInterval(day);
-					d++;
 				}
 				for (WeekReportData weekData : payPeriod.getWeekReportData()) {
 					payPeriod.addNormalPayHours(weekData.getHoursNormalPay());

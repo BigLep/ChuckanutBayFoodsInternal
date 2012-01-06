@@ -42,7 +42,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 	//Date Formats
 	//shortDayOfMonth - Mon, Sep 13
-	private String SHORT_DAY_OF_MONTH_FORMAT = "EEE, MMM d";
+	private String SHORT_DAY_OF_MONTH_FORMAT = "M/dd/yy";
 	
 	//UI components
 	private RootPanel rootPanel;
@@ -92,7 +92,6 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				mainPanel.clear();
 				int shift;
 				if (startDateBox.getValue() == null) {
 					Window.alert("Please enter a start date.");
@@ -112,6 +111,7 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 				} else {
 					getPayPeriodReportData(startDateBox.getValue(), endDateBox.getValue(), employeeListBox.getSelected());
 				}
+				mainPanel.clear();
 			}
 		}});
 		
