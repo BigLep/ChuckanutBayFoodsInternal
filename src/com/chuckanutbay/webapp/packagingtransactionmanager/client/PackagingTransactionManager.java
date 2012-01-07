@@ -63,28 +63,31 @@ import com.google.gwt.user.client.ui.Widget;
  * Each data field is "tabable." Tabbing onto the Submit button will fire a
  * click event.
  * <p>
- * When the Submit button is clicked, 
+ * When the Submit button is clicked, the data in each field is verified for
+ * proper data types (no letters where there should only be numbers etc) and
+ * then the data is cleared from the screen and sent to the server to be added
+ * to the database.
  */
 public class PackagingTransactionManager implements EntryPoint, PackagingTransactionServerCommunicator {
 	private static final int PAGE_WIDTH_PX = Window.getClientWidth();
 	private static final int PAGE_HEIGHT_PX = Window.getClientHeight();
-	private CbFlexTable flexTable = new CbFlexTable();//Where all the fields are positioned
-	private TrayLabelDto currentTrayLabel;//The tray label with the id matching the text in the trayLabelTb
-	private Label lastTrayLabel = newLabel("", "lastTrayLabel");//Displays the id of the last tray label that was submitted.
+	private CbFlexTable flexTable = new CbFlexTable();// Where all the fields are positioned
+	private TrayLabelDto currentTrayLabel;// The tray label with the id matching the text in the trayLabelTb
+	private Label lastTrayLabel = newLabel("", "lastTrayLabel");// Displays the id of the last tray label that was submitted.
 	
-	//Fields
-	//These are mostly "Cb" versions of each widget that I have created to make
-	//setup simpler and to be able to set the tab ordering
-	private CbListBox<EmployeeDto> packedByLb = newCbListBox();		//Contains a list of employees. The selected employee is who packed the tray
-	private CbDateBox dateBox = new CbDateBox(60);					//The date the cakes were packed
-	private CbTextBox trayLabelTb = new CbTextBox(100);				//The tray label id
-	private CbTextBox startLabelTb = new CbTextBox(100);			//The digital barcode value of the first label in the first set of labels
-	private CbTextBox endLabelTb = new CbTextBox(100);				//The digital barcode value of the second label in the first set of labels
-	private CbTextBox startLabel2Tb = new CbTextBox(100);			//The digital barcode value of the first label in the second set of labels (if applicable)
-	private CbTextBox endLabel2Tb = new CbTextBox(100);				//The digital barcode value of the second label in the second set of labels (if applicable)
-	private CbTextBox testWeightTb = new CbTextBox(100);			//The test weight of a cheesecake on the tray
-	private CbTextBox damagedQtyTb = new CbTextBox(100);			//The number of cakes damaged on the tray
-	private CbListBox<DamageCodeDto> damageCodeLb = newCbListBox(); //Contains a list of damage codes and descriptions
+	// Fields
+	// These are mostly "Cb" versions of each widget that I have created to make
+	// setup simpler and to be able to set the tab ordering
+	private CbListBox<EmployeeDto> packedByLb = newCbListBox();
+	private CbDateBox dateBox = new CbDateBox(60);
+	private CbTextBox trayLabelTb = new CbTextBox(100);
+	private CbTextBox startLabelTb = new CbTextBox(100);
+	private CbTextBox endLabelTb = new CbTextBox(100);
+	private CbTextBox startLabel2Tb = new CbTextBox(100);
+	private CbTextBox endLabel2Tb = new CbTextBox(100);
+	private CbTextBox testWeightTb = new CbTextBox(100);
+	private CbTextBox damagedQtyTb = new CbTextBox(100);
+	private CbListBox<DamageCodeDto> damageCodeLb = newCbListBox(); 
 	private CbIconButton submitButton = new CbIconButton(ADD_LARGE, "Submit", largeButtonStyles);
 	
 	@Override
@@ -94,9 +97,9 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 		getEmployeeDtosFromDatabase();
 	}
 
-	private void initializeGui() {//Working from the innermost widget to the RootPanel
+	private void initializeGui() {// Working from the innermost widget to the RootPanel
 		
-		//Setup flexTable
+		// Setup flexTable
 		flexTable.setStyleName("flexTable");
 		flexTable.setWidth(PAGE_WIDTH_PX + "px");
 		
@@ -116,12 +119,12 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 		labelWidgetPairsRow2.put("End Label 2", endLabel2Tb);
 		addLabelWidgetPairs(labelWidgetPairsRow2, 2, 3);
 		
-		//Make the button row all one column
+		// Make the button row all one column
 		int buttonRow = 4; int buttonColumn = 0;
 		flexTable.getFlexCellFormatter().setColSpan(buttonRow, buttonColumn, 8);
 		flexTable.setWidget(submitButton, buttonRow, buttonColumn).setHorizontalAlignement(buttonRow, buttonColumn, H_ALIGN_CENTER);
 		
-		//Setup Tab Links
+		// Setup Tab Links
 		packedByLb.setNextWidget(
 		dateBox.setNextWidget(
 		trayLabelTb.setNextWidget(
@@ -139,23 +142,23 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 		testWeightTb
 		));
 		
-		//Set TextBox initial values
+		// Set TextBox initial values
 		damagedQtyTb.setText("0");
 		
-		//Setup TrayLabelTb
+		// Setup TrayLabelTb
 		trayLabelTb.addChangeHandler(new ChangeHandler() {
 			@Override
-			public void onChange(ChangeEvent event) {//Called when the value of the tray label text box is changed
+			public void onChange(ChangeEvent event) {// Called when the value of the tray label text box is changed
 				try {
 					getTrayLabelDto(Integer.valueOf(trayLabelTb.getText()));
-				} catch (NumberFormatException e) {//A non number has been entered
-					//Don't do anything
+				} catch (NumberFormatException e) {// A non number has been entered
+					// Don't do anything
 				}
 			}
 		});
 		
-		//Setup submitButton
-		//When the submitButton is "tabbed" to we want it pretend it was clicked
+		// Setup submitButton
+		// When the submitButton is "tabbed" to we want it pretend it was clicked
 		submitButton.addFocusHandler(new FocusHandler() {
 			@Override
 			public void onFocus(FocusEvent event) {
@@ -165,14 +168,14 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 		submitButton.addClickHandler(new ClickHandler() {
 
 			@Override
-			public void onClick(ClickEvent event) {//Verify the data and then send it to the server
-				//Prepare a new PackagingTransactionDto to store the data from the fields
+			public void onClick(ClickEvent event) {// Verify the data and then send it to the server
+				// Prepare a new PackagingTransactionDto to store the data from the fields
 				PackagingTransactionDto ptDto = new PackagingTransactionDto();
 				
-				makeBorderRed(); //This is changed to green if a good return comes
+				makeBorderRed(); // This is changed to green if a good return comes
 				
-				//setEmployee
-				if (packedByLb.getSelected() == null) {//No employee is selected
+				// setEmployee
+				if (packedByLb.getSelected() == null) {// No employee is selected
 					Window.alert("Please select an employee");
 					packedByLb.setFocus(true);
 					return;
@@ -180,8 +183,8 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 					ptDto.setEmployee(packedByLb.getSelected());
 				}
 				
-				//setDate
-				if (dateBox.getValue() == null) {//No date is selected
+				// setDate
+				if (dateBox.getValue() == null) {// No date is selected
 					Window.alert("Please select a date");
 					dateBox.setFocus(true);
 					return;
@@ -189,10 +192,8 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 					ptDto.setDate(dateBox.getValue());
 				}
 				
-				//setTrayLabelId
-				if (currentTrayLabel == null) {//A trayLabel can't be found in 
-											   //the database with an id matching 
-											   //the value of trayLabelTb
+				// setTrayLabelId
+				if (currentTrayLabel == null) {// A trayLabel can't be found in the database with an id matching the value of trayLabelTb
 					Window.alert("Please enter a proper Tray Label");
 					trayLabelTb.setFocus(true);
 					return;
@@ -200,92 +201,85 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 					ptDto.setTrayLabelId(currentTrayLabel.getId());
 				}
 				
-				//setLabels
+				// setLabels
 				List<CbTextBox> labelTextBoxes = newArrayList(startLabelTb, endLabelTb, startLabel2Tb, endLabel2Tb);
 				List<String> labels = newArrayList();
 				for (CbTextBox tb : labelTextBoxes) {
 					String tbText = tb.getText();
-					if (tbText.matches("[0-9A-Z]{10,15}")) {//Contains 10-15 numbers and/or capital letters
+					if (tbText.matches("[0-9A-Z]{10,15}")) {// Contains 10-15 numbers and/or capital letters
 						labels.add(tbText);
-					} else if (!tbText.equals("")) {//Something strange has been entered
+					} else if (!tbText.equals("")) {// Something strange has been entered
 						Window.alert("Please enter a proper Label Code");
 						tb.setFocus(true);
 						return;
 					}
 				}
 				
-				//Sort the labels
+				// Sort the labels
 				sort(labels, String.CASE_INSENSITIVE_ORDER);
 				
-				if (labels.size() == 0) {//It is probably a case where the new labels aren't being used
-					//Do nothing
-				} else {
-					if (!digitalLabelsAndTrayLabelMatch(labels)) {
-						if (!Window.confirm("You have scanned a digital label that doesn't match the tray label! Click OK to ignore this problem")) {//The user wants to fix the mistake
-							startLabelTb.setFocus(true);
-							return;
-						}
-					}
-					if (labels.size() % 2 == 1) {//An odd number of labels were scanned. Probably a mistake
-						if (Window.confirm("You have scanned an odd number of label barcodes!")) {//It doesn't matter, move on!
-							ptDto.setStartLabel1(labels.get(0));
-							if (labels.size() == 3) {//There is a pair and a half
-								ptDto.setEndLabel1(labels.get(1));
-								ptDto.setStartLabel2(labels.get(2));
-								
-							}
-						} else {//The user wants to fix the mistake
-							startLabelTb.setFocus(true);
-							return;
-						}
-					} else {//They scanned a pair or two of label barcodes. Yay!
+				if (labels.size() == 0) {// It is probably a case where the new labels aren't being used
+					// Do nothing
+				} else if (!digitalLabelsAndTrayLabelMatch(labels) && !Window.confirm("You have scanned a digital label that doesn't match the tray label! Click OK to ignore this problem")) {// The user wants to fix the mistake
+					startLabelTb.setFocus(true);
+					return;
+				} else if (labels.size() % 2 == 1) {// An odd number of labels were scanned. Probably a mistake
+					if (Window.confirm("You have scanned an odd number of label barcodes!")) {// It doesn't matter, move on!
 						ptDto.setStartLabel1(labels.get(0));
-						ptDto.setEndLabel1(labels.get(1));
-						if (labels.size() == 4) {//There are 2 pairs
+						if (labels.size() == 3) {// There is a pair and a half
+							ptDto.setEndLabel1(labels.get(1));
 							ptDto.setStartLabel2(labels.get(2));
-							ptDto.setEndLabel2(labels.get(3));
+							
 						}
+					} else {// The user wants to fix the mistake
+						startLabelTb.setFocus(true);
+						return;
+					}
+				} else {// They scanned a pair or two of label barcodes. Yay!
+					ptDto.setStartLabel1(labels.get(0));
+					ptDto.setEndLabel1(labels.get(1));
+					if (labels.size() == 4) {// There are 2 pairs
+						ptDto.setStartLabel2(labels.get(2));
+						ptDto.setEndLabel2(labels.get(3));
 					}
 				}
 				
-				//setTestWeight
+				// setTestWeight
 				try {
 					ptDto.setTestWeight(Double.valueOf(testWeightTb.getText()));
-				} catch (NumberFormatException e) {//Something other than a number was entered
+				} catch (NumberFormatException e) {// Something other than a number was entered
 					Window.alert("Please enter a proper Weight");
 					testWeightTb.setFocus(true);
 					return;
 				}
 				
-				//setDamagedQty
+				// setDamagedQty
 				try {
 					ptDto.setDamagedQty(Integer.valueOf(damagedQtyTb.getText()));
-				} catch (NumberFormatException e) {//Something other than a number was entered
+				} catch (NumberFormatException e) {// Something other than a number was entered
 					Window.alert("Please enter a proper Damaged Qty");
 					damagedQtyTb.setFocus(true);
 					return;
 				}
 				
-				//setDamageCode
+				// setDamageCode
 				if (ptDto.getDamagedQty() != 0 && damageCodeLb.getSelected() != null) {
 					ptDto.setDamageCode(damageCodeLb.getSelected());
 				}
 				
-				//Send the packaging transaction off to the server and then database
+				// Send the packaging transaction off to the server and then database
 				persistPackagingTransactionDtoToDatabase(ptDto);
 				
 			}
 
 			private boolean digitalLabelsAndTrayLabelMatch(List<String> labels) {
-				String productId;
-				if (currentTrayLabel.getQbItem() != null) {
-					productId = currentTrayLabel.getQbItem().getId();
-				} else {//For whatever reason the currentTrayLabel doesn't have an QuickbooksItem attached to it
+				if (currentTrayLabel.getQbItem() == null) {// For whatever reason the currentTrayLabel doesn't have an QuickbooksItem attached to it
 					return false;
 				}
-				String productIdBase = productId.substring(0, productId.indexOf("-"));//Get the part before the dash
+				String productId = currentTrayLabel.getQbItem().getId();
+				String productIdBase = productId.substring(0, productId.indexOf("-"));// Get the part before the dash
 				for (String s : labels) {
-					if (!s.startsWith(productIdBase)) {//The tray label and digital label don't match
+					if (!s.startsWith(productIdBase)) {// The tray label and digital label don't match
 						return false;
 					}
 				}
@@ -294,13 +288,13 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 			
 		});
 		
-		//Setup headerPanel
+		// Setup headerPanel
 				CbHorizontalPanel headerPanel = new CbHorizontalPanel()
 					.addWidget(newImage(LOGO, 400), H_ALIGN_LEFT)
 					.addWidget(newLabel("Packaging Transaction Manager", "title"), H_ALIGN_CENTER, V_ALIGN_MIDDLE)
 					.setWidth(PAGE_WIDTH_PX);
 				
-				//Setup mainPanel
+				// Setup mainPanel
 				CbVerticalPanel mainPanel = new CbVerticalPanel()
 					.addWidget(headerPanel)
 					.addWidget(flexTable, H_ALIGN_CENTER)
@@ -309,15 +303,15 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 					.setHeight(PAGE_HEIGHT_PX)
 					.setCellSpacing(10);
 		
-		//Setup simplePanel
-		//NOTE ON GWT: For some reason I (Mitchell) have only been successful at 
-				//Applying styles to SimplePanels so I always throw the main panel into a simple panel
+		// Setup simplePanel
+		// NOTE ON GWT: For some reason I (Mitchell) have only been successful at 
+				// Applying styles to SimplePanels so I always throw the main panel into a simple panel
 		SimplePanel simplePanel = newSimplePanel(mainPanel, "backgroundPanel");
 		
-		//Setup rootPanel
-		//NOTE ON GWT: The RootPanel is the space allocated to put all the GWT widgets
-				//The root allocated for this class has the same name as the class
-		RootPanel.get("PackagingTransactionManager").add(simplePanel);
+		// Setup rootPanel
+		// NOTE ON GWT: The RootPanel is the space allocated to put all the GWT widgets
+				// The root allocated for this class has the same name as the class
+		RootPanel.get(this.getClass().getSimpleName()).add(simplePanel);
 	}	
 	
 	/**
@@ -330,9 +324,9 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 	 */
 	private void addLabelWidgetPairs(Map<String, Widget> pairs, int row, int column) {
 		for (Map.Entry<String, Widget> pair : pairs.entrySet()) {
-			flexTable.setText(pair.getKey(), row, column).setCellStyle("flexTableLabel", row, column); //Add the label to the right place and format it
-			flexTable.setWidget(pair.getValue(), row + 1, column);//Add the widget in the next row down
-			column++; //Move one column to the right
+			flexTable.setText(pair.getKey(), row, column).setCellStyle("flexTableLabel", row, column); // Add the label to the right place and format it
+			flexTable.setWidget(pair.getValue(), row + 1, column);// Add the widget in the next row down
+			column++; // Move one column to the right
 		}
 	}
 	
@@ -343,7 +337,7 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 	private void makeBorderGreen() {
 		flexTable.setStyleName("greenBorder");
 		
-		//After 5 seconds set the style back to normal
+		// After 5 seconds set the style back to normal
 		Timer timer = new Timer() {
 
 			@Override
@@ -362,83 +356,80 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 		flexTable.setStyleName("redBorder");
 	}
 	
-	//////////////////////////////////
-	// Remote Procedure Calls (RPC) //
-	//////////////////////////////////
+	/*#################################
+	 * Remote Procedure Calls (RPC) 
+	 *#################################*/ 
 	
-	//NOTE ON GWT: RPC's require you to create a Service and an Asynchronous Callback
-			//If you want to have the server do something, you tell the Service 
-			//what you want done and give it the Asynchronous Callback. The Asynchronous
-			//Callback is called when the server method is done. To make this process
-			//more comprehensible, the Services are handled by the ServiceUtils class
-			//and the Asynchronous Callback's are handled by RpcHelper classes
+	// NOTE ON GWT: RPC's require you to create a Service and an Asynchronous Callback
+			// If you want to have the server do something, you tell the Service 
+			// what you want done and give it the Asynchronous Callback. The Asynchronous
+			// Callback is called when the server method is done. To make this process
+			// more comprehensible, the Services are handled by the ServiceUtils class
+			// and the Asynchronous Callback's are handled by RpcHelper classes
 	
 	@Override
 	public void getDamageCodeDtosFromDatabase() {
-		//Request the damage codes from the server
-		//Tell the server to call the onSuccessfulGetDamageCodeDtos method when it finishes
+		// Request the damage codes from the server
+		// Tell the server to call the onSuccessfulGetDamageCodeDtos method when it finishes
 		createPackagingTransactionService().getDamageCodeDtos(createGetDamageCodeDtosCallback(this));
 	}
 
 	@Override
 	public void getEmployeeDtosFromDatabase() {
-		//Request the employees from the server
-		//Tell the server to call the onSuccessfulGetEmployeeDtos method when it finishes
+		// Request the employees from the server
+		// Tell the server to call the onSuccessfulGetEmployeeDtos method when it finishes
 		createPackagingTransactionService().getEmployeeDtos(createGetEmployeeDtosCallback(this));
 	}
 	
 	@Override
 	public void getTrayLabelDto(Integer id) {
-		//Request the tray label with the given id
-		//Tell the server to call the onSuccessfulGetTrayLabelDto method when it finishes
+		// Request the tray label with the given id
+		// Tell the server to call the onSuccessfulGetTrayLabelDto method when it finishes
 		createTrayLabelService().getTrayLabelDto(id, createGetTrayLabelDtoCallback(this));
 	}
 	
 	@Override
 	public void persistPackagingTransactionDtoToDatabase(
 			PackagingTransactionDto packagingTransaction) {
-		//Request that server store the given packaging transaction in the database
-		//Tell the server to call the onSuccessfulPersistPackagingTransactionDto method when it finishes
+		// Request that server store the given packaging transaction in the database
+		// Tell the server to call the onSuccessfulPersistPackagingTransactionDto method when it finishes
 		createPackagingTransactionService().persistPackagingTransactionDto(packagingTransaction, createPersistPackagingTransactionDtoCallback(this));
 	}
 
 	@Override
-	public void onSuccessfulGetDamageCodeDtos(List<DamageCodeDto> damageCodes) {//The server found the given damageCodes in the database
-		//Store each damageCode in a map where the key is a String representation of the damageCode and the value is the DamageCodeDto object
+	public void onSuccessfulGetDamageCodeDtos(List<DamageCodeDto> damageCodes) {// The server found the given damageCodes in the database
+		// Store each damageCode in a map where the key is a String representation of the damageCode and the value is the DamageCodeDto object
 		Map<String, DamageCodeDto> map = newLinkedHashMap();
 		for (DamageCodeDto damageCode : damageCodes) {
 			map.put(damageCode.getId() + " - " + damageCode.getCode(), damageCode);
 		}
-		//Set the data of the damageCodeLb to be the map
+		// Set the data of the damageCodeLb to be the map
 		damageCodeLb.setData(map);
 	}
 
 	@Override
-	public void onSuccessfulGetEmployeeDtos(List<EmployeeDto> employees) {//The server found the given employees in the database
-		//Store each employee in a map where the key is a String representation of the employee's name and the value is the EmployeeDto object
+	public void onSuccessfulGetEmployeeDtos(List<EmployeeDto> employees) {// The server found the given employees in the database
+		// Store each employee in a map where the key is a String representation of the employee's name and the value is the EmployeeDto object
 		Map<String, EmployeeDto> map = newLinkedHashMap();
 		for (EmployeeDto employee : employees) {
 			map.put(employee.getFirstName() + " " + employee.getLastName(), employee);
 		}
-		//Set the data of the packedByLb to be the map
+		// Set the data of the packedByLb to be the map
 		packedByLb.setData(map);
 	}
 	
 	@Override
-	public void onSuccessfulGetTrayLabelDto(TrayLabelDto result) {//The server looked for a tray label 
-																  //with the id it was given and returned what it found.
-																  //If result is null it means that there was no tray 
-																  //label with the id passed to the server
+	public void onSuccessfulGetTrayLabelDto(TrayLabelDto result) {// The server looked for a tray label with the id it was given and returned what it found. If result is null it means that there was no tray label with the id passed to the server
 		currentTrayLabel = result;
 	}
 
 	@Override
-	public void onSuccessfulPersistPackagingTransactionDto() {//The packaging transaction was successfully stored in the database
+	public void onSuccessfulPersistPackagingTransactionDto() {// The packaging transaction was successfully stored in the database
 		makeBorderGreen();
 		
 		lastTrayLabel.setText("You just entered Tray Label: " + trayLabelTb.getText());
 		
-		//Reset the text boxes
+		// Reset the text boxes
 		trayLabelTb.setText("");
 		startLabelTb.setText("");
 		endLabelTb.setText("");

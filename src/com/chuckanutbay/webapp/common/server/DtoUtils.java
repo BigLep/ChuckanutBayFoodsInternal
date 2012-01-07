@@ -489,12 +489,11 @@ public class DtoUtils {
 		public DamageCodeDto apply(DamageCode input) {
 			if (input == null) {
 				return null;
-			} else {
-				DamageCodeDto output = new DamageCodeDto();
-				output.setId(input.getId());
-				output.setCode(input.getCode());
-				return output;
 			}
+			DamageCodeDto output = new DamageCodeDto();
+			output.setId(input.getId());
+			output.setCode(input.getCode());
+			return output;
 		}
 		
 	};

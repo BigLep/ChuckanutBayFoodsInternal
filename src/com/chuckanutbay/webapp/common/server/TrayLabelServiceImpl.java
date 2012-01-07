@@ -41,6 +41,7 @@ import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
+import com.google.common.base.Splitter;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLabelService {
@@ -269,8 +270,9 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 			trayLabel.setCakesPerCase(getCakesPerCase(qbItem));
 			trayLabel.setQbItem(DtoUtils.toQuickbooksItemDtoFunction.apply(qbItem));
 		} else {//Has sub item
-			String primaryId = qbItemId.substring(0, qbItemId.indexOf(" "));
-			String flavor = qbItemId.substring(qbItemId.indexOf(" ") + 1);
+			String[] idParts = qbItemId.split(" ");
+			String primaryId = idParts[0];
+			String flavor = idParts[1];
 			QuickbooksItem qbItem = new QuickbooksItemHibernateDao().findById(primaryId);
 			for (QuickbooksSubItem subItem : qbItem.getSubItems()) {
 				if (subItem.getSubItem().getFlavor().equals(flavor)) {
