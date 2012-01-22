@@ -4,11 +4,9 @@
 		"http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-	
-	<!--
-		Hibernate filter for the requests that need a database transaction.
-		This filter should be invoked before any calls to the database are made.
-	-->
+
+	<!-- Hibernate filter for the requests that need a database transaction. 
+		This filter should be invoked before any calls to the database are made. -->
 	<filter>
 		<filter-name>HibernateFilter</filter-name>
 		<description>Opens/closes hibernate session for each request</description>
@@ -26,81 +24,81 @@
 		<filter-name>HibernateFilter</filter-name>
 		<url-pattern>/common/TimeClockService</url-pattern>
 	</filter-mapping>
-		<filter-mapping>
+	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
 		<url-pattern>/common/TrayLabelService</url-pattern>
 	</filter-mapping>
-		<filter-mapping>
+	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
 		<url-pattern>/common/PackagingTransactionService</url-pattern>
 	</filter-mapping>
-		<filter-mapping>
+	<filter-mapping>
 		<filter-name>HibernateFilter</filter-name>
 		<url-pattern>/common/ReportService</url-pattern>
 	</filter-mapping>
-	
+
 	<!-- Servlets -->
-	 
+
 	<servlet>
 		<servlet-name>InventoryItemService</servlet-name>
 		<servlet-class>com.chuckanutbay.webapp.common.server.InventoryItemServiceImpl</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>InventoryItemService</servlet-name>
 		<url-pattern>/common/InventoryItemService</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
-	<servlet-name>InventoryLotService</servlet-name>
+		<servlet-name>InventoryLotService</servlet-name>
 		<servlet-class>com.chuckanutbay.webapp.common.server.InventoryLotServiceImpl</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>InventoryLotService</servlet-name>
 		<url-pattern>/common/InventoryLotService</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
-	<servlet-name>TimeClockService</servlet-name>
+		<servlet-name>TimeClockService</servlet-name>
 		<servlet-class>com.chuckanutbay.webapp.common.server.TimeClockServiceImpl</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>TimeClockService</servlet-name>
 		<url-pattern>/common/TimeClockService</url-pattern>
 	</servlet-mapping>
-	
-		<servlet>
-	<servlet-name>TrayLabelService</servlet-name>
+
+	<servlet>
+		<servlet-name>TrayLabelService</servlet-name>
 		<servlet-class>com.chuckanutbay.webapp.common.server.TrayLabelServiceImpl</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>TrayLabelService</servlet-name>
 		<url-pattern>/common/TrayLabelService</url-pattern>
 	</servlet-mapping>
-	
-		<servlet>
-	<servlet-name>PackagingTransactionService</servlet-name>
+
+	<servlet>
+		<servlet-name>PackagingTransactionService</servlet-name>
 		<servlet-class>com.chuckanutbay.webapp.common.server.PackagingTransactionServiceImpl</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>PackagingTransactionService</servlet-name>
 		<url-pattern>/common/PackagingTransactionService</url-pattern>
 	</servlet-mapping>
-	
-		<servlet>
-	<servlet-name>ReportService</servlet-name>
+
+	<servlet>
+		<servlet-name>ReportService</servlet-name>
 		<servlet-class>com.chuckanutbay.webapp.common.server.ReportServiceImpl</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>ReportService</servlet-name>
 		<url-pattern>/common/ReportService</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>Dashboard.html</welcome-file>

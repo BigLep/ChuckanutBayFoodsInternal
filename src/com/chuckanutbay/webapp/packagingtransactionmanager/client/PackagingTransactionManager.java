@@ -311,7 +311,7 @@ public class PackagingTransactionManager implements EntryPoint, PackagingTransac
 		// Setup rootPanel
 		// NOTE ON GWT: The RootPanel is the space allocated to put all the GWT widgets
 				// The root allocated for this class has the same name as the class
-		RootPanel.get(this.getClass().getSimpleName()).add(simplePanel);
+		RootPanel.get("PackagingTransactionManager").add(simplePanel);
 	}	
 	
 	/**
