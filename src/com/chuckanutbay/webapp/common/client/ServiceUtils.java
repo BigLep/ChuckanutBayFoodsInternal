@@ -38,6 +38,11 @@ public class ServiceUtils {
 		((ServiceDefTarget)service).setServiceEntryPoint("/common/PackagingTransactionService");
 		return service;
 	}
+	public static ReportServiceAsync createReportService() {
+		ReportServiceAsync service = GWT.create(ReportService.class);
+		((ServiceDefTarget)service).setServiceEntryPoint("/common/ReportService");
+		return service;
+	}
 	
 	/**
 	 * {@link AsyncCallback} that provides a default {@link AsyncCallback#onFailure(Throwable)} handler.
