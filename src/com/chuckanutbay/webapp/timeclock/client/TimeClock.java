@@ -48,7 +48,7 @@ public class TimeClock implements EntryPoint, ScanHandler, ScanInOutHandler, Clo
 	private FlexTable employeeTable2 = new FlexTable();
 	private RootPanel rootPanel = RootPanel.get("TimeClock");
 	private SimplePanel confirmationPanelContainer = new SimplePanel();
-	private ClockInConfirmationPanel clockInConfirmationPanel;
+	private ClockInCancelationPanel clockInConfirmationPanel;
 	private ClockOutDialogBox clockOutDialogBox;
 	
 	//Data Objects
@@ -132,7 +132,7 @@ public class TimeClock implements EntryPoint, ScanHandler, ScanInOutHandler, Clo
 		Image image = new Image(WHITE_LOGO);
 		image.setWidth("400px");
 		column1Panel.add(image);
-		column1Panel.add(new Clock(new Date(), true, 400, 100));
+		column1Panel.add(new Clock(400, 100));
 		column1Panel.add(confirmationPanelContainer);
 		column1Panel.setSpacing(20);
 		
@@ -311,7 +311,7 @@ public class TimeClock implements EntryPoint, ScanHandler, ScanInOutHandler, Clo
 		if (employee == null) {
 			GWT.log("Invalid clock-in");
 		} else {
-			clockInConfirmationPanel = new ClockInConfirmationPanel(this, employee, 400, 372);
+			clockInConfirmationPanel = new ClockInCancelationPanel(this, employee, 400, 372);
 			confirmationPanelContainer.clear();
 			confirmationPanelContainer.add(clockInConfirmationPanel);
 			employeeSignInConfirmationTimer.schedule(TEN_SECONDS_IN_MILLISECONDS);

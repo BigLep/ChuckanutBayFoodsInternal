@@ -55,6 +55,15 @@ public class RpcHelper {
 		};
 	}
 	
+	public static AsyncCallback<List<EmployeeDto>> createGetEmployeesCallback(final TimeClockReportHandler caller) {
+		return new DefaultAsyncCallback<List<EmployeeDto>>() {
+			@Override
+			public void onSuccess(List<EmployeeDto> employees) {
+				caller.onSuccessfulGetEmployees(employees);
+			}
+		};
+	}
+	
 	public static AsyncCallback<IntervalDto> createGetLastPayPeriodIntervalCallback(final TimeClockReportHandler caller) {
 		return new DefaultAsyncCallback<IntervalDto>() {
 			@Override

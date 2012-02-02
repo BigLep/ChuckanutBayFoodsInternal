@@ -23,6 +23,11 @@ public class CbDateBox extends DateBox {
 		this.setWidth(width);
 	}
 	
+	public CbDateBox(int width, String format) {
+		this(width);
+		this.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat(format)));
+	}
+	
 	public TextBox setNextWidget(FocusWidget nextWidget) {
 		linker.setNextWidget(nextWidget);
 		return this.getTextBox();

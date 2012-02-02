@@ -30,4 +30,10 @@ public interface TimeClockServiceAsync {
 	void updateMinutesWorkedInCurrentWeek(SortedSet<EmployeeDto> employees,
 			AsyncCallback<SortedSet<EmployeeDto>> callback);
 
+	void getPayPeriodReportDataFromDatabase(Date start, Date end,
+			EmployeeDto employee,
+			AsyncCallback<List<PayPeriodReportData>> callback);
+
+	void getEmployees(AsyncCallback<List<EmployeeDto>> callback);
+
 }

@@ -1,6 +1,8 @@
 package com.chuckanutbay.webapp.common.server;
 
 import static com.chuckanutbay.webapp.common.server.DtoUtils.fromEmployeeDtoFunction;
+import static com.chuckanutbay.webapp.common.server.DtoUtils.toEmployeeDtoFunction;
+import static com.chuckanutbay.webapp.common.server.DtoUtils.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
 
@@ -191,6 +193,24 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 	public List<PayPeriodReportData> getPayPeriodReportDataFromDatabase(
 			Date start, Date end, Integer shift) {
 		EmployeeDao employeeDao = new EmployeeHibernateDao();
+		List<Employee> employees;
+		if (shift == 0) {
+			employees = employeeDao.findAll();
+		} else {
+			employees = employeeDao.findEmployeesByShift(shift);
+		}
+		return getPayPeriodReportDataFromDatabase(start, end, employees);
+	}
+	
+	@Override
+	public List<PayPeriodReportData> getPayPeriodReportDataFromDatabase(
+			Date start, Date end, EmployeeDto employee) {
+		List<Employee> employees = newArrayList(DtoUtils.fromEmployeeDtoFunction.apply(employee));
+		return getPayPeriodReportDataFromDatabase(start, end, employees);
+	}
+	
+	private List<PayPeriodReportData> getPayPeriodReportDataFromDatabase(Date start, Date end, List<Employee> employees) {
+		
 		EmployeeWorkIntervalDao intervalDao = new EmployeeWorkIntervalHibernateDao();
 		
 		List<PayPeriodReportData> reportData = newArrayList();
@@ -209,12 +229,6 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 		}
 		System.out.println("Sunday Before Period Start: " + payPeriodStart.toString("MMMM hh:mm a"));
 		
-		List<Employee> employees;
-		if (shift == 0) {
-			employees = employeeDao.findAll();
-		} else {
-			employees = employeeDao.findEmployeesByShift(shift);
-		}
 		for (Employee employee : employees) {
 			if (intervalDao.findEmployeeWorkIntervalsBetweenDates(employee, payPeriodStart.toDateTime(), payPeriodEnd.toDateTime()).size() != 0) {
 				PayPeriodReportData payPeriod = new PayPeriodReportData();
@@ -241,10 +255,6 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 				}
 				
 				while (d < new Period(sundayBeforePayPeriodStart, payPeriodEnd, PeriodType.days()).getDays()) {
-					if (d == 7 || d == 14 || d == 21) {
-						week = new WeekReportData();
-						payPeriod.addInterval(week);
-					} 
 					for (EmployeeWorkInterval interval : findIntervalsHelper(employee, sundayBeforePayPeriodStart, d)) {
 						if (interval.getEndDateTime() != null) {
 							double intervalHours = getDifference(interval.getStartDateTime(), interval.getEndDateTime());
@@ -255,9 +265,13 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 							day.addInterval(intervalDto);
 						}
 					}
+					d++;
+					if (d % 7 == 0) {
+						week = new WeekReportData();
+						payPeriod.addInterval(week);
+					} 
 					day = new DayReportData();
 					week.addInterval(day);
-					d++;
 				}
 				for (WeekReportData weekData : payPeriod.getWeekReportData()) {
 					payPeriod.addNormalPayHours(weekData.getHoursNormalPay());
@@ -277,6 +291,11 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 			
 		});
 		return reportData;
+	}
+	
+	@Override
+	public List<EmployeeDto> getEmployees() {
+		return transform(new EmployeeHibernateDao().findAll(), toEmployeeDtoFunction);
 	}
 	
 	private List<EmployeeWorkInterval> findIntervalsHelper(Employee employee, DateMidnight sundayBeforePayPeriodStart, int day) {

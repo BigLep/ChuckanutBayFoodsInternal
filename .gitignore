@@ -13,6 +13,7 @@
 /war/timeclockreport
 /war/timeclock
 /war/traylabelgenerator
+/war/oldtraylabelgenerator
 /war/packagingtransactionmanager
 /war/reports/generatedreports
 /war/WEB-INF/classes

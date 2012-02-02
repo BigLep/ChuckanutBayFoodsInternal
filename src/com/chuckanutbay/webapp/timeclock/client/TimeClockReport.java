@@ -1,4 +1,12 @@
 package com.chuckanutbay.webapp.timeclock.client;
+import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.H_ALIGN_CENTER;
+import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.H_ALIGN_LEFT;
+import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.H_ALIGN_RIGHT;
+import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newImage;
+import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newLabel;
+import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newListBox;
+import static com.chuckanutbay.webapp.common.shared.EmployeeDto.newBlankEmployeeDto;
+import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetEmployeesCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetLastPayPeriodIntervalCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetPayPeriodReportDataCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.timeClockService;
@@ -7,8 +15,12 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.chuckanutbay.webapp.common.client.CbDateBox;
+import com.chuckanutbay.webapp.common.client.CbHorizontalPanel;
+import com.chuckanutbay.webapp.common.client.CbListBox;
 import com.chuckanutbay.webapp.common.client.IconUtil;
 import com.chuckanutbay.webapp.common.shared.DayReportData;
+import com.chuckanutbay.webapp.common.shared.EmployeeDto;
 import com.chuckanutbay.webapp.common.shared.EmployeeWorkIntervalDto;
 import com.chuckanutbay.webapp.common.shared.IntervalDto;
 import com.chuckanutbay.webapp.common.shared.PayPeriodReportData;
@@ -17,11 +29,9 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -30,102 +40,85 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
+	//Date Formats
+	//shortDayOfMonth - Mon, Sep 13
+	private String SHORT_DAY_OF_MONTH_FORMAT = "M/dd/yy";
 	
 	//UI components
 	private RootPanel rootPanel;
 	private final VerticalPanel mainPanel = new VerticalPanel();
-	private final Image logo = new Image(IconUtil.LOGO);
-	private final Label header = new Label("Pay Period Report");
-	private final HorizontalPanel dateBoxAndShiftListBoxPanel = new HorizontalPanel();
-	private final Label startDateBoxLabel = new Label("Start Date:");
-	private final DateBox startDateBox = new DateBox();
-	private final Label endDateBoxLabel = new Label("End Date:");
-	private final DateBox endDateBox = new DateBox();
-	private final HorizontalPanel gernateButtonPanel = new HorizontalPanel();
-	private final Label shiftListBoxLabel = new Label("Shift:");
-	private final ListBox shiftListBox = new ListBox();
+	private final Image logo = newImage(IconUtil.LOGO, 300);
+	private final Label header = newLabel("Pay Period Report", "header");
+	private final CbHorizontalPanel dateBoxAndShiftListBoxPanel = new CbHorizontalPanel();
+	private final DateBox startDateBox = new CbDateBox(75, SHORT_DAY_OF_MONTH_FORMAT);
+	private final DateBox endDateBox = new CbDateBox(75, SHORT_DAY_OF_MONTH_FORMAT);
+	private final CbHorizontalPanel gernateButtonPanel = new CbHorizontalPanel();
+	private final ListBox shiftListBox = newListBox("All", "1", "2", "3", "Other");
+	private final CbListBox<EmployeeDto> employeeListBox = new CbListBox<EmployeeDto>();
 	private final Button generateButton = new Button("Generate");
 	
 	private List<PayPeriodReportData> payPeriodReportData;
 	
-	//Date Formats
-	//shortDayOfMonth - Mon, Sep 13
-	private DateTimeFormat shortDayOfMonth = DateTimeFormat.getFormat("EEE, MMM d");
+	private static final EmployeeDto BLANK_EMPLOYEE_DTO = newBlankEmployeeDto(00000);
 	
 	@Override
 	public void onModuleLoad() {
 		
 		//generateSampleData();
-		
-		//Setup logo
-		logo.setWidth("300px");
-		
-		//Setup header
-		header.setStyleName("header");
-		
-		//Setup dateBoxes
-		startDateBoxLabel.setStyleName("widgetLabel");
-		endDateBoxLabel.setStyleName("widgetLabel");
-		startDateBox.setFormat(new DateBox.DefaultFormat(shortDayOfMonth));
-		endDateBox.setFormat(new DateBox.DefaultFormat(shortDayOfMonth));
-		startDateBox.setWidth("75px");
-		endDateBox.setWidth("75px");
+		getEmployees();
 		getLastPayPeriodIntervalFromServer();
 		
 		//Setup shiftListBox
-		shiftListBoxLabel.setStyleName("widgetLabel");
-		shiftListBox.addItem("All");
-		shiftListBox.addItem("1");
-		shiftListBox.addItem("2");
-		shiftListBox.addItem("3");
-		shiftListBox.addItem("Other");
+		//Note that list boxes don't allow extra white space before or after the string
+		employeeListBox.addData("-", BLANK_EMPLOYEE_DTO);
 		
 		//Setup dateBoxAndShiftListBoxPanel
-		dateBoxAndShiftListBoxPanel.setWidth("550px");
-		dateBoxAndShiftListBoxPanel.setSpacing(5);
-		dateBoxAndShiftListBoxPanel.setStyleName("dateBoxPanel");
-		dateBoxAndShiftListBoxPanel.add(startDateBoxLabel);
-		dateBoxAndShiftListBoxPanel.setCellHorizontalAlignment(startDateBoxLabel, HasHorizontalAlignment.ALIGN_RIGHT);
-		dateBoxAndShiftListBoxPanel.add(startDateBox);
-		dateBoxAndShiftListBoxPanel.setCellHorizontalAlignment(startDateBox, HasHorizontalAlignment.ALIGN_LEFT);
-		dateBoxAndShiftListBoxPanel.add(endDateBoxLabel);
-		dateBoxAndShiftListBoxPanel.setCellHorizontalAlignment(endDateBoxLabel, HasHorizontalAlignment.ALIGN_RIGHT);
-		dateBoxAndShiftListBoxPanel.add(endDateBox);
-		dateBoxAndShiftListBoxPanel.setCellHorizontalAlignment(endDateBox, HasHorizontalAlignment.ALIGN_LEFT);
-		dateBoxAndShiftListBoxPanel.add(shiftListBoxLabel);
-		dateBoxAndShiftListBoxPanel.setCellHorizontalAlignment(shiftListBoxLabel, HasHorizontalAlignment.ALIGN_RIGHT);
-		dateBoxAndShiftListBoxPanel.add(shiftListBox);
-		dateBoxAndShiftListBoxPanel.setCellHorizontalAlignment(shiftListBox, HasHorizontalAlignment.ALIGN_LEFT);
-		
-		
+		dateBoxAndShiftListBoxPanel
+			.setWidth(750)
+			.setCellSpacing(5)
+			.setStyle("dateBoxPanel")
+			.addWidget(newLabel("Start Date:", "widgetLabel"), H_ALIGN_RIGHT)
+			.addWidget(startDateBox, H_ALIGN_LEFT)
+			.addWidget(newLabel("End Date:", "widgetLabel"), H_ALIGN_RIGHT)
+			.addWidget(endDateBox, H_ALIGN_LEFT)
+			.addWidget(newLabel("Shift:", "widgetLabel"), H_ALIGN_RIGHT)
+			.addWidget(shiftListBox, H_ALIGN_LEFT)
+			.addWidget(newLabel(" - or - ", "widgetLabel"), H_ALIGN_CENTER)
+			.addWidget(newLabel("Employee:", "widgetLabel"), H_ALIGN_RIGHT)
+			.addWidget(employeeListBox, H_ALIGN_LEFT);
 		
 		//Setup gernateButtonPanel
 		generateButton.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				mainPanel.clear();
 				int shift;
 				if (startDateBox.getValue() == null) {
 					Window.alert("Please enter a start date.");
 				} else if (endDateBox.getValue() == null) {
 					Window.alert("Please enter an end date.");
 				} else {
-					if (shiftListBox.getItemText(shiftListBox.getSelectedIndex()).equals("All")){
+					if (employeeListBox.getSelected().equals(BLANK_EMPLOYEE_DTO)){
+					String shiftSelection = shiftListBox.getItemText(shiftListBox.getSelectedIndex());
+					if (shiftSelection.equals("All")){
 						shift = 0;
-					} else if (shiftListBox.getItemText(shiftListBox.getSelectedIndex()).equals("Other")){
+					} else if (shiftSelection.equals("Other")){
 						shift = 4;
 					} else {
-						shift = Integer.parseInt(shiftListBox.getItemText(shiftListBox.getSelectedIndex()));
+						shift = Integer.parseInt(shiftSelection);
 					}
 					getPayPeriodReportData(startDateBox.getValue(), endDateBox.getValue(), shift);
+				} else {
+					getPayPeriodReportData(startDateBox.getValue(), endDateBox.getValue(), employeeListBox.getSelected());
 				}
+				mainPanel.clear();
 			}
-		});
-		gernateButtonPanel.setWidth("550px");
-		gernateButtonPanel.setSpacing(5);
-		gernateButtonPanel.add(generateButton);
-		gernateButtonPanel.setCellHorizontalAlignment(generateButton, HasHorizontalAlignment.ALIGN_CENTER);
+		}});
+		
+		gernateButtonPanel
+			.setWidth(750)
+			.setCellSpacing(5)
+			.addWidget(generateButton, H_ALIGN_CENTER);
 
 		
 		//Setup mainPanel
@@ -203,6 +196,24 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 		timeClockService.getPayPeriodReportDataFromDatabase(start, end, shift, createGetPayPeriodReportDataCallback(this)); 
 		
 	}
+	
+	@Override
+	public void getPayPeriodReportData(Date start, Date end,
+			EmployeeDto employee) {
+		timeClockService.getPayPeriodReportDataFromDatabase(start, end, employee, createGetPayPeriodReportDataCallback(this));
+	}
+
+	@Override
+	public void getEmployees() {
+		timeClockService.getEmployees(createGetEmployeesCallback(this));
+	}
+
+	@Override
+	public void onSuccessfulGetEmployees(List<EmployeeDto> employees) {
+		for (EmployeeDto employee : employees) {
+			employeeListBox.addData(employee.getFirstName() + " " + employee.getLastName(), employee);
+		}
+	}
 
 	@Override
 	public void onSuccessfulGetPayPeriodReportData(
@@ -217,4 +228,6 @@ public class TimeClockReport implements EntryPoint, TimeClockReportHandler {
 			mainPanel.add(panel);
 		}
 	}
+
+
 }

@@ -8,6 +8,8 @@ public class ReportUtil {
 	private static final String EXPORT_FILE_PATH_BASE = "resources/reports/";
 	private static final String IMPORT_FILE_PATH_BASE = "reports/";
 	public static final String TRAY_LABEL = "trayLabel";
+	public static final String SCHEDULE = "Schedule";
+	public static final String DIGITAL_LABELS = "Digital_Labels";
 	public static final List<String> REPORT_NAMES = newArrayList(TRAY_LABEL);
 	private static final String UNCOMPILED_REPORT_EXTENTION = ".jrxml";
 	private static final String COMPILED_REPORT_EXTENTION = ".jasper";

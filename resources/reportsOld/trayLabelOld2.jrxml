@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="trayLabel" language="javascript" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="WhiteOnBlack" mode="Opaque" forecolor="#FFFFFF" backcolor="#000000" fill="Solid" isBlankWhenNull="true" fontName="Tahoma"/>
@@ -374,36 +374,6 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
 					<font fontName="Tahoma" size="22" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ALLERGEN]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="30" width="150" height="20"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[Test Weight (oz):_____]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="-1" y="61" width="151" height="20"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[Qty Rejects:_____]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="172" y="13" width="179" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[Starting Label Serial Number:]]></text>
-			</staticText>
-			<rectangle>
-				<reportElement style="GreyBorder" mode="Transparent" x="162" y="12" width="200" height="71"/>
-			</rectangle>
-			<rectangle>
-				<reportElement style="GreyBorder" mode="Transparent" x="372" y="12" width="200" height="71"/>
-			</rectangle>
-			<staticText>
-				<reportElement x="383" y="12" width="179" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[Ending Label Serial Number:]]></text>
 			</staticText>
 		</band>
 	</detail>

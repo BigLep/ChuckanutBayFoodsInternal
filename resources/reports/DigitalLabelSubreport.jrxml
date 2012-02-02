@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DigitalLabelSubreport" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="5.0"/>
+	<property name="ireport.x" value="839"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Item_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     sales_orders.`id` AS sales_orders_id,
+     sales_orders.`purchase_order` AS sales_orders_purchase_order,
+     sales_orders.`customer_name` AS sales_orders_customer_name,
+     sales_orders.`ship_date` AS sales_orders_ship_date,
+     sales_orders.`order_closed` AS sales_orders_order_closed,
+     sales_orders.`customer_short_name` AS sales_orders_customer_short_name,
+     sales_order_line_items.`sales_order_id` AS sales_order_line_items_sales_order_id,
+     sales_order_line_items.`qb_item_id` AS sales_order_line_items_qb_item_id,
+     sales_order_line_items.`cases` AS sales_order_line_items_cases
+FROM
+     `sales_orders` sales_orders RIGHT OUTER JOIN `sales_order_line_items` sales_order_line_items ON sales_orders.`id` = sales_order_line_items.`sales_order_id`
+
+WHERE sales_order_line_items.`qb_item_id` like concat($P{Item_ID},'-%')
+and `sales_orders`.`order_closed`='0']]>
+	</queryString>
+	<field name="sales_orders_id" class="java.lang.Integer"/>
+	<field name="sales_orders_purchase_order" class="java.lang.String"/>
+	<field name="sales_orders_customer_name" class="java.lang.String"/>
+	<field name="sales_orders_ship_date" class="java.sql.Date"/>
+	<field name="sales_orders_order_closed" class="java.lang.Boolean"/>
+	<field name="sales_orders_customer_short_name" class="java.lang.String"/>
+	<field name="sales_order_line_items_sales_order_id" class="java.lang.Integer"/>
+	<field name="sales_order_line_items_qb_item_id" class="java.lang.String"/>
+	<field name="sales_order_line_items_cases" class="java.lang.Integer"/>
+	<variable name="Qty_Labels_For_Order" class="java.lang.String">
+		<variableExpression><![CDATA[($F{sales_order_line_items_qb_item_id}.substring( ($F{sales_order_line_items_qb_item_id}.indexOf( "-")+1) ))
+
+]]></variableExpression>
+	</variable>
+	<variable name="Label_Int" class="java.lang.Integer">
+		<variableExpression><![CDATA[(($V{Qty_Labels_For_Order}=="6")? 6*$F{sales_order_line_items_cases} : 12*$F{sales_order_line_items_cases})]]></variableExpression>
+	</variable>
+	<variable name="Total_Labels" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{Label_Int}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="35" height="13"/>
+				<textElement>
+					<font fontName="Arial Narrow" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Item]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="0" width="90" height="13"/>
+				<textElement>
+					<font fontName="Arial Narrow" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Customer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="125" y="0" width="48" height="13"/>
+				<textElement>
+					<font fontName="Arial Narrow" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Ship Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="173" y="0" width="29" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Cases]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="0" width="63" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Labels Needed]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="1" width="35" height="10"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_order_line_items_qb_item_id}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yy">
+				<reportElement x="125" y="1" width="48" height="10"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{sales_orders_ship_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="173" y="1" width="29" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{sales_order_line_items_cases}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="35" y="1" width="90" height="10"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_orders_customer_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="202" y="1" width="63" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Label_Int}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="14">
+			<textField evaluationTime="Report" pattern="#,##0;-#,##0">
+				<reportElement x="202" y="1" width="63" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Labels}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="202" y="0" width="63" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>
