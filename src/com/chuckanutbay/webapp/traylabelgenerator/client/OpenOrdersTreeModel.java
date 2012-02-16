@@ -12,7 +12,6 @@ import java.util.List;
 
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
-import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.ButtonCell;

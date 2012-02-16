@@ -7,12 +7,10 @@ import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createClockInCa
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createClockOutCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetActivitiesCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createGetClockedInEmployeesCallback;
-import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.createUpdateMinutesWorkedInCurrentWeekCallback;
 import static com.chuckanutbay.webapp.timeclock.client.RpcHelper.timeClockService;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.MIN_IN_MILLISECONDS;
 import static com.chuckanutbay.webapp.timeclock.client.TimeClockUtil.TEN_SECONDS_IN_MILLISECONDS;
 
-import java.util.Date;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -60,7 +58,7 @@ public class TimeClock implements EntryPoint, ScanHandler, ScanInOutHandler, Clo
 	private Timer timer = new Timer() {
 		@Override
 		public void run() {
-			updateMinutesWorkedInCurrentWeek(clockedInEmployees);
+			getClockedInEmployeesFromDatabase();
 		}
 	};
 	private Timer employeeSignInConfirmationTimer = new Timer() {
@@ -75,7 +73,7 @@ public class TimeClock implements EntryPoint, ScanHandler, ScanInOutHandler, Clo
 	@Override
 	public void onModuleLoad() {
 		initializeUI();
-		getClcockedInEmployeesFromDatabase();
+		getClockedInEmployeesFromDatabase();
 		getActivitiesFromDatabase();
 	}
 	
@@ -275,7 +273,7 @@ public class TimeClock implements EntryPoint, ScanHandler, ScanInOutHandler, Clo
 	}
 
 	@Override
-	public void getClcockedInEmployeesFromDatabase() {
+	public void getClockedInEmployeesFromDatabase() {
 		GWT.log("Requesting clocked in employees from server");
 		timeClockService.getClockedInEmployees(createGetClockedInEmployeesCallback(this));
 	}
@@ -324,8 +322,7 @@ public class TimeClock implements EntryPoint, ScanHandler, ScanInOutHandler, Clo
 	@Override
 	public void onSuccessfulGetClockedInEmployees(
 			SortedSet<EmployeeDto> clockedInEmployees) {
-		this.clockedInEmployees.clear();
-		this.clockedInEmployees.addAll(clockedInEmployees);
+		this.clockedInEmployees = clockedInEmployees;
 		updateEmployeeTables();
 		GWT.log("Successfully got clocked-in employees from Server");
 		for (EmployeeDto employee : clockedInEmployees) {
@@ -347,28 +344,6 @@ public class TimeClock implements EntryPoint, ScanHandler, ScanInOutHandler, Clo
 	public void onKeyDown(KeyDownEvent event) {
 		GWT.log("Key entered: " + event.getNativeKeyCode());
 		barcodeFormulation.addCharacter(event.getNativeKeyCode());
-	}
-
-	@Override
-	public void updateMinutesWorkedInCurrentWeek(
-			SortedSet<EmployeeDto> employees) {
-		GWT.log("Requesting employees be updated");
-		timeClockService.updateMinutesWorkedInCurrentWeek(employees, createUpdateMinutesWorkedInCurrentWeekCallback(this));
-	}
-
-	@Override
-	public void onSuccessfulUpdateMinutesWorkedInCurrentWeek(
-			SortedSet<EmployeeDto> updatedEmployees) {
-		GWT.log("Successful update employees from Server");
-		for (EmployeeDto clockedInEmployee : clockedInEmployees) {
-			for (EmployeeDto updatedEmployee : updatedEmployees) {
-				if (updatedEmployee.equals(clockedInEmployee)) {
-					clockedInEmployee.setMinsWorkedThisWeek(updatedEmployee.getMinsWorkedThisWeek());
-					break;
-				}
-			}
-		}
-		updateEmployeeTables();
 	}
 
 }
