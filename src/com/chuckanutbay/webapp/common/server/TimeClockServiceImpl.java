@@ -306,13 +306,4 @@ public class TimeClockServiceImpl extends RemoteServiceServlet implements TimeCl
 		Period period = new Period(new DateTime(start), new DateTime(end));
 		return new Double(period.getHours()) + new Double(period.getMinutes())/60;
 	}
-
-	@Override
-	public SortedSet<EmployeeDto> updateMinutesWorkedInCurrentWeek(
-			SortedSet<EmployeeDto> employees) {
-		for (EmployeeDto employeeDto : employees) {
-			calculateMinutesWorkedThisWeek(employeeDto);
-		}
-		return employees;
-	}
 }

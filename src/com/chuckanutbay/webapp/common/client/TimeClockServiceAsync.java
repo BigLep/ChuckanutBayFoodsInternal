@@ -27,9 +27,6 @@ public interface TimeClockServiceAsync {
 	void getPayPeriodReportDataFromDatabase(Date start, Date end,
 			Integer shift, AsyncCallback<List<PayPeriodReportData>> callback);
 
-	void updateMinutesWorkedInCurrentWeek(SortedSet<EmployeeDto> employees,
-			AsyncCallback<SortedSet<EmployeeDto>> callback);
-
 	void getPayPeriodReportDataFromDatabase(Date start, Date end,
 			EmployeeDto employee,
 			AsyncCallback<List<PayPeriodReportData>> callback);

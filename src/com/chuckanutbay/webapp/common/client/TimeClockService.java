@@ -30,8 +30,6 @@ public interface TimeClockService extends RemoteService {
 	
 	SortedSet<ActivityDto> getActivities();
 	
-	SortedSet<EmployeeDto> updateMinutesWorkedInCurrentWeek(SortedSet<EmployeeDto> employees);
-	
 	/**
 	 * Finds the start and end of the most recently completed pay period.
 	 */
