@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Recipe" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Instructioins">
+		<parameter name="batter_selection" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT
+     recipe_instructions_listing.`batter_type_id` AS recipe_instructions_listing_batter_type_id,
+     recipe_instructions_listing.`recipe_instruction` AS recipe_instructions_listing_recipe_instruction,
+     recipe_instructions_listing.`sequence` AS recipe_instructions_listing_sequence,
+     recipe_instructions.`id` AS recipe_instructions_id,
+     recipe_instructions.`speed` AS recipe_instructions_speed,
+     recipe_instructions.`duration_coefficient` AS recipe_instructions_duration_coefficient,
+     recipe_instructions.`duration_units` AS recipe_instructions_duration_units,
+     recipe_instructions.`instructions` AS recipe_instructions_instructions
+FROM
+     `recipe_instructions_listing` recipe_instructions_listing INNER JOIN `recipe_instructions` recipe_instructions ON recipe_instructions_listing.`recipe_instruction` = recipe_instructions.`id`
+Where recipe_instructions_listing.`batter_type_id` = $P{batter_selection}]]>
+		</queryString>
+		<field name="recipe_instructions_listing_batter_type_id" class="java.lang.Integer"/>
+		<field name="recipe_instructions_listing_recipe_instruction" class="java.lang.Integer"/>
+		<field name="recipe_instructions_listing_sequence" class="java.lang.Integer"/>
+		<field name="recipe_instructions_id" class="java.lang.Integer"/>
+		<field name="recipe_instructions_speed" class="java.lang.Integer"/>
+		<field name="recipe_instructions_duration_coefficient" class="java.lang.Integer"/>
+		<field name="recipe_instructions_duration_units" class="java.lang.String"/>
+		<field name="recipe_instructions_instructions" class="java.lang.String"/>
+		<sortField name="recipe_instructions_listing_sequence"/>
+	</subDataset>
+	<subDataset name="Ingredient Table Dataset">
+		<parameter name="batter_selection" class="java.lang.String"/>
+		<parameter name="batch_multipler_ingrediet_table" class="java.lang.Float"/>
+		<queryString>
+			<![CDATA[SELECT
+     recipe_ingredients.`batter_type_id` AS recipe_ingredients_batter_type_id,
+     recipe_ingredients.`item` AS recipe_ingredients_item,
+     recipe_ingredients.`weight_coefficient` AS recipe_ingredients_weight_coefficient,
+     recipe_ingredients.`weight_unit` AS recipe_ingredients_weight_unit,
+     recipe_ingredients.`optional_weight` AS recipe_ingredients_optional_weight,
+     recipe_ingredients.`optional_unit` AS recipe_ingredients_optional_unit,
+     recipe_ingredients.`note` AS recipe_ingredients_note,
+     recipe_ingredients.`sequence` AS recipe_ingredients_sequence,
+     inventory_items.`id` AS inventory_items_id,
+     inventory_items.`recipe_description` AS inventory_items_recipe_description
+FROM
+     `inventory_items` inventory_items INNER JOIN `recipe_ingredients` recipe_ingredients ON inventory_items.`id` = recipe_ingredients.`item`
+Where recipe_ingredients.`batter_type_id` =$P{batter_selection}]]>
+		</queryString>
+		<field name="recipe_ingredients_batter_type_id" class="java.lang.Integer"/>
+		<field name="recipe_ingredients_item" class="java.lang.String"/>
+		<field name="recipe_ingredients_weight_coefficient" class="java.lang.Double"/>
+		<field name="recipe_ingredients_weight_unit" class="java.lang.String"/>
+		<field name="recipe_ingredients_optional_weight" class="java.lang.Integer"/>
+		<field name="recipe_ingredients_optional_unit" class="java.lang.String"/>
+		<field name="recipe_ingredients_note" class="java.lang.String"/>
+		<field name="recipe_ingredients_sequence" class="java.lang.Integer"/>
+		<field name="inventory_items_id" class="java.lang.String"/>
+		<field name="inventory_items_recipe_description" class="java.lang.String"/>
+		<sortField name="recipe_ingredients_sequence"/>
+		<variable name="scaled_amount" class="java.lang.Float">
+			<variableExpression><![CDATA[$F{recipe_ingredients_weight_coefficient}*$P{batch_multipler_ingrediet_table}]]></variableExpression>
+			<initialValueExpression><![CDATA[]]></initialValueExpression>
+		</variable>
+		<variable name="combined_notes" class="java.lang.String">
+			<variableExpression><![CDATA[(($F{recipe_ingredients_optional_weight}>0) ?
+(($F{recipe_ingredients_optional_weight}*$P{batch_multipler_ingrediet_table}).toString()+" "+$F{recipe_ingredients_optional_unit}+" "+$F{recipe_ingredients_note})
+:
+$F{recipe_ingredients_note})]]></variableExpression>
+		</variable>
+		<variable name="total_amount" class="java.lang.Float" calculation="Sum">
+			<variableExpression><![CDATA[$V{scaled_amount_lbs}]]></variableExpression>
+		</variable>
+		<variable name="scaled_amount_lbs" class="java.lang.Float">
+			<variableExpression><![CDATA[(($F{recipe_ingredients_weight_unit}=="oz")?
+($V{scaled_amount}/16)
+:
+$V{scaled_amount})]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/david/Documents/iReport/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="batter_selection" class="java.lang.String"/>
+	<parameter name="batch_multiplier_main_report" class="java.lang.Double"/>
+	<queryString>
+		<![CDATA[SELECT
+     batter_type.`id` AS batter_type_id,
+     batter_type.`batter_short_name` AS batter_short_name,
+     batter_type.`batter_long_name` AS batter_long_name
+FROM
+     `batter_type` batter_type
+WHERE
+     batter_type.`batter_short_name` = $P{batter_selection}]]>
+	</queryString>
+	<field name="batter_type_id" class="java.lang.Integer"/>
+	<field name="batter_short_name" class="java.lang.String"/>
+	<field name="batter_long_name" class="java.lang.String"/>
+	<variable name="batch_size" class="java.lang.String">
+		<variableExpression><![CDATA[$P{batch_multiplier_main_report}.toString()+" X Batch"]]></variableExpression>
+	</variable>
+	<variable name="total_amount" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="171" y="0" width="111" height="23"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{batter_short_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="23" width="192" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{batter_long_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="282" y="0" width="119" height="23"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial Narrow" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{batch_size}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="0" width="130" height="29"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Arial Narrow" size="14"/>
+				</textElement>
+				<text><![CDATA[Start Time: ___________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="0" width="122" height="29"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Arial Narrow" size="14"/>
+				</textElement>
+				<text><![CDATA[Date: ______________]]></text>
+			</staticText>
+		</band>
+		<band height="51">
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="3" y="0" width="569" height="50"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Ingredient Table Dataset">
+						<datasetParameter name="batter_selection">
+							<datasetParameterExpression><![CDATA[$F{batter_type_id}.toString()]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="batch_multipler_ingrediet_table">
+							<datasetParameterExpression><![CDATA[$P{batch_multiplier_main_report}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="133">
+						<jr:columnHeader style="table 1_CH" height="35" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="129" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Ingredient]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="6" y="0" width="123" height="30"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Arial" size="14" isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{inventory_items_recipe_description}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="56">
+						<jr:columnHeader style="table 1_CH" height="35" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="56" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Amount]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField pattern="#,##0.00;#,##0.00-">
+								<reportElement x="0" y="0" width="52" height="30"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Arial" size="14"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{scaled_amount}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="40">
+						<jr:columnHeader style="table 1_CH" height="35" rowSpan="1"/>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="6" y="0" width="33" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="14"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{recipe_ingredients_weight_unit}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="67">
+						<jr:columnHeader style="table 1_CH" height="35" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="67" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14"/>
+								</textElement>
+								<text><![CDATA[Actual]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="276">
+						<jr:tableHeader height="0" rowSpan="1"/>
+						<jr:tableFooter height="0" rowSpan="1"/>
+						<jr:columnHeader style="table 1_CH" height="35" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="276" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14"/>
+								</textElement>
+								<text><![CDATA[Notes]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="276" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{combined_notes}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="109">
+			<componentElement>
+				<reportElement key="table" style="table" x="3" y="27" width="569" height="80"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Instructioins">
+						<datasetParameter name="batter_selection">
+							<datasetParameterExpression><![CDATA[$F{batter_type_id}.toString()]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="40">
+						<jr:tableHeader style="table_TH" height="0" rowSpan="1"/>
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="38" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial Narrow" size="14"/>
+								</textElement>
+								<text><![CDATA[Speed]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="40" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial Narrow" size="14"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{recipe_instructions_speed}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="34">
+						<jr:tableHeader style="table_TH" height="0" rowSpan="1"/>
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="31" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial Narrow" size="14"/>
+								</textElement>
+								<text><![CDATA[Time]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="34" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial Narrow" size="14"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{recipe_instructions_duration_coefficient}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="30">
+						<jr:tableHeader style="table_TH" height="0" rowSpan="1"/>
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="30" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial Narrow" size="14"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{recipe_instructions_duration_units}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="467">
+						<jr:tableHeader style="table_TH" height="0" rowSpan="1"/>
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="5" y="0" width="80" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial Narrow" size="14"/>
+								</textElement>
+								<text><![CDATA[Instructions]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="5" y="0" width="462" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial Narrow" size="14"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{recipe_instructions_instructions}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement x="3" y="7" width="254" height="20"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="14"/>
+				</textElement>
+				<text><![CDATA[Finish Measuring / Start MixingTime:__________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="7" width="548" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial Narrow" size="14"/>
+				</textElement>
+				<text><![CDATA[All ingredients measured before mixing: ________ (initials)]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="24">
+			<staticText>
+				<reportElement x="0" y="2" width="210" height="20"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="14"/>
+				</textElement>
+				<text><![CDATA[Finish Mixing Time:__________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="2" width="362" height="20"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="14"/>
+				</textElement>
+				<text><![CDATA[All bowls were empty when mixing was finished: ___________ (initials)]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+</jasperReport>

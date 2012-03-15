@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SpecSheet" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="355"/>
+	<property name="ireport.y" value="16"/>
+	<parameter name="Item_code" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/david/Documents/Chuckanut Bay Foods/Art/Final Logo/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     quickbooks_items.`id` AS quickbooks_items_id,
+     quickbooks_items.`description` AS quickbooks_items_description,
+     quickbooks_items.`upc` AS quickbooks_items_upc,
+     quickbooks_items.`gross_weight_lb` AS quickbooks_items_gross_weight_lb,
+     quickbooks_items.`pack` AS quickbooks_items_pack,
+     quickbooks_items.`unit_weight_oz` AS quickbooks_items_unit_weight_oz,
+     quickbooks_items.`unit_weight_g` AS quickbooks_items_unit_weight_g,
+     quickbooks_items.`quickbooks_item_supplement_id` AS quickbooks_items_quickbooks_item_supplement_id,
+     quickbooks_items.`case_cube` AS quickbooks_items_case_cube,
+     quickbooks_item_supplements.`id` AS quickbooks_item_supplements_id,
+     quickbooks_item_supplements.`description` AS quickbooks_item_supplements_description,
+     quickbooks_item_supplements.`name_line_2` AS quickbooks_item_supplements_name_line_2,
+     quickbooks_item_supplements.`short_name` AS quickbooks_item_supplements_short_name,
+     quickbooks_item_supplements.`tag_line` AS quickbooks_item_supplements_tag_line,
+     quickbooks_item_supplements.`name_image_id` AS quickbooks_item_supplements_name_image_id,
+     quickbooks_item_supplements.`nutrition_label_id` AS quickbooks_item_supplements_nutrition_label_id,
+     quickbooks_item_supplements.`storage_info_id` AS quickbooks_item_supplements_storage_info_id,
+     quickbooks_item_supplements.`production_code_id` AS quickbooks_item_supplements_production_code_id,
+     quickbooks_item_supplements.`kosher_status_id` AS quickbooks_item_supplements_kosher_status_id,
+     quickbooks_item_supplements.`case_dimensions` AS quickbooks_item_supplements_case_dimensions,
+     quickbooks_item_supplements.`cases_per_pallet_layer` AS quickbooks_item_supplements_cases_per_pallet_layer,
+     quickbooks_item_supplements.`case_layers_per_pallet` AS quickbooks_item_supplements_case_layers_per_pallet,
+     nutrition_labels.`id` AS nutrition_labels_id,
+     nutrition_labels.`us_label_image_id` AS nutrition_labels_us_label_image_id,
+     nutrition_labels.`cdn_label_image_id` AS nutrition_labels_cdn_label_image_id,
+     nutrition_labels.`ingredients` AS nutrition_labels_ingredients,
+     nutrition_labels.`allergens` AS nutrition_labels_allergens,
+     nutrition_labels.`last_modified_time` AS nutrition_labels_last_modified_time,
+     nutrition_labels.`is_allergen` AS nutrition_labels_is_allergen,
+     nutrition_labels.`batter_type_id` AS nutrition_labels_batter_type_id,
+     images.`id` AS images_id,
+     images.`name` AS images_name,
+     images.`data` AS images_data,
+     images.`width` AS images_width,
+     images.`height` AS images_height
+FROM
+     `quickbooks_item_supplements` quickbooks_item_supplements INNER JOIN `quickbooks_items` quickbooks_items ON quickbooks_item_supplements.`id` = quickbooks_items.`quickbooks_item_supplement_id`
+     INNER JOIN `nutrition_labels` nutrition_labels ON quickbooks_item_supplements.`nutrition_label_id` = nutrition_labels.`id`
+     INNER JOIN `images` images ON nutrition_labels.`us_label_image_id` = images.`id`
+WHERE
+     quickbooks_items.`id` = $P{Item_code}]]>
+	</queryString>
+	<field name="quickbooks_items_id" class="java.lang.String"/>
+	<field name="quickbooks_items_description" class="java.lang.String"/>
+	<field name="quickbooks_items_upc" class="java.lang.String"/>
+	<field name="quickbooks_items_gross_weight_lb" class="java.math.BigDecimal"/>
+	<field name="quickbooks_items_pack" class="java.lang.Integer"/>
+	<field name="quickbooks_items_unit_weight_oz" class="java.math.BigDecimal"/>
+	<field name="quickbooks_items_unit_weight_g" class="java.lang.Integer"/>
+	<field name="quickbooks_items_quickbooks_item_supplement_id" class="java.lang.String"/>
+	<field name="quickbooks_items_case_cube" class="java.math.BigDecimal"/>
+	<field name="quickbooks_item_supplements_id" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_description" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_name_line_2" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_short_name" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_tag_line" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_name_image_id" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_nutrition_label_id" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_storage_info_id" class="java.lang.Integer"/>
+	<field name="quickbooks_item_supplements_production_code_id" class="java.lang.Integer"/>
+	<field name="quickbooks_item_supplements_kosher_status_id" class="java.lang.Integer"/>
+	<field name="quickbooks_item_supplements_case_dimensions" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_cases_per_pallet_layer" class="java.lang.Integer"/>
+	<field name="quickbooks_item_supplements_case_layers_per_pallet" class="java.lang.Integer"/>
+	<field name="nutrition_labels_id" class="java.lang.String"/>
+	<field name="nutrition_labels_us_label_image_id" class="java.lang.Integer"/>
+	<field name="nutrition_labels_cdn_label_image_id" class="java.lang.Integer"/>
+	<field name="nutrition_labels_ingredients" class="java.lang.String"/>
+	<field name="nutrition_labels_allergens" class="java.lang.String"/>
+	<field name="nutrition_labels_last_modified_time" class="java.sql.Timestamp"/>
+	<field name="nutrition_labels_is_allergen" class="java.lang.Boolean"/>
+	<field name="nutrition_labels_batter_type_id" class="java.lang.Integer"/>
+	<field name="images_id" class="java.lang.Integer"/>
+	<field name="images_name" class="java.lang.String"/>
+	<field name="images_data" class="java.io.InputStream"/>
+	<field name="images_width" class="java.lang.Integer"/>
+	<field name="images_height" class="java.lang.Integer"/>
+	<variable name="tiXhi" class="java.lang.String">
+		<variableExpression><![CDATA[$F{quickbooks_item_supplements_cases_per_pallet_layer}.toString()+" X "+$F{quickbooks_item_supplements_case_layers_per_pallet}.toString()]]></variableExpression>
+	</variable>
+	<variable name="BaseID" class="java.lang.String" resetType="None">
+		<variableExpression><![CDATA[$F{quickbooks_items_id}.substring( 0,($F{quickbooks_items_id}.indexOf( "-")) )+"-1"]]></variableExpression>
+	</variable>
+	<variable name="GTINwithSpace" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="76" splitType="Stretch">
+			<textField>
+				<reportElement x="30" y="43" width="83" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_items_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="60" width="570" height="15"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_items_description}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Center">
+				<reportElement x="88" y="0" width="400" height="47"/>
+				<imageExpression><![CDATA["/Users/david/Documents/Chuckanut Bay Foods/Art/Final Logo/chuckanutbayfoodslogo1.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="470" y="44" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="401" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Right">
+				<reportElement x="46" y="5" width="239" height="395"/>
+				<imageExpression><![CDATA[$F{images_data}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="289" y="5" width="283" height="334"/>
+				<textElement>
+					<font fontName="SansSerif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nutrition_labels_ingredients}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="339" width="283" height="61"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nutrition_labels_allergens}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="1" width="570" height="1"/>
+			</line>
+		</band>
+		<band height="48">
+			<subreport>
+				<reportElement x="160" y="17" width="228" height="30"/>
+				<subreportParameter name="BaseID">
+					<subreportParameterExpression><![CDATA[$V{BaseID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "EachSpecReport.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="237" y="0" width="100" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="14" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Each Data]]></text>
+			</staticText>
+		</band>
+		<band height="184">
+			<staticText>
+				<reportElement x="43" y="17" width="239" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Chuckanut Bay Foods Item Number:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="288" y="17" width="100" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_items_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="139" y="35" width="143" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Case GTIN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="288" y="35" width="142" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_items_upc}.substring( 0, 2 )+" "+
+$F{quickbooks_items_upc}.substring( 2, 8 )+" "+
+$F{quickbooks_items_upc}.substring( 8, 13 )+" "+
+$F{quickbooks_items_upc}.substring( 13, 14 )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="139" y="53" width="143" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Gross Weight:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="288" y="53" width="100" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_items_gross_weight_lb}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="182" y="71" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Pack:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="288" y="71" width="100" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_items_pack}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="182" y="89" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Cube:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="288" y="89" width="100" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_items_case_cube}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="182" y="107" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Case Size:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="288" y="107" width="100" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_item_supplements_case_dimensions}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="125" width="100" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tiXhi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="182" y="125" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[ti X hi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="1" width="100" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="14" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Case Data]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

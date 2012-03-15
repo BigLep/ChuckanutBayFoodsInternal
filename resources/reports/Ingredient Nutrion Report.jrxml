@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ingredient Nutrion Report" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.background.image.properties" value="true,true,0.25,-635,21,688,0,650,130"/>
+	<parameter name="Item_Low" class="java.lang.String">
+		<parameterDescription><![CDATA[Enter lowest item #.  Do not include the "-1"]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="High_Item_Number" class="java.lang.String">
+		<parameterDescription><![CDATA[Enter one higher that highest item #.
+Do not include the "-1"]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     quickbooks_item_supplements.`id`,
+     quickbooks_item_supplements.`description`,
+     nutrition_labels.`id`,
+     nutrition_labels.`ingredients`,
+     nutrition_labels.`allergens` AS nutrition_labels_allergens,
+     quickbooks_item_supplements.`nutrition_label_id` AS quickbooks_item_supplements_nutrition_label_id
+FROM
+     `nutrition_labels` nutrition_labels INNER JOIN `quickbooks_item_supplements` quickbooks_item_supplements ON nutrition_labels.`id` = quickbooks_item_supplements.`nutrition_label_id`
+WHERE
+     quickbooks_item_supplements.`id` >= $P{Item_Low}
+     and quickbooks_item_supplements.`id` <= $P{High_Item_Number}
+ and quickbooks_item_supplements.`id` LIKE '%-1'
+and quickbooks_item_supplements.`id` <> '2207-1'
+and quickbooks_item_supplements.`id` <> '2212-1'
+and quickbooks_item_supplements.`id` <> '2223-1'
+and quickbooks_item_supplements.`id` <> '2232-1'
+and quickbooks_item_supplements.`id` <> '2234-1']]>
+	</queryString>
+	<field name="id" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="ingredients" class="java.lang.String"/>
+	<field name="nutrition_labels_allergens" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_nutrition_label_id" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="78" splitType="Stretch">
+			<image scaleImage="Clip">
+				<reportElement mode="Opaque" x="-105" y="0" width="857" height="74"/>
+				<imageExpression class="java.lang.String"><![CDATA["/Users/david/Documents/Chuckanut Bay Foods/Art/Final Logo/chuckanutbaylogo867x74.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement x="596" y="20" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial Narrow" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="676" y="20" width="40" height="20"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="501" y="0" width="215" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial Narrow" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Product ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="2" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="2" width="100" height="19"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ingredients]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="616" y="2" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Allergens]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="59" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="3" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="3" width="100" height="44"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="10" isBold="false"/>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="3" width="406" height="56"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="8"/>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingredients}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="616" y="3" width="100" height="44"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="8"/>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nutrition_labels_allergens}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="5" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="5" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
