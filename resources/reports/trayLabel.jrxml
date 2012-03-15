@@ -15,6 +15,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
+     quickbooks_items_A.`pack` AS quickbooks_items_A_pack,
      quickbooks_items.`unique_instructions` AS quickbooks_items_unique_instructions,
      quickbooks_item_supplements.`short_name` AS quickbooks_item_supplements_product_type,
      quickbooks_item_supplements.`cases_per_tray` AS quickbooks_item_supplements_cases_per_tray,
@@ -37,7 +38,6 @@
      quickbooks_item_supplements.`product_type` AS quickbooks_item_supplements_product_type,
      quickbooks_items.`pack` AS quickbooks_items_pack,
      quickbooks_items.`id` AS quickbooks_items_id,
-     quickbooks_items_A.`pack` AS quickbooks_items_A_pack,
      quickbooks_items_A.`unique_instructions` AS quickbooks_items_A_unique_instructions,
      quickbooks_item_supplements_A.`short_name` AS quickbooks_item_supplements_A_product_type,
      quickbooks_item_supplements_A.`cases_per_tray` AS quickbooks_item_supplements_A_cases_per_tray,
@@ -61,20 +61,24 @@
      nutrition_labels_B.`decoration_type` AS nutrition_labels_B_decoration_type,
      tray_labels.`sub_item_id` AS quickbooks_items_A_id,
      tray_labels.`qb_item_id` AS quickbooks_items_B_id,
-     sales_orders.`special_instructions` AS sales_orders_special_instructions
+     sales_orders.`special_instructions` AS sales_orders_special_instructions,
+     quickbooks_items.`unit_weight_oz` AS quickbooks_items_unit_weight_oz
 FROM
-
-     `tray_labels` tray_labels LEFT OUTER JOIN `sales_order_line_items` sales_order_line_items ON sales_order_line_items.`id` = tray_labels.`line_item_id` LEFT OUTER JOIN `quickbooks_items` quickbooks_items ON quickbooks_items.`id` = sales_order_line_items.`qb_item_id` LEFT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements ON quickbooks_item_supplements.`id` = `quickbooks_items`.`quickbooks_item_supplement_id`
+     `sales_order_line_items` sales_order_line_items LEFT OUTER JOIN `tray_labels` tray_labels ON sales_order_line_items.`id` = tray_labels.`line_item_id`
+     RIGHT OUTER JOIN `quickbooks_items` quickbooks_items ON sales_order_line_items.`qb_item_id` = quickbooks_items.`id`
      LEFT OUTER JOIN `sales_orders` sales_orders ON sales_order_line_items.`sales_order_id` = sales_orders.`id`
+     RIGHT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements ON quickbooks_items.`quickbooks_item_supplement_id` = quickbooks_item_supplements.`id`
+     LEFT OUTER JOIN `nutrition_labels` nutrition_labels ON quickbooks_item_supplements.`nutrition_label_id` = nutrition_labels.`id`
      LEFT OUTER JOIN `quickbooks_items` quickbooks_items_A ON tray_labels.`sub_item_id` = quickbooks_items_A.`id`
      LEFT OUTER JOIN `quickbooks_items` quickbooks_items_B ON tray_labels.`qb_item_id` = quickbooks_items_B.`id`
      LEFT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements_B ON quickbooks_items_B.`quickbooks_item_supplement_id` = quickbooks_item_supplements_B.`id`
      LEFT OUTER JOIN `nutrition_labels` nutrition_labels_B ON quickbooks_item_supplements_B.`nutrition_label_id` = nutrition_labels_B.`id`
      LEFT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements_A ON quickbooks_items_A.`quickbooks_item_supplement_id` = quickbooks_item_supplements_A.`id`
      LEFT OUTER JOIN `nutrition_labels` nutrition_labels_A ON quickbooks_item_supplements_A.`nutrition_label_id` = nutrition_labels_A.`id`
-     LEFT OUTER JOIN `nutrition_labels` nutrition_labels ON quickbooks_item_supplements.`nutrition_label_id` = nutrition_labels.`id`
-WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
+WHERE
+     `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
 	</queryString>
+	<field name="quickbooks_items_A_pack" class="java.lang.Integer"/>
 	<field name="quickbooks_items_unique_instructions" class="java.lang.String"/>
 	<field name="quickbooks_item_supplements_product_type" class="java.lang.String"/>
 	<field name="quickbooks_item_supplements_cases_per_tray" class="java.lang.Double"/>
@@ -96,7 +100,6 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
 	<field name="nutrition_labels_decoration_type" class="java.lang.String"/>
 	<field name="quickbooks_items_pack" class="java.lang.Integer"/>
 	<field name="quickbooks_items_id" class="java.lang.String"/>
-	<field name="quickbooks_items_A_pack" class="java.lang.Integer"/>
 	<field name="quickbooks_items_A_unique_instructions" class="java.lang.String"/>
 	<field name="quickbooks_item_supplements_A_product_type" class="java.lang.String"/>
 	<field name="quickbooks_item_supplements_A_cases_per_tray" class="java.lang.Double"/>
@@ -121,6 +124,7 @@ WHERE `tray_labels`.`id` IN ($P!{TRAY_LABEL_IDS})]]>
 	<field name="quickbooks_items_A_id" class="java.lang.String"/>
 	<field name="quickbooks_items_B_id" class="java.lang.String"/>
 	<field name="sales_orders_special_instructions" class="java.lang.String"/>
+	<field name="quickbooks_items_unit_weight_oz" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

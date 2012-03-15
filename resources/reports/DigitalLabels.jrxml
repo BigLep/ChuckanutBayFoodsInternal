@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Digital Labels" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     inventory_items.`id` AS inventory_items_id,
+     inventory_items.`description` AS inventory_items_description,
+     inventory_items.`unit_of_measure` AS inventory_items_unit_of_measure,
+     inventory_items.`qty_on_hand` AS inventory_items_qty_on_hand,
+     inventory_items.`qty_on_PO` AS inventory_items_qty_on_PO,
+     inventory_items.`reorder_point` AS inventory_items_reorder_point
+FROM
+     `inventory_items` inventory_items
+Where id like 'PL%'
+and id like '%-%']]>
+	</queryString>
+	<field name="inventory_items_id" class="java.lang.String"/>
+	<field name="inventory_items_description" class="java.lang.String"/>
+	<field name="inventory_items_unit_of_measure" class="java.lang.String"/>
+	<field name="inventory_items_qty_on_hand" class="java.lang.Integer"/>
+	<field name="inventory_items_qty_on_PO" class="java.lang.Integer"/>
+	<field name="inventory_items_reorder_point" class="java.lang.Integer"/>
+	<variable name="Label_Item" class="java.lang.String" resetType="None">
+		<variableExpression><![CDATA[$F{inventory_items_id}.substring( ($F{inventory_items_id}.indexOf( "-")+1) )]]></variableExpression>
+	</variable>
+	<variable name="Total_Labels" class="java.lang.Long" resetType="None" calculation="System"/>
+	<variable name="Available" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{inventory_items_qty_on_hand}+$F{inventory_items_qty_on_PO}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Labels_Needed_2" class="java.lang.Long" resetType="Group" resetGroup="Label_ID">
+		<variableExpression><![CDATA[(($V{Total_Labels}==null)?
+$V{Available} :
+($V{Available}-$V{Total_Labels}))]]></variableExpression>
+	</variable>
+	<variable name="Order_Flag" class="java.lang.String" resetType="Group" resetGroup="Label_ID">
+		<variableExpression><![CDATA[(($V{Labels_Needed_2}>=$F{inventory_items_reorder_point})
+?
+"OK" : "Order")]]></variableExpression>
+	</variable>
+	<group name="Label_ID" keepTogether="true">
+		<groupExpression><![CDATA[$F{inventory_items_id}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField pattern="#,##0;-#,##0">
+					<reportElement x="10" y="16" width="48" height="13"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial Narrow"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{inventory_items_qty_on_hand}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="3" width="254" height="13"/>
+					<textElement>
+						<font fontName="Arial Narrow"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{inventory_items_description}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="155" y="16" width="40" height="13"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="8"/>
+					</textElement>
+					<text><![CDATA[On PO]]></text>
+				</staticText>
+				<textField pattern="#,##0;-#,##0">
+					<reportElement x="105" y="16" width="48" height="13"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial Narrow"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{inventory_items_qty_on_PO}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="0" width="531" height="1"/>
+				</line>
+				<textField evaluationTime="Group" evaluationGroup="Label_ID" pattern="#,##0;-#,##0">
+					<reportElement x="219" y="16" width="48" height="13"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial Narrow"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Available}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="3" width="100" height="13"/>
+					<textElement>
+						<font fontName="Arial Narrow"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{inventory_items_id}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="60" y="16" width="40" height="13"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="8"/>
+					</textElement>
+					<text><![CDATA[On hand]]></text>
+				</staticText>
+				<subreport>
+					<reportElement positionType="Float" x="0" y="29" width="341" height="10" isPrintInFirstWholeBand="true"/>
+					<subreportParameter name="Item_ID">
+						<subreportParameterExpression><![CDATA[$V{Label_Item}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<returnValue subreportVariable="Total_Labels" toVariable="Total_Labels"/>
+					<subreportExpression><![CDATA["DigitalLabelSubreport.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement x="269" y="16" width="40" height="13"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="8"/>
+					</textElement>
+					<text><![CDATA[Available]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="399" y="3" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{Label_Item}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<textField pattern="#,##0;-#,##0">
+					<reportElement x="333" y="1" width="30" height="13"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial Narrow"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{inventory_items_reorder_point}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="1" width="57" height="13"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="8"/>
+					</textElement>
+					<text><![CDATA[Re-Order Point]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="Label_ID" pattern="#,##0" isBlankWhenNull="true">
+					<reportElement x="219" y="1" width="48" height="13"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial Narrow"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Labels_Needed_2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="271" y="1" width="50" height="13"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="8"/>
+					</textElement>
+					<text><![CDATA[Left after orders]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="422" y="1" width="97" height="13"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial Narrow"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Order_Flag}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="13">
+			<staticText>
+				<reportElement x="176" y="0" width="143" height="13"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial Narrow" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Digital Label Stock Report]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="0" y="0" width="100" height="13"/>
+				<textElement>
+					<font fontName="Arial Narrow" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="0" width="80" height="13"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial Narrow" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="479" y="0" width="40" height="13"/>
+				<textElement>
+					<font fontName="Arial Narrow" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+</jasperReport>
