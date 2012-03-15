@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DigitalLabelSubreport" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DigitalLabelSubreport" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true">
 	<property name="ireport.zoom" value="5.0"/>
-	<property name="ireport.x" value="913"/>
+	<property name="ireport.x" value="776"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="Item_ID" class="java.lang.String"/>
 	<queryString>
@@ -34,7 +34,10 @@ and `sales_orders`.`order_closed`='0']]>
 		<variableExpression><![CDATA[($F{sales_order_line_items_qb_item_id}.substring( ($F{sales_order_line_items_qb_item_id}.indexOf( "-")+1) ))]]></variableExpression>
 	</variable>
 	<variable name="Label_Int" class="java.lang.Long">
-		<variableExpression><![CDATA[(($V{Qty_Labels_For_Order}=="6")? 6*$F{sales_order_line_items_cases} : 12*$F{sales_order_line_items_cases})]]></variableExpression>
+		<variableExpression><![CDATA[(($V{Qty_Labels_For_Order}.equals("6"))?
+    6*$F{sales_order_line_items_cases}.longValue()
+    :
+    12*$F{sales_order_line_items_cases}.longValue())]]></variableExpression>
 	</variable>
 	<variable name="Total_Labels" class="java.lang.Long" calculation="Sum">
 		<variableExpression><![CDATA[$V{Label_Int}]]></variableExpression>
