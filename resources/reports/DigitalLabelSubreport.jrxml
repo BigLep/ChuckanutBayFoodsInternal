@@ -33,10 +33,10 @@ and `sales_orders`.`order_closed`='0']]>
 	<variable name="Qty_Labels_For_Order" class="java.lang.String">
 		<variableExpression><![CDATA[($F{sales_order_line_items_qb_item_id}.substring( ($F{sales_order_line_items_qb_item_id}.indexOf( "-")+1) ))]]></variableExpression>
 	</variable>
-	<variable name="Label_Int" class="java.lang.Integer">
+	<variable name="Label_Int" class="java.lang.Long">
 		<variableExpression><![CDATA[(($V{Qty_Labels_For_Order}=="6")? 6*$F{sales_order_line_items_cases} : 12*$F{sales_order_line_items_cases})]]></variableExpression>
 	</variable>
-	<variable name="Total_Labels" class="java.lang.Double" calculation="Sum">
+	<variable name="Total_Labels" class="java.lang.Long" calculation="Sum">
 		<variableExpression><![CDATA[$V{Label_Int}]]></variableExpression>
 	</variable>
 	<background>
