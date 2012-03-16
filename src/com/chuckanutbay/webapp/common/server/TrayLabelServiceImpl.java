@@ -1,21 +1,17 @@
 package com.chuckanutbay.webapp.common.server;
 
 import static com.chuckanutbay.businessobjects.util.BusinessObjectsUtil.getCakesPerCase;
-import static com.chuckanutbay.print.Print.HP_WIRELESS_P1102W;
-import static com.chuckanutbay.print.ReportUtil.TRAY_LABEL;
-import static com.chuckanutbay.print.ReportUtil.getCompiledReportImportFilePath;
+import static com.chuckanutbay.reportgeneration.Print.HP_WIRELESS_P1102W;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.fromTrayLabelDtoFunction;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.round;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.toQuickbooksItemDtoFunction;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.toTrayLabelDtoFunction;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.ObjectNotFoundException;
@@ -33,15 +29,15 @@ import com.chuckanutbay.businessobjects.dao.SalesOrderHibernateDao;
 import com.chuckanutbay.businessobjects.dao.TrayLabelDao;
 import com.chuckanutbay.businessobjects.dao.TrayLabelHibernateDao;
 import com.chuckanutbay.businessobjects.util.HibernateUtil;
-import com.chuckanutbay.print.Print;
-import com.chuckanutbay.print.ReportGenerator;
+import com.chuckanutbay.reportgeneration.Print;
+import com.chuckanutbay.reportgeneration.ReportGenerator;
 import com.chuckanutbay.webapp.common.client.CollectionsUtils;
 import com.chuckanutbay.webapp.common.client.TrayLabelService;
 import com.chuckanutbay.webapp.common.shared.InventoryTrayLabelDto;
+import com.chuckanutbay.webapp.common.shared.ReportDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderDto;
 import com.chuckanutbay.webapp.common.shared.SalesOrderLineItemDto;
 import com.chuckanutbay.webapp.common.shared.TrayLabelDto;
-import com.google.common.base.Splitter;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLabelService {
@@ -226,9 +222,8 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 	 */
 	private void print(String ids) {
 		Timer timer = new Timer(LOGGER).start("Print:");
-		Map<String, Object> parameters = newHashMap();
-		parameters.put("TRAY_LABEL_IDS", ids);
-		String pdfFilePath = new ReportGenerator().generateReport(getCompiledReportImportFilePath(TRAY_LABEL), parameters);
+		ReportDto report = new ReportDto().setName(ReportDto.TRAY_LABEL).addParameter("TRAY_LABEL_IDS", ids);
+		String pdfFilePath = ReportGenerator.generateReport(report);
 		timer.logTime("GENERATED REPORT");
 		Print.print(pdfFilePath, HP_WIRELESS_P1102W);
 		timer.stop("PRINTED REPORT");

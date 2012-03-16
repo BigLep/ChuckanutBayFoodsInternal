@@ -1,17 +1,16 @@
 package com.chuckanutbay.webapp.dashboard.client;
 
-import static com.chuckanutbay.print.Print.HP_WIRELESS_P1102W;
-import static com.chuckanutbay.print.ReportUtil.DIGITAL_LABELS;
-import static com.chuckanutbay.print.ReportUtil.SCHEDULE;
+import static com.chuckanutbay.reportgeneration.Print.HP_WIRELESS_P1102W;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.H_ALIGN_CENTER;
 import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newLabel;
+import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABELS;
+import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABEL_SUBREPORT;
 import static com.chuckanutbay.webapp.dashboard.client.RpcHelper.createPrintReportCallback;
 import static com.google.common.collect.Lists.newArrayList;
 
-import com.chuckanutbay.print.Print;
-import com.chuckanutbay.print.ReportUtil;
 import com.chuckanutbay.webapp.common.client.CbVerticalPanel;
 import com.chuckanutbay.webapp.common.client.ServiceUtils;
+import com.chuckanutbay.webapp.common.shared.ReportDto;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -69,9 +68,9 @@ public class Dashboard implements EntryPoint, ClickHandler {
 		} else if (sender == packagingTransactionManagerButton) {
 			Window.open("PackagingTransactionManager.html", "PackagingTransactionManager", "");
 		} else if (sender == printLabelInventoryReportButton) {
-			ServiceUtils.createReportService().printReport(DIGITAL_LABELS, HP_WIRELESS_P1102W, createPrintReportCallback(this));
+			ServiceUtils.createReportService().printReport(new ReportDto().setName(DIGITAL_LABELS).setSubreport(DIGITAL_LABEL_SUBREPORT), HP_WIRELESS_P1102W, createPrintReportCallback(this));
 		} else if (sender == printScheduleButton) {
-			ServiceUtils.createReportService().printReport(SCHEDULE, HP_WIRELESS_P1102W, createPrintReportCallback(this));
+			ServiceUtils.createReportService().printReport(new ReportDto().setName(ReportDto.SCHEDULE), HP_WIRELESS_P1102W, createPrintReportCallback(this));
 		}
 	}
 

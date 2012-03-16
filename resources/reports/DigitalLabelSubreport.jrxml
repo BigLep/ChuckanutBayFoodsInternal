@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DigitalLabelSubreport" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true">
 	<property name="ireport.zoom" value="5.0"/>
-	<property name="ireport.x" value="776"/>
+	<property name="ireport.x" value="714"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="Item_ID" class="java.lang.String"/>
 	<queryString>
@@ -33,13 +33,13 @@ and `sales_orders`.`order_closed`='0']]>
 	<variable name="Qty_Labels_For_Order" class="java.lang.String">
 		<variableExpression><![CDATA[($F{sales_order_line_items_qb_item_id}.substring( ($F{sales_order_line_items_qb_item_id}.indexOf( "-")+1) ))]]></variableExpression>
 	</variable>
-	<variable name="Label_Int" class="java.lang.Long">
+	<variable name="Label_Int" class="java.lang.Integer">
 		<variableExpression><![CDATA[(($V{Qty_Labels_For_Order}.equals("6"))?
-    6*$F{sales_order_line_items_cases}.longValue()
+    6*$F{sales_order_line_items_cases}
     :
-    12*$F{sales_order_line_items_cases}.longValue())]]></variableExpression>
+    12*$F{sales_order_line_items_cases})]]></variableExpression>
 	</variable>
-	<variable name="Total_Labels" class="java.lang.Long" calculation="Sum">
+	<variable name="Total_Labels" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$V{Label_Int}]]></variableExpression>
 	</variable>
 	<background>
@@ -91,35 +91,35 @@ and `sales_orders`.`order_closed`='0']]>
 				<textElement>
 					<font fontName="Arial Narrow" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sales_order_line_items_qb_item_id}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_order_line_items_qb_item_id}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd-MMM-yy">
 				<reportElement x="125" y="0" width="48" height="10"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sales_orders_ship_date}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_orders_ship_date}.toString()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0;-#,##0">
 				<reportElement x="173" y="0" width="29" height="10"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sales_order_line_items_cases}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_order_line_items_cases}.toString()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="35" y="0" width="90" height="10"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sales_orders_customer_name}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sales_orders_customer_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0;-#,##0">
 				<reportElement x="202" y="0" width="63" height="10"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial Narrow" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{Label_Int}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Label_Int}.toString()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -130,7 +130,7 @@ and `sales_orders`.`order_closed`='0']]>
 				<textElement textAlignment="Right">
 					<font fontName="Arial Narrow"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{Total_Labels}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Total_Labels}.toString()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="202" y="0" width="63" height="1"/>
