@@ -10,6 +10,7 @@
 	<!-- <inherits name="com.google.gwt.user.theme.chrome.Chrome"/> -->
 	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
 	<inherits name="com.google.common.collect.Collect"/>
+  	<inherits name="gwthelper.GwtHelper"/>
 	
 	<!-- 
 		Render output for less browsers so that compiling is faster.

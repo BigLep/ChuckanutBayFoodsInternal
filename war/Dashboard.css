@@ -13,6 +13,15 @@
     font-weight: bold;
 }
 
+.subPanel {
+	border: 1px solid silver;
+	padding: 5px;
+	width: 400px;
+	spacing: 5px;
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+    font-weight: bold;
+}
+
 .dashboardButton {
 	width:300px;
 	height:40px;
@@ -21,4 +30,10 @@
 	font-family: Tahoma, Geneva, Futura;
 	color:white;
 	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#c40000), color-stop(45%,#ff0000), color-stop(56%,#ff0000), color-stop(100%,#c40000)); /* Chrome,Safari4+ */
+	margin: 0;
+	padding: 3px 5px;
+	text-decoration: none;
+	cursor: pointer;
+	cursor: hand;
+	border: 1px outset #ccc;
 }
