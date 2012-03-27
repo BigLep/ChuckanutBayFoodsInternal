@@ -16,9 +16,10 @@ public class ReportDto implements Serializable {
 	//Report Names
 	public static final String TRAY_LABEL = "TrayLabel";
 	public static final String SCHEDULE = "Schedule";
+	public static final String END_OF_SHIFT = "EndOfShift";
 	public static final String DIGITAL_LABELS = "DigitalLabels";
 	public static final String DIGITAL_LABEL_SUBREPORT = "DigitalLabelSubreport";
-	public static final List<String> REPORT_NAMES = newArrayList(TRAY_LABEL, SCHEDULE, DIGITAL_LABELS, DIGITAL_LABEL_SUBREPORT);
+	public static final List<String> REPORT_NAMES = newArrayList(TRAY_LABEL, SCHEDULE, DIGITAL_LABELS, DIGITAL_LABEL_SUBREPORT, END_OF_SHIFT);
 	
 	//Image Names
 	public static final String LOGO = "Logo";
@@ -30,7 +31,7 @@ public class ReportDto implements Serializable {
 	
 	//Fields
 	private String name;
-	private Map<String, Object> parameters;
+	private final Map<String, Object> parameters;
 	
 	public ReportDto() {
 		parameters = new HashMap<String, Object>();

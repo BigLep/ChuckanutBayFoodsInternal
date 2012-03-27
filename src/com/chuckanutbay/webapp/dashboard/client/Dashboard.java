@@ -6,6 +6,7 @@ import static com.chuckanutbay.webapp.common.client.GwtWidgetHelper.newLabel;
 import static com.chuckanutbay.webapp.common.client.ServiceUtils.createReportService;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABELS;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABEL_SUBREPORT;
+import static com.chuckanutbay.webapp.common.shared.ReportDto.END_OF_SHIFT;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.SCHEDULE;
 import static com.chuckanutbay.webapp.dashboard.client.RpcHelper.createPrintReportCallback;
 import static com.google.common.collect.Lists.newArrayList;
@@ -34,6 +35,7 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 	private final Button packagingTransactionManagerButton = new Button("Packaging Transaction Manager");
 	private final Button printLabelInventoryReportButton = new Button("Print Label Inventory Report");
 	private final Button printScheduleButton = new Button("Print Schedule Report");
+	private final Button printEndOfShiftButton = new Button("Print End Of Shift GMP List");
 	private final Button printTestButton = new Button("Print Test");
 	
 	private final ListBox printerListBox = new ListBox();
@@ -46,7 +48,7 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 			.setCellSpacing(10)
 			.setStyle("mainPanel");
 		
-		for (Button button : newArrayList(lotCodeManagerButton, timeClockButton, timeClockReportButton, trayLabelGeneratorButton, packagingTransactionManagerButton, printLabelInventoryReportButton, printScheduleButton, printTestButton)) {
+		for (Button button : newArrayList(lotCodeManagerButton, timeClockButton, timeClockReportButton, trayLabelGeneratorButton, packagingTransactionManagerButton, printLabelInventoryReportButton, printEndOfShiftButton, printScheduleButton, printTestButton)) {
 			button.setStyleName("dashboardButton");
 			button.addClickHandler(this);
 			mainPanel.addWidget(button, H_ALIGN_CENTER);
@@ -79,6 +81,8 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 			Window.open("PackagingTransactionManager.html", "PackagingTransactionManager", "");
 		} else if (sender == printLabelInventoryReportButton) {
 			print(new ReportDto().setName(DIGITAL_LABELS).setSubreport(DIGITAL_LABEL_SUBREPORT));
+		} else if (sender == printEndOfShiftButton) {
+			print(new ReportDto().setName(END_OF_SHIFT));
 		} else if (sender == printScheduleButton) {
 			print(new ReportDto().setName(SCHEDULE));
 		} else if (sender == printTestButton) {
@@ -115,6 +119,7 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 		}
 	}
 	
+	@Override
 	public void print(ReportDto report) {
 		String selectedPrinter = getSelectedPrinter();
 		createReportService().printReport(report, selectedPrinter, createPrintReportCallback(this));

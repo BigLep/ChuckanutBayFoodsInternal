@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="End_Of_shift" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     employees.`first_name` AS employees_first_name,
+     employees.`last_name` AS employees_last_name,
+     employees.`active_production` AS employees_active_production,
+     cleaning_areas.`id` AS cleaning_areas_id,
+     cleaning_areas.`employee_ID` AS cleaning_areas_employee_ID,
+     cleaning_areas.`task` AS cleaning_areas_task
+FROM
+     `employees` employees LEFT OUTER JOIN `cleaning_areas` cleaning_areas ON employees.`id` = cleaning_areas.`employee_ID`
+WHERE
+     employees.`active_production` = 1]]>
+	</queryString>
+	<field name="employees_first_name" class="java.lang.String"/>
+	<field name="employees_last_name" class="java.lang.String"/>
+	<field name="employees_active_production" class="java.lang.Integer"/>
+	<field name="cleaning_areas_id" class="java.lang.Long"/>
+	<field name="cleaning_areas_employee_ID" class="java.lang.Integer"/>
+	<field name="cleaning_areas_task" class="java.lang.String"/>
+	<sortField name="PAGE_NUMBER" type="Variable"/>
+	<sortField name="employees_last_name"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="620" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="0" width="568" height="20"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[I Followed Daily GMP's & LEAN Implementation Today]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="104" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="89" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="354" height="89"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[GMP's Followed
+Food Safety - 	I always load transists Top Down and unload Bottom Up
+		I always wash my hands upon entering production
+		I always wash my hands after touching anything dirty
+		I always use hand sanitizer before handling food
+		I use "ToGo" gloves when handling a pan
+		I always follow Allergen clean up procedures]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="0" width="354" height="89"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[LEAN Implementation
+STRAIGHTEN	All tools marked and onn shadow board at end of shift.
+SCRUB		Assigned area clean at end of shift
+SUSTAIN	2 second improvement made today]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="242" y="89" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[Signature]]></text>
+			</staticText>
+			<line>
+				<reportElement x="237" y="89" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="342" y="89" width="1" height="15"/>
+			</line>
+			<staticText>
+				<reportElement x="343" y="89" width="220" height="15"/>
+				<textElement/>
+				<text><![CDATA[Today's 2-second improvement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="194" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[cleaning_areas_task]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="89" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[6S Stewardship]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="5" width="58" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{employees_first_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="5" width="58" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{employees_last_name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="2" width="700" height="1"/>
+			</line>
+			<line>
+				<reportElement x="237" y="4" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="342" y="4" width="1" height="15"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="118" y="5" width="119" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cleaning_areas_task}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="86">
+			<staticText>
+				<reportElement x="0" y="7" width="123" height="46"/>
+				<textElement>
+					<font size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[AM pre-operation
+sanitize condition: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="4" width="122" height="46"/>
+				<textElement textAlignment="Right">
+					<font size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[End of day
+Termometer
+Check:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="7" width="284" height="20"/>
+				<textElement/>
+				<text><![CDATA[Oven 1 / Therm 1: ______  Oven 1 / Therm 2: ______]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="31" width="284" height="15"/>
+				<textElement/>
+				<text><![CDATA[Oven 2 / Therm 1: ______  Oven 2 / Therm 2: ______]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="71" width="100" height="15"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Morning Supervisor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="443" y="71" width="100" height="15"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Evening Supervisor]]></text>
+			</staticText>
+			<line>
+				<reportElement x="49" y="70" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement x="388" y="69" width="200" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>
