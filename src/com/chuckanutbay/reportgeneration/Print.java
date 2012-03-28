@@ -1,10 +1,7 @@
 package com.chuckanutbay.reportgeneration;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -22,10 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.chuckanutbay.webapp.common.server.Timer;
 
 public class Print {
-	
-	public static final String HP_WIRELESS_P1102W = "HP Wireless P1102w";
-	
-	public static final List<String> PRINTERS = newArrayList(HP_WIRELESS_P1102W);
 	
 	public static void print(String pdfFilePath, String printerName) {
 		Timer timer = new Timer(LoggerFactory.getLogger(Print.class.getName())).start("Creating print job:");

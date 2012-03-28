@@ -1,7 +1,7 @@
 package com.chuckanutbay.webapp.dashboard.client;
 
-import static com.chuckanutbay.reportgeneration.Print.HP_WIRELESS_P1102W;
 import static com.chuckanutbay.webapp.common.client.ServiceUtils.createReportService;
+import static com.chuckanutbay.webapp.common.shared.Printers.HP_WIRELESS_P1102W;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABELS;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABEL_SUBREPORT;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.END_OF_SHIFT;
@@ -84,21 +84,21 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();
-		if (lotCodeManagerButton.equals(sender)) {
+		if (lotCodeManagerButton.delegate().equals(sender)) {
 			Window.open("LotCodeManager.html", "LotCodeManager", "");
-		} else if (timeClockButton.equals(sender)) {
+		} else if (timeClockButton.delegate().equals(sender)) {
 			Window.open("TimeClock.html", "TimeClock", "");
-		} else if (timeClockReportButton.equals(sender)) {
+		} else if (timeClockReportButton.delegate().equals(sender)) {
 			Window.open("TimeClockReport.html", "TimeClockReport", "");
-		} else if (timeClockReportButton.equals(sender)) {
+		} else if (timeClockReportButton.delegate().equals(sender)) {
 			Window.open("TrayLabelGenerator.html", "TrayLabelGenerator", "");
-		} else if (packagingTransactionManagerButton.equals(sender)) {
+		} else if (packagingTransactionManagerButton.delegate().equals(sender)) {
 			Window.open("PackagingTransactionManager.html", "PackagingTransactionManager", "");
-		} else if (labelInventoryReportButton.equals(sender)) {
+		} else if (labelInventoryReportButton.delegate().equals(sender)) {
 			print(new ReportDto().setName(DIGITAL_LABELS).setSubreport(DIGITAL_LABEL_SUBREPORT));
-		} else if (scheduleButton.equals(sender)) {
+		} else if (scheduleButton.delegate().equals(sender)) {
 			print(new ReportDto().setName(SCHEDULE));
-		} else if (endOfShift.equals(sender)) {
+		} else if (endOfShift.delegate().equals(sender)) {
 			print(new ReportDto().setName(END_OF_SHIFT));
 		/*
 		} else if (testButton.equals(sender)) {

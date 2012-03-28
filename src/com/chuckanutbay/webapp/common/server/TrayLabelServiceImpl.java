@@ -1,11 +1,11 @@
 package com.chuckanutbay.webapp.common.server;
 
 import static com.chuckanutbay.businessobjects.util.BusinessObjectsUtil.getCakesPerCase;
-import static com.chuckanutbay.reportgeneration.Print.HP_WIRELESS_P1102W;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.fromTrayLabelDtoFunction;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.round;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.toQuickbooksItemDtoFunction;
 import static com.chuckanutbay.webapp.common.server.DtoUtils.toTrayLabelDtoFunction;
+import static com.chuckanutbay.webapp.common.shared.Printers.HP_WIRELESS_P1102W;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.text.DecimalFormat;

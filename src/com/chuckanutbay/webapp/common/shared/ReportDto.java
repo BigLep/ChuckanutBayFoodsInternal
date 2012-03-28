@@ -31,7 +31,7 @@ public class ReportDto implements Serializable {
 	
 	//Fields
 	private String name;
-	private final Map<String, Object> parameters;
+	private Map<String, Object> parameters;
 	
 	public ReportDto() {
 		parameters = new HashMap<String, Object>();
