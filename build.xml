@@ -20,6 +20,7 @@
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="config.dir" value="${basedir}/configuration"/>
 	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="gwtHelper.dir" value="${lib.dir}/gwtHelper.jar"/>
 	<property name="resources.dir" value="${basedir}/resources"/>
 	<property name="tst.dir" value="${basedir}/tst"/>
 	<property name="war.dir" value="${basedir}/war"/>
@@ -46,7 +47,7 @@
         <ivypath pathid="ivy.test.classpath.ref" conf="test"/>
     </target>
 	
-	<target name="src-compile-classpath" depends="ivy-compile-classpath,ivy-build-classpath">
+	<target name="src-compile-classpath" depends="ivy-compile-classpath,ivy-build-classpath,eclipse-gwt-debug-setup">
 		<path id="src.compile.classpath.ref">
             <path refid="ivy.compile.classpath.ref"/>
 			<path refid="ivy.build.classpath.ref"/>
@@ -56,7 +57,7 @@
 	<target name="src-compile" depends="src-compile-classpath">
 		<mkdir dir="${build.output.src.dir}" />
 		<javac srcdir="${src.dir}"
-			   includes="${lib.dir}/gwtHelper.jar"
+			   includes="${gwtHelper.dir}"
 		       destdir="${build.output.src.dir}"
 			   classpathref="src.compile.classpath.ref"
 		       debug="on"
@@ -140,7 +141,7 @@
 				<path refid="ivy.build.classpath.ref"/>
 				<path refid="ivy.compile.classpath.ref"/>
 				<pathelement location="${src.dir}"/>
-				<pathelement location="${lib.dir}/gwtHelper.jar"/>
+				<pathelement location="${gwtHelper.dir}"/>
 				<pathelement location="${build.output.src.dir}"/>
 			</classpath>
 			<jvmarg value="-Xmx512M"/>
