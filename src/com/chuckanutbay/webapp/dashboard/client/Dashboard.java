@@ -1,7 +1,7 @@
 package com.chuckanutbay.webapp.dashboard.client;
 
 import static com.chuckanutbay.webapp.common.client.ServiceUtils.createReportService;
-import static com.chuckanutbay.webapp.common.shared.Printers.HP_WIRELESS_P1102W;
+import static com.chuckanutbay.webapp.common.shared.Printers.PRINTERS;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABELS;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABEL_SUBREPORT;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.END_OF_SHIFT;
@@ -69,10 +69,9 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 				.addWithAlignment(ALIGN_CENTER, button);
 		}
 		
-		//***********************//
-		//** Add Printers here **//
-		//***********************//
-		printerListBox.addItem(HP_WIRELESS_P1102W, HP_WIRELESS_P1102W);
+		for(String printer : PRINTERS) {
+			printerListBox.addItem(printer, printer);
+		}
 		
 		reportsSubPanel.addWithAlignment(ALIGN_CENTER, printerListBox);
 		
