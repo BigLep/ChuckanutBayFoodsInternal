@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Open_Orders" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="478"/>
+	<property name="ireport.x" value="594"/>
 	<property name="ireport.y" value="176"/>
 	<queryString>
 		<![CDATA[SELECT
@@ -59,6 +59,9 @@ WHERE
 	<variable name="Trays_for_order" class="java.lang.Double" resetType="Group" resetGroup="Order" calculation="Sum">
 		<variableExpression><![CDATA[$V{Trays}]]></variableExpression>
 	</variable>
+	<variable name="Trays_rounded_up" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{Trays}.intValue()]]></variableExpression>
+	</variable>
 	<group name="ShipDate">
 		<groupExpression><![CDATA[$F{sales_orders_ship_date}]]></groupExpression>
 		<groupHeader>
@@ -98,13 +101,6 @@ WHERE
 					</textElement>
 					<text><![CDATA[Qty]]></text>
 				</staticText>
-				<staticText>
-					<reportElement x="316" y="5" width="62" height="12"/>
-					<textElement textAlignment="Right">
-						<font fontName="SansSerif"/>
-					</textElement>
-					<text><![CDATA[Sales Order]]></text>
-				</staticText>
 				<textField>
 					<reportElement x="0" y="2" width="193" height="18"/>
 					<textElement>
@@ -116,9 +112,9 @@ WHERE
 					<reportElement x="12" y="31" width="500" height="1"/>
 				</line>
 				<textField>
-					<reportElement x="389" y="2" width="89" height="18"/>
+					<reportElement x="194" y="2" width="89" height="18"/>
 					<textElement>
-						<font fontName="SansSerif" size="14"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{sales_orders_id}]]></textFieldExpression>
 				</textField>
@@ -208,6 +204,11 @@ WHERE
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nutrition_labels_batter_type}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="443" y="1" width="42" height="12"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{Trays_rounded_up}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
