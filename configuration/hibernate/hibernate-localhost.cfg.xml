@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- 
+			See http://docs.jboss.org/hibernate/core/3.5/reference/en/html/session-configuration.html for settings.
+		 -->
+	
+		<!-- 
+			MySql JDBC settings: http://dev.mysql.com/doc/refman/5.1/en/connector-j-reference-configuration-properties.html
+		-->
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:8889/chuckanut_bay_internal</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">root</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		
+		<!-- 
+			c3p0 settings that must be set via hibernate.
+			Other c3p0 settings exist in c3p0.properties.
+			http://www.mchange.com/projects/c3p0/#hibernate-specific 
+		-->
+		
+		<property name="hibernate.c3p0.acquire_increment">1</property> 
+		<property name="hibernate.c3p0.idle_test_period">100</property> 
+		<property name="hibernate.c3p0.timeout">3600</property> 
+		<property name="hibernate.c3p0.min_size">1</property> 
+		<property name="hibernate.c3p0.max_size">3</property> 
+		<property name="hibernate.c3p0.max_statements">10</property> 
+		
+		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+		<property name="hibernate.search.autoregister_listeners">false</property>
+		<property name="id.new_generator_mappings">true</property>
+		
+		<!-- Disable the second-level cache  -->
+		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+		<property name="current_session_context_class">thread</property>
+		
+		<!-- Echo all executed SQL to stdout
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+		<property name="use_sql_comments">true</property>
+		 -->
+	</session-factory>
+</hibernate-configuration>

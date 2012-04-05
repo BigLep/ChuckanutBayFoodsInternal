@@ -1,0 +1,24 @@
+#Sat Jul 02 22:16:00 PDT 2011
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.overrideannotation=true
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.formatterprofiles.version=12
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.fieldSuffixes=
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+\!/=
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.ignorelowercasenames=true
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.localSuffixes=
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.fieldPrefixes=
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.localPrefixes=
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.argumentSuffixes=
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.staticFinalFieldPrefixes=
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.argumentPrefixes=
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.ondemandthreshold=99
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.gettersetter.use.is=true
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.exception.name=e
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.staticFieldSuffixes=
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.staticFieldPrefixes=
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.importorder=java;javax;org;com;
+@org.eclipse.jdt.ui=3.7.0.v20110531-1200
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.staticFinalFieldSuffixes=
+file_export_version=3.0
+@org.eclipse.jdt.core=3.7.0.v_B61
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.staticondemandthreshold=99

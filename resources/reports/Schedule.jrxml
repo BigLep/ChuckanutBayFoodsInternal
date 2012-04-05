@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Open_Orders" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="594"/>
+	<property name="ireport.y" value="176"/>
+	<queryString>
+		<![CDATA[SELECT
+     sales_orders.`id` AS sales_orders_id,
+     sales_orders.`purchase_order` AS sales_orders_purchase_order,
+     sales_orders.`customer_name` AS sales_orders_customer_name,
+     sales_orders.`ship_date` AS sales_orders_ship_date,
+     sales_orders.`order_closed` AS sales_orders_order_closed,
+     sales_orders.`customer_short_name` AS sales_orders_customer_short_name,
+     sales_orders.`special_instructions` AS sales_orders_special_instructions,
+     sales_order_line_items.`id` AS sales_order_line_items_id,
+     sales_order_line_items.`sales_order_id` AS sales_order_line_items_sales_order_id,
+     sales_order_line_items.`qb_item_id` AS sales_order_line_items_qb_item_id,
+     sales_order_line_items.`cases` AS sales_order_line_items_cases,
+     quickbooks_item_supplements.`id` AS quickbooks_item_supplements_id,
+     quickbooks_item_supplements.`nutrition_label_id` AS quickbooks_item_supplements_nutrition_label_id,
+     quickbooks_item_supplements.`product_type` AS quickbooks_item_supplements_product_type,
+     quickbooks_item_supplements.`size` AS quickbooks_item_supplements_size,
+     quickbooks_item_supplements.`short_name` AS quickbooks_item_supplements_short_name,
+     quickbooks_item_supplements.`cases_per_tray` AS quickbooks_item_supplements_cases_per_tray,
+     nutrition_labels.`id` AS nutrition_labels_id,
+     nutrition_labels.`batter_type` AS nutrition_labels_batter_type
+FROM
+     `sales_orders` sales_orders RIGHT OUTER JOIN `sales_order_line_items` sales_order_line_items ON sales_orders.`id` = sales_order_line_items.`sales_order_id`
+     RIGHT OUTER JOIN `quickbooks_item_supplements` quickbooks_item_supplements ON sales_order_line_items.`qb_item_id` = quickbooks_item_supplements.`id`
+     RIGHT OUTER JOIN `nutrition_labels` nutrition_labels ON quickbooks_item_supplements.`nutrition_label_id` = nutrition_labels.`id`
+WHERE
+     sales_orders.`order_closed` = 0]]>
+	</queryString>
+	<field name="sales_orders_id" class="java.lang.Integer"/>
+	<field name="sales_orders_purchase_order" class="java.lang.String"/>
+	<field name="sales_orders_customer_name" class="java.lang.String"/>
+	<field name="sales_orders_ship_date" class="java.sql.Date"/>
+	<field name="sales_orders_order_closed" class="java.lang.Boolean"/>
+	<field name="sales_orders_customer_short_name" class="java.lang.String"/>
+	<field name="sales_orders_special_instructions" class="java.lang.String"/>
+	<field name="sales_order_line_items_id" class="java.lang.Integer"/>
+	<field name="sales_order_line_items_sales_order_id" class="java.lang.Integer"/>
+	<field name="sales_order_line_items_qb_item_id" class="java.lang.String"/>
+	<field name="sales_order_line_items_cases" class="java.lang.Integer"/>
+	<field name="quickbooks_item_supplements_id" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_nutrition_label_id" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_product_type" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_size" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_short_name" class="java.lang.String"/>
+	<field name="quickbooks_item_supplements_cases_per_tray" class="java.lang.Double"/>
+	<field name="nutrition_labels_id" class="java.lang.String"/>
+	<field name="nutrition_labels_batter_type" class="java.lang.String"/>
+	<sortField name="sales_orders_ship_date"/>
+	<sortField name="sales_orders_id"/>
+	<sortField name="sales_order_line_items_qb_item_id"/>
+	<variable name="Trays" class="java.lang.Double">
+		<variableExpression><![CDATA[(($F{quickbooks_item_supplements_cases_per_tray}>0)?($F{sales_order_line_items_cases}/$F{quickbooks_item_supplements_cases_per_tray}):0)]]></variableExpression>
+	</variable>
+	<variable name="Trays_for_order" class="java.lang.Double" resetType="Group" resetGroup="Order" calculation="Sum">
+		<variableExpression><![CDATA[$V{Trays}]]></variableExpression>
+	</variable>
+	<variable name="Trays_rounded_up" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{Trays}.intValue()]]></variableExpression>
+	</variable>
+	<group name="ShipDate">
+		<groupExpression><![CDATA[$F{sales_orders_ship_date}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField pattern="dd-MMM-yy">
+					<reportElement mode="Opaque" x="0" y="1" width="555" height="18" forecolor="#FFFFFF" backcolor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sales_orders_ship_date}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<rectangle>
+					<reportElement x="0" y="21" width="555" height="10" backcolor="#330033"/>
+				</rectangle>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Order">
+		<groupExpression><![CDATA[$F{sales_orders_purchase_order}]]></groupExpression>
+		<groupHeader>
+			<band height="33">
+				<staticText>
+					<reportElement x="31" y="20" width="62" height="10"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="8" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Item]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="232" y="20" width="40" height="10"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="8" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Qty]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="2" width="193" height="18"/>
+					<textElement>
+						<font fontName="SansSerif" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sales_orders_customer_name}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="12" y="31" width="500" height="1"/>
+				</line>
+				<textField>
+					<reportElement x="194" y="2" width="89" height="18"/>
+					<textElement>
+						<font fontName="SansSerif" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sales_orders_id}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="20" width="68" height="10"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="8" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Trays Needed]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="132" y="20" width="62" height="10"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Description]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<textField>
+					<reportElement x="393" y="2" width="40" height="12"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Trays_for_order}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="349" y="1" width="100" height="1" isRemoveLineWhenBlank="true"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="7" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement x="31" y="1" width="62" height="12"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sales_order_line_items_qb_item_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="232" y="1" width="40" height="12"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sales_order_line_items_cases}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="132" y="1" width="100" height="12"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_item_supplements_short_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="275" y="1" width="30" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quickbooks_item_supplements_cases_per_tray}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0;-###0.0">
+				<reportElement x="393" y="1" width="40" height="12"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Trays}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="306" y="1" width="83" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nutrition_labels_batter_type}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="443" y="1" width="42" height="12"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{Trays_rounded_up}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="32" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

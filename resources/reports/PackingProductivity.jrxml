@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PackingProductivity" language="groovy" pageWidth="400" pageHeight="842" columnWidth="400" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="EmployeeID" class="java.lang.String">
+		<defaultValueExpression><![CDATA['1']]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     employee_work_intervals.`id` AS employee_work_intervals_id,
+     employee_work_intervals.`start_date_time` AS StartTime,
+     employee_work_intervals.`end_date_time` AS EndTime,
+     employee_work_intervals.`employee_id` AS EmployeeId,
+     employee_work_interval_activity_percentages.`employee_work_interval_id` AS IntervalID,
+     employee_work_interval_activity_percentages.`activity_id` AS employee_work_interval_activity_percentages_activity_id,
+     employee_work_interval_activity_percentages.`percentage` AS Percent,
+     employees.`id` AS employees_id,
+     employees.`first_name` AS FirstName,
+     employees.`last_name` AS LastName
+FROM
+     `employee_work_intervals` employee_work_intervals INNER JOIN `employee_work_interval_activity_percentages` employee_work_interval_activity_percentages ON employee_work_intervals.`id` = employee_work_interval_activity_percentages.`employee_work_interval_id`
+     INNER JOIN `employees` employees ON employee_work_intervals.`employee_id` = employees.`id`
+WHERE
+     employee_work_intervals.`employee_id` = $P{EmployeeID}
+ AND employee_work_interval_activity_percentages.`activity_id` = 2]]>
+	</queryString>
+	<field name="employee_work_intervals_id" class="java.lang.Integer"/>
+	<field name="StartTime" class="java.sql.Timestamp"/>
+	<field name="EndTime" class="java.sql.Timestamp"/>
+	<field name="EmployeeId" class="java.lang.Integer"/>
+	<field name="IntervalID" class="java.lang.Integer"/>
+	<field name="employee_work_interval_activity_percentages_activity_id" class="java.lang.Integer"/>
+	<field name="Percent" class="java.lang.Integer"/>
+	<field name="employees_id" class="java.lang.Integer"/>
+	<field name="FirstName" class="java.lang.String"/>
+	<field name="LastName" class="java.lang.String"/>
+	<sortField name="Name" type="Variable"/>
+	<sortField name="StartTime"/>
+	<variable name="Name" class="java.lang.String">
+		<variableExpression><![CDATA[$F{FirstName}+" "+$F{LastName}]]></variableExpression>
+	</variable>
+	<variable name="TimePacking" class="java.lang.Double">
+		<variableExpression><![CDATA[($F{EndTime}.getTime()-$F{StartTime}.getTime())/60000*$F{Percent}/100]]></variableExpression>
+	</variable>
+	<group name="Person">
+		<groupExpression><![CDATA[$V{Name}]]></groupExpression>
+		<groupHeader>
+			<band height="13"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<staticText>
+				<reportElement x="100" y="2" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[StartTime]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="2" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[EndTime]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="2" width="30" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Percent]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="100" y="0" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{StartTime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="200" y="0" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{EndTime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="300" y="0" width="30" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{Percent}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0">
+				<reportElement x="330" y="0" width="50" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{TimePacking}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

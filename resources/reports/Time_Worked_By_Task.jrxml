@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     activities.`id` AS activities_id,
+     activities.`name` AS activity,
+     employee_work_interval_activity_percentages.`employee_work_interval_id` AS percentages_work_interval,
+     employee_work_interval_activity_percentages.`activity_id` AS activity_id,
+     employee_work_interval_activity_percentages.`percentage` AS percentage,
+     employee_work_intervals.`id` AS intervals_id,
+     employee_work_intervals.`employee_id` AS intervals_employee_id,
+     employee_work_intervals.`start_date_time` AS Start_Time,
+     employee_work_intervals.`end_date_time` AS End_Time,
+     employees.`id` AS ID,
+     employees.`first_name` AS First,
+     employees.`last_name` AS Last
+FROM
+     `activities` activities RIGHT OUTER JOIN `employee_work_interval_activity_percentages` employee_work_interval_activity_percentages ON activities.`id` = employee_work_interval_activity_percentages.`activity_id`
+     RIGHT OUTER JOIN `employee_work_intervals` employee_work_intervals ON employee_work_interval_activity_percentages.`employee_work_interval_id` = employee_work_intervals.`id`
+     LEFT OUTER JOIN `employees` employees ON employee_work_intervals.`employee_id` = employees.`id`
+WHERE
+     employee_work_intervals.`start_date_time` > '2012-01-22 00:00:01'
+ AND employee_work_intervals.`start_date_time` < '2012-01-28 00:00:00'
+ORDER BY
+     Date(Start_Time),
+     employees.`last_name` ASC,
+     Hour(Start_Time)]]>
+	</queryString>
+	<field name="activities_id" class="java.lang.Integer"/>
+	<field name="activity" class="java.lang.String"/>
+	<field name="percentages_work_interval" class="java.lang.Integer"/>
+	<field name="activity_id" class="java.lang.Integer"/>
+	<field name="percentage" class="java.lang.Integer"/>
+	<field name="intervals_id" class="java.lang.Integer"/>
+	<field name="intervals_employee_id" class="java.lang.Integer"/>
+	<field name="Start_Time" class="java.sql.Timestamp"/>
+	<field name="End_Time" class="java.sql.Timestamp"/>
+	<field name="ID" class="java.lang.Integer"/>
+	<field name="First" class="java.lang.String"/>
+	<field name="Last" class="java.lang.String"/>
+	<variable name="TimePerActivity" class="java.lang.Double">
+		<variableExpression><![CDATA[($F{End_Time}.getTime()-$F{Start_Time}.getTime())/60000*$F{percentage}/100]]></variableExpression>
+	</variable>
+	<variable name="Name" class="java.lang.String">
+		<variableExpression><![CDATA[$F{First}+" "+$F{Last}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="ProdTime" class="java.lang.Double">
+		<variableExpression><![CDATA[(($F{activity_id}==1)?($F{End_Time}.getTime()-$F{Start_Time}.getTime())/60000*$F{percentage}/100:0)]]></variableExpression>
+	</variable>
+	<variable name="PackTime" class="java.lang.Double">
+		<variableExpression><![CDATA[(($F{activity_id}==2)?($F{End_Time}.getTime()-$F{Start_Time}.getTime())/60000*$F{percentage}/100:0)]]></variableExpression>
+	</variable>
+	<variable name="RIETime" class="java.lang.Double">
+		<variableExpression><![CDATA[(($F{activity_id}==3)?($F{End_Time}.getTime()-$F{Start_Time}.getTime())/60000*$F{percentage}/100:0)]]></variableExpression>
+	</variable>
+	<variable name="DropTIme" class="java.lang.Double">
+		<variableExpression><![CDATA[(($F{activity_id}==4)?($F{End_Time}.getTime()-$F{Start_Time}.getTime())/60000*$F{percentage}/100:0)]]></variableExpression>
+	</variable>
+	<variable name="OtherTIme" class="java.lang.Double">
+		<variableExpression><![CDATA[(($F{activity_id}==5)?($F{End_Time}.getTime()-$F{Start_Time}.getTime())/60000*$F{percentage}/100:0)]]></variableExpression>
+	</variable>
+	<variable name="SumTIme" class="java.lang.Double" resetType="Group" resetGroup="By Date" calculation="Sum">
+		<variableExpression><![CDATA[$V{TimePerActivity}]]></variableExpression>
+	</variable>
+	<variable name="SumProdTime" class="java.lang.Double" resetType="Group" resetGroup="By Date" calculation="Sum">
+		<variableExpression><![CDATA[$V{ProdTime}]]></variableExpression>
+	</variable>
+	<variable name="SumPackTime" class="java.lang.Double" resetType="Group" resetGroup="By Date" calculation="Sum">
+		<variableExpression><![CDATA[$V{PackTime}]]></variableExpression>
+	</variable>
+	<variable name="SumRIETime" class="java.lang.Double" resetType="Group" resetGroup="By Date" calculation="Sum">
+		<variableExpression><![CDATA[$V{RIETime}]]></variableExpression>
+	</variable>
+	<variable name="SumDropTime" class="java.lang.Double" resetType="Group" resetGroup="By Date" calculation="Sum">
+		<variableExpression><![CDATA[$V{DropTIme}]]></variableExpression>
+	</variable>
+	<variable name="SumOtherTIme" class="java.lang.Double" resetType="Group" resetGroup="By Date" calculation="Sum">
+		<variableExpression><![CDATA[$V{OtherTIme}]]></variableExpression>
+	</variable>
+	<variable name="TotalSum" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{TimePerActivity}]]></variableExpression>
+	</variable>
+	<variable name="TotalProd" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{ProdTime}]]></variableExpression>
+	</variable>
+	<variable name="TotalPack" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{PackTime}]]></variableExpression>
+	</variable>
+	<variable name="TotalRIE" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{RIETime}]]></variableExpression>
+	</variable>
+	<variable name="TotalDrop" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{DropTIme}]]></variableExpression>
+	</variable>
+	<variable name="TotalOther" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{OtherTIme}]]></variableExpression>
+	</variable>
+	<group name="By Date">
+		<groupExpression><![CDATA[$F{Start_Time}.getDate()]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<textField pattern="MMMMM dd, yyyy">
+					<reportElement x="3" y="0" width="100" height="10"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.util.Date"><![CDATA[$F{Start_Time}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<textField pattern="#,##0">
+					<reportElement x="235" y="2" width="38" height="11"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SumTIme}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
+					<reportElement x="282" y="2" width="38" height="11"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SumProdTime}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
+					<reportElement x="320" y="2" width="36" height="11"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SumPackTime}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
+					<reportElement x="356" y="2" width="29" height="11"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SumRIETime}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
+					<reportElement x="385" y="2" width="31" height="11"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SumDropTime}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
+					<reportElement x="416" y="2" width="38" height="11" isRemoveLineWhenBlank="true"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SumOtherTIme}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="227" y="1" width="257" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="179" height="20"/>
+				<textElement/>
+				<text><![CDATA[Work By Task Report]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="354" y="0" width="100" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="12" splitType="Stretch">
+			<staticText>
+				<reportElement x="78" y="0" width="40" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Start_Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="0" width="40" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[End_Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="29" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="0" width="38" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Prod]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="36" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pack	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="0" width="29" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RIE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="0" width="31" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Drop]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="0" width="38" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Other]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField pattern="h.mm a">
+				<reportElement mode="Opaque" x="78" y="0" width="40" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{Start_Time}]]></textFieldExpression>
+			</textField>
+			<textField pattern="h.mm a">
+				<reportElement mode="Opaque" x="118" y="0" width="40" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{End_Time}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement mode="Opaque" x="189" y="0" width="46" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{activity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement mode="Opaque" x="235" y="0" width="38" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{TimePerActivity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="160" y="0" width="29" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{percentage}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement mode="Opaque" x="282" y="0" width="38" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{ProdTime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement mode="Opaque" x="320" y="0" width="36" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{PackTime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement mode="Opaque" x="356" y="0" width="29" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{RIETime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="3" y="0" width="75" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement x="385" y="0" width="31" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{DropTIme}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement x="416" y="0" width="38" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{OtherTIme}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="2" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="7" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="25" splitType="Stretch">
+			<textField pattern="#,##0">
+				<reportElement x="235" y="4" width="38" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{TotalSum}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="282" y="4" width="38" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{TotalProd}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="320" y="4" width="36" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{TotalPack}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="356" y="4" width="29" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{TotalRIE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="385" y="4" width="31" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{TotalDrop}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="416" y="4" width="38" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{TotalOther}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

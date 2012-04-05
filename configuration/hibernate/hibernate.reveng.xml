@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<schema-selection match-schema="chuckanut_bay_internal"/>
+	<table-filter match-name="inventory_items" />
+	<table-filter match-name="inventory_lots" />
+	<table-filter match-name="inventory_lot_sticker_colors" />
+	<table-filter match-name="activities" />
+	<table-filter match-name="damage_codes" />
+	<table-filter match-name="employees" />
+	<table-filter match-name="employee_work_intervals" />
+	<table-filter match-name="employee_work_interval_activity_percentages" />
+	<table-filter match-name="packaging_transactions" />
+	<table-filter match-name="quickbooks_items" />
+	<table-filter match-name="quickbooks_item_supplements" />
+	<table-filter match-name="quickbooks_sub_items" />
+	<table-filter match-name="sales_orders" />
+	<table-filter match-name="sales_order_line_items" />
+	<table-filter match-name="tray_labels" />
+	<table-filter match-name="nutrition_labels" />
+	<table name="inventory_items" class="InventoryItem">
+	</table>
+	<table name="inventory_lots" class="InventoryLot">
+	</table>
+	<table name="inventory_lot_sticker_colors" class="InventoryLotStickerColor">
+	</table>
+	<table name="activities" class="Activity">
+	</table>
+	<table name="damage_codes" class="DamageCode">
+	</table>
+	<table name="employees" class="Employee">
+	</table>
+	<table name="employee_work_intervals" class="EmployeeWorkInterval">
+	</table>
+	<table name="employee_work_interval_activity_percentages" class="EmployeeWorkIntervalActivityPercentage">
+	</table>
+	<table name="packaging_transactions" class="PackagingTransaction">
+	</table>
+	<table name="quickbooks_items" class="QuickbooksItem">
+	</table>
+	<table name="quickbooks_item_supplements" class="QuickbooksItemSupplement">
+	</table>
+	<table name="quickbooks_sub_items" class="QuickbooksSubItem">
+	</table>
+	<table name="sales_orders" class="SalesOrder">
+	</table>
+	<table name="sales_order_line_items" class="SalesOrderLineItem">
+	</table>
+	<table name="tray_labels" class="TrayLabel">
+	</table>
+	<table name="nutrition_labels" class="NutritionLabel">
+	</table>
+</hibernate-reverse-engineering>
