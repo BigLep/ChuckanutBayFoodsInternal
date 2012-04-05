@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" 
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="com.chuckanutbay" module="internal">
+		<description homepage="http://chuckanutbay.com/">
+			Internal applications used to run Chuckanut Bay Foods' business.
+		</description> 
+	</info>
+	<configurations>
+		<conf name="build" description="Tools needed when building the application." />
+		<!-- Todo add transitive="false" to the compile conf. -->
+		<conf name="compile" description="Dependencies necesessary to compile all the source code."/> 
+		<conf name="runtime" extends="compile" description="Runtime dependencies."/>
+		<conf name="test" extends="compile" description="Dependencies necessary to run unit tests."/>
+		<conf name="hibernate-tools" transitive="false" description="Dependencies for running Hibernate tools."/>
+		<conf name="gwt-debug-mode" description="Dependencies that need to be in WEB-INF/lib because they don't get autoloaded correctly."/>
+		<conf name="jasperreports" description="Dependencies for JasperReports."/>	
+	</configurations>
+	<dependencies>
+		<!--
+			Dependency searching:
+			http://www.mvnbrowser.com/
+			https://repository.jboss.org/nexus/index.html
+			http://ivyroundup.googlecode.com/svn/trunk/repo/modules.xml
+		-->
+		<dependency org="com.google.guava" name="guava" rev="r09" conf="compile->default"/>
+		<!-- 
+			We need a special Guava jar for using it with client-side GWT code as discussed here:
+			http://stackoverflow.com/questions/2005687/guava-libraries-and-gwt
+			I (Big Lep) could only figure out how to get this jar using the ivyroundup repository,
+			which has a different org for the guava libraries.
+		-->
+		<dependency org="com.google.common" name="guava-libraries" rev="r09" conf="build->gwt"/>
+		<dependency org="joda-time" name="joda-time" rev="1.6" conf="compile->default"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="compile->default;gwt-debug-mode->default"/>
+		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" conf="runtime->default;test->default;gwt-debug-mode->default"/>
+		<dependency org="log4j" name="log4j" rev="1.2.14" conf="runtime->master;test->master;gwt-debug-mode->master"/>
+		
+		<!-- http://stackoverflow.com/questions/520902/trouble-getting-hibernate-core-and-hibernate-annotations-using-apache-ivy-but-it -->
+		<dependency org="org.hibernate" name="hibernate-core" rev="3.6.6.Final" conf="compile->master,runtime,optional"/>
+		<dependency org="org.hibernate" name="hibernate-c3p0" rev="3.6.6.Final" conf="runtime->default"/>
+		<dependency org="org.hibernate" name="hibernate-validator" rev="4.2.0.Final" conf="runtime->default;gwt-debug-mode->default"/>
+		<dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="runtime->default"/>
+		<dependency org="c3p0" name="c3p0" rev="0.9.1.2" conf="runtime->default"/>
+		<dependency org="junit" name="junit" rev="4.8.1" conf="test->default"/>
+		<!--
+		See configuration/hibernate/hibernate-unit-test.xml for explanation on why h2 is used instead of hsqldb.
+		<dependency org="org.hsqldb" name="hsqldb" rev="2.2.4" conf="test->default"/>
+		-->
+		<dependency org="com.h2database" name="h2" rev="1.3.158" conf="test->default"/>
+		<dependency org="javax.servlet" name="servlet-api" rev="2.5" conf="build->default"/>
+		
+		<dependency org="com.google.gwt" name="gwt-user" rev="2.3.0" conf="build->default"/>
+		<dependency org="com.google.gwt" name="gwt-dev" rev="2.3.0" conf="build->default"/>
+		<!-- Unit tests for service implementation need to be able compile with the servlet code. -->
+		<dependency org="com.google.gwt" name="gwt-servlet" rev="2.3.0" conf="runtime->default;test->default"/>
+		
+		<!-- Hibernate tools isn't compatibile with Hibernate 3.5 http://opensource.atlassian.com/projects/hibernate/browse/HBX-1160 -->
+		<dependency org="org.hibernate" name="hibernate-tools" rev="3.2.4.GA" conf="hibernate-tools->master,runtime,optional"/>
+		<dependency org="commons-logging" name="commons-logging-api" rev="1.1" conf="hibernate-tools->default"/>
+		<dependency org="org.hibernate" name="hibernate-core" rev="3.3.0.GA" conf="hibernate-tools->master,runtime,optional"/>
+		<dependency org="org.hibernate" name="hibernate-annotations" rev="3.3.0.ga" conf="hibernate-tools->master,runtime,optional"/>
+		
+		<!-- 
+			Jasper Reports dependencies are a bit messed up.  
+			Ideally we would specify conf as "build->default,optional", but the optional dependencies don't resolve correctly.
+			This can be confirmed by looking at https://oss.sonatype.org/index.html#nexus-search;gav~net.sf.jasperreports~jasperreports~~~~kw,versionexpand,
+			and doing dependency resolution.  The following messagess are listed:
+			- commons-java "incomplete pom heirarchy"
+			- mondrian "incomplete pom heirarchy"
+			As a result, we have to do some manual dependency adding.
+			I found these dependencies by looking at: ~/.ivy2/cache/net.sf.jasperreports/jasperreports/ivy-4.1.1.xml
+			This is the ivy.xml file created from the Maven pom.xml.
+		-->
+		<dependency org="net.sf.jasperreports" name="jasperreports" rev="4.1.1" conf="compile->default;gwt-debug-mode->default" />
+		<!--  These dependencies are needed so CompileReports can run. -->
+		<dependency org="net.sf.barcode4j" name="barcode4j" rev="2.0" conf="compile->default;gwt-debug-mode->default"/>
+		<dependency org="rhino" name="js" rev="1.7R1" conf="compile->default;gwt-debug-mode->default"/>
+		<dependency org="org.apache.xmlgraphics" name="batik-bridge" rev="1.7" conf="compile->master;gwt-debug-mode->master"/> 
+		<dependency org="org.apache.xmlgraphics" name="batik-gvt" rev="1.7" conf="compile->master;gwt-debug-mode->master"/> 
+		<dependency org="org.apache.xmlgraphics" name="batik-script" rev="1.7" conf="compile->master;gwt-debug-mode->master"/> 
+		<dependency org="org.apache.xmlgraphics" name="batik-svg-dom" rev="1.7" conf="compile->default;gwt-debug-mode->default"/>
+	
+		<!-- 
+		  Without this, log4j-1.2.16 is used.
+		  Unfortunately, log4j-1.2.16's jar shows up in a "bundles" directory instead of a "jars" directory.
+		  As a result, it doesn't get picked up during our Ant tasks copying jar files around.
+		-->
+		<conflict org="log4j" rev="1.2.14"/>
+	</dependencies>
+</ivy-module>

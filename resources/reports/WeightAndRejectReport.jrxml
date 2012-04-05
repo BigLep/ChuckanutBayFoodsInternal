@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Weight &amp; Reject Report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="190"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="StartDate" class="java.util.Date">
+		<parameterDescription><![CDATA[Start date for running report]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{StartDate}.getDate()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EndDate" class="java.util.Date">
+		<parameterDescription><![CDATA[End Date to Run Report]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{EndDate}.getDate()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     packaging_transactions.`id` AS packaging_transactions_id,
+     packaging_transactions.`damaged_qty` AS packaging_transactions_damaged_qty,
+     packaging_transactions.`date` AS packaging_transactions_date,
+     packaging_transactions.`test_weight` AS packaging_transactions_test_weight,
+     packaging_transactions.`damage_code_id` AS packaging_transactions_damage_code_id,
+     packaging_transactions.`employee_id` AS packaging_transactions_employee_id,
+     packaging_transactions.`tray_label_id` AS packaging_transactions_tray_label_id,
+     tray_labels.`id` AS tray_labels_id,
+     tray_labels.`line_item_id` AS tray_labels_line_item_id,
+     tray_labels.`lot_code` AS tray_labels_lot_code,
+     tray_labels.`cases` AS tray_labels_cases,
+     tray_labels.`sub_item_id` AS tray_labels_sub_item_id,
+     tray_labels.`qb_item_id` AS tray_labels_qb_item_id,
+     tray_labels.`cakes_per_case` AS tray_labels_cakes_per_case,
+     tray_labels.`cases_per_tray` AS tray_labels_cases_per_tray,
+     sales_order_line_items.`id` AS sales_order_line_items_id,
+     sales_order_line_items.`sales_order_id` AS sales_order_line_items_sales_order_id,
+     sales_order_line_items.`qb_item_id` AS sales_order_line_items_qb_item_id,
+     sales_order_line_items.`cases` AS sales_order_line_items_cases,
+     sales_order_line_items.`amount` AS sales_order_line_items_amount,
+     quickbooks_items.`id` AS quickbooks_items_id,
+     quickbooks_items.`description` AS quickbooks_items_description,
+     quickbooks_items.`pack` AS quickbooks_items_pack,
+     quickbooks_items.`unit_weight_oz` AS quickbooks_items_unit_weight_oz,
+     quickbooks_items.`quickbooks_item_supplement_id` AS quickbooks_items_quickbooks_item_supplement_id,
+     quickbooks_items_A.`id` AS quickbooks_items_A_id,
+     quickbooks_items_A.`description` AS quickbooks_items_A_description,
+     quickbooks_items_A.`pack` AS quickbooks_items_A_pack,
+     quickbooks_items_A.`unit_weight_oz` AS quickbooks_items_A_unit_weight_oz,
+     quickbooks_items_A.`quickbooks_item_supplement_id` AS quickbooks_items_A_quickbooks_item_supplement_id,
+     employees.`id` AS employees_id,
+     employees.`first_name` AS employees_first_name,
+     employees.`last_name` AS employees_last_name,
+     employees.`barcode_number` AS employees_barcode_number,
+     employees.`shift` AS employees_shift,
+     employees.`active_production` AS employees_active_production
+FROM
+     `tray_labels` tray_labels RIGHT OUTER JOIN `packaging_transactions` packaging_transactions ON tray_labels.`id` = packaging_transactions.`tray_label_id`
+     LEFT OUTER JOIN `sales_order_line_items` sales_order_line_items ON tray_labels.`line_item_id` = sales_order_line_items.`id`
+     LEFT OUTER JOIN `quickbooks_items` quickbooks_items_A ON tray_labels.`qb_item_id` = quickbooks_items_A.`id`
+     LEFT OUTER JOIN `quickbooks_items` quickbooks_items ON sales_order_line_items.`qb_item_id` = quickbooks_items.`id`
+     LEFT OUTER JOIN `employees` employees ON packaging_transactions.`employee_id` = employees.`id`
+WHERE
+     packaging_transactions.`date` >= $P{StartDate}
+ AND packaging_transactions.`date` <= $P{EndDate}]]>
+	</queryString>
+	<field name="packaging_transactions_id" class="java.lang.Integer"/>
+	<field name="packaging_transactions_damaged_qty" class="java.lang.Integer"/>
+	<field name="packaging_transactions_date" class="java.sql.Timestamp"/>
+	<field name="packaging_transactions_test_weight" class="java.lang.Double"/>
+	<field name="packaging_transactions_damage_code_id" class="java.lang.Integer"/>
+	<field name="packaging_transactions_employee_id" class="java.lang.Integer"/>
+	<field name="packaging_transactions_tray_label_id" class="java.lang.Integer"/>
+	<field name="tray_labels_id" class="java.lang.Integer"/>
+	<field name="tray_labels_line_item_id" class="java.lang.Integer"/>
+	<field name="tray_labels_lot_code" class="java.lang.String"/>
+	<field name="tray_labels_cases" class="java.lang.Double"/>
+	<field name="tray_labels_sub_item_id" class="java.lang.String"/>
+	<field name="tray_labels_qb_item_id" class="java.lang.String"/>
+	<field name="tray_labels_cakes_per_case" class="java.lang.Double"/>
+	<field name="tray_labels_cases_per_tray" class="java.lang.Double"/>
+	<field name="sales_order_line_items_id" class="java.lang.Integer"/>
+	<field name="sales_order_line_items_sales_order_id" class="java.lang.Integer"/>
+	<field name="sales_order_line_items_qb_item_id" class="java.lang.String"/>
+	<field name="sales_order_line_items_cases" class="java.lang.Integer"/>
+	<field name="sales_order_line_items_amount" class="java.lang.Double"/>
+	<field name="quickbooks_items_id" class="java.lang.String"/>
+	<field name="quickbooks_items_description" class="java.lang.String"/>
+	<field name="quickbooks_items_pack" class="java.lang.Integer"/>
+	<field name="quickbooks_items_unit_weight_oz" class="java.math.BigDecimal"/>
+	<field name="quickbooks_items_quickbooks_item_supplement_id" class="java.lang.String"/>
+	<field name="quickbooks_items_A_id" class="java.lang.String"/>
+	<field name="quickbooks_items_A_description" class="java.lang.String"/>
+	<field name="quickbooks_items_A_pack" class="java.lang.Integer"/>
+	<field name="quickbooks_items_A_unit_weight_oz" class="java.math.BigDecimal"/>
+	<field name="quickbooks_items_A_quickbooks_item_supplement_id" class="java.lang.String"/>
+	<field name="employees_id" class="java.lang.Integer"/>
+	<field name="employees_first_name" class="java.lang.String"/>
+	<field name="employees_last_name" class="java.lang.String"/>
+	<field name="employees_barcode_number" class="java.lang.Integer"/>
+	<field name="employees_shift" class="java.lang.Integer"/>
+	<field name="employees_active_production" class="java.lang.Integer"/>
+	<sortField name="TargetWeight" type="Variable"/>
+	<sortField name="ItemID" type="Variable"/>
+	<sortField name="tray_labels_lot_code"/>
+	<variable name="TargetWeight" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[(($F{quickbooks_items_id}==null?$F{quickbooks_items_A_unit_weight_oz}:$F{quickbooks_items_unit_weight_oz}))]]></variableExpression>
+	</variable>
+	<variable name="CakesPerTray" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{tray_labels_cases_per_tray}*$F{tray_labels_cakes_per_case}]]></variableExpression>
+	</variable>
+	<variable name="ItemID" class="java.lang.String">
+		<variableExpression><![CDATA[(($F{tray_labels_sub_item_id}!=null)?$F{tray_labels_sub_item_id}:(($F{sales_order_line_items_qb_item_id}!=null)?$F{sales_order_line_items_qb_item_id}:$F{tray_labels_qb_item_id}))]]></variableExpression>
+	</variable>
+	<variable name="Qty_Cakes" class="java.lang.Integer" resetType="Group" resetGroup="Item" calculation="Sum">
+		<variableExpression><![CDATA[$V{CakesPerTray}]]></variableExpression>
+	</variable>
+	<variable name="Sum_Bad" class="java.lang.Integer" resetType="Group" resetGroup="Item" calculation="Sum">
+		<variableExpression><![CDATA[$F{packaging_transactions_damaged_qty}]]></variableExpression>
+	</variable>
+	<variable name="Percent_Bad" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{Sum_Bad}/$V{Qty_Cakes}]]></variableExpression>
+	</variable>
+	<variable name="Ave_Weight" class="java.lang.Double" resetType="Group" resetGroup="Item" calculation="Average">
+		<variableExpression><![CDATA[$F{packaging_transactions_test_weight}]]></variableExpression>
+	</variable>
+	<variable name="SD_Weight" class="java.lang.Double" resetType="Group" resetGroup="Item" calculation="StandardDeviation">
+		<variableExpression><![CDATA[$F{packaging_transactions_test_weight}]]></variableExpression>
+	</variable>
+	<variable name="SumCakesAll" class="java.lang.Double" resetType="Group" resetGroup="Target Weight" calculation="Sum">
+		<variableExpression><![CDATA[$V{CakesPerTray}]]></variableExpression>
+	</variable>
+	<variable name="SumBadAll" class="java.lang.Double" resetType="Group" resetGroup="Target Weight" calculation="Sum">
+		<variableExpression><![CDATA[$F{packaging_transactions_damaged_qty}]]></variableExpression>
+	</variable>
+	<variable name="Percent_Bad_All" class="java.lang.Double" resetType="None">
+		<variableExpression><![CDATA[$V{SumBadAll}/$V{SumCakesAll}]]></variableExpression>
+	</variable>
+	<variable name="AverageAll" class="java.lang.Double" resetType="Group" resetGroup="Target Weight" calculation="Average">
+		<variableExpression><![CDATA[$F{packaging_transactions_test_weight}]]></variableExpression>
+	</variable>
+	<variable name="SDWeightAll" class="java.lang.Double" resetType="Group" resetGroup="Target Weight" calculation="StandardDeviation">
+		<variableExpression><![CDATA[$F{packaging_transactions_test_weight}]]></variableExpression>
+	</variable>
+	<variable name="Name" class="java.lang.String">
+		<variableExpression><![CDATA[$F{employees_first_name}+" "+$F{employees_last_name}]]></variableExpression>
+	</variable>
+	<variable name="TodayDateTime" class="java.sql.Timestamp">
+		<variableExpression><![CDATA[$V{TodayDateTime}.getDate()]]></variableExpression>
+	</variable>
+	<variable name="DateRange" class="java.lang.String">
+		<variableExpression><![CDATA[$P{StartDate}.toLocaleString()+" to "+$P{EndDate}.toLocaleString()]]></variableExpression>
+	</variable>
+	<group name="Target Weight">
+		<groupExpression><![CDATA[$V{TargetWeight}]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<textField evaluationTime="Group" evaluationGroup="Target Weight">
+					<reportElement x="0" y="0" width="40" height="18"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TargetWeight}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="44" y="0" width="84" height="18"/>
+					<textElement textAlignment="Left">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Oz Cakes]]></text>
+				</staticText>
+				<line>
+					<reportElement x="2" y="19" width="400" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="38">
+				<textField>
+					<reportElement x="2" y="6" width="40" height="24"/>
+					<textElement textAlignment="Right">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TargetWeight}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement mode="Transparent" x="0" y="30" width="400" height="1"/>
+					<graphicElement>
+						<pen lineWidth="3.0" lineStyle="Double"/>
+					</graphicElement>
+				</line>
+				<textField pattern="#,##0">
+					<reportElement x="48" y="6" width="50" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SumCakesAll}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
+					<reportElement x="102" y="6" width="30" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SumBadAll}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0 %">
+					<reportElement x="82" y="17" width="50" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{Percent_Bad_All}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="172" y="6" width="50" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{AverageAll}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000">
+					<reportElement x="172" y="17" width="50" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SDWeightAll}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="135" y="17" width="34" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Reject]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="228" y="17" width="100" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Weight Standard Deviation]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="228" y="6" width="100" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Average Weight]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Item">
+		<groupExpression><![CDATA[$V{ItemID}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<textField evaluationTime="Group" evaluationGroup="Item">
+					<reportElement x="18" y="1" width="50" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{ItemID}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="118" y="1" width="44" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Qty Rejects]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="233" y="1" width="55" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Check Weight]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="25">
+				<textField pattern="#,##0">
+					<reportElement x="68" y="4" width="30" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{Qty_Cakes}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
+					<reportElement x="118" y="4" width="32" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{Sum_Bad}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0 %">
+					<reportElement x="100" y="14" width="50" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{Percent_Bad}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="18" y="6" width="50" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{ItemID}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="222" y="4" width="40" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{Ave_Weight}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000">
+					<reportElement x="222" y="13" width="40" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SD_Weight}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="271" y="3" width="100" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Average Weight]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="270" y="13" width="100" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Weight Standard Deviation]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="153" y="14" width="34" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Reject]]></text>
+				</staticText>
+				<line>
+					<reportElement x="5" y="1" width="300" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="117" y="0" width="253" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Weight Accuracy and Reject Report]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="118" y="16" width="252" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{DateRange}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="455" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement x="233" y="0" width="30" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{packaging_transactions_test_weight}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="114" y="0" width="36" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{packaging_transactions_damaged_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="68" y="0" width="30" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{CakesPerTray}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="183" y="0" width="50" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TargetWeight}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="8" y="0" width="50" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tray_labels_lot_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="0" width="100" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="373" y="0" width="131" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{packaging_transactions_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="20" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

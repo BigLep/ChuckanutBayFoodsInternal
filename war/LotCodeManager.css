@@ -1,0 +1,98 @@
+
+.FlexTable {
+  border: 1px solid silver;
+  padding: 2px;
+  width: 925px;
+  border-radius: 5px;
+}
+
+.FlexTableHeader {
+  background-color: maroon;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  width: 925px;
+}
+
+.roundedCorners button {
+  border: 1px solid silver;
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgrey)); 
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: small;
+  cursor: pointer;
+  cursor: hand;
+  border: 1px outset #ccc;
+}
+
+.roundedCorners button:active {
+  border: 1px inset #ccc;
+}
+
+.roundedCorners button:hover {
+  border-color: #9cf #69e #69e #7af;
+}
+
+.roundedCorners iframe {
+  border-radius: 40px;
+}
+
+.buttonsPanel {
+  border: 1px solid silver;
+  padding: 5px;
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgrey)); 
+  font-weight: bold;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.dateBox {
+width: 80px;
+}
+
+.headerPanel {
+  width: 925px;
+	padding: 4px;
+	border: 1px solid Silver;
+	spacing: 5px;
+  border-radius: 5px;
+}
+
+.ingredientCodeTextBox {
+	width: 50px;
+}
+
+.ingredientListBox {
+	width: 350px;
+}
+
+.lotCodeManagerLabel{
+  font-size:24px; 
+  font-weight: bold;
+}
+
+.lotCodeTextBox {
+	width: 150px;
+}
+
+.navigationButton {
+	width: 400px;
+}
+
+.pointer {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+	cursor: pointer;
+}
+
+.mainPanel {
+	width: 1000px;
+}
+.boldText {
+	font-weight: bold;
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<!-- Inherit the core Web Toolkit stuff.												-->
+	<inherits name="com.google.gwt.user.User"/>
+
+	<!-- Inherit the default GWT style sheet.	You can change			 -->
+	<!-- the theme of your GWT application by uncommenting					-->
+	<!-- any one of the following lines.														-->
+	<!-- <inherits name="com.google.gwt.user.theme.dark.Dark"/> -->
+	<!-- <inherits name="com.google.gwt.user.theme.chrome.Chrome"/> -->
+	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
+	<inherits name="com.google.common.collect.Collect"/>
+  	<inherits name="gwthelper.GwtHelper"/>
+	
+	<!-- 
+		Render output for less browsers so that compiling is faster.
+		This is discussed here: https://code.google.com/webtoolkit/doc/latest/FAQ_DebuggingAndCompiling.html#Can_I_speed_up_the_GWT_compiler?
+		Valid values can be found in: gwt-user.jar:com.google.gwt.user.UserAgent.gwt.xml
+	 -->
+	<set-property name="user.agent" value="safari"/>
+	
+	<source path="shared"/>
+	<source path="client"/>
+	
+	<!-- 
+		Extenders should do the following:
+		<inherits name="com.chuckanutbay.webapp.common.BaseModule"/>
+		<entry-point class="com.chuckanutbay.webapp.entryPointClass"/>
+		<source path="client"/>
+		<source path="shared"/>
+	-->
+
+</module>

@@ -1,0 +1,162 @@
+.backgroundPanel {
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#c40000), color-stop(45%,#ff0000), color-stop(56%,#ff0000), color-stop(100%,#c40000)); /* Chrome,Safari4+ */
+    padding: 20px;
+}
+.clockBackground { 
+    background: -webkit-gradient(linear, left top, left bottom, from(white), to(lightgrey)); 
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+    padding: 20px;
+	border-radius: 10px;
+	color: red;
+	padding: 2px 4px;
+	font-size: 72px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #aaa;
+}
+.columnPanel {
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+	border-radius: 10px;
+	color: Black;
+	padding: 2px 4px;
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #aaa;
+}
+.employeeFlexTableHeader {
+	color: Black;
+	font-size: 36px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #aaa;
+}
+.employeeFlexTableNameColumn {
+	color: Black;
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #aaa;
+	width: 230px;
+}
+.employeeFlexTableTimeColumn {
+	color: Black;
+	font-size: 16px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #aaa;
+	width: 100px;
+}
+.clockInConfirmationPanel {
+	//background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+	border-radius: 10px;
+	padding: 2px 4px;
+}
+.welcomeLabel {
+	color: white;
+	font-size: 66px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 2px 2px 4px #333;
+}
+.incorrectEmployeeButtonPanel {
+	color: white;
+	font-size: 66px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #aaa;
+	width: 400px;
+}
+.incorrectEmployeeButton {
+	color: red;
+	font-size: 36px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: center;
+}
+.clockOutDialogBox {
+}
+.clockOutDialogBoxGlass {
+	background-color: #000000;
+	opacity: 0.7;
+	filter: alpha(opacity=20);
+}
+.clockOutTitleLabel {
+	background: Red;
+	color: white;
+	padding: 0px 0px 5px 0px;
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: left;
+	text-shadow: 1px 1px 2px #aaa;
+}
+.clockOutDialogBoxLabel {
+	color: Red;
+	padding: 5px 10px;
+	font-size: 30px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: right;
+	text-shadow: 1px 1px 2px #aaa;
+}
+.clockOutDialogBoxTotalLabel {
+	color: Red;
+	padding: 5px 10px;
+	font-size: 36px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: right;
+	text-shadow: 1px 1px 2px #aaa;
+}
+
+.clockOutDialogBoxButton {
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+}
+
+.clockOutDialogBoxButton[Disabled] {
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+}
+
+.clockOutDialogBoxFlexTable {
+	border: 5px solid Red;
+	font-family: Tahoma;
+	padding: 0px;
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,lightgrey), color-stop(45%,white), color-stop(56%,white), color-stop(100%,lightgrey)); /* Chrome,Safari4+ */
+	border-radius: 5px;
+}
+
+.clockOutDialogBoxListBox {
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+}
+
+.clockOutDialogBoxListBox option {
+	font-size: 24px;
+	font-family: Tahoma, Geneva;
+}
+
+.clockOutDialogBoxTotalValueLabel {
+	color: Red;
+	padding: 5px 10px;
+	font-size: 36px;
+	font-family: Tahoma, Geneva;
+	font-weight: bold;
+	text-align: left;
+	text-shadow: 1px 1px 2px #aaa;
+}
+
+.commentBox {
+	font-size: 20px;
+	font-family: Tahoma, Geneva;
+	width: auto;
+}
