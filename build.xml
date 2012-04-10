@@ -1,246 +1,262 @@
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="ChuckanutBayInternal" default="release">
 
     <!-- Reference http://www.mostlyblather.com/2009/10/gwt-20-ms1-with-ivy-dependency.html in the future -->
-	
-	<property name="version" value="1.0"/>
-	
-	<property name="ant.build.javac.source" value="1.6" />
-	<property name="ant.build.javac.target" value="1.6" />
-	
-	<property name="javac.compiler.flags" value="-Xlint:all,-serial,-fallthrough"/>
-	<property name="build.output.dir" value="${basedir}/build-output"/>
-	<property name="build.output.private.dir" value="${build.output.dir}/private"/>
-	<property name="build.output.src.dir" value="${build.output.private.dir}/src"/>
-	<property name="build.output.tst.dir" value="${build.output.private.dir}/tst"/>
-	<property name="build.output.lib.dir" value="${build.output.dir}/lib"/>
-	<property name="build.output.war.dir" value="${build.output.private.dir}/war"/>
-	<property name="build.output.war.lib.dir" value="${build.output.war.dir}/WEB-INF/lib"/>
-	<property name="build.output.reports.dir" value="${build.output.dir}/reports"/>
-	<property name="build.output.junit.dir" value="${build.output.reports.dir}/junit"/>
-	<property name="src.dir" value="${basedir}/src"/>
-	<property name="config.dir" value="${basedir}/configuration"/>
-	<property name="lib.dir" value="${basedir}/lib"/>
-	<property name="resources.dir" value="${basedir}/resources"/>
-	<property name="tst.dir" value="${basedir}/tst"/>
-	<property name="war.dir" value="${basedir}/war"/>
-	<!-- Alternatively, could do ${ant.project.name} -->
-	<property name="war.name" value="ROOT"/>
-	
-	
-	<target name="release" depends="war,javadoc"/>
-	
-	<target name="clean">
-		<delete dir="${build.output.dir}" />
-		<delete dir="${war.dir}/WEB-INF/lib" />
-	</target>
-	
-	<target name="ivy-build-classpath">
+    
+    <property name="version" value="1.0"/>
+    
+    <property name="ant.build.javac.source" value="1.6" />
+    <property name="ant.build.javac.target" value="1.6" />
+    
+    <property name="javac.compiler.flags" value="-Xlint:all,-serial,-fallthrough"/>
+    <property name="build.output.dir" value="${basedir}/build-output"/>
+    <property name="build.output.private.dir" value="${build.output.dir}/private"/>
+    <property name="build.output.src.dir" value="${build.output.private.dir}/src"/>
+    <property name="build.output.tst.dir" value="${build.output.private.dir}/tst"/>
+    <property name="build.output.lib.dir" value="${build.output.dir}/lib"/>
+    <property name="build.output.war.dir" value="${build.output.private.dir}/war"/>
+    <property name="build.output.war.lib.dir" value="${build.output.war.dir}/WEB-INF/lib"/>
+    <property name="build.output.reports.dir" value="${build.output.dir}/reports"/>
+    <property name="build.output.junit.dir" value="${build.output.reports.dir}/junit"/>
+    <property name="src.dir" value="${basedir}/src"/>
+    <property name="config.dir" value="${basedir}/configuration"/>
+    <property name="lib.dir" value="${basedir}/lib"/>
+    <property name="resources.dir" value="${basedir}/resources"/>
+    <property name="tst.dir" value="${basedir}/tst"/>
+    <property name="war.dir" value="${basedir}/war"/>
+    <!-- Alternatively, could do ${ant.project.name} -->
+    <property name="war.name" value="ROOT"/>
+    
+    
+    <target name="release" depends="war,javadoc"/>
+    
+    <target name="clean">
+        <delete dir="${build.output.dir}" />
+        <delete dir="${war.dir}/WEB-INF/lib" />
+    </target>
+    
+    <target name="ivy-build-classpath">
         <ivypath pathid="ivy.build.classpath.ref" conf="build"/>
     </target>
-	
-	<target name="ivy-compile-classpath">
+    
+    <target name="ivy-compile-classpath">
         <ivypath pathid="ivy.compile.classpath.ref" conf="compile"/>
     </target>
-	
-	<target name="ivy-test-classpath">
+    
+    <target name="ivy-test-classpath">
         <ivypath pathid="ivy.test.classpath.ref" conf="test"/>
     </target>
-	
-	<target name="src-compile-classpath" depends="ivy-compile-classpath,ivy-build-classpath,eclipse-gwt-debug-setup">
-		<path id="src.compile.classpath.ref">
+    
+    <target name="lib-classpath">
+        <path id="lib.classpath.ref">
+            <fileset dir="${lib.dir}">
+                   <include name="**/*.jar"/>
+            </fileset>
+        </path>
+    </target>
+    
+    <target name="src-compile-classpath" depends="ivy-compile-classpath,ivy-build-classpath,lib-classpath">
+        <path id="src.compile.classpath.ref">
             <path refid="ivy.compile.classpath.ref"/>
-			<path refid="ivy.build.classpath.ref"/>
+            <path refid="ivy.build.classpath.ref"/>
+            <path refid="lib.classpath.ref"/>
         </path>
-	</target>
-	
-	<target name="src-compile" depends="src-compile-classpath">
-		<mkdir dir="${build.output.src.dir}" />
-		<javac srcdir="${src.dir}"
-			   includes="${lib.dir}"
-		       destdir="${build.output.src.dir}"
-			   classpathref="src.compile.classpath.ref"
-		       includeantruntime="no"
-		       debug="on"
-		/>
-		<copy todir="${build.output.src.dir}" verbose="true">
-			<fileset dir="${src.dir}">
-				<exclude name="**/*.java"/>
-			</fileset>
-			<fileset dir="${config.dir}/c3p0" />
-			<fileset dir="${config.dir}" includes="hibernate/**"/>
-			<fileset dir="${config.dir}/log4j" />
-			<fileset dir="${resources.dir}" />
-		</copy>
-	</target>
-	
-	<target name="jar" depends="src-compile">
-		<mkdir dir="${build.output.lib.dir}" />
-		<jar destfile="${build.output.lib.dir}/${ant.project.name}.jar"
-		     basedir="${build.output.src.dir}"
-		/>
-	</target>
-	
-	<target name="tst-compile-classpath" depends="ivy-test-classpath">
-		<path id="tst.compile.classpath.ref">
-			<path refid="ivy.build.classpath.ref"/>
-			<path refid="ivy.test.classpath.ref"/>
-			<pathelement location="${build.output.src.dir}"/>
-		</path>
-	</target>
-	
-	<target name="tst-compile" depends="src-compile,tst-compile-classpath">
-		<mkdir dir="${build.output.tst.dir}" />
-		<javac srcdir="${tst.dir}"
-		       destdir="${build.output.tst.dir}"
-			   classpathref="tst.compile.classpath.ref"
-		       debug="on"
-		/>
-		<!-- Copy over any non Java file assets -->
-		<copy todir="${build.output.tst.dir}">
-			<fileset dir="${tst.dir}">
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-	</target>
-	
-	<target name="unit-test-classpath" depends="tst-compile-classpath">
-		<path id="test.unit.classpath.ref">
+    </target>
+    
+    <target name="src-compile" depends="src-compile-classpath">
+        <mkdir dir="${build.output.src.dir}" />
+        <echo-classpath refid="src.compile.classpath.ref"/>
+        <javac srcdir="${src.dir}"
+               destdir="${build.output.src.dir}"
+               classpathref="src.compile.classpath.ref"
+               debug="on"
+        />
+        <copy todir="${build.output.src.dir}" verbose="true">
+            <fileset dir="${src.dir}">
+                <exclude name="**/*.java"/>
+            </fileset>
+            <fileset dir="${config.dir}/c3p0" />
+            <fileset dir="${config.dir}" includes="hibernate/**"/>
+            <fileset dir="${config.dir}/log4j" />
+            <fileset dir="${resources.dir}" />
+        </copy>
+    </target>
+    
+    <target name="jar" depends="src-compile">
+        <mkdir dir="${build.output.lib.dir}" />
+        <jar destfile="${build.output.lib.dir}/${ant.project.name}.jar"
+             basedir="${build.output.src.dir}"
+        />
+    </target>
+    
+    <target name="tst-compile-classpath" depends="ivy-test-classpath">
+        <path id="tst.compile.classpath.ref">
+            <path refid="ivy.build.classpath.ref"/>
+            <path refid="ivy.test.classpath.ref"/>
+            <pathelement location="${build.output.src.dir}"/>
+        </path>
+    </target>
+    
+    <target name="tst-compile" depends="src-compile,tst-compile-classpath">
+        <mkdir dir="${build.output.tst.dir}" />
+        <javac srcdir="${tst.dir}"
+               destdir="${build.output.tst.dir}"
+               classpathref="tst.compile.classpath.ref"
+               debug="on"
+        />
+        <!-- Copy over any non Java file assets -->
+        <copy todir="${build.output.tst.dir}">
+            <fileset dir="${tst.dir}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="unit-test-classpath" depends="tst-compile-classpath">
+        <path id="test.unit.classpath.ref">
             <path refid="tst.compile.classpath.ref"/>
-			<pathelement location="${build.output.tst.dir}"/>
+            <pathelement location="${build.output.tst.dir}"/>
         </path>
-	</target>
-	
-	<target name="unit-test" depends="tst-compile,unit-test-classpath">
-		<mkdir dir="${build.output.junit.dir}" />
-		<echo-classpath refid="test.unit.classpath.ref"/>
-		<junit 
-			errorproperty="test.unit.error"
-			failureproperty="test.unit.failure"
-			showoutput="true">
-			
-			<formatter type="plain"/>
-			<formatter type="xml"/>
-			
-			<classpath>
-				<path refid="test.unit.classpath.ref"/>
-			</classpath>
+    </target>
+    
+    <target name="unit-test" depends="tst-compile,unit-test-classpath">
+        <mkdir dir="${build.output.junit.dir}" />
+        <echo-classpath refid="test.unit.classpath.ref"/>
+        <junit 
+            errorproperty="test.unit.error"
+            failureproperty="test.unit.failure"
+            showoutput="true">
+            
+            <formatter type="plain"/>
+            <formatter type="xml"/>
+            
+            <classpath>
+                <path refid="test.unit.classpath.ref"/>
+            </classpath>
 
-			<batchtest todir="${build.output.junit.dir}">
-				<fileset dir="${tst.dir}">
-					<include name="**/*Test.java"/>
-				</fileset>
-			</batchtest>
-			<jvmarg value="-Xmx512M"/>
-		</junit>
-	</target>
-	
-	<target name="gwt-compile" depends="ivy-build-classpath,src-compile" description="GWT compile to JavaScript">
-		<!-- http://code.google.com/webtoolkit/doc/latest/FAQ_DebuggingAndCompiling.html#What_are_the_options_that_can_be_passed_to_the_compiler -->
-		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
-			<classpath>
-				<path refid="ivy.build.classpath.ref"/>
-				<path refid="ivy.compile.classpath.ref"/>
-				<pathelement location="${src.dir}"/>
-				<pathelement location="${lib.dir}"/>
-				<pathelement location="${build.output.src.dir}"/>
-			</classpath>
-			<jvmarg value="-Xmx512M"/>
-			<arg value="-war"/>
-			<arg value="${build.output.war.dir}"/>
-			<arg value="com.chuckanutbay.webapp.lotmanagement.LotCodeManager"/>
-			<arg value="com.chuckanutbay.webapp.dashboard.Dashboard"/>
-			<arg value="com.chuckanutbay.webapp.timeclock.TimeClock"/>
-			<arg value="com.chuckanutbay.webapp.timeclock.TimeClockReport"/>
-			<arg value="com.chuckanutbay.webapp.traylabelgenerator.TrayLabelGenerator"/>
-			<arg value="com.chuckanutbay.webapp.packagingtransactionmanager.PackagingTransactionManager"/>
-			<!-- add any other modules here -->
-		</java>
-	</target>
-	
-	<!--
-		According to Mitch on 9/5/11, the fonts that Jasper ship with the best set of fonts
-		(e.g., is lacking Tahoma and doesn't handle bolds very well)
-		As a result, we grab the fonts from within iReport instead of declaring a dependency on net.sf.jasperreports-fonts.
-	-->
-	<target name="generate-report-fonts">
-		<jar destfile="${lib.dir}/reportfonts.jar"
-			basedir="/Applications/Jaspersoft iReport Designer.app/Contents/Resources/ireport/ireport/fonts"
-		/>
-	</target>
-	
-	<target name="setup-war-directory">
-		<ivyfileset setid="ivy.runtime.fileset.ref" conf="runtime"/>
-		<copy todir="${build.output.war.lib.dir}">
-			<resources refid="ivy.runtime.fileset.ref" />
-			<fileset dir="${build.output.lib.dir}" />
-			<fileset dir="${lib.dir}"/>
-			<flattenmapper/>
-		</copy>
-		<copy todir="${build.output.war.dir}">
-			<fileset dir="${war.dir}">
-				<exclude name="WEB-INF/**"/>
-				<exclude name="lotcodemanager/**"/>
-				<exclude name="timeclock/**"/>
-				<exclude name="dashboard/**"/>
-				<exclude name="timeclockreport/**"/>
-				<exclude name="traylabelgenerator/**"/>
-				<exclude name="fileTemplates/**"/>
-				<exclude name="packagingtransactionmanager/**"/>
-				<!-- add other files to exclude here -->
-			</fileset>
-		</copy>
-	</target>
-	
-	<target name="war" depends="jar,gwt-compile,setup-war-directory" description="GWT compile to JavaScript">
-		<war destfile="${build.output.dir}/${war.name}.war" webxml="${war.dir}/WEB-INF/web.xml">
-			<lib dir="${build.output.war.lib.dir}"/>
-			<fileset dir="${build.output.war.dir}">
-				<exclude name="WEB-INF/**"/>
-			</fileset>
-		</war>
-	</target>
-	
-	<!--
-		This target sets up Eclipse for GWT debug mode by getting necessary configuration and jars in place.
-		The reason some jars need to be copied explicitly, is because the auto classloading doesn't work for these jars.
-		The dependencies that have this issue are slf4j and hibernate annotations (which needs Hibernate validator).  
-		The commanlity between this is that they are looking for implementations to be on the classpath,
-		which doesn't give the classpath loader a chance to load them from the Eclipse "ivy.xml" build-path library. 
-	-->
-	<target name="eclipse-gwt-debug-setup">
-		<copy todir="${war.dir}/WEB-INF/classes">
-			<fileset dir="${config.dir}/c3p0" />
-			<fileset dir="${config.dir}/log4j" />
-		</copy>
-		<ivyfileset setid="ivy.gwt-debug-mode.fileset.ref" conf="gwt-debug-mode"/>
-		<copy todir="${war.dir}/WEB-INF/lib">
-			<fileset dir="${lib.dir}"/>
-			<resources refid="ivy.gwt-debug-mode.fileset.ref" />
-			<flattenmapper/>
-		</copy>
-		<copy todir="${build.output.lib.dir}/WEB-INF/lib">
-			<fileset dir="${war.dir}/WEB-INF/lib"/>
-		</copy>
-	</target>
+            <batchtest todir="${build.output.junit.dir}">
+                <fileset dir="${tst.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+            <jvmarg value="-Xmx512M"/>
+        </junit>
+    </target>
+    
+    <target name="gwt-compile-classpath" depends="src-compile-classpath">
+        <path id="gwt.compile.classpath.ref">
+            <path refid="src.compile.classpath.ref"/>
+            <pathelement location="${src.dir}"/>
+            <pathelement location="${build.output.src.dir}"/>
+        </path>
+    </target>
+    
+    <target name="gwt-compile" depends="src-compile,gwt-compile-classpath" description="GWT compile to JavaScript">
+        <!-- http://code.google.com/webtoolkit/doc/latest/FAQ_DebuggingAndCompiling.html#What_are_the_options_that_can_be_passed_to_the_compiler -->
+        <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+            <classpath>
+                <path refid="ivy.build.classpath.ref"/>
+                <path refid="ivy.compile.classpath.ref"/>
+                <path refid="lib.classpath.ref"/>
+                <pathelement location="${src.dir}"/>
+                <pathelement location="${build.output.src.dir}"/>
+            </classpath>
+            <jvmarg value="-Xmx512M"/>
+            <arg value="-war"/>
+            <arg value="${build.output.war.dir}"/>
+            <arg value="com.chuckanutbay.webapp.lotmanagement.LotCodeManager"/>
+            <arg value="com.chuckanutbay.webapp.dashboard.Dashboard"/>
+            <arg value="com.chuckanutbay.webapp.timeclock.TimeClock"/>
+            <arg value="com.chuckanutbay.webapp.timeclock.TimeClockReport"/>
+            <arg value="com.chuckanutbay.webapp.traylabelgenerator.TrayLabelGenerator"/>
+            <arg value="com.chuckanutbay.webapp.packagingtransactionmanager.PackagingTransactionManager"/>
+            <!-- add any other modules here -->
+        </java>
+    </target>
+    
+    <!--
+        According to Mitch on 9/5/11, the fonts that Jasper ship with the best set of fonts
+        (e.g., is lacking Tahoma and doesn't handle bolds very well)
+        As a result, we grab the fonts from within iReport instead of declaring a dependency on net.sf.jasperreports-fonts.
+    -->
+    <target name="generate-report-fonts">
+        <jar destfile="${lib.dir}/reportfonts.jar"
+            basedir="/Applications/Jaspersoft iReport Designer.app/Contents/Resources/ireport/ireport/fonts"
+        />
+    </target>
+    
+    <target name="setup-war-directory">
+        <ivyfileset setid="ivy.runtime.fileset.ref" conf="runtime"/>
+        <copy todir="${build.output.war.lib.dir}">
+            <resources refid="ivy.runtime.fileset.ref" />
+            <fileset dir="${build.output.lib.dir}" />
+            <fileset dir="${lib.dir}"/>
+            <flattenmapper/>
+        </copy>
+        <copy todir="${build.output.war.dir}">
+            <fileset dir="${war.dir}">
+                <exclude name="WEB-INF/**"/>
+                <exclude name="lotcodemanager/**"/>
+                <exclude name="timeclock/**"/>
+                <exclude name="dashboard/**"/>
+                <exclude name="timeclockreport/**"/>
+                <exclude name="traylabelgenerator/**"/>
+                <exclude name="fileTemplates/**"/>
+                <exclude name="packagingtransactionmanager/**"/>
+                <!-- add other files to exclude here -->
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="war" depends="jar,gwt-compile,setup-war-directory" description="GWT compile to JavaScript">
+        <war destfile="${build.output.dir}/${war.name}.war" webxml="${war.dir}/WEB-INF/web.xml">
+            <lib dir="${build.output.war.lib.dir}"/>
+            <fileset dir="${build.output.war.dir}">
+                <exclude name="WEB-INF/**"/>
+            </fileset>
+        </war>
+    </target>
+    
+    <!--
+        This target sets up Eclipse for GWT debug mode by getting necessary configuration and jars in place.
+        The reason some jars need to be copied explicitly, is because the auto classloading doesn't work for these jars.
+        The dependencies that have this issue are slf4j and hibernate annotations (which needs Hibernate validator).  
+        The commanlity between this is that they are looking for implementations to be on the classpath,
+        which doesn't give the classpath loader a chance to load them from the Eclipse "ivy.xml" build-path library. 
+    -->
+    <target name="eclipse-gwt-debug-setup">
+        <copy todir="${war.dir}/WEB-INF/classes">
+            <fileset dir="${config.dir}/c3p0" />
+            <fileset dir="${config.dir}/log4j" />
+        </copy>
+        <ivyfileset setid="ivy.gwt-debug-mode.fileset.ref" conf="gwt-debug-mode"/>
+        <copy todir="${war.dir}/WEB-INF/lib">
+            <fileset dir="${lib.dir}"/>
+            <resources refid="ivy.gwt-debug-mode.fileset.ref" />
+            <flattenmapper/>
+        </copy>
+        <copy todir="${build.output.lib.dir}/WEB-INF/lib">
+            <fileset dir="${war.dir}/WEB-INF/lib"/>
+        </copy>
+    </target>
 
-	
-	<target name="javadoc">
-	</target>
-	
-	
-	<macrodef name="echo-classpath">
+    
+    <target name="javadoc">
+    </target>
+    
+    
+    <macrodef name="echo-classpath">
         <attribute name="refid" description="Classpath reference id to define"/>
         <sequential>
             <pathconvert property="@{refid}.echo" refid="@{refid}" />
-        	<echo message="${@{refid}.echo}"/>
+            <echo message="${@{refid}.echo}"/>
         </sequential>
     </macrodef>
-	
-	<!-- Configure Ivy -->
-	<ivy:settings id="ivy.settings.ref" file="${basedir}/ivy-settings.xml"/>
-	
-	<!-- http://code.google.com/p/sidekar/source/browse/trunk/src/build/macros.xml -->
-	<macrodef name="ivypath">
+    
+    <!-- Configure Ivy -->
+    <ivy:settings id="ivy.settings.ref" file="${basedir}/ivy-settings.xml"/>
+    
+    <!-- http://code.google.com/p/sidekar/source/browse/trunk/src/build/macros.xml -->
+    <macrodef name="ivypath">
         <attribute name="pathid" description="Classpath reference id to define"/>
         <attribute name="file" default="${basedir}/ivy.xml" description="ivy.xml defining the named configuration"/>
         <attribute name="conf" description="Name of the ivy configuration to resolve"/>
@@ -255,8 +271,8 @@
               transitive="@{transitive}" conf="@{conf}" log="@{log}" pathid="@{pathid}"/>
         </sequential>
     </macrodef>
-	
-	<macrodef name="ivyfileset">
+    
+    <macrodef name="ivyfileset">
         <attribute name="setid" description="FileSet reference id to define"/>
         <attribute name="file" default="${basedir}/ivy.xml" description="ivy.xml defining the named configuration"/>
         <attribute name="conf" description="Name of the ivy configuration to resolve"/>
