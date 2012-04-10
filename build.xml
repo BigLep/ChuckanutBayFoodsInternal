@@ -66,6 +66,7 @@
         <mkdir dir="${build.output.src.dir}" />
         <echo-classpath refid="src.compile.classpath.ref"/>
         <javac srcdir="${src.dir}"
+        	   includes="${lib.dir}/gwtHelper.jar"
                destdir="${build.output.src.dir}"
                classpathref="src.compile.classpath.ref"
                debug="on"
@@ -158,6 +159,7 @@
                 <path refid="ivy.compile.classpath.ref"/>
                 <path refid="lib.classpath.ref"/>
                 <pathelement location="${src.dir}"/>
+            	<pathelement location="${lib.dir}/gwtHelper.jar"/>
                 <pathelement location="${build.output.src.dir}"/>
             </classpath>
             <jvmarg value="-Xmx512M"/>
