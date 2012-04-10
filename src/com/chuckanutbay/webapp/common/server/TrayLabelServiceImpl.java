@@ -8,11 +8,14 @@ import static com.chuckanutbay.webapp.common.server.DtoUtils.toTrayLabelDtoFunct
 import static com.chuckanutbay.webapp.common.shared.Printers.HP_WIRELESS_P1102W;
 import static com.google.common.collect.Lists.newArrayList;
 
+import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+
+import javax.print.PrintException;
 
 import org.hibernate.ObjectNotFoundException;
 import org.joda.time.DateTime;
@@ -146,7 +149,7 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 	public String getCurrentLotCode() {
 		Timer timer = new Timer(LOGGER).start();
 		String lotcode = getLotCode(new DateTime());
-		timer.stop("METHOD FINISHED");
+		timer.stop("METHOD FINISHED !!!");
 		return lotcode;
 	}
 	
@@ -225,7 +228,13 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 		ReportDto report = new ReportDto().setName(ReportDto.TRAY_LABEL).addParameter("TRAY_LABEL_IDS", ids);
 		String pdfFilePath = ReportGenerator.generateReport(report);
 		timer.logTime("GENERATED REPORT");
-		Print.print(pdfFilePath, HP_WIRELESS_P1102W);
+		try {
+			Print.print(pdfFilePath, HP_WIRELESS_P1102W);
+		} catch (FileNotFoundException e) {
+			doUnexpectedFailure(e);
+		} catch (PrintException e) {
+			doUnexpectedFailure(e);
+		}
 		timer.stop("PRINTED REPORT");
 	}
 	

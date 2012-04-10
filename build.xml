@@ -20,7 +20,6 @@
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="config.dir" value="${basedir}/configuration"/>
 	<property name="lib.dir" value="${basedir}/lib"/>
-	<property name="gwtHelper.dir" value="${lib.dir}/gwtHelper.jar"/>
 	<property name="resources.dir" value="${basedir}/resources"/>
 	<property name="tst.dir" value="${basedir}/tst"/>
 	<property name="war.dir" value="${basedir}/war"/>
@@ -57,9 +56,10 @@
 	<target name="src-compile" depends="src-compile-classpath">
 		<mkdir dir="${build.output.src.dir}" />
 		<javac srcdir="${src.dir}"
-			   includes="${gwtHelper.dir}"
+			   includes="${lib.dir}"
 		       destdir="${build.output.src.dir}"
 			   classpathref="src.compile.classpath.ref"
+		       includeantruntime="no"
 		       debug="on"
 		/>
 		<copy todir="${build.output.src.dir}" verbose="true">
@@ -141,7 +141,7 @@
 				<path refid="ivy.build.classpath.ref"/>
 				<path refid="ivy.compile.classpath.ref"/>
 				<pathelement location="${src.dir}"/>
-				<pathelement location="${gwtHelper.dir}"/>
+				<pathelement location="${lib.dir}"/>
 				<pathelement location="${build.output.src.dir}"/>
 			</classpath>
 			<jvmarg value="-Xmx512M"/>

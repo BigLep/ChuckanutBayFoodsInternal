@@ -55,6 +55,8 @@ public class ReportGenerator {
 			return pdfFilePath;
 		} catch (JRException e) {
 			throw new RuntimeException(e);
+		} finally {
+			HibernateUtil.closeSession();
 		}
 	}
 	

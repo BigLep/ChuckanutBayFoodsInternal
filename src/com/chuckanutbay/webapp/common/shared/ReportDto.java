@@ -1,11 +1,10 @@
 package com.chuckanutbay.webapp.common.shared;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableSet;
 
 public class ReportDto implements Serializable {
 	//File Path Bases
@@ -19,7 +18,7 @@ public class ReportDto implements Serializable {
 	public static final String END_OF_SHIFT = "EndOfShift";
 	public static final String DIGITAL_LABELS = "DigitalLabels";
 	public static final String DIGITAL_LABEL_SUBREPORT = "DigitalLabelSubreport";
-	public static final List<String> REPORT_NAMES = newArrayList(TRAY_LABEL, SCHEDULE, DIGITAL_LABELS, DIGITAL_LABEL_SUBREPORT, END_OF_SHIFT);
+	public static final ImmutableSet<String> REPORT_NAMES = ImmutableSet.of(TRAY_LABEL, SCHEDULE, DIGITAL_LABELS, DIGITAL_LABEL_SUBREPORT, END_OF_SHIFT);
 	
 	//Image Names
 	public static final String LOGO = "Logo";
