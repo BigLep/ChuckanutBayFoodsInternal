@@ -3,6 +3,7 @@ package com.chuckanutbay.webapp.common.shared;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -18,7 +19,7 @@ public class ReportDto implements Serializable {
 	public static final String END_OF_SHIFT = "EndOfShift";
 	public static final String DIGITAL_LABELS = "DigitalLabels";
 	public static final String DIGITAL_LABEL_SUBREPORT = "DigitalLabelSubreport";
-	public static final ImmutableSet<String> REPORT_NAMES = ImmutableSet.of(TRAY_LABEL, SCHEDULE, DIGITAL_LABELS, DIGITAL_LABEL_SUBREPORT, END_OF_SHIFT);
+	public static final Set<String> REPORT_NAMES = ImmutableSet.of(TRAY_LABEL, SCHEDULE, DIGITAL_LABELS, DIGITAL_LABEL_SUBREPORT, END_OF_SHIFT);
 	
 	//Image Names
 	public static final String LOGO = "Logo";

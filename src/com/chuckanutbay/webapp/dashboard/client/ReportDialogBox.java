@@ -13,10 +13,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
 /**
- * 
- * @author mloeppky
- * A {@link ReportDialogBox} is suppose to be a form for collecting input parameters to
- * be passed to an iReport.
+ * Form for collecting input parameters for iReport.
  */
 public class ReportDialogBox {
 	protected ComposedDialogBox dialogBox = new ComposedDialogBox();
@@ -36,7 +33,7 @@ public class ReportDialogBox {
 	/**
 	 * @param reportBase The report to add parameters to. The report name will be
 	 * used as the title for the dialog box.
-	 * @return
+	 * @return this for chaining
 	 */
 	public ReportDialogBox setReport(ReportDto reportBase) {
 		this.report = reportBase;
@@ -45,8 +42,8 @@ public class ReportDialogBox {
 	}
 	
 	/**
-	 * @param component A widget to act as the input sources for a parameter.
-	 * @return
+	 * @param component A widget to act as an input source for a parameter.
+	 * @return this for chaining
 	 */
 	public ReportDialogBox addParameterComponent(ReportParameterComponent<?> component) {
 		parameterComponents.add(component);

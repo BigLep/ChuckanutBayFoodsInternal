@@ -18,7 +18,7 @@ public class ReportServiceImpl extends RemoteServiceServlet implements ReportSer
 
 	private static final long serialVersionUID = 1L;
 	
-	private final static Logger LOGGER = LoggerFactory.getLogger(ReportServiceImpl.class.getName());
+	private final static Logger LOGGER = LoggerFactory.getLogger(ReportServiceImpl.class);
 	
 	@Override
 	public void printReport(ReportDto report, String printer) {

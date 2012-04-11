@@ -3,7 +3,6 @@ package com.chuckanutbay.webapp.dashboard.client;
 import com.chuckanutbay.webapp.common.shared.ReportDto;
 
 /**
- * @author mloeppky
  * Can print {@link ReportDto}s
  */
 public interface ReportPrinter {
