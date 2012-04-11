@@ -1,7 +1,7 @@
 package com.chuckanutbay.webapp.dashboard.client;
 
 import static com.chuckanutbay.webapp.common.client.ServiceUtils.createReportService;
-import static com.chuckanutbay.webapp.common.shared.Printers.HP_WIRELESS_P1102W;
+import static com.chuckanutbay.webapp.common.shared.Printers.PRINTERS;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABELS;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.DIGITAL_LABEL_SUBREPORT;
 import static com.chuckanutbay.webapp.common.shared.ReportDto.END_OF_SHIFT;
@@ -69,10 +69,9 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 				.addWithAlignment(ALIGN_CENTER, button);
 		}
 		
-		//***********************//
-		//** Add Printers here **//
-		//***********************//
-		printerListBox.addItem(HP_WIRELESS_P1102W, HP_WIRELESS_P1102W);
+		for(String printer : PRINTERS) {
+			printerListBox.addItem(printer, printer);
+		}
 		
 		reportsSubPanel.addWithAlignment(ALIGN_CENTER, printerListBox);
 		
@@ -90,7 +89,7 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 			Window.open("TimeClock.html", "TimeClock", "");
 		} else if (timeClockReportButton.delegate().equals(sender)) {
 			Window.open("TimeClockReport.html", "TimeClockReport", "");
-		} else if (timeClockReportButton.delegate().equals(sender)) {
+		} else if (trayLabelGeneratorButton.delegate().equals(sender)) {
 			Window.open("TrayLabelGenerator.html", "TrayLabelGenerator", "");
 		} else if (packagingTransactionManagerButton.delegate().equals(sender)) {
 			Window.open("PackagingTransactionManager.html", "PackagingTransactionManager", "");
@@ -103,12 +102,12 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 		/*
 		} else if (testButton.equals(sender)) {
 			//Create a ListBox
-			ListBox testListBox = new ListBox();
-			testListBox.addItem("Testing");
-			testListBox.addItem("Testing2");
+			ComposedBasicListBox testListBox = new ComposedBasicListBox()
+				.addItem("Testing")
+				.addItem("Testing2");
 			
 			//Create a TextBox
-			TextBox testTextBox = new TextBox();
+			ComposedTextBox testTextBox = new ComposedTextBox();
 			
 			//Create a ReportDialogBox
 			new ReportDialogBox()
@@ -125,17 +124,21 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 						.setSubreport("SubreportName"))
 				
 				//Add ListBoxes or TextBoxes to collect user input
-						//In < > you can specify TextBox or ListBox
-						//The parameters for the constructor are label text, parameter name, and the 
-				.addParameterComponent(new ReportParameterComponent<ListBox>("ListBox:", "PARAMETER1", testListBox))
-				.addParameterComponent(new ReportParameterComponent<TextBox>("TextBox:", "PARAMETER2", testTextBox))
+				//In the < > you can specify TextBox or ListBox
+				//The parameters for the constructor are label text, parameter name, and the input widget
+				.addParameterComponent(new ReportParameterComponent<ComposedBasicListBox>("ListBox:", "PARAMETER1", testListBox))
+				.addParameterComponent(new ReportParameterComponent<ComposedTextBox>("TextBox:", "PARAMETER2", testTextBox))
 				
 				//Put it all together and display the dialog box on the screen
 				.build();
-				*/
+		*/
 		}
 	}
 	
+	/**
+	 * Sends the given report to the server to be printed at the selected printer
+	 * @see getSelectedPrinter
+	 */
 	@Override
 	public void print(ReportDto report) {
 		String selectedPrinter = getSelectedPrinter();
@@ -147,7 +150,7 @@ public class Dashboard implements EntryPoint, ClickHandler, ReportPrinter {
 		Window.alert("Your report was successfully printed to the " + getSelectedPrinter());
 	}
 	
-	public String getSelectedPrinter() {
+	private String getSelectedPrinter() {
 		return printerListBox.getValue(printerListBox.getSelectedIndex());
 	}
 }

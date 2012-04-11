@@ -20,7 +20,7 @@ import com.chuckanutbay.webapp.common.server.Timer;
 
 public class Print {
 	
-	public static void print(String pdfFilePath, String printerName) {
+	public static void print(String pdfFilePath, String printerName) throws FileNotFoundException, PrintException {
 		Timer timer = new Timer(LoggerFactory.getLogger(Print.class.getName())).start("Creating print job:");
 		DocFlavor flavor = DocFlavor.INPUT_STREAM.PDF; //Printing a PDF "flavored" file
 		
@@ -28,19 +28,13 @@ public class Print {
 		aset.add(MediaSizeName.NA_LETTER); //Letter format
 		aset.add(new Copies(1)); // 1 Copy
 		
-		try {
-			Doc doc = new SimpleDoc(new FileInputStream(pdfFilePath), flavor, null);
-			for (PrintService pservice : PrintServiceLookup.lookupPrintServices(flavor, aset)) {//Find all the printers
-				if (pservice.getName().equals(printerName)) {//Find the printer with given name
-					pservice.createPrintJob().print(doc, aset); //Print the pdf to that printer
-					timer.logTime("Printed:");
-					break;
-				}
+		Doc doc = new SimpleDoc(new FileInputStream(pdfFilePath), flavor, null);
+		for (PrintService pservice : PrintServiceLookup.lookupPrintServices(flavor, aset)) {//Find all the printers
+			if (pservice.getName().equals(printerName)) {//Find the printer with given name
+				pservice.createPrintJob().print(doc, aset); //Print the pdf to that printer
+				timer.logTime("Printed:");
+				break;
 			}
-		} catch (PrintException e) { 
-			System.err.println(e);
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
 		}
 		
 		timer.stop("Done:");
