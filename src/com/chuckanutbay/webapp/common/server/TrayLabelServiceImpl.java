@@ -149,7 +149,7 @@ public class TrayLabelServiceImpl extends RemoteServiceServlet implements TrayLa
 	public String getCurrentLotCode() {
 		Timer timer = new Timer(LOGGER).start();
 		String lotcode = getLotCode(new DateTime());
-		timer.stop("METHOD FINISHED !!!");
+		timer.stop("METHOD FINISHED");
 		return lotcode;
 	}
 	

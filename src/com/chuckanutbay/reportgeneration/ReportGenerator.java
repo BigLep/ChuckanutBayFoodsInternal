@@ -56,7 +56,8 @@ public class ReportGenerator {
 		} catch (JRException e) {
 			throw new RuntimeException(e);
 		} finally {
-			HibernateUtil.closeSession();
+			//Steve suggested this originally, but it causes org.hibernate.TransactionException: Transaction not successfully started
+			//HibernateUtil.closeSession();
 		}
 	}
 	
