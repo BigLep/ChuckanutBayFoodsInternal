@@ -56,8 +56,8 @@
     
     <target name="src-compile-classpath" depends="ivy-compile-classpath,ivy-build-classpath,lib-classpath">
         <path id="src.compile.classpath.ref">
-            <path refid="ivy.compile.classpath.ref"/>
-            <path refid="ivy.build.classpath.ref"/>
+        	<path refid="ivy.build.classpath.ref"/>
+        	<path refid="ivy.compile.classpath.ref"/>
             <path refid="lib.classpath.ref"/>
         </path>
     </target>
@@ -66,8 +66,7 @@
         <mkdir dir="${build.output.src.dir}" />
         <echo-classpath refid="src.compile.classpath.ref"/>
         <javac srcdir="${src.dir}"
-        	   includes="${lib.dir}/gwtHelper.jar"
-               destdir="${build.output.src.dir}"
+        	   destdir="${build.output.src.dir}"
                classpathref="src.compile.classpath.ref"
                debug="on"
         />
@@ -155,22 +154,17 @@
         <!-- http://code.google.com/webtoolkit/doc/latest/FAQ_DebuggingAndCompiling.html#What_are_the_options_that_can_be_passed_to_the_compiler -->
         <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
             <classpath>
-                <path refid="ivy.build.classpath.ref"/>
-                <path refid="ivy.compile.classpath.ref"/>
-                <path refid="lib.classpath.ref"/>
-                <pathelement location="${src.dir}"/>
-            	<pathelement location="${lib.dir}/gwtHelper.jar"/>
-                <pathelement location="${build.output.src.dir}"/>
+                <path refid="gwt.compile.classpath.ref"/>
             </classpath>
             <jvmarg value="-Xmx512M"/>
             <arg value="-war"/>
             <arg value="${build.output.war.dir}"/>
+        	<arg value="com.chuckanutbay.webapp.dashboard.Dashboard"/>
             <arg value="com.chuckanutbay.webapp.lotmanagement.LotCodeManager"/>
-            <arg value="com.chuckanutbay.webapp.dashboard.Dashboard"/>
+            <arg value="com.chuckanutbay.webapp.packagingtransactionmanager.PackagingTransactionManager"/>
             <arg value="com.chuckanutbay.webapp.timeclock.TimeClock"/>
             <arg value="com.chuckanutbay.webapp.timeclock.TimeClockReport"/>
             <arg value="com.chuckanutbay.webapp.traylabelgenerator.TrayLabelGenerator"/>
-            <arg value="com.chuckanutbay.webapp.packagingtransactionmanager.PackagingTransactionManager"/>
             <!-- add any other modules here -->
         </java>
     </target>

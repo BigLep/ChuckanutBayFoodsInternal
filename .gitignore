@@ -3,6 +3,7 @@
 /.gwt
 /.project
 /.settings
+/bin
 /build-output
 /configuration/hibernate/hibernate-prod.cfg.xml
 /logs
